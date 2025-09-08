@@ -1,0 +1,32 @@
+<div class="table-responsive">
+    <table class="table-auto border border-gray-300 text-xs">
+        <thead>
+            <tr>
+                @for (item of encabezados; track $index) {
+                <th class="px-2 py-1 border text-xs">{{ item }}</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (al of alumnos; let i=$index; track $index) {
+            <tr class="hover:bg-gray-100"
+                [title]="'ver detalles de ' + al['APELLIDO_P'] + ' ' + al['APELLIDO_M'] + ' ' +al['NOMBRE'] + ' '"
+                (click)="confirmDialog.open()"
+                 >
+                @for (item of encabezados; track $index) {
+                <td class="px-[3px] py-1 border border-gray-200 text-center" [ngClass]="{
+            'bg-green-200': al[item] == 1
+          }"> {{al[item]}} </td>
+                }
+
+            </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+<app-confirm-dialog #confirmDialog></app-confirm-dialog>

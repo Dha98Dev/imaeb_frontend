@@ -1,0 +1,23 @@
+<div class="border border-gray-100 rounded-xl shadow-md bg-gradient-to-br from-white to-gray-50 px-2 w-100">
+  <button 
+    class="materia w-full px-4 py-2 text-center rounded-lg font-bold text-white shadow-sm truncate " 
+    [ngClass]="bgColorTitle" 
+    (click)="EmitMateriaSelected()">
+    {{title}}
+  </button>
+
+  <table class="mt-4 w-full border-separate border-spacing-0 ">
+    <tr class="bg-gray-100">
+      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tl-lg">sin evidencia</td>
+      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600">requiere apoyo</td>
+      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600">en proceso de desarrollo</td>
+      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tr-lg">aprendizaje desarrollado</td>
+    </tr>
+    <tr class="bg-white">
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm first:rounded-bl-lg">4</td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm">6</td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm">10</td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm first:rounded-br-lg">19</td>
+    </tr>
+  </table>
+</div>

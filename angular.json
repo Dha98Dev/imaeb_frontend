@@ -34,7 +34,10 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/animate.css/animate.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ]
           },
           "configurations": {

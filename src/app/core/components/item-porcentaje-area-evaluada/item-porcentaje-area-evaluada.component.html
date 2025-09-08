@@ -1,0 +1,17 @@
+<div class="contenedor flex flex-col">
+    @if(title != ''){
+        <div class="leyend w-100">
+        <p class="text-center border px-3 py-3  text-white font-medium text-xl rounded-xl mb-2" [ngClass]="bgTitle"> {{title}} </p>
+    </div>
+    }
+    <div class="porcentajes w-100 flex gap-3">
+        <div class="item w-1/2 text-center border rounded-lg ">
+            <p class="title text-sm font-medium  py-1"> {{firstLeyendPercent}} </p>
+            <p class="text-3xl text-emerald-500 font-medium  mt-2"> {{firstPercent}} <small>%</small></p>
+        </div>
+        <div class="item w-1/2 text-center border rounded-lg ">
+            <p class="title text-sm font-medium py-1"> {{secondLeyendPercent}} </p>
+            <p class="text-3xl font-medium  mt-2"> {{secondPercent   }} <small>%</small></p>
+        </div>
+    </div>
+</div>

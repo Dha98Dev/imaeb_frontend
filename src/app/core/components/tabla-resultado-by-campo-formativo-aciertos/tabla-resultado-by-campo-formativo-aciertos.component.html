@@ -1,0 +1,29 @@
+<h4 class="text-center text-2xl"> {{title}} </h4>
+
+<div class="overflow-x-auto mt-4">
+  <table class=" border-separate border-spacing-0 min-w-[600px] w-100 ">
+    <thead>
+      <tr class="bg-gray-100 text-sm">
+        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1 rounded-tl-lg">Campo Formativo</th>
+        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1">Aspecto Evaluado</th>
+        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1">Nombre y Numero de Consigna</th>
+        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1 rounded-tr-lg">Resultado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="bg-white text-xs">
+        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800 rounded-bl-lg">Lenguajes</td>
+        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800">
+          Escribe su nombre sin referencias o modelos a la vista
+        </td>
+        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800">
+          Ejercicio 1. Escribe tu nombre
+        </td>
+        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800 rounded-br-lg">
+          <i [class]="respuesta == 1 ? 'pi pi-check' : 'pi pi-times'"
+             [ngClass]="respuesta == 1 ? 'text-emerald-500' : 'text-red-500'"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

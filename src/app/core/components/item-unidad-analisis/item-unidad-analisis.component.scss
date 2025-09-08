@@ -1,0 +1,13 @@
+.icon{
+    display: none;
+}
+
+
+@media(max-width:767px){
+    .icon{
+        display: block;
+    }
+    img{
+        display: none;
+    }
+}

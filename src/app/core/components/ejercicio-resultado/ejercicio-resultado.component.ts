@@ -1,0 +1,29 @@
+import { Component, Input } from '@angular/core';
+// import { getBgColorService } from '../../Services/GetBgColor.service';
+
+@Component({
+  selector: 'app-ejercicio-resultado',
+  standalone: false,
+  templateUrl: './ejercicio-resultado.component.html',
+  styleUrl: './ejercicio-resultado.component.scss'
+})
+export class EjercicioResultadoComponent {
+  @Input()  
+  public bgColorTitle:string='bg-sky-500';
+
+  @Input() 
+  public title:string ='Lenguajes'
+
+  // constructor(private getColor:getBgColorService){}
+  
+  active: string = '0';
+
+    activeIndexChange(index : string){
+        this.active = index
+    }
+
+    // getBg(materia:string){
+    //   return  this.getColor.getColorByCategoria(materia)
+    // }
+
+}

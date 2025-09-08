@@ -1,12 +1,15 @@
 import { NgModule, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import Aura from '@primeuix/themes/aura';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { providePrimeNG } from 'primeng/config';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 @NgModule({
   declarations: [
-    App
+    App,
+
   ],
   imports: [
     BrowserModule,
@@ -14,7 +17,19 @@ import { App } from './app';
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZonelessChangeDetection()
+    provideZonelessChangeDetection(),
+         provideHttpClient(
+      withInterceptorsFromDi()
+    ),
+    provideAnimationsAsync(),
+     providePrimeNG({
+      theme: {
+        preset: Aura,
+         options: {
+       darkModeSelector: false || 'none'
+    }
+      }
+    }),
   ],
   bootstrap: [App]
 })

@@ -1,1 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('./../public/assets/css/primeNgcss.css');
+
+:root{
+    --principal-cafe:#D3C0AF;
+    --secundario-cafe: #5c5652;
+}
+.bg-c1 {
+  background: var(--principal-cafe) !important;
+}
+
+.bg-c2 {
+  background: var(--secundario-cafe) !important;
+}
+.b-c1{
+  border: 1px solid var(--principal-cafe);
+}
+.b-c2{
+  border: 1px solid var(--secundario-cafe);
+}
+
+/* 🔹 Colores de texto */
+.text-c1 {
+  color: var(--principal-cafe) !important;
+}
+
+.text-c2 {
+  color: var(--secundario-cafe) !important;
+}
+h1,h2,h3,h4,h5,h6{
+  font-family: "Poppins";
+  font-weight: 700;
+  font-style: normal;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;  }
+
+// *{
+//   border: 1px solid orange;
+// }

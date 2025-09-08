@@ -1,0 +1,88 @@
+<div class="mx-2 border px-2 py-2 rounded-lg shadow-md contenedor bg-white mt-5 flex gap-3 pb-5">
+
+
+    <!-- bloque 1 donde tendra  la imagen del niño o niña dependiendo del sexo del alumno -->
+    <div class="bloque-1 w-1/5 flex flex-col">
+
+        <div class="flex-3">
+            <h4 class=" text-center  text-xl text-white bg-c2 rounded-lg font-medium">Pedrito Ramirez de la cruz</h4>
+        </div>
+        <div class="flex justify-center align-items-center  flex-1">
+            <img src="./assets/images/boy.png" alt="" class="w-[60%]">
+        </div>
+
+    </div>
+
+
+
+    <!-- bloque 2 donde tendra un par de single promedio, uno sera estatal y el otro sera el que saco el alumno -->
+    <div class="bloque-2 w-1/5  flex flex-col justify-content-center aling-items-center gap-3">
+        <div class="flex justify-center">
+            <app-single-promedio class="w-fit" [title]="'Calificación'"></app-single-promedio>
+        </div>
+        <div class="flex justify-center">
+            <app-single-promedio class="w-fit" [contenColor]="'text-black'"
+                [title]="'Promedio Estatal'"></app-single-promedio>
+        </div>
+    </div>
+
+
+
+    <!-- bloque 3 donde iran las areas evaluadas con el porcentaje de aciertos por materia y el promedio estatal -->
+    <div class="bloque-3 w-3/5 ">
+        <h4 class="font-semibold text-center text-c2 text-xl ">Areas Evaluadas</h4>
+
+        <div class="flex mb-4 gap-2 justify-end">
+            <p-button (onClick)="active = '0'" [rounded]="true" label="1" styleClass="w-8 h-8 p-0"
+                [outlined]="active !== '0'" />
+            <p-button (onClick)="active = '1'" [rounded]="true" label="2" styleClass="w-8 h-8 p-0"
+                [outlined]="active !== '1'" />
+            <p-button (onClick)="active = '2'" [rounded]="true" label="3" styleClass="w-8 h-8 p-0"
+                [outlined]="active !== '2'" />
+        </div>
+
+        <p-accordion [(value)]="active">
+            <p-accordion-panel value="0">
+                <p-accordion-header>Lenguajes</p-accordion-header>
+                <p-accordion-content>
+                    
+                </p-accordion-content>
+            </p-accordion-panel>
+
+
+            <p-accordion-panel value="1">
+                <p-accordion-header>Saberes y  Pensamiento Cientifico:Ciencias</p-accordion-header>
+                <p-accordion-content>
+                    <p class="m-0">
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                        laudantium, totam rem
+                        aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+                        explicabo. Nemo
+                        enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
+                        magni dolores eos
+                        qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius
+                        modi.
+                    </p>
+                </p-accordion-content>
+            </p-accordion-panel>
+
+
+            <p-accordion-panel value="2">
+                <p-accordion-header>Saberes y  Pensamiento Cientifico: Matematicas</p-accordion-header>
+                <p-accordion-content>
+                    <p class="m-0">
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                        deleniti atque
+                        corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
+                        similique sunt in
+                        culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum
+                        facilis est et
+                        expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
+                        impedit quo minus.
+                    </p>
+                </p-accordion-content>
+            </p-accordion-panel>
+        </p-accordion>
+
+    </div>
+</div>

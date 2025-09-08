@@ -1,0 +1,31 @@
+<div class="contenedor mt-2 flex flex-col  gap-2 mx-2 ">
+    <h2 class="font-semibold text-center text-c2 text-xl mb-3">Resultados de la materia Lenguajes de Manuel Martinez
+        Sillas</h2>
+    <div class="items-container  flex gap-3 pb-5">
+        <div class="bloque-1 w-1/2 px-3 py-3  flex flex-col shadow-md rounded-lg">
+            <div class="flex-3">
+                <h4 class="font-semibold text-center text-c2 text-xl">Unidades de analisis</h4>
+            </div>
+            <div class="flex-1  ">
+                <app-unidad-analisis-porcentaje></app-unidad-analisis-porcentaje>
+            </div>
+        </div>
+        <div class="bloque-2 w-1/2 px-3 py-3 shadow-md rounded-lg ">
+            <div>
+                <h4 class="font-semibold text-center text-c2 text-xl">Mis Resultados en Imaeb</h4>
+            </div>
+            <div class="">
+                <app-tabla-resultado-by-campo-formativo-aciertos></app-tabla-resultado-by-campo-formativo-aciertos>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="mx-2 border py-2 px-2 shadow-md rounded-lg">
+    <h2 class="font-semibold text-center text-c2 text-xl mb-3">Unidades de analisis</h2>
+    <div class="item-container">
+        <app-item-chart-resltado-area [aciertos]="'59%'" [desaciertos]="'41%'"
+            [unidadAnalisis]="'Análisis de contenido y estructura'" [isAlumno]="true"></app-item-chart-resltado-area>
+    </div>
+</div>

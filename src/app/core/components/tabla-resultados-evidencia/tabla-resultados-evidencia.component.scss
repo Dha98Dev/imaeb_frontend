@@ -1,0 +1,5 @@
+.materia {
+  white-space: nowrap;        /* Evita que el texto se rompa en varias líneas */
+  overflow: hidden;           /* Oculta el texto que se desborda */
+  text-overflow: ellipsis;    /* Muestra los "..." al final */
+}
