@@ -17,3 +17,6 @@
     visibility: hidden; /* Oculta el contenedor cuando no está visible */
     transition: opacity 0.3s ease, visibility 0.3s ease; /* Suaviza la opacidad */
 }
+.capital{
+    text-transform: capitalize;
+}

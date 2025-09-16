@@ -29,17 +29,17 @@
   }
   <!-- Aciertos -->
   <div class="  p-2 flex flex-col" [ngClass]="isAlumno ? 'w-1/2' : 'w-1/3'">
-    <p class="flex-3 flex items-center justify-center font-semibold text-emerald-500">Aciertos</p>
+    <p class="flex-3 flex items-center justify-center font-semibold text-green">Aciertos</p>
     <div class="flex-1 flex items-center justify-center">
-      <p class="text-center font-semibold text-3xl text-emerald-500">{{ aciertos }}</p>
+      <p class="text-center font-semibold text-3xl text-green">{{ aciertos }}</p>
     </div>
   </div>
 
   <!-- Desaciertos -->
   <div class="  p-2 flex flex-col" [ngClass]="isAlumno ? 'w-1/2' : 'w-1/3'">
-    <p class="flex-3 flex items-center justify-center font-semibold text-rose-500">Desaciertos</p>
+    <p class="flex-3 flex items-center justify-center font-semibold text-red">Desaciertos</p>
     <div class="flex-1 flex items-center justify-center">
-      <p class="text-center font-semibold text-3xl text-rose-500">{{ desaciertos }}</p>
+      <p class="text-center font-semibold text-3xl text-red">{{ desaciertos }}</p>
     </div>
   </div>
 </div>

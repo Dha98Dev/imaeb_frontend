@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Background } from '../../../core/enums/background.enum';
 
 @Component({
   selector: 'app-mis-resultados-imaeb',
@@ -8,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class MisResultadosImaeb {
   active: string = '0';
-
+  public fondos=Background
     activeIndexChange(index : string){
         this.active = index
     }

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Background } from '../../enums/background.enum';
 @Component({
     selector: 'app-chart-figure-gir-boy',
     standalone: false,
@@ -7,7 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class ChartFigureGirBoyComponent  {
   @Input() isBoy:boolean=false
-  @Input() bgColor:string=''
   @Input() relleno: number=0
 }
 

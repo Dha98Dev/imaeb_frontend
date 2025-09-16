@@ -1,18 +1,21 @@
-<div class="contenedor flex flex-col md:flex-row gap-4 mt-5 shadow-md md:shadow-none rounded-lg p-3">
+<div class="contenedor flex flex-col align-items-center justify-center md:flex-row gap-2 mt-5 shadow-md md:shadow-none rounded-lg ">
     <!-- bloque 1 -->
-    <div class="d-flex justify-content-center items-center bg-sky-500 rounded-lg w-full md:w-1/3">
-        <p class="px-2 py-2 text-capitalize text-white text-center">analis y representacion de datos</p>
+@if (!onlyPorcentaje) {
+
+        <div class="d-flex justify-content-center items-center bg-sky-500 rounded-lg w-full md:w-1/3">
+        <p class="px-2 text-capitalize text-white text-center">analis y representacion de datos</p>
     </div>
 
+}
     <!-- bloque 2 -->
-    <div class="flex gap-2 w-full md:w-1/3">
-        <div class="text-center px-1 py-2 w-1/2 border">
+    <div class="flex gap-2 w-full " [ngClass]="onlyPorcentaje ? 'w-2/3' :'w-1/3'">
+        <div class="text-center px-1  w-1/2 border">
             <p class="mb-2 text-sm font-medium">Aciertos</p>
-            <p class="text-3xl text-emerald-500 font-medium">80 <small>%</small></p>
+            <p class="text-xl text-green font-medium flex-1">80%</p>
         </div>
-        <div class="text-center px-1 py-2 w-1/2 border">
+        <div class="text-center px-1  w-1/2 border">
             <p class="mb-2 text-sm font-medium">Promedio estatal</p>
-            <p class="text-3xl font-medium">61 <small>%</small></p>
+            <p class="text-xl font-medium flex-1">61%</p>
         </div>
     </div>
 

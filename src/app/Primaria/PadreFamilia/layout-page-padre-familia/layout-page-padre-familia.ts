@@ -22,7 +22,7 @@ export class LayoutPagePadreFamilia {
         icon: 'pi pi-home',
         command: () => {
           console.log('redireccionando')
-          this.router.navigate(['/primaria_alumno/principal_alumno'])
+          this.router.navigate(['/prim_1/principal_alumno'])
         }
       },
       {
@@ -30,7 +30,7 @@ export class LayoutPagePadreFamilia {
         icon: 'pi pi-chart-line',
         command: () => {
           console.log('redireccionando')
-          this.router.navigate(['/primaria_alumno/mis_resultados'])
+          this.router.navigate(['/prim_1/mis_resultados'])
         }
       },
       {
@@ -38,21 +38,21 @@ export class LayoutPagePadreFamilia {
         label: 'Lenguajes',
         styleClass: 'bg-sky-500 text-white',
         command: () => {
-          this.router.navigate(['/primaria_alumno/resultados_area'])
+          this.router.navigate(['/prim_1/resultados_area'])
         }
       },
       {
         icon: 'fa-solid fa-calculator',
         label: 'Matematicas',
         command: () => {
-          this.router.navigate(['/primaria_alumno/resultados_area'])
+          this.router.navigate(['/prim_1/resultados_area'])
         }
       },
       {
         icon: 'fa-solid fa-flask',
         label: 'Ciencias',
         command: () => {
-          this.router.navigate(['/primaria_alumno/resultados_area'])
+          this.router.navigate(['/prim_1/resultados_area'])
         }
       },
     ];

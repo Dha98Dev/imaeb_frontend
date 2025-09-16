@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-unidad-analisis-porcentaje',
@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './unidad-analisis-porcentaje.component.scss'
 })
 export class UnidadAnalisisPorcentajeComponent {
-
+@Input()
+public onlyPorcentaje:boolean=false
 }

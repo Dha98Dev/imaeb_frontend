@@ -1,6 +1,7 @@
-<div class="b-c1 w-[180px] h-[180px] flex  flex-col align-items-center justify-center rounded-xl px-2 py-3 ">
-    <p class="flex-3  text-sm font-medium"> {{title}} </p>
-    <div class="flex-1 flex justify-center align-items-center">
-        <h4 class="text-6xl" [ngClass]="contenColor"> {{content}} </h4>
+<div class=" flex  flex-col align-items-center justify-center rounded-xl px-3 py-3" [ngClass]="!isEstatal ? 'bg-c1' : 'bg-c2' ">
+    <p class="flex-3  text-2xl font-medium text-white text-center"> {{title}} </p>
+    <div class="flex-1 flex justify-center align-items-center bg-white w-100 rounded-xl">
+        <h4 class="text-6xl font-extrabold"> {{content}} </h4>
     </div>
 </div>
+

@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './item-nivel-desempeno.component.scss'
 })
 export class ItemNivelDesempenoComponent {
-@Input() public title:string ='Niveles de desempeño'
+@Input() public title:string =''
 }

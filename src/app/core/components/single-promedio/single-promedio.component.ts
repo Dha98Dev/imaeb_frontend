@@ -14,6 +14,6 @@ public title:string='Promedio Estatal '
 public content:string='7.5'
 
 @Input()
-public contenColor:string='text-emerald-500'
+public isEstatal:boolean=false
 
 }

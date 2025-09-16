@@ -1,6 +1,14 @@
 
-<h2 class="text-center mb-3 text-xl font-semibold text-c2 py-3">Listado de Alumnos y sus resultados</h2>
-<div class="bg-white mx-2  pb-20 mb-7">
-    <app-table-resultados-grupo ></app-table-resultados-grupo>
+ @if (!loader) {
+       <div class="mx-2 mb-4">
+    <app-subtitle [subtitle]="'Listado de Alumnos y sus resultados'"></app-subtitle>
 </div>
-
+<div class="bg-white mx-2  pb-20 mb-7">
+    
+        <app-table-resultados-grupo [listadoAlumnos]="registrosFormateados"></app-table-resultados-grupo>
+    
+</div>
+ }
+ @else{
+    <app-loader-page></app-loader-page>
+ }

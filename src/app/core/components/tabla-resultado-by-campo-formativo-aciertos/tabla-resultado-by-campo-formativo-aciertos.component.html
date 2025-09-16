@@ -1,4 +1,6 @@
-<h4 class="text-center text-2xl"> {{title}} </h4>
+@if (title != '') {
+  <app-subtitle [subtitle]="title"></app-subtitle>
+}
 
 <div class="overflow-x-auto mt-4">
   <table class=" border-separate border-spacing-0 min-w-[600px] w-100 ">

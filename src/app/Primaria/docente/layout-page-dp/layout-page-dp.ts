@@ -20,26 +20,26 @@ export class LayoutPageDP {
       {
         label: 'Inicio',
         icon: 'pi pi-home',
-        url: '/primaria_doc/resultados-grupo',
+        url: '/prim_2/resultados-grupo',
         command: () => {
-          this.router.navigate(['/primaria_doc/resultados-grupo'])
+          this.router.navigate(['/prim_2/resultados-grupo'])
         },
       },
       {
         label: 'listado alumnos',
         icon: 'fa-solid fa-users',
-        url: '/primaria_doc/listado-grupo',
+        url: '/prim_2/listado-grupo',
         command: () => {
-          this.router.navigate(['/primaria_doc/listado-grupo'])
+          this.router.navigate(['/prim_2/listado-grupo'])
         },
 
       },
       {
         label: 'result-area',
         icon: 'pi pi-home',
-        url: '/primaria_doc/resultados-grupo-area',
+        url: '/prim_2/resultados-grupo-area',
           command: () => {
-          this.router.navigate(['/primaria_doc/resultados-grupo-area'])
+          this.router.navigate(['/prim_2/resultados-grupo-area'])
         },
       },
 

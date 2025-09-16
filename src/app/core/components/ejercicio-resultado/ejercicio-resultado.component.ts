@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Background } from '../../enums/background.enum';
 // import { getBgColorService } from '../../Services/GetBgColor.service';
 
 @Component({
@@ -8,8 +9,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './ejercicio-resultado.component.scss'
 })
 export class EjercicioResultadoComponent {
+  private fondos=Background
   @Input()  
-  public bgColorTitle:string='bg-sky-500';
+  public bgColorTitle:Background= this.fondos.blue
 
   @Input() 
   public title:string ='Lenguajes'

@@ -14,12 +14,13 @@ export class ConfirmDialog {
   
   public visible = false;
   public isClosing = false;
-
+  public mensaje:string=''
 // En el componente TypeScript
 private animationTimeout: any;
 
-open() {
+open(mensaje:string) {
   this.visible = true;
+  this.mensaje=mensaje
 }
 
 emitSeleccion(action: 'confirm' | 'cancel') {

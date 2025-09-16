@@ -23,11 +23,17 @@ import { UnidadAnalisisPorcentajeComponent } from './unidad-analisis-porcentaje/
 import { PrimeNgModule } from '../shared/PrimeNg.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { ConfirmDialog } from './confirm-dialog/confirm-dialog';
+import { Title } from './title/title';
+import { DatosAlumno } from './datos-alumno/datos-alumno';
+import { FormsModule } from '@angular/forms';
+import { TablaResultadosGrupoCT } from './tabla-resultados-grupo-ct/tabla-resultados-grupo-ct';
+import { Subtitle } from './subtitle/subtitle';
+import { subtitle } from '@primeuix/themes/aura/card';
 @NgModule({
     imports: [
     PrimeNgModule,
     HighchartsChartModule,
-    // RouterModule
+    FormsModule
 ],
     exports: [
         HeaderComponent,
@@ -49,7 +55,11 @@ import { ConfirmDialog } from './confirm-dialog/confirm-dialog';
         TableResultadosGrupoComponent,
         TablaResultadoByCampoFormativoAciertosComponent,
         BreadCrumbComponent,
-        ConfirmDialog
+        ConfirmDialog,
+        Title,
+        DatosAlumno,
+        TablaResultadosGrupoCT,
+        Subtitle
     ],
     declarations: [
         HeaderComponent,
@@ -72,7 +82,11 @@ import { ConfirmDialog } from './confirm-dialog/confirm-dialog';
         TableResultadosGrupoComponent,
         TablaResultadoByCampoFormativoAciertosComponent,
         BreadCrumbComponent,
-        ConfirmDialog
+        ConfirmDialog,
+        Title,
+        DatosAlumno,
+        TablaResultadosGrupoCT,
+        Subtitle
     ],
     providers: [],
 })

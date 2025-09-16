@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       { path: 'resultados-grupo', component: PrincipalDocente },
       { path: 'resultados-grupo-area', component: ResultadosAreas },
-      { path: 'listado-grupo', component: ListadoGrupo },
+      { path: 'listado-grupo/:cct/:grupo', component: ListadoGrupo },
       { path: '', redirectTo: 'resultados-grupo', pathMatch: 'full' },
       { path: '**', redirectTo: 'resultados-grupo' }
     ]

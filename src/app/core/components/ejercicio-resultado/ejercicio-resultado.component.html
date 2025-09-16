@@ -1,72 +1,33 @@
-<!-- <div class="card">
-    <div class="flex mb-4 gap-2 justify-end">
-        <p-button (onClick)="active = '0'" [rounded]="true" label="1" styleClass="w-8 h-8 p-0"
-        [outlined]="active !== '0'" />
-    </div>
-    
-<p-accordion 
-  [(value)]="active" 
-  [style]="{
-    '--p-accordion-header-background': getBg('lenguajes'),
-    '--p-accordion-header-active-background': getBg('lenguajes'),
-    '--p-accordion-header-hover-background': getBg('lenguajes'),
-    '--p-accordion-header-color': '#fff',
-    '--p-accordion-header-hover-color': '#fff',
-    '--p-accordion-header-active-color': '#fff',
-    '--p-accordion-header-active-hover-color':getBg('lenguajes')
-  }"
->
-  <p-accordion-panel value="0">
-    <p-accordion-header>Header I</p-accordion-header>
-    <p-accordion-content>
 
-    </p-accordion-content>
-  </p-accordion-panel>
-</p-accordion>
 
-</div> -->
-
-<div class="shadow-md rounded-md">
+<div class="shadow-md rounded-md  w-100">
 @if(title != ''){
     <div>
-    <h4 class="text-center mb-3 border px-2 py-2 text-xl text-white font-medium rounded-lg" [ngClass]="bgColorTitle" > {{title}}</h4>
+    <h4 class="text-center rounded-md  border px-2 py-2 text-xl text-white font-medium" [ngClass]="bgColorTitle" > {{title}}</h4>
   </div>
   
 }
-  <div class="flex flex-wrap  ">
+  <div class="flex flex-wrap mx-1 my-1 px-2 py-3">
 
-    <!-- Item -->
-    <div class="border p-2 rounded-lg font-medium text-sm text-center flex flex-col w-full sm:w-[48%] lg:w-[30%]">
-      <p class="border bg-c1 rounded-lg mb-2">Ejercicio 1</p>
-      <div class="flex items-center justify-center gap-2 border rounded-lg p-2">
-        <img src="./assets/images/girl.svg" alt="" class="w-10 h-10 md:w-12 md:h-12">
-        <p class="border px-2 py-1 bg-yellow-500 text-white rounded-lg text-sm">
-          Aprendizaje en desarrollo
-        </p>
+    <div class="item flex flex-col text-center text-capitalize b-c1">
+      <p class="font-semibold text-sm">ejercicio 1</p>
+      <div class="px-1 py-1">
+        <p class="bg-[var(--red)] text-white px-2 py-1 rounded-md text-xs">aprendizaje en desarrollo</p>
+      </div>
+    </div>
+        <div class="item flex flex-col text-center text-capitalize b-c1">
+      <p class="font-semibold text-sm">ejercicio 1</p>
+      <div class="px-1 py-1">
+        <p class="bg-[var(--yellow)] text-white px-2 py-1 rounded-md text-xs">aprendizaje en desarrollo</p>
+      </div>
+    </div>
+        <div class="item flex flex-col text-center text-capitalize b-c1">
+      <p class="font-semibold text-sm">ejercicio 1</p>
+      <div class="px-1 py-1">
+        <p class="bg-[var(--orange)] text-white px-2 py-1 rounded-md text-xs">aprendizaje en desarrollo</p>
       </div>
     </div>
 
-    <!-- Item -->
-    <div class="border p-2 rounded-lg font-medium text-sm text-center flex flex-col w-full sm:w-[48%] lg:w-[30%]">
-      <p class="border bg-c1 rounded-lg mb-2">Ejercicio 2</p>
-      <div class="flex items-center justify-center gap-2 border rounded-lg p-2">
-        <img src="./assets/images/girl.svg" alt="" class="w-10 h-10 md:w-12 md:h-12">
-        <p class="border px-2 py-1 bg-yellow-500 text-white rounded-lg text-sm">
-          Aprendizaje en desarrollo
-        </p>
-      </div>
-    </div>
-
-    <!-- Item -->
-    <div class="border p-2 rounded-lg font-medium text-sm text-center flex flex-col w-full sm:w-[48%] lg:w-[30%]">
-      <p class="border bg-c1 rounded-lg mb-2">Ejercicio 3</p>
-      <div class="flex items-center justify-center gap-2 border rounded-lg p-2">
-        <img src="./assets/images/girl.svg" alt="" class="w-10 h-10 md:w-12 md:h-12">
-        <p class="border px-2 py-1 bg-yellow-500 text-white rounded-lg text-sm">
-          Aprendizaje en desarrollo
-        </p>
-      </div>
-    </div>
 
   </div>
 </div>
