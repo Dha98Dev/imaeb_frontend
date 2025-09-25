@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-subtitle',
@@ -7,5 +7,11 @@ import { Component, Input } from '@angular/core';
   styleUrl: './subtitle.scss'
 })
 export class Subtitle {
+    constructor(private cd:ChangeDetectorRef){}
 @Input() subtitle:string=''
+
+ngOnChanges(changes:SimpleChanges){
+if(changes['subtitle'] && changes['subtitle'].currentValue){
+}
+}
 }

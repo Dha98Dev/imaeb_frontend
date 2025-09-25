@@ -1,18 +1,39 @@
-<div class="flex justify-center">
-   <app-subtitle [subtitle]="'Resultados de lenguaje'"></app-subtitle>
-</div>
-<div class="tabla px-3">
+@if (loader) {
+<app-loader-page></app-loader-page>
+}
 
-    <div class="mt-[50px] shadow-md ">
-        <app-item-chart-resltado-area [unidadAnalisis]="'Analisis  de contenido y estructura'" [alumnos]="'100'"
-            [aciertos]="'100 %'" [desaciertos]="'100 %'"></app-item-chart-resltado-area>
+@if (!loader) {
+    <div class="flex justify-center">  
+    <app-subtitle [subtitle]="getSubtitle"></app-subtitle>
+</div>
+<div class="flex justify-end px-5 gap-3">
+    <p-button icon="fa-solid fa-book" [severity]="materiaSelected == 1 ? 'help' : 'secondary'" [raised]=" materiaSelected ==1 ? true : false  "
+         [rounded]="true" pTooltip="Resultados de Lenguaje" tooltipPosition="bottom" (onClick)="onPick(1)" />
+    <p-button icon="fa-solid fa-calculator" [severity]="materiaSelected  == 3 ? 'help' : 'secondary'" [raised]=" materiaSelected ==3 ? true : false  "
+         [rounded]="true" pTooltip="Resultados de Matematicas" tooltipPosition="bottom" (onClick)="onPick(3)" />
+    <p-button icon="fa-solid fa-flask" [severity]="materiaSelected == 4 ? 'help' : 'secondary'" [raised]=" materiaSelected ==4 ? true : false  "
+         [rounded]="true" pTooltip="Resultados de Ciencias" tooltipPosition="bottom" (onClick)="onPick(4)" />
+
+</div>
+
+
+
+<div class="tabla px-3">
+@for (item of dataChart; track $index) {
+        <div class="mt-[50px] shadow-md ">
+        <app-item-chart-resltado-area [unidadAnalisis]="item.unidad" [alumnos]="item.totalAlumnos.toString()"
+            [aciertos]="item.porcentajeAciertos+'%'" [desaciertos]="item.porcentajeDesaciertos+'%'" [dataSet]="item.dataChart"></app-item-chart-resltado-area>
     </div>
-    <div class="mt-[50px] shadow-md ">
+}
+    <!-- <div class="mt-[50px] shadow-md ">
         <app-item-chart-resltado-area [unidadAnalisis]="'Extraccion  de informacion'" [alumnos]="'100'"
             [aciertos]="'100 %'" [desaciertos]="'100 %'"></app-item-chart-resltado-area>
     </div>
     <div class="mt-[50px] shadow-md ">
         <app-item-chart-resltado-area [unidadAnalisis]="'Desarrollo de una comprension global'" [alumnos]="'100'"
             [aciertos]="'100 %'" [desaciertos]="'100 %'"></app-item-chart-resltado-area>
-    </div>
+    </div> -->
 </div>
+
+
+}

@@ -41,7 +41,6 @@ export class TableResultadosGrupoComponent {
     // this.encabezados = [...this.encabezados, ...lenguajes, ...mat, ...ciencias, 'Alumno', 'Estatal']
 
     // this.generarDatosPrueba(25)
-    // console.log(this.alumnos[0])
   }
 
   // generarDatosPrueba(total: number) {
@@ -72,7 +71,6 @@ export class TableResultadosGrupoComponent {
 
   // }
   generarEncabezadostabla(){
-    console.log('generando encabezados')
     this.encabezados.push('APELLIDO_P', 'APELLIDO_M', 'NOMBRE', 'SEXO')
     let encabezados=this.listadoAlumnos[0].respuestas
     encabezados.sort((a, b) => a.pregunta - b.pregunta);
@@ -81,12 +79,10 @@ export class TableResultadosGrupoComponent {
     })
     this.encabezados.push("PROMEDIO")
     this.alumnosFiltrados=this.listadoAlumnos
-    console.log(encabezados)
     this.empatarEncabezados()
   }
 
   empatarEncabezados(){
-    console.log(this.alumnosFiltrados)
  this.alumnosFiltrados.forEach(al => {
   al['APELLIDO_P'] = al.apellido_paterno;
   al['APELLIDO_M'] = al.apellido_materno;
@@ -124,7 +120,6 @@ aplicarFiltrosCombinados() {
 }
 
 confirmarVerDetalles(){
-  console.log(this.alumnoSeleccionado)
   this.storageService.saveAlumnoSeleccionado(this.alumnoSeleccionado)
   this.router.navigate(['/s/principal_alumno/', this.storageService.getCriptAlSeleccionado()])
 }
@@ -132,7 +127,6 @@ confirmarVerDetalles(){
 
 ngOnChanges(changes: SimpleChanges) {
   if (changes['listadoAlumnos'] && changes['listadoAlumnos'].currentValue ) {
-    console.log(this.listadoAlumnos.length)
       if (this.listadoAlumnos.length>0) {
         this.generarEncabezadostabla();
       }

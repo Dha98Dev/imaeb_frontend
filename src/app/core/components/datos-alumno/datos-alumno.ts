@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Alumno } from '../../Interfaces/listadoAlumno.interface';
 
 @Component({
   selector: 'app-datos-alumno',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './datos-alumno.scss'
 })
 export class DatosAlumno {
-
+@Input()
+public datosAlumnos:Alumno={} as Alumno
 }

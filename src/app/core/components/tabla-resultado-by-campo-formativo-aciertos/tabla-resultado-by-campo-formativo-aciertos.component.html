@@ -1,4 +1,5 @@
-@if (title != '') {
+@if (data.preguntas && data.preguntas.length > 0) {
+  @if (title != '') {
   <app-subtitle [subtitle]="title"></app-subtitle>
 }
 
@@ -6,26 +7,41 @@
   <table class=" border-separate border-spacing-0 min-w-[600px] w-100 ">
     <thead>
       <tr class="bg-gray-100 text-sm">
-        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1 rounded-tl-lg">Campo Formativo</th>
+        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1 ">Campo Formativo</th>
         <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1">Aspecto Evaluado</th>
         <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1">Nombre y Numero de Consigna</th>
-        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1 rounded-tr-lg">Resultado</th>
+        <th class="text-center border border-gray-200 font-semibold bg-c1 text-white px-3 py-1 ">Resultado</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="bg-white text-xs">
-        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800 rounded-bl-lg">Lenguajes</td>
+@for (item of data.preguntas; track $index) {
+        <tr class="bg-white text-xs">
+        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800 -lg"> {{data.nombre}} </td>
         <td class="text-center border border-gray-200 px-2 py-1 text-gray-800">
-          Escribe su nombre sin referencias o modelos a la vista
+          {{item.contenido}}
         </td>
         <td class="text-center border border-gray-200 px-2 py-1 text-gray-800">
-          Ejercicio 1. Escribe tu nombre
+          Ejercicio {{item.numeroPregunta}}  {{item.especificacion}}
         </td>
-        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800 rounded-br-lg">
-          <i [class]="respuesta == 1 ? 'pi pi-check' : 'pi pi-times'"
-             [ngClass]="respuesta == 1 ? 'text-emerald-500' : 'text-red-500'"></i>
+        <td class="text-center border border-gray-200 px-2 py-1 text-gray-800 ">
+          <i class="!font-bold" [class]="item.respuesta  == '1' ? 'pi pi-check' : 'pi pi-times'"
+             [ngClass]="item.respuesta  == '1' ? 'text-green' : 'text-red'"></i>
         </td>
       </tr>
+}
     </tbody>
   </table>
 </div>
+
+<div class="flex gap-3  mt-3">
+  <div class="flex w-1/2 text-center border flex-col ">
+    <p class="w-100 !mb-0 font-medium">Promedio total de Aciertos</p>
+    <p class="text-green font-bold text-xl"> {{promedioCorrectas}} </p>
+  </div>
+  <div class="flex w-1/2 text-center border flex-col ">
+    <p class="w-100 !mb-0 font-medium">Promedio total de Desaciertos</p>
+    <p class="text-red font-bold text-xl"> {{promedioIncorrectas}} </p>
+  </div>
+</div>
+
+}

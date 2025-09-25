@@ -1,16 +1,18 @@
 <div class="b-c1 px-5 py-3 rounded-xl w-100">
     <div class="par mt-2 text-center">
         <p class="font-semibold text-capitalize">Nombre del alumno</p>
-        <p class="bg-c1 text-white text-lg font-semibold px-5  rounded-lg text-capitalize">pedro ramirez de la cruz</p>
+        <p class="bg-c1 text-white text-sm font-semibold px-5  rounded-lg text-capitalize"> {{datosAlumnos.nombre +' '+datosAlumnos.apellidoPaterno+' '+ datosAlumnos.apellidoMaterno}} </p>
     </div>
 
     <div class="par mt-2 text-center">
         <p class="font-semibold text-capitalize">grado y grupo</p>
-        <p class="bg-c1 text-white text-lg font-semibold px-5  rounded-lg text-capitalize">6to de primaria</p>
+        <p class="bg-c1 text-white text-lg font-semibold px-5  rounded-lg text-capitalize">
+            
+            {{datosAlumnos.datosEscolares.grado + ' ' + datosAlumnos.datosEscolares.nivel + ' ' + datosAlumnos.datosEscolares.grupo }} </p>
     </div>
 
     <div class="par mt-2 text-center">
         <p class="font-semibold text-capitalize">Escuela</p>
-        <p class="bg-c1 text-white text-lg font-semibold px-5  rounded-lg text-capitalize">guillermo prieto pradillo</p>
+        <p class="bg-c1 text-white text-lg font-semibold px-5  rounded-lg text-capitalize"> {{datosAlumnos.datosEscolares.nombreEscuela}} </p>
     </div>
 </div>

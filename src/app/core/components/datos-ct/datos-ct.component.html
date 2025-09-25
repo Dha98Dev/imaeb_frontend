@@ -11,32 +11,36 @@
         </div>
         <div class="par flex  gap-1 ">
             <p class="fw-bold">Grado: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> 6</p>
+            @if (datosCct.nivel == "Primaria") {
+                <p class="bg-c1 text-white px-3 font-semibold rounded">6</p>
+            }@else {
+                <p class="bg-c1 text-white px-3 font-semibold rounded">3</p>
+            }
         </div>
-        <div class="par flex  gap-1 ">
+        <!-- <div class="par flex  gap-1 ">
             <p class="fw-bold">grupo: </p>
             <p class="bg-c1 text-white px-3 font-semibold rounded"> A</p>
-        </div>
+        </div> -->
         <div class="par flex  gap-1 ">
             <p class="fw-bold">Cct: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> 18DPB0123</p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.cct}} </p>
         </div>
         <div class="par flex  gap-1 ">
             <p class="fw-bold">Escuela: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> juana de asbaje</p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.nombre}} </p>
         </div>
 
         <div class="par flex  gap-1 ">
             <p class="fw-bold">Zona: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> 6</p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.zonaEscolar}} </p>
         </div>
         <div class="par flex  gap-1 ">
             <p class="fw-bold">localidad: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> Tecuala</p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.localidad}} </p>
         </div>
         <div class="par flex  gap-1 ">
             <p class="fw-bold">Municpio: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> Tecuala</p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.municipio}} </p>
         </div>
     </div>
 </div>

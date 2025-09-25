@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChange, SimpleChanges } from '@angular/core';
+import { Data } from '@angular/router';
 import * as Highcharts from 'highcharts';
+import { DataGraficaBarra } from '../../Interfaces/grafica.interface';
 
 
 @Component({
@@ -10,10 +12,24 @@ import * as Highcharts from 'highcharts';
 })
 export class ChartBarraComponent {
     @Input()
-  public dataChart:any
+  public dataChart:DataGraficaBarra = {} as DataGraficaBarra
+  
+  @Input()randomColors:boolean=false
 
   Highcharts: typeof Highcharts = Highcharts; // Importamos la librería
-  chartOptions: Highcharts.Options = {
+  chartOptions: Highcharts.Options= {} as  Highcharts.Options  
+inicializarGrafica(){
+
+  // Generador de colores aleatorios en formato hex
+  const getRandomColor = () =>
+    '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+  let firstColor,secondColor:string
+    firstColor=this.randomColors ? getRandomColor() : '#68AD68'
+    secondColor=this.randomColors ? getRandomColor() : '#D12A56'
+  
+
+  this.chartOptions= {
     chart: {
       type: 'column',
     },
@@ -24,20 +40,20 @@ export class ChartBarraComponent {
       text: '',
     },
     xAxis: {
-      categories: ['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'],
+      categories: this.dataChart.categorias,
       crosshair: true,
       accessibility: {
-        description: 'Countries',
+        description: this.dataChart.description,
       },
     },
     yAxis: {
       min: 0,
       title: {
-        text: 'Metrica en Porcentajes ',
+        text: this.dataChart.title,
       },
     },
     tooltip: {
-      valueSuffix: ' (1000 MT)',
+      valueSuffix: '%',
     },
     plotOptions: {
       column: {
@@ -48,14 +64,24 @@ export class ChartBarraComponent {
     series: [
       {
         type: 'column',
-        name: 'Corn',
-        data: [387749, 280000, 129000, 64300, 54000, 34300],
+        name: this.dataChart.firstLeyend,
+        data: this.dataChart.firstDataSet,
+        color: firstColor
       },
       {
         type: 'column',
-        name: 'Wheat',
-        data: [45321, 140000, 10000, 140500, 19500, 113500],
+        name: this.dataChart.secondLeyend,
+        data: this.dataChart.secondDataSet,
+        color:secondColor
       },
     ],
   };
+}
+
+ngOnChanges(changes: SimpleChanges) {
+  if ((changes['dataChart'] && changes['dataChart'].currentValue ) ) {
+    this.inicializarGrafica()
+    console.log(this.dataChart)
+  }
+}
 }

@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { StorageService } from '../../core/services/storage/sesionStorage.service';
+import { DatosCct } from '../../core/Interfaces/DatosCct.interface';
+import { GetCctInfoSErvice } from '../../core/services/Cct/GetCctInfo.service';
+import { CryptoJsService } from '../../core/services/CriptoJs/cryptojs.service';
 
 @Component({
   selector: 'app-layout-page-padre-familia',
@@ -10,13 +13,14 @@ import { StorageService } from '../../core/services/storage/sesionStorage.servic
   styleUrl: './layout-page-padre-familia.scss'
 })
 export class LayoutPagePadreFamilia {
-  constructor(private router: Router, private storage:StorageService) { }
+  constructor(private router: Router, private storage: StorageService, private CctService:GetCctInfoSErvice, private cd: ChangeDetectorRef, private cripto:CryptoJsService) { }
   items: MenuItem[] | null = [];
   // items:any
+  public datosCct:DatosCct={} as DatosCct
 
   ngOnInit() {
     // const nav = (url: string) => ({ command: () => this.router.navigateByUrl(url) });
-    let alSeleccionado=this.storage.getCriptAlSeleccionado()
+    let alSeleccionado = this.storage.getCriptAlSeleccionado()
     this.items = [
       {
         label: 'Inicio ',
@@ -39,28 +43,36 @@ export class LayoutPagePadreFamilia {
         label: 'Lenguajes',
         styleClass: 'bg-sky-500 text-white',
         command: () => {
-          this.router.navigate(['/s/resultados_area', 'lenguaje',alSeleccionado])
+          this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('1'), alSeleccionado])
         }
       },
       {
         icon: 'fa-solid fa-calculator',
         label: 'Matematicas',
         command: () => {
-          this.router.navigate(['/s/resultados_area', 'matematicas',alSeleccionado])
+          this.router.navigate(['/s/resultados_area',this.cripto.Encriptar('3'), alSeleccionado])
         }
       },
       {
         icon: 'fa-solid fa-flask',
         label: 'Ciencias',
         command: () => {
-          this.router.navigate(['/s/resultados_area', 'ciencias',alSeleccionado])
+          this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('4'), alSeleccionado])
         }
       },
     ];
 
+    this.CctService.centroTrabajo$.subscribe(data =>{
+      if (data) {
+        this.datosCct=data
+        console.log(this.datosCct)
+         this.cd.detectChanges();
+      }
+    })
+
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.storage.deleteAlSeleccionado()
   }
 }

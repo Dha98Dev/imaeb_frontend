@@ -10,7 +10,7 @@ export class ItemPorcentajeAreaEvaluadaComponent {
 @Input() 
 public title:string='Lenguajes'
 @Input()
-firstPercent:number=80
+firstPercent:number | string=''
 @Input()
 public secondPercent:number=80
 @Input()

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
+import { datosCct } from '../../../core/Interfaces/listadoAlumno.interface';
 
 @Component({
   selector: 'app-layout-page-dp',
@@ -9,10 +11,12 @@ import { MenuItem } from 'primeng/api';
   styleUrl: './layout-page-dp.scss'
 })
 export class LayoutPageDP {
-  constructor(private router: Router) { }
+  constructor(private router: Router, private cctService: GetCctInfoSErvice, private cd: ChangeDetectorRef) { }
   items: MenuItem[] | null = [];
+  private grupo: string = ''
+  private cct: string = ''
   // items:any
-
+  public datosCct: datosCct = {} as datosCct
   ngOnInit() {
     // const nav = (url: string) => ({ command: () => this.router.navigateByUrl(url) });
 
@@ -22,7 +26,7 @@ export class LayoutPageDP {
         icon: 'pi pi-home',
         url: '/prim_2/resultados-grupo',
         command: () => {
-          this.router.navigate(['/prim_2/resultados-grupo'])
+          this.router.navigate(['/prim_2/resultados-grupo', this.cct, this.grupo])
         },
       },
       {
@@ -30,7 +34,7 @@ export class LayoutPageDP {
         icon: 'fa-solid fa-users',
         url: '/prim_2/listado-grupo',
         command: () => {
-          this.router.navigate(['/prim_2/listado-grupo'])
+          this.router.navigate(['/prim_2/listado-grupo',  this.cct, this.grupo])
         },
 
       },
@@ -38,21 +42,37 @@ export class LayoutPageDP {
         label: 'result-area',
         icon: 'pi pi-home',
         url: '/prim_2/resultados-grupo-area',
-          command: () => {
-          this.router.navigate(['/prim_2/resultados-grupo-area'])
+        command: () => {
+          this.router.navigate(['/prim_2/resultados-grupo-area',  this.cct, this.grupo])
         },
       },
 
     ];
 
-    // this.itemsBreadCrum=this.bread.getaDataBreadCrumbs()
-    //   this.router.events
-    //   .pipe(filter(event => event instanceof NavigationEnd))
-    //   .subscribe(() => {
-    //     setTimeout(() => {
-    //       this.itemsBreadCrum = this.bread.getaDataBreadCrumbs();
-    //       console.log(this.itemsBreadCrum)
-    //     }, 1000);
-    //   });
+    this.cctService.cct$.subscribe(cct => {
+      this.cct = cct
+      this.cd.detectChanges();
+    })
+    this.cctService.grupo$.subscribe(grupo => {
+      this.grupo = grupo
+      this.cd.detectChanges();
+    })
+
+    this.cctService.centroTrabajo$.subscribe(data => {
+      if (data) {
+        this.datosCct = data
+        this.cd.detectChanges();
+      }
+    })
+
   }
+  // this.itemsBreadCrum=this.bread.getaDataBreadCrumbs()
+  //   this.router.events
+  //   .pipe(filter(event => event instanceof NavigationEnd))
+  //   .subscribe(() => {
+  //     setTimeout(() => {
+  //       this.itemsBreadCrum = this.bread.getaDataBreadCrumbs();
+  //       console.log(this.itemsBreadCrum)
+  //     }, 1000);
+  //   });
 }

@@ -1,3 +1,5 @@
+import { Resultado } from "./resultadoPorcentajeAciertosMateria.interface";
+
 export interface Alumno {
     apellidoMaterno: string;
     apellidoPaterno: string;
@@ -5,7 +7,10 @@ export interface Alumno {
     materias:         Materia[];
     nombre:           string;
     sexo:             string;
-    cct:datosCct
+    cct:              datosCct,
+    resultados ?: Resultado[],
+    promedioGeneral: number,
+    datosEscolares:DatosEscolares
 }
 
 export interface datosCct{
@@ -23,9 +28,21 @@ export interface Materia {
 }
 
 export interface Pregunta {
-    numeroPregunta:    number;
-    pda:                string;
-    respuesta:          string;
+    numeroPregunta: number;
+    pda:            string;
+    respuesta:      string;
+    materia:        string;
+    especificacion: string;
+    contenido:      string;
+    unidad:         string;
+}
+
+export interface DatosEscolares{
+grado:string,
+grupo:string,
+nivel:string,
+nombreEscuela:string,
+cct:string
 }
 
 export interface AlumnoFormateado{

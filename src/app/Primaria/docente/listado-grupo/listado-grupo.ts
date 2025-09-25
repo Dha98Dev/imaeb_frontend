@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { listadoAlumnosService } from '../../../core/services/listadoAlumnos.service';
 import { Alumno, AlumnoFormateado, Respuesta } from '../../../core/Interfaces/listadoAlumno.interface';
+import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
 
 @Component({
   selector: 'app-listado-grupo',
@@ -12,24 +13,23 @@ import { Alumno, AlumnoFormateado, Respuesta } from '../../../core/Interfaces/li
 export class ListadoGrupo {
   cct: string = '';
   grupo: string = '';
+  public loader: boolean = false
   private listadoAlumnos: Alumno[] = []
   public registrosFormateados: AlumnoFormateado[] = []
-  public loader: boolean = false
 
 
-  constructor(private route: ActivatedRoute, private listadoAlumnosService: listadoAlumnosService, private cd: ChangeDetectorRef) { }
+  constructor(private route: ActivatedRoute, private listadoAlumnosService: listadoAlumnosService, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice) { }
 
   ngOnInit(): void {
     this.loader = true
-    // Opción 1: Usando snapshot (para parámetros estáticos)
-    this.cct = this.route.snapshot.paramMap.get('cct') || '';
-    this.grupo = this.route.snapshot.paramMap.get('grupo') || '';
+
 
     // Opción 2: Suscribiéndose a cambios (para parámetros dinámicos)
     this.route.paramMap.subscribe(params => {
       this.cct = params.get('cct') || '';
       this.grupo = params.get('grupo') || '';
       this.getlistadoAlumnos()
+      this.getDatosCct()
     });
   }
 
@@ -40,7 +40,7 @@ export class ListadoGrupo {
         this.registrosFormateados = this.formatearAlumnos(this.listadoAlumnos)
         this.loader = false
         console.log('se recibio la respuesta del backend' + this.listadoAlumnos.length)
-        
+
         this.cd.detectChanges();
       },
       error: (error) => {
@@ -66,26 +66,38 @@ export class ListadoGrupo {
       });
 
       // Aquí puedes calcular el promedio_porcentaje y promedio_estatal si lo deseas
-        const totalPreguntas = respuestas.length;
-    const respuestasCorrectas = respuestas.filter(r => r.respuesta === 1).length;
-    const promedio_porcentaje = totalPreguntas > 0
-      ? (respuestasCorrectas / totalPreguntas) * 100
-      : 0;
+      const totalPreguntas = respuestas.length;
+      const respuestasCorrectas = respuestas.filter(r => r.respuesta === 1).length;
+      const promedio_porcentaje = totalPreguntas > 0
+        ? (respuestasCorrectas / totalPreguntas) * 100
+        : 0;
       const promedio_estatal = 0; // placeholder
 
       return {
         nombre: alumno.nombre,
         apellido_paterno: alumno.apellidoPaterno,
         apellido_materno: alumno.apellidoMaterno,
-        promedioAlumno:parseFloat(promedio_porcentaje.toFixed(1)),// por ejemplo, usar el CCT como ID
+        promedioAlumno: parseFloat(promedio_porcentaje.toFixed(1)),// por ejemplo, usar el CCT como ID
         promedio_estatal,
         respuestas,
-        sexo:alumno.sexo,
-        idAlumno:alumno.idAlumno
+        sexo: alumno.sexo,
+        idAlumno: alumno.idAlumno
 
       };
-    }) .sort((a, b) => a.apellido_paterno.localeCompare(b.apellido_paterno));;
+    }).sort((a, b) => a.apellido_paterno.localeCompare(b.apellido_paterno));;
 
+  }
+
+  getDatosCct() {
+    this.cctService.getInfoCct(this.cct).subscribe({
+      next:(resp)=>{
+        console.log(resp)
+        this.cctService.setCentroTrabajo(resp[0])
+      },
+      error: (error)=>{
+
+      }
+    })
   }
 
 }

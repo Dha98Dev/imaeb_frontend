@@ -1,96 +1,94 @@
-<!-- <app-loader-page></app-loader-page> -->
+@if (loader) {
+<app-loader-page></app-loader-page>
+}
+
+
+@if (!loader) {
 
 <div class="mb-5">
-    <app-title [title]="'resultados de imaeb del grupo A'"></app-title>
-
+  <app-title [title]="'resultados de imaeb del grupo A'"></app-title>
 </div>
-<main>
-    <!-- seccion de unidad de analisis y resultados de lenguaje -->
-    <section class="flex gap-2 bg-white first-seccion">
-        <!-- unidad de analisis -->
-        <div class="w-1/3 py-2 ">
-            <app-item-unidad-analisis></app-item-unidad-analisis>
+
+<main class="space-y-6">
+  <!-- sección: unidad de análisis y resultados -->
+  <section
+    class="first-seccion bg-white p-4 rounded-lg shadow flex flex-col gap-6 lg:flex-row lg:items-start flex-wrap">
+    <!-- Columna 1: unidad de análisis -->
+    <div class="w-full lg:w-1/3 flex-1 ">
+      <div>
+        <app-subtitle [subtitle]="'Examenes Utilizados'"></app-subtitle>
+        <app-item-porcentaje-area-evaluada [title]="''" [firstLeyendPercent]="'Utilizados'"
+          [secondLeyendPercent]="'No Utilizados'" [firstPercent]="resConteoExamenesUtilizados.utilizadas"
+          [secondPercent]="resConteoExamenesUtilizados.noUtilizadas">
+        </app-item-porcentaje-area-evaluada>
+      </div>
+
+      <div class="mt-4 rounded-lg">
+        <div class="flex justify-center">
+          <app-subtitle [subtitle]="'Genero'"></app-subtitle>
         </div>
 
-        <!-- resultados de lenguaje items -->
-        <div class="result-container w-2/3 py-2  flex gap-3 ">
-            <!-- contenedor de cada item del componente resultado de lenguaje  -->
-            <div class="w-1/3 py-2 ">
-                <app-tabla-resultados-evidencia [title]="'Lenguaje'" [bgColorTitle]="'bg-sky-500'" [data]=""
-                    (onEmitMateriaSelected)="materiaSelected($event)"></app-tabla-resultados-evidencia>
-            </div>
-            <div class="w-1/3 py-2 ">
-                <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Matematicas'"
-                    [bgColorTitle]="'bg-emerald-500'" [data]=""
-                    (onEmitMateriaSelected)="materiaSelected($event)"></app-tabla-resultados-evidencia>
-            </div>
-            <div class="w-1/3 py-2 ">
-                <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Ciencias'"
-                    [bgColorTitle]="'bg-yellow-500'" [data]=""
-                    (onEmitMateriaSelected)="materiaSelected($event)"></app-tabla-resultados-evidencia>
-            </div>
+        <div class="chart-genero w-full flex justify-around gap-3 px-2">
+          <div class="!w-[200px] ">
+            <app-chart-figure-gir-boy
+              [relleno]="(conteoAlumnos.mujeres / (conteoAlumnos.hombres + conteoAlumnos.mujeres) * 100 )  "></app-chart-figure-gir-boy>
+          </div>
+          <div class="!w-[200px]">
+            <app-chart-figure-gir-boy
+              [relleno]="(conteoAlumnos.hombres / (conteoAlumnos.hombres + conteoAlumnos.mujeres) * 100 ) "
+              [isBoy]="true"></app-chart-figure-gir-boy>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
 
 
+    <!-- Columna 2: promedios -->
+    <div class="w-full lg:w-1/3 flex-1 py-2 flex gap-4 justify-between sm:justify-around">
+      <app-single-promedio [title]="'Promedio Grupo'" [content]="'90'"></app-single-promedio>
+      <app-single-promedio [isEstatal]="true" [content]="'80'"></app-single-promedio>
+    </div>
 
-    <!-- seccion de nivel de desempeño y porcentaje de aciertos -->
-    <section class="flex flex-col-reverse gap-2 bg-white second-seccion mt-[60px]">
-        <!-- unidad de analisis -->
-        <div class="w-100 py-2  mt-5 mb-5 shadow-md">
-            <app-item-nivel-desempeno></app-item-nivel-desempeno>
-        </div>
+    <!-- Columna 3: resultados por materia -->
+    <div class="result-container w-full lg:w-1/3 flex-1 py-2 flex flex-col gap-4">
+      @for (item of conteNivelDesempenio; track $index) {
+             <div>
+        <app-tabla-resultados-evidencia [title]="item.materia" [bgColorTitle]="'bg-sky-500'" [data]="item.filas"
+          (onEmitMateriaSelected)="materiaSelected($event)">
+        </app-tabla-resultados-evidencia>
+      </div>
+      }
 
-        <!-- resultados de lenguaje items -->
-        <div class="item-porcentajes w-100 py-2  mt-5 shadow-md flex ">
-            <!-- contenedor de cada item del componente resultado de lenguaje  -->
+      <!-- <div>
+        <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Matematicas'"
+          [bgColorTitle]="'bg-emerald-500'" [data]="" (onEmitMateriaSelected)="materiaSelected($event)">
+        </app-tabla-resultados-evidencia>
+      </div>
 
-            <!-- item 1 seccion 2 -->
-            <div class="w-1/3 py-2 gap-2">
-                <div class="flex justify-center">
-                    <app-subtitle [subtitle]="'porcentajes de aciertos'"></app-subtitle>
-                </div>
-                <div class=" pie-chart-container w-100 flex">
-                    <div class="w-1/2">
-                        <app-chart-pastel></app-chart-pastel>
-                    </div>
-                    <div class="flex align-items-center">
-                        <app-single-promedio></app-single-promedio>
-                    </div>
-                </div>
-            </div>
+      <div>
+        <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Ciencias'"
+          [bgColorTitle]="'bg-yellow-500'" [data]="" (onEmitMateriaSelected)="materiaSelected($event)">
+        </app-tabla-resultados-evidencia>
+      </div> -->
+    </div>
+  </section>
 
-            <!-- item 2 seccion 2-->
-            <div class="w-1/3 py-2 gap-2 px-2  justify-content-center align-items-center">
+  <!-- sección: nivel de desempeño y porcentaje de aciertos -->
+  <section class="second-seccion bg-white p-4 rounded-lg shadow flex flex-col-reverse gap-6 lg:flex-col mt-10">
+    <!-- Nivel de desempeño -->
+    <div class="w-full py-2 mt-2 shadow-md">
+      <app-item-nivel-desempeno></app-item-nivel-desempeno>
+    </div>
 
-                <div class="flex flex-col  mt-3 gap-3 w-100">
-                    <div class="flex-1 text-center shadow-md rounded-lg p-2">
-                        <p class="bg-c2 text-white px-3 py-1 font-semibold rounded-md">Evaluados</p>
-                        <p class="text-3xl md:text-4xl font-bold py-2">68</p>
-                    </div>
-                    <div class="flex-1 text-center shadow-md rounded-lg p-2">
-                        <p class="bg-c2 text-white px-3 py-1 font-semibold rounded-md">No Evaluados</p>
-                        <p class="text-3xl md:text-4xl font-bold py-2">68</p>
-                    </div>
-                </div>
+    <!-- Porcentajes / otros items -->
+    <div class="item-porcentajes w-full py-2 mt-2 shadow-md flex flex-col gap-4 lg:flex-row">
+      <!-- item 2 sección 2 -->
+      <div class="w-full lg:w-1/3 py-2 px-2 flex justify-center items-center">
+        <!-- contenido -->
+      </div>
 
-            </div>
-
-
-            <!-- item 3 seccion 2 -->
-            <div class="w-1/3 py-2 gap-2 flex flex-col shadow-sm  rounded-lg">
-                <div class="flex justify-center">
-                    <app-subtitle [subtitle]="'Genero'"></app-subtitle>
-                </div>
-                <div class="chart-genero w-100 flex justify-around gap-3 px-2">
-                    <div class="w-1/3 ">
-                        <app-chart-figure-gir-boy [relleno]="50"></app-chart-figure-gir-boy>
-                    </div>
-                    <div class="w-1/3">
-                        <app-chart-figure-gir-boy [relleno]="50" [isBoy]="true"></app-chart-figure-gir-boy>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      <!-- puedes agregar más columnas aquí, se apilan en móvil y van a 3 columnas en lg -->
+    </div>
+  </section>
 </main>
+}

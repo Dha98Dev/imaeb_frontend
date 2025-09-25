@@ -11,7 +11,7 @@ export class SinglePromedioComponent {
 public title:string='Promedio Estatal '
 
 @Input()
-public content:string='7.5'
+public content:string=''
 
 @Input()
 public isEstatal:boolean=false

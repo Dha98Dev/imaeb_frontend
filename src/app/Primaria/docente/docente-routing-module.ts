@@ -10,8 +10,8 @@ const routes: Routes = [
     path: '', 
     component: LayoutPageDP,
     children: [
-      { path: 'resultados-grupo', component: PrincipalDocente },
-      { path: 'resultados-grupo-area', component: ResultadosAreas },
+      { path: 'resultados-grupo/:cct/:grupo', component: PrincipalDocente },
+      { path: 'resultados-grupo-area/:cct/:grupo', component: ResultadosAreas },
       { path: 'listado-grupo/:cct/:grupo', component: ListadoGrupo },
       { path: '', redirectTo: 'resultados-grupo', pathMatch: 'full' },
       { path: '**', redirectTo: 'resultados-grupo' }

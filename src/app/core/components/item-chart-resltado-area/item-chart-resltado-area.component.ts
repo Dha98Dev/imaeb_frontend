@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { DataGraficaBarra } from '../../Interfaces/grafica.interface';
 
 @Component({
   selector: 'app-item-chart-resltado-area',
@@ -8,7 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ItemChartResltadoAreaComponent {
 @Input() public unidadAnalisis:string=''
-@Input() public dataSet:any
+@Input() public dataSet:DataGraficaBarra={} as DataGraficaBarra
 @Input() public alumnos:string=''
 @Input() public aciertos:string=''
 @Input() public desaciertos:string=''

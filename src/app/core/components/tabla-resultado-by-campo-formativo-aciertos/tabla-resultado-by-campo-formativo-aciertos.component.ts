@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
+import { ResultadoPreguntasMateriaAumno } from '../../Interfaces/resultadoPorcentajeAciertosMateria.interface';
 
 @Component({
   selector: 'app-tabla-resultado-by-campo-formativo-aciertos',
@@ -10,7 +11,25 @@ export class TablaResultadoByCampoFormativoAciertosComponent {
 @Input()
 public title:string=''
 @Input()
-public data:any
+public data:ResultadoPreguntasMateriaAumno= {} as ResultadoPreguntasMateriaAumno
 
-public respuesta:number=1
+public promedioCorrectas:number=0
+public promedioIncorrectas:number=0
+
+ngOnChanges(changes:SimpleChanges){
+if (changes['data']) {
+  if (this.data &&  this.data.preguntas.length > 0) {
+    this.calcularPromedioAciertos()
+  }
+}
+}
+
+calcularPromedioAciertos(){
+  let respuestasCorrectas = this.data.preguntas.filter(preg => preg.respuesta === '1');
+  let respuestasIncorrectas = this.data.preguntas.filter(preg => preg.respuesta === '0')
+  this.promedioCorrectas = (respuestasCorrectas.length /this.data.preguntas.length ) * 100
+  this.promedioIncorrectas =(respuestasIncorrectas.length / this.data.preguntas.length) * 100
+}
+
+
 }
