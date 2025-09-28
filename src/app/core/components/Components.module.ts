@@ -29,6 +29,8 @@ import { FormsModule } from '@angular/forms';
 import { TablaResultadosGrupoCT } from './tabla-resultados-grupo-ct/tabla-resultados-grupo-ct';
 import { Subtitle } from './subtitle/subtitle';
 import { subtitle } from '@primeuix/themes/aura/card';
+import { CharBarraSingleDataSet } from './char-barra-single-data-set/char-barra-single-data-set';
+import { TablaDinamica } from './tabla-dinamica/tabla-dinamica';
 @NgModule({
     imports: [
     PrimeNgModule,
@@ -59,7 +61,9 @@ import { subtitle } from '@primeuix/themes/aura/card';
         Title,
         DatosAlumno,
         TablaResultadosGrupoCT,
-        Subtitle
+        Subtitle,
+        CharBarraSingleDataSet,
+        TablaDinamica
     ],
     declarations: [
         HeaderComponent,
@@ -86,7 +90,9 @@ import { subtitle } from '@primeuix/themes/aura/card';
         Title,
         DatosAlumno,
         TablaResultadosGrupoCT,
-        Subtitle
+        Subtitle,
+        CharBarraSingleDataSet,
+        TablaDinamica
     ],
     providers: [],
 })

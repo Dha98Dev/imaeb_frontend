@@ -19,6 +19,13 @@ export class GetCctInfoSErvice {
     private grupoSubject = new BehaviorSubject<any>(null)
     grupo$ = this.grupoSubject.asObservable()
 
+    private zonaSubject = new BehaviorSubject<any>(null)
+    zona$ = this.zonaSubject.asObservable()
+
+    private nivelSubject = new BehaviorSubject<any>(null)
+    nivel$ = this.nivelSubject.asObservable()
+
+
     setCentroTrabajo(data: any) {
         this.centroTrabajoSubject.next(data)
     }
@@ -27,6 +34,12 @@ export class GetCctInfoSErvice {
     }
     setGrupo(grupo: string) {
         this.grupoSubject.next(grupo)
+    }
+    setZona(zona: string) {
+        this.zonaSubject.next(zona)
+    }
+    setNivel(nivel: string) {
+        this.nivelSubject.next(nivel)
     }
 
     getInfoCct(cct: string) {

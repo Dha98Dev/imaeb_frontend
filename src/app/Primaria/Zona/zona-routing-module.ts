@@ -1,8 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LayoutZona } from './layout-zona/layout-zona';
+import { PrincipalZona } from './principal-zona/principal-zona';
+import { ListadoCctsByZona } from './listado-ccts-by-zona/listado-ccts-by-zona';
 
-const routes: Routes = [];
-
+const routes: Routes = [
+  {
+    path: '', 
+    component: LayoutZona,
+    children: [
+      { path: 'resultados-zona/:nivel/:zona', component: PrincipalZona },
+      { path:'cctstByZona/:nivel/:zona', component:ListadoCctsByZona  },
+      { path: '', redirectTo: 'resultados-zona', pathMatch: 'full' },
+      { path: '**', redirectTo: 'resultados-zona' }
+    ]
+  }
+]
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

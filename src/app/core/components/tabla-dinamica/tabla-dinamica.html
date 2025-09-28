@@ -1,0 +1,77 @@
+<!-- Barra de filtros -->
+<div class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+  <!-- 🔍 Búsqueda global -->
+  <input
+    type="text"
+    [ngModel]="filtroGlobal()"
+    (ngModelChange)="filtroGlobal.set($event)"
+    placeholder="Buscar en toda la tabla..."
+    class="border rounded px-3 py-2 text-sm w-full sm:w-80"
+  />
+
+  <!-- Filtros por columna -->
+  @if (columns?.length) {
+    <div class="flex gap-2 flex-wrap">
+      @for (col of columns; track $index) {
+        @if (col.filterable) {
+          <input
+            [type]="col.type ?? 'text'"
+            [placeholder]="'Filtrar ' + col.label"
+            class="border rounded px-2 py-1 text-xs w-36"
+            [ngModel]="filtrosPorCol()[col.key]"
+            (ngModelChange)="updateFiltro(col.key, $event)"
+          />
+        }
+      }
+    </div>
+  }
+</div>
+
+<!-- Tabla -->
+<div class="overflow-auto rounded-lg border border-gray-200">
+  <table class="min-w-full text-xs">
+    <thead class="bg-gray-50 text-gray-600">
+      <tr>
+        @for (col of columns; track $index) {
+          <th
+            class="px-3 py-2 border-b font-semibold  whitespace-nowrap cursor-pointer select-none text-center"
+            (click)="onHeaderClick(col)"
+            title="Ordenar por {{ col.label }}"
+          >
+            <span>{{ col.label }}</span>
+            @if (sortKey() === col.key) {
+              <span class="ml-1 text-[10px] text-gray-400">
+                {{ sortDir() === 'asc' ? '▲' : '▼' }}
+              </span>
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody class="bg-white">
+      @if (visibleData().length === 0)  {
+        <tr>
+          <td class="px-3 py-4 text-center text-gray-500" [attr.colspan]="columns.length">
+            Sin resultados
+          </td>
+        </tr>
+      } @else {
+@for (row of visibleData(); track trackByIndex($index, row)) {
+  <tr
+    class="hover:bg-gray-50 border-b last:border-0 cursor-pointer "
+    (click)="onRowClick(row)"
+    title="Ver detalles"
+  >
+    @for (col of columns; track $index) {
+      <td class="px-3 py-2 whitespace-nowrap border-gray-100 text-center {{ col.className || '' }}">
+        {{ row[col.key] }}
+      </td>
+    }
+  </tr>
+}
+
+      }
+    </tbody>
+  </table>
+</div>

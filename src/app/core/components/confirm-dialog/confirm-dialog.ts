@@ -11,10 +11,11 @@ export class ConfirmDialog {
   @Output() cancel = new EventEmitter<void>();
   @Input() confirmLeyend: string = 'Confirmar';
   @Input() cancelLeyend: string = 'Cancelar';
+  @Input() mensaje: string = '';
   
   public visible = false;
   public isClosing = false;
-  public mensaje:string=''
+  // public mensaje:string=''
 // En el componente TypeScript
 private animationTimeout: any;
 
