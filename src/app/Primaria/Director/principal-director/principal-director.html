@@ -1,0 +1,108 @@
+@if (loader) {
+<app-loader-page></app-loader-page>
+}
+
+
+@if (!loader) {
+
+<div class="mb-5">
+    <app-title [title]="'resultados de imaeb del grupo A'"></app-title>
+</div>
+
+<div class="flex justify-end mx-3">
+    <div class="flex gap-3">
+        @for (item of gruposCct; track $index) {
+        <p-button icon="fa-solid fa-people-roof" [label]="item" [raised]="true" [rounded]="true"
+            [pTooltip]="'Resultados del grupo ' +item" tooltipPosition="bottom" (onClick)="grupoSelected=item"
+            variant="text" (onClick)="redireccioarResultadosGrupo(item)" />
+
+        }
+    </div>
+</div>
+
+
+<main class="space-y-6">
+    <!-- sección: unidad de análisis y resultados -->
+    <section
+        class="first-seccion bg-white p-4 rounded-lg shadow flex flex-col gap-6 lg:flex-row lg:items-start flex-wrap">
+        <!-- Columna 1: unidad de análisis -->
+        <div class="w-full lg:w-1/3 flex-1 ">
+            <div>
+                <app-subtitle [subtitle]="'Examenes Utilizados'"></app-subtitle>
+                <div class="flex flex-col gap-3">
+                    @for (item of resConteoExamenesUtilizados; track $index) {
+                    <app-item-porcentaje-area-evaluada [title]="''"
+                        [firstLeyendPercent]="'Utilizados grupo ' + item.grupo"
+                        [secondLeyendPercent]="'No Utilizados grupo ' + item.grupo" [firstPercent]="item.utilizadas"
+                        [secondPercent]="item.noUtilizadas">
+                    </app-item-porcentaje-area-evaluada>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-4 rounded-lg">
+                <div class="flex justify-center">
+                    <app-subtitle [subtitle]="'Genero'"></app-subtitle>
+                </div>
+
+                <div class="chart-genero w-full flex justify-around gap-3 px-2">
+                    <div class="!w-[200px] ">
+                        <app-chart-figure-gir-boy
+                            [relleno]="(totalMujeres / totalAlumnos) * 100"></app-chart-figure-gir-boy>
+                    </div>
+                    <div class="!w-[200px]">
+                        <app-chart-figure-gir-boy [relleno]="(totalHombres / totalAlumnos) * 100"
+                            [isBoy]="true"></app-chart-figure-gir-boy>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Columna 2: promedios -->
+        <div class="w-full lg:w-1/3 flex-1 py-2 flex flex-col gap-4">
+          @if (promediosCct && promediosCct.length > 0) {
+              @for (item of promediosCct; track $index) {
+                <div class="flex gap-4 justify-between sm:justify-around">
+                <app-single-promedio [title]="'Promedio '+ item.cct + ' -' + item.turno | titlecase " [content]="item.promedio+''"></app-single-promedio>
+                <app-single-promedio [isEstatal]="true" [content]="PromedioEstatal+''"></app-single-promedio>
+            </div>
+            }
+          }
+        </div>
+
+        <!-- Columna 3: resultados por materia -->
+        <div class="result-container w-full lg:w-1/3 flex-1 py-2 flex flex-col gap-4">
+            @for (item of conteNivelDesempenio; track $index) {
+            <div>
+                <app-tabla-resultados-evidencia [title]="item.materia" [bgColorTitle]="'bg-sky-500'"
+                    [data]="item.filas">
+                </app-tabla-resultados-evidencia>
+            </div>
+            }
+
+            <!-- <div>
+        <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Matematicas'"
+          [bgColorTitle]="'bg-emerald-500'" [data]="" (onEmitMateriaSelected)="materiaSelected($event)">
+        </app-tabla-resultados-evidencia>
+      </div>
+
+      <div>
+        <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Ciencias'"
+          [bgColorTitle]="'bg-yellow-500'" [data]="" (onEmitMateriaSelected)="materiaSelected($event)">
+        </app-tabla-resultados-evidencia>
+      </div> -->
+        </div>
+    </section>
+
+    <!-- sección: nivel de desempeño y porcentaje de aciertos -->
+    <section class="second-seccion bg-white p-4 rounded-lg shadow flex flex-col-reverse gap-6 lg:flex-col mt-10">
+        <!-- Nivel de desempeño -->
+        @if (dataChartPromedioGrupos.firstLeyend && dataChartPromedioGrupos.firstLeyend != '') {
+        <div class="w-full py-2 mt-2 shadow-md">
+            <app-chart-barra [dataChart]="dataChartPromedioGrupos"></app-chart-barra>
+        </div>
+        }
+    </section>
+</main>
+}

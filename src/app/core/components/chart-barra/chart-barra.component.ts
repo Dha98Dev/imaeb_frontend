@@ -81,7 +81,6 @@ inicializarGrafica(){
 ngOnChanges(changes: SimpleChanges) {
   if ((changes['dataChart'] && changes['dataChart'].currentValue ) ) {
     this.inicializarGrafica()
-    console.log(this.dataChart)
   }
 }
 }

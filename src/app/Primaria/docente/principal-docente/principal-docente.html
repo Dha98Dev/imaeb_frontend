@@ -9,6 +9,8 @@
   <app-title [title]="'resultados de imaeb del grupo A'"></app-title>
 </div>
 
+
+
 <main class="space-y-6">
   <!-- sección: unidad de análisis y resultados -->
   <section
@@ -31,11 +33,11 @@
         <div class="chart-genero w-full flex justify-around gap-3 px-2">
           <div class="!w-[200px] ">
             <app-chart-figure-gir-boy
-              [relleno]="(conteoAlumnos.mujeres / (conteoAlumnos.hombres + conteoAlumnos.mujeres) * 100 )  "></app-chart-figure-gir-boy>
+              [relleno]="(conteoAlumnos.totalMujeres / (conteoAlumnos.totalAlumnos) * 100 )  "></app-chart-figure-gir-boy>
           </div>
           <div class="!w-[200px]">
             <app-chart-figure-gir-boy
-              [relleno]="(conteoAlumnos.hombres / (conteoAlumnos.hombres + conteoAlumnos.mujeres) * 100 ) "
+              [relleno]="(conteoAlumnos.totalHombres / (conteoAlumnos.totalAlumnos) * 100 ) "
               [isBoy]="true"></app-chart-figure-gir-boy>
           </div>
         </div>

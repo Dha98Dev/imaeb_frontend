@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {path: 'prim_2', loadChildren: () => import('./Primaria/docente/docente-module').then(m => m.DocenteModule)},
+  {path: 'prim_3', loadChildren: () => import('./Primaria/Director/director-module').then(m => m.DirectorModule)},
   {path: 's', loadChildren: ()=> import('./sharedPages/shared-pages-module').then(m =>m.SharedPagesModule) },
   {path: 'prees_1', loadChildren: ()=>import('./Preescolar/padreFamilia/padre-familiapreescolar-module').then(m =>m.PadreFamiliapreescolarModule)},
   {path: 'prees_2', loadChildren: ()=>import('./Preescolar/docente/docente-module').then(m =>m.DocenteModule)},

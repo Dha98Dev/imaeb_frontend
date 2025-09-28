@@ -36,11 +36,11 @@
 <div class="flex gap-3  mt-3">
   <div class="flex w-1/2 text-center border flex-col ">
     <p class="w-100 !mb-0 font-medium">Promedio total de Aciertos</p>
-    <p class="text-green font-bold text-xl"> {{promedioCorrectas}} </p>
+    <p class="text-green font-bold text-xl"> {{promedioCorrectas.toFixed(1)}} </p>
   </div>
   <div class="flex w-1/2 text-center border flex-col ">
     <p class="w-100 !mb-0 font-medium">Promedio total de Desaciertos</p>
-    <p class="text-red font-bold text-xl"> {{promedioIncorrectas}} </p>
+    <p class="text-red font-bold text-xl"> {{promedioIncorrectas.toFixed(1)}} </p>
   </div>
 </div>
 

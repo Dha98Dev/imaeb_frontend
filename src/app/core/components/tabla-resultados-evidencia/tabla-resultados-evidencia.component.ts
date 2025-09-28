@@ -28,7 +28,6 @@ getBg(materia:string){
 
 ngOnChanges(changes:SimpleChanges){
 if (changes['data'] && changes['data'].currentValue) {
-  console.log(this.data)
 }
 }
 

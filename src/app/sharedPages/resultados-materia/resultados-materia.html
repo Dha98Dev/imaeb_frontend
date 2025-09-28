@@ -29,7 +29,7 @@
         <app-subtitle [subtitle]="'Unidades de analisis'"></app-subtitle>
 </div>
     <div class="item-container">
-        <app-item-chart-resltado-area [dataSet]="dataGrafica" [aciertos]="porcentajeAciertos.toString()" [desaciertos]="porcentajeDesaciertos.toString()"
+        <app-item-chart-resltado-area [dataSet]="dataGrafica" [aciertos]="porcentajeAciertos.toFixed(1)" [desaciertos]="porcentajeDesaciertos.toFixed(1)"
             [unidadAnalisis]="'Análisis de contenido y estructura'" [isAlumno]="true"></app-item-chart-resltado-area>
     </div>
 </div>

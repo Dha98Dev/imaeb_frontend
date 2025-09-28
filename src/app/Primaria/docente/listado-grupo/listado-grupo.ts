@@ -28,6 +28,9 @@ export class ListadoGrupo {
     this.route.paramMap.subscribe(params => {
       this.cct = params.get('cct') || '';
       this.grupo = params.get('grupo') || '';
+      console.log(this.cct + ' ' + this.grupo)
+      this.cctService.setCct(this.cct)
+      this.cctService.setGrupo(this.grupo)
       this.getlistadoAlumnos()
       this.getDatosCct()
     });

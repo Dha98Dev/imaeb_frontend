@@ -8,19 +8,19 @@
 
   <table class="mt-4 w-full border-separate border-spacing-0 ">
     <tr class="bg-gray-100">
-      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tl-lg">Grupo</td>
-      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tl-lg">Insuficiente</td>
-      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600">Basico</td>
-      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600">Elemental</td>
-      <td class="text-xs text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tr-lg">Satisfactorio</td>
+      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tl-lg">Grupo</td>
+      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tl-lg">Insuficiente</td>
+      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600">Basico</td>
+      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600">Elemental</td>
+      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tr-lg">Satisfactorio</td>
     </tr>
     @for (item of data; track $index) {
       <tr class="bg-white">
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm first:rounded-bl-lg"> {{item.grupo}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm first:rounded-bl-lg"> {{item.insuficiente}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm"> {{item.basico}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm"> {{item.elemental}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-sm first:rounded-br-lg"> {{item.satisfactorio}} </td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs first:rounded-bl-lg"> {{item.grupo}} </td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs first:rounded-bl-lg"> {{item.insuficiente}} </td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs"> {{item.basico}} </td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs"> {{item.elemental}} </td>
+      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs first:rounded-br-lg"> {{item.satisfactorio}} </td>
     </tr>
     }
   </table>

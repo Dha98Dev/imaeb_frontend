@@ -1,6 +1,7 @@
 export interface conteoAlumnosGrupo {
-cct:string,
-grupo:string,
-hombres:number,
-mujeres:number
+    grupo:        string;
+    cct:          string;
+    totalAlumnos: number;
+    totalMujeres: number;
+    totalHombres: number;
 }

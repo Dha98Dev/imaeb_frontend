@@ -4,6 +4,7 @@ export interface DatosCct {
     modalidad:   string;
     turnos:      Turno[];
     nivel:       string;
+    idNivel:     number
     localidad:   string;
     municipio:   string;
     sector:      string;
@@ -15,4 +16,5 @@ export interface DatosCct {
 export interface Turno {
     nombre: string;
     grupos: string[];
+    idCctTurno:number
 }

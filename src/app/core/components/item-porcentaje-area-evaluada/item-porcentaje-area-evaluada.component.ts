@@ -12,7 +12,7 @@ public title:string='Lenguajes'
 @Input()
 firstPercent:number | string=''
 @Input()
-public secondPercent:number=80
+public secondPercent:number | string =''
 @Input()
 public firstLeyendPercent:string=''
 @Input()

@@ -66,13 +66,14 @@ export class LayoutPageDP {
     })
 
   }
-  // this.itemsBreadCrum=this.bread.getaDataBreadCrumbs()
-  //   this.router.events
-  //   .pipe(filter(event => event instanceof NavigationEnd))
-  //   .subscribe(() => {
-  //     setTimeout(() => {
-  //       this.itemsBreadCrum = this.bread.getaDataBreadCrumbs();
-  //       console.log(this.itemsBreadCrum)
-  //     }, 1000);
-  //   });
 }
+
+// this.itemsBreadCrum=this.bread.getaDataBreadCrumbs()
+//   this.router.events
+//   .pipe(filter(event => event instanceof NavigationEnd))
+//   .subscribe(() => {
+//     setTimeout(() => {
+//       this.itemsBreadCrum = this.bread.getaDataBreadCrumbs();
+//       console.log(this.itemsBreadCrum)
+//     }, 1000);
+//   });
