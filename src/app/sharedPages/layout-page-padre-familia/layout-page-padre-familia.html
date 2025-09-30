@@ -1,12 +1,14 @@
 <app-header></app-header>
+@if (datosCct && datosCct.cct) {
     <app-datos-ct></app-datos-ct>
 
+}
 
 <div class=" mx-2 mt-4 mb-4">
     <div class="d-flex justify-content-end ">
         <p-speeddial [model]="items" direction="left"
             [buttonProps]="{ label:'Menu', severity: 'contrast', rounded: true }"
-            [tooltipOptions]="{ tooltipPosition: 'bottom' }" [showIcon]="'pi pi-bars'" [rotateAnimation]="false"  />
+            [tooltipOptions]="{ tooltipPosition: 'bottom' }" [showIcon]="'pi pi-bars'" [rotateAnimation]="false" />
     </div>
 </div>
 

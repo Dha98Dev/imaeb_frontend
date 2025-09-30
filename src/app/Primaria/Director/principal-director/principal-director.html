@@ -40,6 +40,7 @@
                 </div>
             </div>
 
+            @if (totalHombres > 0 && totalMujeres > 0) {
             <div class="mt-4 rounded-lg">
                 <div class="flex justify-center">
                     <app-subtitle [subtitle]="'Genero'"></app-subtitle>
@@ -56,19 +57,21 @@
                     </div>
                 </div>
             </div>
+            }
         </div>
 
 
         <!-- Columna 2: promedios -->
         <div class="w-full lg:w-1/3 flex-1 py-2 flex flex-col gap-4">
-          @if (promediosCct && promediosCct.length > 0) {
-              @for (item of promediosCct; track $index) {
-                <div class="flex gap-4 justify-between sm:justify-around">
-                <app-single-promedio [title]="'Promedio '+ item.cct + ' -' + item.turno | titlecase " [content]="item.promedio+''"></app-single-promedio>
+            @if (promediosCct && promediosCct.length > 0) {
+            @for (item of promediosCct; track $index) {
+            <div class="flex gap-4 justify-between sm:justify-around">
+                <app-single-promedio [title]="'Promedio '+ item.cct + ' -' + item.turno | titlecase "
+                    [content]="item.promedio+''"></app-single-promedio>
                 <app-single-promedio [isEstatal]="true" [content]="PromedioEstatal+''"></app-single-promedio>
             </div>
             }
-          }
+            }
         </div>
 
         <!-- Columna 3: resultados por materia -->

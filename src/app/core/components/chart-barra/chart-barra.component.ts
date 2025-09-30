@@ -56,10 +56,19 @@ inicializarGrafica(){
       valueSuffix: '%',
     },
     plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0,
-      },
+       column: {
+      pointPadding: 0.2,
+      borderWidth: 0,
+      dataLabels: {
+        enabled: true,     // 👈 habilita etiquetas
+        format: '{y}%',    // 👈 el valor mostrado (usa {y} para el dato numérico)
+        style: {
+          fontSize: '11px',
+          fontWeight: 'bold',
+          textOutline: 'none'
+        }
+      }
+    }
     },
     series: [
       {

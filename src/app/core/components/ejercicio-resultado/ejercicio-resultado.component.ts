@@ -11,11 +11,11 @@ import { Background } from '../../enums/background.enum';
 export class EjercicioResultadoComponent {
   private fondos=Background
   @Input()  
-  public bgColorTitle:Background= this.fondos.blue
+  public bgColorTitle:string='bg-blue'
 
   @Input() 
   public title:string ='Lenguajes'
-
+@Input() contenido:string=''
   // constructor(private getColor:getBgColorService){}
   
   active: string = '0';

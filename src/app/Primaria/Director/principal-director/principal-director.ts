@@ -126,6 +126,7 @@ export class PrincipalDirector {
           this.totalAlumnos+=el.totalAlumnos
           
         })
+        console.log(this.totalAlumnos)
         this.cd.detectChanges()
       },
       error: (error) => {

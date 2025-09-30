@@ -28,47 +28,56 @@ export class CharBarraSingleDataSet {
 
 
     this.chartOptions = {
-      chart: {
-        type: 'column',
-      },
-      title: {
-        text: '',
-      },
-      subtitle: {
-        text: '',
-      },
-      xAxis: {
-        categories: this.dataChart.categorias,
-        crosshair: true,
-        accessibility: {
-          description: this.dataChart.description,
-        },
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: this.dataChart.title,
-        },
-      },
-      tooltip: {
-        valueSuffix: '%',
-      },
-      plotOptions: {
-        column: {
-          pointPadding: 0.2,
-          borderWidth: 0,
-        },
-      },
-      series: [
-        {
-          type: 'column',
-          name: this.dataChart.firstLeyend,
-          data: this.dataChart.firstDataSet,
-          color: firstColor
-        },
-        
-      ],
-    };
+  chart: {
+    type: 'column',
+  },
+  title: {
+    text: '',
+  },
+  subtitle: {
+    text: '',
+  },
+  xAxis: {
+    categories: this.dataChart.categorias,
+    crosshair: true,
+    accessibility: {
+      description: this.dataChart.description,
+    },
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: this.dataChart.title,
+    },
+  },
+  tooltip: {
+    valueSuffix: '%',
+  },
+  plotOptions: {
+    column: {
+      pointPadding: 0.2,
+      borderWidth: 0,
+      dataLabels: {
+        enabled: true,     // 👈 habilita etiquetas
+        format: '{y}%',    // 👈 el valor mostrado (usa {y} para el dato numérico)
+        style: {
+          fontSize: '11px',
+          fontWeight: 'bold',
+          textOutline: 'none'
+        }
+      }
+    }
+  },
+  series: [
+    {
+      type: 'column',
+      name: this.dataChart.firstLeyend,
+      data: this.dataChart.firstDataSet,
+      color: firstColor
+    }
+  ]
+};
+
   }
 
   ngOnChanges(changes: SimpleChanges) {

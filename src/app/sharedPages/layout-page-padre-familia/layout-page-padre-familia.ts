@@ -30,14 +30,14 @@ export class LayoutPagePadreFamilia {
           this.router.navigate(['/s/principal_alumno', alSeleccionado])
         }
       },
-      {
-        label: 'Mis Resultados',
-        icon: 'pi pi-chart-line',
-        command: () => {
-          console.log('redireccionando')
-          this.router.navigate(['/s/mis_resultados', alSeleccionado])
-        }
-      },
+      // {
+      //   label: 'Mis Resultados',
+      //   icon: 'pi pi-chart-line',
+      //   command: () => {
+      //     console.log('redireccionando')
+      //     this.router.navigate(['/s/mis_resultados', alSeleccionado])
+      //   }
+      // },
       {
         icon: 'fa-solid fa-book',
         label: 'Lenguajes',

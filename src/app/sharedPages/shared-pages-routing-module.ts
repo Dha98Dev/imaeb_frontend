@@ -4,6 +4,7 @@ import { LayoutPagePadreFamilia } from './layout-page-padre-familia/layout-page-
 import { PrincipalPadreFamilia } from './principal-padre-familia/principal-padre-familia';
 import { ResultadosMateria } from './resultados-materia/resultados-materia';
 import { MisResultadosImaeb } from './mis-resultados-imaeb/mis-resultados-imaeb';
+import { EstadisticaPrincipal } from './estadistica-principal/estadistica-principal';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
       { path: 'principal_alumno/:idAlumno', component: PrincipalPadreFamilia },
       { path: 'resultados_area/:area/:idAlumno', component: ResultadosMateria },
       { path: 'mis_resultados/:idAlumno', component: MisResultadosImaeb },
+      { path: 'estadistica-principal', component: EstadisticaPrincipal },
       // { path: '', redirectTo: 'principal_alumno', pathMatch: 'full' },
       // { path: '**', redirectTo: 'principal_alumno' }
     ]

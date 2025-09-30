@@ -16,7 +16,7 @@ export class ListadoGrupo {
   public loader: boolean = false
   private listadoAlumnos: Alumno[] = []
   public registrosFormateados: AlumnoFormateado[] = []
-
+public nivel:string | number=''
 
   constructor(private route: ActivatedRoute, private listadoAlumnosService: listadoAlumnosService, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice) { }
 
@@ -96,6 +96,8 @@ export class ListadoGrupo {
       next:(resp)=>{
         console.log(resp)
         this.cctService.setCentroTrabajo(resp[0])
+                this.nivel= resp[0].idNivel
+        this.cd.detectChanges()
       },
       error: (error)=>{
 

@@ -25,7 +25,8 @@
         </app-item-porcentaje-area-evaluada>
       </div>
 
-      <div class="mt-4 rounded-lg">
+@if(conteoAlumnos.totalHombres > 0 && conteoAlumnos.totalMujeres  > 0  ){
+        <div class="mt-4 rounded-lg">
         <div class="flex justify-center">
           <app-subtitle [subtitle]="'Genero'"></app-subtitle>
         </div>
@@ -42,13 +43,14 @@
           </div>
         </div>
       </div>
+}
     </div>
 
 
     <!-- Columna 2: promedios -->
     <div class="w-full lg:w-1/3 flex-1 py-2 flex gap-4 justify-between sm:justify-around">
-      <app-single-promedio [title]="'Promedio Grupo'" [content]="'90'"></app-single-promedio>
-      <app-single-promedio [isEstatal]="true" [content]="'80'"></app-single-promedio>
+      <app-single-promedio [title]="'Promedio Grupo'" [content]="promedioGrupo.toString()"></app-single-promedio>
+      <app-single-promedio [isEstatal]="true" [content]="promedioEstatal.toString()"></app-single-promedio>
     </div>
 
     <!-- Columna 3: resultados por materia -->

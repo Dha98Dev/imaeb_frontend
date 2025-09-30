@@ -18,6 +18,7 @@ export class ResultadosAreas {
   public cct: string = '';
   public grupo: string = '';
   public loader: boolean = false
+  public nivel: string | number = ''
   public dataChart: UnidadChartData[] = []
 
   ngOnInit(): void {
@@ -29,6 +30,10 @@ export class ResultadosAreas {
       this.getInfoCct()
       this.conteoNivelDesempenioByGrupoAndCct()
     });
+
+    this.cctService.centroTrabajo$.subscribe(data => {
+      console.log(data)
+    })
   }
 
   get getSubtitle(): string {
@@ -51,6 +56,8 @@ export class ResultadosAreas {
     this.cctService.getInfoCct(this.cct).subscribe({
       next: (resp) => {
         this.cctService.setCentroTrabajo(resp[0])
+        this.nivel= resp[0].idNivel
+        this.cd.detectChanges()
       },
       error: (error) => {
 

@@ -21,9 +21,10 @@ export class TableResultadosGrupoComponent {
   public alumnosFiltrados:any[]=[]
   public alumnoSeleccionado: string = ''
   public filtroGlobal:string=''
+  
   @Input()
   public listadoAlumnos:AlumnoFormateado[]=[]
-  
+  @Input()preescolar: boolean =false
 
 
   ngOnInit() {

@@ -22,6 +22,9 @@ export class GetCctInfoSErvice {
     private zonaSubject = new BehaviorSubject<any>(null)
     zona$ = this.zonaSubject.asObservable()
 
+    private sectorSubject = new BehaviorSubject<any>(null)
+    sector$ = this.sectorSubject.asObservable()
+
     private nivelSubject = new BehaviorSubject<any>(null)
     nivel$ = this.nivelSubject.asObservable()
 
@@ -37,6 +40,9 @@ export class GetCctInfoSErvice {
     }
     setZona(zona: string) {
         this.zonaSubject.next(zona)
+    }
+    setSector(sector: string) {
+        this.sectorSubject.next(sector)
     }
     setNivel(nivel: string) {
         this.nivelSubject.next(nivel)

@@ -8,6 +8,7 @@ export interface responseCatalogo {
     centrosTrabajo: CentrosTrabajo[];
     sectores:       Sectores[];
     niveles:        Nivele[];
+    zonas:          Zona[]
 }
 
 export interface CentrosTrabajo {
@@ -23,4 +24,8 @@ export interface Nivele {
 
 export interface Sectores {
     sector: number;
+}
+
+export interface Zona {
+    zonaEscolar: number;
 }

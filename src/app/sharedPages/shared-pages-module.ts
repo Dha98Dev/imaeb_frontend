@@ -7,13 +7,15 @@ import { LayoutPagePadreFamilia } from './layout-page-padre-familia/layout-page-
 import { PrincipalPadreFamilia } from './principal-padre-familia/principal-padre-familia';
 import { ResultadosMateria } from './resultados-materia/resultados-materia';
 import { MisResultadosImaeb } from './mis-resultados-imaeb/mis-resultados-imaeb';
+import { EstadisticaPrincipal } from './estadistica-principal/estadistica-principal';
 
 @NgModule({
   declarations: [
         LayoutPagePadreFamilia,
         PrincipalPadreFamilia,
         ResultadosMateria,
-        MisResultadosImaeb
+        MisResultadosImaeb,
+        EstadisticaPrincipal
   ],
   imports: [
     CommonModule,

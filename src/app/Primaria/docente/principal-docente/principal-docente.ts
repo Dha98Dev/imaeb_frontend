@@ -5,6 +5,9 @@ import { CctAndGrupoService } from '../../../core/services/CctAndGrupo/CctAndGru
 import { conteoAlumnosGrupo } from '../../../core/Interfaces/conteoAlumnosGrupo.interface';
 import { ConteoUtilizacionExamen } from '../../../core/Interfaces/ConteoUtilizacionExamen.interface';
 import { conteoNivelDesempenioByGrupoAndCct, MateriaPlano } from '../../../core/Interfaces/conteoNivelDespempenioByGrupoAndCct.interface';
+import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
+import { DatosCct } from '../../../core/Interfaces/DatosCct.interface';
+import { datosCct } from '../../../core/Interfaces/listadoAlumno.interface';
 
 @Component({
   selector: 'app-principal-docente',
@@ -13,7 +16,7 @@ import { conteoNivelDesempenioByGrupoAndCct, MateriaPlano } from '../../../core/
   styleUrl: './principal-docente.scss'
 })
 export class PrincipalDocente {
-  constructor(private route: ActivatedRoute, private cctService:GetCctInfoSErvice, private cctAndGrupoService:CctAndGrupoService, private cd:ChangeDetectorRef) { }
+  constructor(private route: ActivatedRoute, private cctService:GetCctInfoSErvice, private cctAndGrupoService:CctAndGrupoService, private cd:ChangeDetectorRef, private estadisticaService:GetEstadisticaService) { }
   private jerarquia: number = 8
   public porcentajeNinos: number = 54.5
   public porcentajeNinas: number = 45.5
@@ -23,8 +26,10 @@ export class PrincipalDocente {
   public conteoAlumnos:conteoAlumnosGrupo={} as conteoAlumnosGrupo
   public resConteoExamenesUtilizados:ConteoUtilizacionExamen = {} as ConteoUtilizacionExamen
   public conteNivelDesempenio:MateriaPlano[]=[]
-
-
+  public promedioEstatal:number=0
+  public promedioGrupo:number=0
+  public nivel: number=0
+  private idEscuela:number=0
   ngOnInit(): void {
     this.loader = true
     this.route.paramMap.subscribe(params => {
@@ -37,6 +42,9 @@ export class PrincipalDocente {
       this.conteoExamenesUtilizados()
       this.conteoNivelDesempenioByGrupoAndCct()
     });
+    this.cctService.cct$.subscribe(data =>{
+      console.log(data)
+    })
   }
 
   materiaSelected(materia: any) {
@@ -47,6 +55,9 @@ export class PrincipalDocente {
     this.cctService.getInfoCct(this.cct).subscribe({
       next:(resp)=>{
         this.cctService.setCentroTrabajo(resp[0])
+        this.nivel=resp[0].idNivel
+        this.calcularPromedioEstatal()
+        this.calcularpromedioGrupo()
       },
       error: (error)=>{
 
@@ -105,4 +116,67 @@ transformarArreglo(data: conteoNivelDesempenioByGrupoAndCct[]): MateriaPlano[] {
     }))
   }));
 }
+
+
+  calcularPromedioEstatal() {
+    this.estadisticaService.getPromedioEstatalByNivel({ nivelId: this.nivel }).subscribe({
+      next: resp => {
+        this.promedioEstatal = resp[0].promedio
+        this.cd.detectChanges()
+      },
+      error: error => {
+
+      }
+    })
+  }
+  
+  calcularpromedioGrupo() {
+    let datoscct:DatosCct={} as DatosCct
+     this.cctService.centroTrabajo$.subscribe(data =>{
+      datoscct=data
+    })
+    let idCct = this.getIdCctTurnoByGrupo(datoscct, this.grupo)
+    this.estadisticaService.getPromedioEstatalByNivel({escuelaId: idCct!, grupoId:this.getGrupoId(this.grupo)!}).subscribe({
+      next: resp => {
+        this.promedioGrupo = resp[0].promedio
+        console.log(this.promedioGrupo)
+        this.cd.detectChanges()
+      },
+      error: error => {
+
+      }
+    })
+  }
+
+   getGrupoId(grupo: string): number | null {
+  const map: Record<string, number> = {
+    A: 1,
+    B: 2,
+    C: 3,
+    D: 4,
+    E: 5,
+    F: 6,
+    G: 7,
+    H: 8,
+    I: 9,
+    J: 10,
+    K: 11,
+    L: 12,
+  };
+
+  return map[grupo.toUpperCase()] ?? null;
+}
+
+getIdCctTurnoByGrupo(cct: DatosCct, grupo: string): number | null {
+  if (!cct?.turnos?.length) return null;
+
+  for (const turno of cct.turnos) {
+    if (turno.grupos.includes(grupo.toUpperCase())) {
+      return turno.idCctTurno;
+    }
+  }
+
+  return null; // si no se encontró en ningún turno
+}
+
 }

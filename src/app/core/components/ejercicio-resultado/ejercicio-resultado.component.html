@@ -1,33 +1,17 @@
-
-
 <div class="shadow-md rounded-md  w-100">
-@if(title != ''){
-    <div>
-    <h4 class="text-center rounded-md  border px-2 py-2 text-xl text-white font-medium" [ngClass]="bgColorTitle" > {{title}}</h4>
+  @if(title != ''){
+  <div>
+    <h4 class="text-center rounded-md  border px-2 py-2 text-lg text-white font-medium" [ngClass]="bgColorTitle">
+      {{title}}</h4>
   </div>
-  
-}
-  <div class="flex flex-wrap mx-1 my-1 px-2 py-3">
 
-    <div class="item flex flex-col text-center text-capitalize b-c1">
-      <p class="font-semibold text-sm">ejercicio 1</p>
+  }
+ 
+
+    <div class="item flex flex-col text-center text-capitalize ">
       <div class="px-1 py-1">
-        <p class="bg-[var(--red)] text-white px-2 py-1 rounded-md text-xs">aprendizaje en desarrollo</p>
-      </div>
-    </div>
-        <div class="item flex flex-col text-center text-capitalize b-c1">
-      <p class="font-semibold text-sm">ejercicio 1</p>
-      <div class="px-1 py-1">
-        <p class="bg-[var(--yellow)] text-white px-2 py-1 rounded-md text-xs">aprendizaje en desarrollo</p>
-      </div>
-    </div>
-        <div class="item flex flex-col text-center text-capitalize b-c1">
-      <p class="font-semibold text-sm">ejercicio 1</p>
-      <div class="px-1 py-1">
-        <p class="bg-[var(--orange)] text-white px-2 py-1 rounded-md text-xs">aprendizaje en desarrollo</p>
+        <p class="font-semibold text-medium"> {{contenido}} </p>
       </div>
     </div>
 
-
-  </div>
 </div>
