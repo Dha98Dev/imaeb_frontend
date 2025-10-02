@@ -1,0 +1,16 @@
+@media(max-width:1000px) {
+    .contenedor {
+        flex-direction: column ;
+        div{
+            width: 100%;
+        }
+    }
+}
+
+.bloque-2 {
+    flex-direction: column;
+
+    div {
+        width: 100%;
+    }
+}

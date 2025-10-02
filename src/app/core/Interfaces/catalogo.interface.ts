@@ -29,3 +29,7 @@ export interface Sectores {
 export interface Zona {
     zonaEscolar: number;
 }
+export interface MunicipiosOrLocalidades{
+    id:number,
+    nombre:string
+}

@@ -1,22 +1,46 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Enviroments } from '../../../enviroments/env';
-import { catalogo, responseCatalogo } from '../../Interfaces/catalogo.interface';
+import { catalogo, MunicipiosOrLocalidades, responseCatalogo } from '../../Interfaces/catalogo.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class CatalogoService {
     private url:string=Enviroments.UrlServiceBackend
     constructor(private http:HttpClient) { }
-        getCatalogo(data:catalogo):Observable<responseCatalogo> {
-        let params = new HttpParams();
+getCatalogo(data: catalogo): Observable<responseCatalogo> {
+  let params = new HttpParams();
 
-        if (data.nivelId) params = params.set('nivelId', data.nivelId.toString());
-        if (data.sector) params = params.set('sector', data.sector.toString());
-        if (data.zonaEscolar) params = params.set('zonaEscolar', data.zonaEscolar.toString());
+  if (data.nivelId != null) {
+    params = params.set('nivelId', data.nivelId.toString());
+  }
 
-        return this.http.get<responseCatalogo>(this.url + 'api/catalogos/flujo-completo', { params })
-    }
+  if (data.sector != null) {   // 👈 así no se salta el 0
+    params = params.set('sector', data.sector.toString());
+  }
+
+  if (data.zonaEscolar != null) {
+    params = params.set('zonaEscolar', data.zonaEscolar.toString());
+  }
+
+  console.log(params.toString());
+
+  return this.http.get<responseCatalogo>(
+    this.url + 'api/catalogos/flujo-completo',
+    { params }
+  );
+}
+
+getMunicipios():Observable<MunicipiosOrLocalidades[]>{
+  return this.http.get<MunicipiosOrLocalidades[]>(this.url + 'api/catalogos/municipios')
+}
+getLocalidades(idMun:number):Observable<MunicipiosOrLocalidades[]>{
+  let params = new HttpParams()
+  .set('municipioId', idMun)
+  return this.http.get<MunicipiosOrLocalidades[]>(this.url + 'api/catalogos/localidades/municipio', {params})
+}
+
+
   getNivelDescription(nivel:string) {
     switch (nivel) {
       case '1': return 'Preescolar'

@@ -40,7 +40,7 @@ export class LayoutPageDP {
       },
       {
         label: 'result-area',
-        icon: 'pi pi-home',
+        icon: 'pi pi-pen-to-square',
         url: '/prim_2/resultados-grupo-area',
         command: () => {
           this.router.navigate(['/prim_2/resultados-grupo-area',  this.cct, this.grupo])

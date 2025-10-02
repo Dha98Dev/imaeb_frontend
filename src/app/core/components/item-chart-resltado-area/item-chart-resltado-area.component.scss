@@ -10,8 +10,13 @@
     order: 3;
 }
 
-
 @media(max-width:1000px) {
+      .contenedor-chart{
+        overflow-x: scroll;
+        div{
+            width: 1000px;
+        }
+    }
     .contenido {
         flex-direction: column;
     }

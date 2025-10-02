@@ -36,20 +36,15 @@
 
 <div class="tabla px-3">
     @for (item of dataChart; track $index) {
-    <div class="mt-[50px] shadow-md ">
-        <app-item-chart-resltado-area [unidadAnalisis]="item.unidad" [alumnos]="item.totalAlumnos.toString()"
-            [aciertos]="item.porcentajeAciertos+'%'" [desaciertos]="item.porcentajeDesaciertos+'%'"
-            [dataSet]="item.dataChart"></app-item-chart-resltado-area>
+    <div class="contenedor-chart mt-[50px] shadow-md ">
+        <div>
+            <app-item-chart-resltado-area [unidadAnalisis]="item.unidad" [alumnos]="item.totalAlumnos.toString()"
+                [aciertos]="item.porcentajeAciertos+'%'" [desaciertos]="item.porcentajeDesaciertos+'%'"
+                [dataSet]="item.dataChart"></app-item-chart-resltado-area>
+        </div>
     </div>
     }
-    <!-- <div class="mt-[50px] shadow-md ">
-        <app-item-chart-resltado-area [unidadAnalisis]="'Extraccion  de informacion'" [alumnos]="'100'"
-            [aciertos]="'100 %'" [desaciertos]="'100 %'"></app-item-chart-resltado-area>
-    </div>
-    <div class="mt-[50px] shadow-md ">
-        <app-item-chart-resltado-area [unidadAnalisis]="'Desarrollo de una comprension global'" [alumnos]="'100'"
-            [aciertos]="'100 %'" [desaciertos]="'100 %'"></app-item-chart-resltado-area>
-    </div> -->
+
 </div>
 
 

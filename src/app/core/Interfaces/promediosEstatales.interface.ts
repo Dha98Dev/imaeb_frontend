@@ -13,4 +13,6 @@ export interface ParamsPromediosEstatales {
     modalidadId?: number;
     sectorId?: number;
     zonaId?: number;
+    localidadId?:number;
+    municipioId?:number;
 }

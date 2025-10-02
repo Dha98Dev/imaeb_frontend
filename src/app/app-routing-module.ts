@@ -6,7 +6,7 @@ const routes: Routes = [
   {path: 'prim_3', loadChildren: () => import('./Primaria/Director/director-module').then(m => m.DirectorModule)},
   {path: 'sz', loadChildren: () =>import('./Primaria/Zona/zona-module').then(m => m.ZonaModule)},
   {path: 'ss', loadChildren: ()=>import('./Primaria/sector/sector-module').then(m => m.SectorModule)},
-
+  {path: 'e', loadChildren: ()=>import('./Primaria/EstadisticaGeneral/estadistica-general-module').then(m =>m.EstadisticaGeneralModule)},
 
   {path: 's', loadChildren: ()=> import('./sharedPages/shared-pages-module').then(m =>m.SharedPagesModule) },
   {path: 'prees_1', loadChildren: ()=>import('./Preescolar/padreFamilia/padre-familiapreescolar-module').then(m =>m.PadreFamiliapreescolarModule)},

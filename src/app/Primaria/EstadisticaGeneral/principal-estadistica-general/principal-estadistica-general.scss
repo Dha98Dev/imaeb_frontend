@@ -1,0 +1,24 @@
+.item-prom-mat-mun {
+    width: 48%;
+}
+
+
+
+
+
+@media(max-width:900px) {
+    .item-prom-mat-mun {
+        width: 100%;
+    }
+    .prom-estatales, .prom-mat-nivel{
+        flex-direction: column;
+        gap: 10px;
+        margin: 5px 20px;
+    }
+    .chart-prom-mun{
+        width: 900px;
+    }
+    .contenedor-cart-prom-mun{
+        overflow-x: scroll;
+    }
+}

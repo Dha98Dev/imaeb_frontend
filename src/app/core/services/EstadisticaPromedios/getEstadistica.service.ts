@@ -18,6 +18,8 @@ export class GetEstadisticaService {
         if (data.modalidadId) params = params.set('modalidadId', data.modalidadId.toString());
         if (data.sectorId) params = params.set('sectorId', data.sectorId.toString());
         if (data.zonaId) params = params.set('zonaId', data.zonaId.toString());
+        if (data.municipioId) params = params.set('municipioId', data.municipioId.toString());
+        if (data.localidadId) params = params.set('localidadId', data.localidadId.toString());
 
         return this.http.get<any>(this.url + 'estadisticas/promedio/nivel', { params })
     }

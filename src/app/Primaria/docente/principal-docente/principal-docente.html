@@ -6,7 +6,7 @@
 @if (!loader) {
 
 <div class="mb-5">
-  <app-title [title]="'resultados de imaeb del grupo A'"></app-title>
+  <app-title [title]="'resultados de imaeb del grupo ' + grupo"></app-title>
 </div>
 
 
@@ -48,7 +48,7 @@
 
 
     <!-- Columna 2: promedios -->
-    <div class="w-full lg:w-1/3 flex-1 py-2 flex gap-4 justify-between sm:justify-around">
+    <div class="prom-generales w-full lg:w-1/3 flex-1 py-2 flex gap-4 justify-between sm:justify-around">
       <app-single-promedio [title]="'Promedio Grupo'" [content]="promedioGrupo.toString()"></app-single-promedio>
       <app-single-promedio [isEstatal]="true" [content]="promedioEstatal.toString()"></app-single-promedio>
     </div>

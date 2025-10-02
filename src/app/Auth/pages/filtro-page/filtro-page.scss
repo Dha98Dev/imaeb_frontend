@@ -1,0 +1,16 @@
+
+@media(max-width:900px){
+    .first-inputs{
+        padding-top: 20px;
+        flex-direction: column;
+        div{
+            width: 100%;
+        }
+        .select-nivel{
+            width: 100%;
+        }
+    }
+    .cct-select{
+        width: 100%;
+    }
+}

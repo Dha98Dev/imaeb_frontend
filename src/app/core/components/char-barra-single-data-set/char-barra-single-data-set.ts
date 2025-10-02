@@ -13,6 +13,7 @@ export class CharBarraSingleDataSet {
   public dataChart: DataGraficaBarra = {} as DataGraficaBarra
 
   @Input() randomColors: boolean = false
+  @Input() colorBarras: string = ''
 
   Highcharts: typeof Highcharts = Highcharts; // Importamos la librería
   chartOptions: Highcharts.Options = {} as Highcharts.Options
@@ -26,6 +27,9 @@ export class CharBarraSingleDataSet {
     firstColor = this.randomColors ? getRandomColor() : '#68AD68'
     secondColor = this.randomColors ? getRandomColor() : '#D12A56'
 
+    if (!this.randomColors && this.colorBarras != '' ) {
+      firstColor=this.colorBarras
+    }
 
     this.chartOptions = {
   chart: {
@@ -51,7 +55,7 @@ export class CharBarraSingleDataSet {
     },
   },
   tooltip: {
-    valueSuffix: '%',
+    valueSuffix: '',
   },
   plotOptions: {
     column: {
@@ -59,7 +63,7 @@ export class CharBarraSingleDataSet {
       borderWidth: 0,
       dataLabels: {
         enabled: true,     // 👈 habilita etiquetas
-        format: '{y}%',    // 👈 el valor mostrado (usa {y} para el dato numérico)
+        format: '{y}',    // 👈 el valor mostrado (usa {y} para el dato numérico)
         style: {
           fontSize: '11px',
           fontWeight: 'bold',

@@ -6,11 +6,11 @@
 @if (!loader) {
 
 <div class="mb-5">
-    <app-title [title]="'resultados de imaeb del grupo A'"></app-title>
+    <app-title [title]="'resultados de imaeb'"></app-title>
 </div>
 
 <div class="flex justify-end mx-3">
-    <div class="flex gap-3">
+    <div class="flex flex-wrap gap-3">
         @for (item of gruposCct; track $index) {
         <p-button icon="fa-solid fa-people-roof" [label]="item" [raised]="true" [rounded]="true"
             [pTooltip]="'Resultados del grupo ' +item" tooltipPosition="bottom" (onClick)="grupoSelected=item"
@@ -65,8 +65,8 @@
         <div class="w-full lg:w-1/3 flex-1 py-2 flex flex-col gap-4">
             @if (promediosCct && promediosCct.length > 0) {
             @for (item of promediosCct; track $index) {
-            <div class="flex gap-4 justify-between sm:justify-around">
-                <app-single-promedio [title]="'Promedio '+ item.cct + ' -' + item.turno | titlecase "
+            <div class="promedios flex gap-4 justify-between sm:justify-around">
+                <app-single-promedio [title]="'PROMEDIO '+ item.cct + ' -' + item.turno  "
                     [content]="item.promedio+''"></app-single-promedio>
                 <app-single-promedio [isEstatal]="true" [content]="PromedioEstatal+''"></app-single-promedio>
             </div>
@@ -84,17 +84,6 @@
             </div>
             }
 
-            <!-- <div>
-        <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Matematicas'"
-          [bgColorTitle]="'bg-emerald-500'" [data]="" (onEmitMateriaSelected)="materiaSelected($event)">
-        </app-tabla-resultados-evidencia>
-      </div>
-
-      <div>
-        <app-tabla-resultados-evidencia [title]="'Saberes y Pensamiento Cientifico: Ciencias'"
-          [bgColorTitle]="'bg-yellow-500'" [data]="" (onEmitMateriaSelected)="materiaSelected($event)">
-        </app-tabla-resultados-evidencia>
-      </div> -->
         </div>
     </section>
 
@@ -102,8 +91,10 @@
     <section class="second-seccion bg-white p-4 rounded-lg shadow flex flex-col-reverse gap-6 lg:flex-col mt-10">
         <!-- Nivel de desempeño -->
         @if (dataChartPromedioGrupos.firstLeyend && dataChartPromedioGrupos.firstLeyend != '') {
-        <div class="w-full py-2 mt-2 shadow-md">
-            <app-chart-barra [dataChart]="dataChartPromedioGrupos"></app-chart-barra>
+        <div class="chart w-full py-2 mt-2 shadow-md">
+           <div>
+             <app-chart-barra [dataChart]="dataChartPromedioGrupos"></app-chart-barra>
+           </div>
         </div>
         }
     </section>

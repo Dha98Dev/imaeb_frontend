@@ -16,6 +16,7 @@ export class EjercicioResultadoComponent {
   @Input() 
   public title:string ='Lenguajes'
 @Input() contenido:string=''
+@Input() small:boolean=false
   // constructor(private getColor:getBgColorService){}
   
   active: string = '0';

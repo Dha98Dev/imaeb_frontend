@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthLayoutPage } from './pages/auth-layout-page/auth-layout-page';
 import { LoginPage } from './pages/login-page/login-page';
+import { FiltroPage } from './pages/filtro-page/filtro-page';
 
 const routes: Routes = [
   {
@@ -9,7 +10,8 @@ const routes: Routes = [
     component: AuthLayoutPage,
     children: [
       { path: 'login', component: LoginPage },
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'main-filter', component: FiltroPage },
+      { path: '', redirectTo: 'main-filter', pathMatch: 'full' },
     ]
   }
 ]
