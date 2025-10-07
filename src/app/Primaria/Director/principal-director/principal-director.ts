@@ -10,6 +10,7 @@ import { error } from 'highcharts';
 import { DataGraficaBarra } from '../../../core/Interfaces/grafica.interface';
 import { ParamsPromediosEstatales, PromedioEstatalCct } from '../../../core/Interfaces/promediosEstatales.interface';
 import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-principal-director',
@@ -18,7 +19,7 @@ import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedi
   styleUrl: './principal-director.scss'
 })
 export class PrincipalDirector {
-  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice, private router: Router, private cctAndGrupoService: CctAndGrupoService, private getEstadistica:GetEstadisticaService) { }
+  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice, private router: Router, private cctAndGrupoService: CctAndGrupoService, private getEstadistica: GetEstadisticaService,  private breadCrumbService:BreadCrumService) { }
 
   public loader: boolean = false
   private cct: string = ''
@@ -26,13 +27,13 @@ export class PrincipalDirector {
   public gruposCct: string[] = []
   public grupoSelected: string = 'A'
   public resConteoExamenesUtilizados: ConteoUtilizacionExamen[] = []
-  public dataChartPromedioGrupos:DataGraficaBarra={} as  DataGraficaBarra
-  public totalMujeres:number=0
-  public totalHombres:number=0
-  public totalAlumnos:number=0
-  public PromedioEstatal:number=0
-  public promediosCct:PromedioEstatalCct[]=[]
-
+  public dataChartPromedioGrupos: DataGraficaBarra = {} as DataGraficaBarra
+  public totalMujeres: number = 0
+  public totalHombres: number = 0
+  public totalAlumnos: number = 0
+  public PromedioEstatal: number = 0
+  public promediosCct: PromedioEstatalCct[] = []
+  public nivel:number=0
   ngOnInit(): void {
     // Opción 2: Suscribiéndose a cambios (para parámetros dinámicos)
     this.route.paramMap.subscribe(params => {
@@ -42,6 +43,7 @@ export class PrincipalDirector {
       this.conteoExamenesUtilizados()
       this.getPromedioGruposcct()
       this.getNumeroAlumnosByCctandSexo()
+      this.breadCrumbService.addItem({ jerarquia: 4, label:  this.cct, urlLink: '/prim_3/resultados-ct/' + this.cct , icon: '' })
 
     });
   }
@@ -51,6 +53,7 @@ export class PrincipalDirector {
       next: (resp) => {
         this.cctService.setCentroTrabajo(resp[0])
         this.gruposCct = this.extraerGrupos(resp[0])
+        this.nivel=resp[0].idNivel
         this.loader = false
         this.cd.detectChanges()
         this.getPromediosEstatales()
@@ -108,7 +111,7 @@ export class PrincipalDirector {
   getPromedioGruposcct() {
     this.cctAndGrupoService.getPromedioGruposcct(this.cct).subscribe({
       next: (resp) => {
-        this.dataChartPromedioGrupos=this.buildDataChart(resp)
+        this.dataChartPromedioGrupos = this.buildDataChart(resp)
         this.cd.detectChanges()
       },
       error: (error) => {
@@ -117,16 +120,15 @@ export class PrincipalDirector {
     })
   }
 
-  getNumeroAlumnosByCctandSexo(){
-   this.cctAndGrupoService.getNumeroAlumnosByCctandSexo(this.cct).subscribe({
+  getNumeroAlumnosByCctandSexo() {
+    this.cctAndGrupoService.getNumeroAlumnosByCctandSexo(this.cct).subscribe({
       next: (resp) => {
-        resp.forEach(el =>{
-          this.totalMujeres+=el.totalMujeres
-          this.totalHombres+=el.totalHombres
-          this.totalAlumnos+=el.totalAlumnos
-          
+        resp.forEach(el => {
+          this.totalMujeres += el.totalMujeres
+          this.totalHombres += el.totalHombres
+          this.totalAlumnos += el.totalAlumnos
+
         })
-        console.log(this.totalAlumnos)
         this.cd.detectChanges()
       },
       error: (error) => {
@@ -135,44 +137,42 @@ export class PrincipalDirector {
     })
   }
 
-getPromediosEstatales(){
-        this.cctService.centroTrabajo$.subscribe(data=>{
-        let dataCct:DatosCct=data
-        let nivel:number=this.cctService.getIdNivel()!
-        let paramProm:ParamsPromediosEstatales={nivelId:nivel}
-        this.getEstadistica.getPromedioEstatalByNivel(paramProm).subscribe({
-          next: resp =>{
-            this.PromedioEstatal=resp[0].promedio
+  getPromediosEstatales() {
+    this.cctService.centroTrabajo$.subscribe(data => {
+      let dataCct: DatosCct = data
+      let nivel: number = this.cctService.getIdNivel()!
+      let paramProm: ParamsPromediosEstatales = { nivelId: nivel }
+      this.getEstadistica.getPromedioEstatalByNivel(paramProm).subscribe({
+        next: resp => {
+          this.PromedioEstatal = resp[0].promedio
+        },
+        error: error => {
+
+        }
+      })
+
+      dataCct.turnos.forEach(turno => {
+        let params: ParamsPromediosEstatales = {
+          escuelaId: turno.idCctTurno,
+          nivelId: nivel
+        }
+        this.getEstadistica.getPromedioEstatalByNivel(params).subscribe({
+          next: (resp) => {
+            this.promediosCct.push({
+              cct: dataCct.cct,
+              turno: turno.nombre,
+              promedio: resp[0].promedio
+            })
           },
-          error:error =>{
+          error: error => {
 
           }
         })
+        this.cd.detectChanges()
+      })
+    })
+  }
 
-        dataCct.turnos.forEach(turno =>{
-          let params:ParamsPromediosEstatales ={
-            escuelaId:turno.idCctTurno,
-            nivelId:nivel
-          }
-          this.getEstadistica.getPromedioEstatalByNivel(params).subscribe({
-            next:(resp)=>{
-              console.log(resp)
-              this.promediosCct.push({
-                cct:dataCct.cct,
-                turno:turno.nombre,
-                promedio:resp[0].promedio
-              })
-              console.log(this.promediosCct)
-            },
-            error:error =>{
-
-            }
-          })
-          this.cd.detectChanges()
-        })
-        })
-}
-  
   buildDataChart(respuesta: { grupo: string; promedio: number; turno: string }[]): DataGraficaBarra {
     return {
       categorias: respuesta.map(r => `${r.grupo} - ${r.turno}`),

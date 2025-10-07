@@ -5,6 +5,8 @@ import { CryptoJsService } from '../../core/services/CriptoJs/cryptojs.service';
 import { PorcentajeResultadoUnidadAnalisis, ResultadoPreguntasMateriaAumno } from '../../core/Interfaces/resultadoPorcentajeAciertosMateria.interface';
 import { DataGraficaBarra } from '../../core/Interfaces/grafica.interface';
 import { GetBackgroundService } from '../../core/services/getColors/getBackground.service';
+import { BreadCrumService } from '../../core/services/breadCrumbs/bread-crumb-service';
+import { GetCctInfoSErvice } from '../../core/services/Cct/GetCctInfo.service';
 
 @Component({
   selector: 'app-resultados-materia',
@@ -13,37 +15,45 @@ import { GetBackgroundService } from '../../core/services/getColors/getBackgroun
   styleUrl: './resultados-materia.scss'
 })
 export class ResultadosMateria {
-constructor(private getResultadosAlumnos:GetResultadosAlumnosService, private route: ActivatedRoute, private crypto:CryptoJsService,private cd:ChangeDetectorRef, private getColor:GetBackgroundService){}
+constructor(private getResultadosAlumnos:GetResultadosAlumnosService, private route: ActivatedRoute, private crypto:CryptoJsService,private cd:ChangeDetectorRef, private getColor:GetBackgroundService, private breadCrumbService:BreadCrumService, private cctInfo:GetCctInfoSErvice){}
 
 private alumnoParam:string=''
 private alumnoID:number=0
 private idMateriaParam:string=''
 public loader:boolean=false
-
+private idMateriaParamCrypto:string =''
 public resultadosPreguntasAlumnoMateria:ResultadoPreguntasMateriaAumno={} as ResultadoPreguntasMateriaAumno
 public porcentajeResultado:PorcentajeResultadoUnidadAnalisis[]=[]
-
 public porcentajeAciertos:number=0
 public porcentajeDesaciertos:number=0
-
 public dataGrafica: DataGraficaBarra={} as DataGraficaBarra
+private alumno:string=''
+public nivel:string=''
 
 ngOnInit(){
   this.route.paramMap.subscribe(params =>{
     try {
       this.alumnoParam=params.get('idAlumno') || ''
       this.idMateriaParam=params.get('area') || ''
+      this.idMateriaParamCrypto=this.idMateriaParam
       if (this.alumnoParam != "" && this.idMateriaParam != '') {
         this.idMateriaParam=this.crypto.Desencriptar(this.idMateriaParam)
         this.alumnoID=parseInt(this.crypto.Desencriptar(this.alumnoParam))
           this.loader=true
           this.resultadosbyAlumnoAndMateria()
           this.resultadosbyAlumnoAndMateriaAndUnidadAnalisis()
+          this.cctInfo.alumno$.subscribe(data =>{this.alumno = data;
+          })
+              this.breadCrumbService.addItem({ jerarquia: 6, label: this.alumno +' materias', urlLink: '/s/resultados_area/'+ this.idMateriaParamCrypto+'/'+this.alumnoParam, icon: '' })
+
       }
     } catch (error) {
 
     }
   })
+  this.cctInfo.nivel$.subscribe(data =>{this.nivel=data ; 
+  })
+
 }
 
 // obtenemos las respuestas de la materia del alumno en especifico
@@ -68,6 +78,7 @@ resultadosbyAlumnoAndMateriaAndUnidadAnalisis(){
   this.getResultadosAlumnos.resultadosbyAlumnoAndMateriaAndUnidadAnalisis(this.alumnoID.toString(),this.idMateriaParam).subscribe({
   next: (resp)=>{
     this.porcentajeResultado=resp
+
     this.transformarParaGraficas()
     this.loader=false
     this.cd.detectChanges()

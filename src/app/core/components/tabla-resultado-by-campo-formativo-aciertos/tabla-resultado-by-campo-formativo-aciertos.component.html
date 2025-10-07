@@ -1,7 +1,9 @@
 @if (data.preguntas && data.preguntas.length > 0) {
-  @if (title != '') {
+<div class="flex justify-center mt-5">
+    @if (title != '') {
   <app-subtitle [subtitle]="title"></app-subtitle>
 }
+</div>
 
 <div class="overflow-x-auto mt-4">
   <table class=" border-separate border-spacing-0 min-w-[600px] w-100 ">
@@ -24,8 +26,12 @@
           Ejercicio {{item.numeroPregunta}}  {{item.especificacion}}
         </td>
         <td class="text-center border border-gray-200 px-2 py-1 text-gray-800 ">
-          <i class="!font-bold" [class]="item.respuesta  == '1' ? 'pi pi-check' : 'pi pi-times'"
+          @if (!isPreescolar) {
+            <i class="!font-bold" [class]="item.respuesta  == '1' ? 'pi pi-check' : 'pi pi-times'"
              [ngClass]="item.respuesta  == '1' ? 'text-green' : 'text-red'"></i>
+          }@else{
+            <small> {{item.respuesta}} </small>
+          }
         </td>
       </tr>
 }
@@ -33,7 +39,8 @@
   </table>
 </div>
 
-<div class="flex gap-3  mt-3">
+@if (!isPreescolar) {
+  <div class="flex gap-3  mt-3">
   <div class="flex w-1/2 text-center border flex-col ">
     <p class="w-100 !mb-0 font-medium">Promedio total de Aciertos</p>
     <p class="text-green font-bold text-xl"> {{promedioCorrectas.toFixed(1)}} </p>
@@ -44,4 +51,5 @@
   </div>
 </div>
 
+}
 }

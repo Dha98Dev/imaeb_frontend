@@ -11,6 +11,7 @@ export interface PorcentajeResultadoUnidadAnalisis {
     porcentajeDesaciertos: number,
     preguntas: Pregunta[],
     unidadDescripcion: string
+    porcentajeEstatal?:number
 
 }
 

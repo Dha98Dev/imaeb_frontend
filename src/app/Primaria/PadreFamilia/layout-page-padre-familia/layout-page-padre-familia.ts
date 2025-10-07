@@ -21,7 +21,6 @@ export class LayoutPagePadreFamilia {
         label: 'Inicio ',
         icon: 'pi pi-home',
         command: () => {
-          console.log('redireccionando')
           this.router.navigate(['/prim_1/principal_alumno'])
         }
       },
@@ -29,7 +28,6 @@ export class LayoutPagePadreFamilia {
         label: 'Mis Resultados',
         icon: 'pi pi-chart-line',
         command: () => {
-          console.log('redireccionando')
           this.router.navigate(['/prim_1/mis_resultados'])
         }
       },

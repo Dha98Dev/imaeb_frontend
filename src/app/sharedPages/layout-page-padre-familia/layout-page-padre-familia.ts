@@ -26,18 +26,17 @@ export class LayoutPagePadreFamilia {
         label: 'Inicio ',
         icon: 'pi pi-home',
         command: () => {
-          console.log('redireccionando')
           this.router.navigate(['/s/principal_alumno', alSeleccionado])
         }
       },
-      // {
-      //   label: 'Mis Resultados',
-      //   icon: 'pi pi-chart-line',
-      //   command: () => {
-      //     console.log('redireccionando')
-      //     this.router.navigate(['/s/mis_resultados', alSeleccionado])
-      //   }
-      // },
+    ];
+
+
+    this.CctService.centroTrabajo$.subscribe(data =>{
+      if (data) {
+        this.datosCct=data
+        if (this.datosCct.idNivel != 1) {
+    this.items?.push(
       {
         icon: 'fa-solid fa-book',
         label: 'Lenguajes',
@@ -59,13 +58,9 @@ export class LayoutPagePadreFamilia {
         command: () => {
           this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('4'), alSeleccionado])
         }
-      },
-    ];
-
-    this.CctService.centroTrabajo$.subscribe(data =>{
-      if (data) {
-        this.datosCct=data
-        console.log(this.datosCct)
+      })
+  
+        }
          this.cd.detectChanges();
       }
     })

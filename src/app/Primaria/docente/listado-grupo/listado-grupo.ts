@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { listadoAlumnosService } from '../../../core/services/listadoAlumnos.service';
 import { Alumno, AlumnoFormateado, Respuesta } from '../../../core/Interfaces/listadoAlumno.interface';
 import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-listado-grupo',
@@ -16,9 +17,9 @@ export class ListadoGrupo {
   public loader: boolean = false
   private listadoAlumnos: Alumno[] = []
   public registrosFormateados: AlumnoFormateado[] = []
-public nivel:string | number=''
+  public nivel: string | number = ''
 
-  constructor(private route: ActivatedRoute, private listadoAlumnosService: listadoAlumnosService, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice) { }
+  constructor(private route: ActivatedRoute, private listadoAlumnosService: listadoAlumnosService, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice, private breadCrumbService: BreadCrumService) { }
 
   ngOnInit(): void {
     this.loader = true
@@ -28,11 +29,12 @@ public nivel:string | number=''
     this.route.paramMap.subscribe(params => {
       this.cct = params.get('cct') || '';
       this.grupo = params.get('grupo') || '';
-      console.log(this.cct + ' ' + this.grupo)
       this.cctService.setCct(this.cct)
       this.cctService.setGrupo(this.grupo)
       this.getlistadoAlumnos()
       this.getDatosCct()
+      this.breadCrumbService.addItem({ jerarquia: 5, label: 'listado grupo  ' + this.grupo, urlLink: '/prim_2/listado-grupo/' + this.cct + '/' + this.grupo, icon: '' })
+
     });
   }
 
@@ -42,7 +44,6 @@ public nivel:string | number=''
         this.listadoAlumnos = response
         this.registrosFormateados = this.formatearAlumnos(this.listadoAlumnos)
         this.loader = false
-        console.log('se recibio la respuesta del backend' + this.listadoAlumnos.length)
 
         this.cd.detectChanges();
       },
@@ -53,53 +54,62 @@ public nivel:string | number=''
   }
 
 
-  formatearAlumnos(alumnos: Alumno[]): AlumnoFormateado[] {
-    return alumnos.map(alumno => {
+formatearAlumnos(alumnos: Alumno[]): AlumnoFormateado[] {
+  return alumnos
+    .map((alumno) => {
       const respuestas: Respuesta[] = [];
 
-      alumno.materias.forEach(materia => {
-        materia.preguntas.forEach(pregunta => {
+      alumno.materias.forEach((materia) => {
+        materia.preguntas.forEach((pregunta) => {
           respuestas.push({
             pregunta: pregunta.numeroPregunta,
-            encabezado: materia.nombre.charAt(0).toUpperCase() + pregunta.numeroPregunta,
-            respuesta: Number(pregunta.respuesta), // Convertimos a número si es necesario
-            inicialMateria: materia.nombre.charAt(0).toUpperCase() // Inicial de la materia
+            encabezado: `${materia.nombre.charAt(0).toUpperCase()}${pregunta.numeroPregunta}`,
+            respuesta: Number(pregunta.respuesta ?? 0), // asegura número
+            inicialMateria: materia.nombre.charAt(0).toUpperCase(),
           });
         });
       });
 
-      // Aquí puedes calcular el promedio_porcentaje y promedio_estatal si lo deseas
-      const totalPreguntas = respuestas.length;
-      const respuestasCorrectas = respuestas.filter(r => r.respuesta === 1).length;
-      const promedio_porcentaje = totalPreguntas > 0
-        ? (respuestasCorrectas / totalPreguntas) * 100
-        : 0;
-      const promedio_estatal = 0; // placeholder
+      // Variables que se usarán en el return
+      let promedio_porcentaje = 0;
+      let promedio_estatal = 0; // si luego tienes el valor real, cámbialo aquí
+
+      if (this.nivel === 1) {
+        // PREESCOLAR: respuestas en rango 0..3
+        const totalPreguntas = respuestas.length;
+        const sumaRespuestas = respuestas.reduce((acc, r) => acc + (r.respuesta ?? 0), 0);
+        const promedio_base = totalPreguntas > 0 ? (sumaRespuestas / totalPreguntas) : 0; // 0..3
+        promedio_porcentaje = (promedio_base / 3) * 100; // 0..100
+      } else {
+        // PRIMARIA/SECUNDARIA: respuestas 0/1
+        const totalPreguntas = respuestas.length;
+        const respuestasCorrectas = respuestas.filter((r) => r.respuesta === 1).length;
+        promedio_porcentaje = totalPreguntas > 0 ? (respuestasCorrectas / totalPreguntas) * 100 : 0;
+      }
 
       return {
         nombre: alumno.nombre,
         apellido_paterno: alumno.apellidoPaterno,
         apellido_materno: alumno.apellidoMaterno,
-        promedioAlumno: parseFloat(promedio_porcentaje.toFixed(1)),// por ejemplo, usar el CCT como ID
-        promedio_estatal,
+        promedioAlumno: Number(promedio_porcentaje.toFixed(1)),
+        promedio_estatal: promedio_estatal,
         respuestas,
         sexo: alumno.sexo,
-        idAlumno: alumno.idAlumno
-
+        idAlumno: alumno.idAlumno,
       };
-    }).sort((a, b) => a.apellido_paterno.localeCompare(b.apellido_paterno));;
+    })
+    .sort((a, b) => a.apellido_paterno.localeCompare(b.apellido_paterno));
+}
 
-  }
 
   getDatosCct() {
     this.cctService.getInfoCct(this.cct).subscribe({
-      next:(resp)=>{
-        console.log(resp)
+      next: (resp) => {
         this.cctService.setCentroTrabajo(resp[0])
-                this.nivel= resp[0].idNivel
+        this.nivel = resp[0].idNivel
         this.cd.detectChanges()
       },
-      error: (error)=>{
+      error: (error) => {
 
       }
     })

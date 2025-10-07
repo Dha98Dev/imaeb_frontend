@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CctAndGrupoService } from '../../../core/services/CctAndGrupo/CctAndGrupoService.service';
 import { GrupoPorUnidad, PreguntaStat } from '../../../core/Interfaces/conteoRespuestasByPreguntaAndCct.interface';
 import { UnidadChartData } from '../../../core/Interfaces/grafica.interface';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-resultados-areas',
@@ -12,7 +13,7 @@ import { UnidadChartData } from '../../../core/Interfaces/grafica.interface';
   styleUrl: './resultados-areas.scss'
 })
 export class ResultadosAreas {
-  constructor(private cctService: GetCctInfoSErvice, private route: ActivatedRoute, private cctAndGrupoService: CctAndGrupoService, private cd: ChangeDetectorRef) { }
+  constructor(private cctService: GetCctInfoSErvice, private route: ActivatedRoute, private cctAndGrupoService: CctAndGrupoService, private cd: ChangeDetectorRef, private breadCrumbService:BreadCrumService) { }
   public materiaSelected: number = 1
   public subtitle: string = ''
   public cct: string = '';
@@ -20,6 +21,7 @@ export class ResultadosAreas {
   public loader: boolean = false
   public nivel: string | number = ''
   public dataChart: UnidadChartData[] = []
+  
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -29,10 +31,11 @@ export class ResultadosAreas {
       this.cctService.setGrupo(this.grupo)
       this.getInfoCct()
       this.conteoNivelDesempenioByGrupoAndCct()
+      this.breadCrumbService.addItem({ jerarquia: 5, label: 'grupo area ' + this.grupo, urlLink: 'prim_2/resultados-grupo-area/' + this.cct+'/'+this.grupo , icon: '' })
+      
     });
 
     this.cctService.centroTrabajo$.subscribe(data => {
-      console.log(data)
     })
   }
 
@@ -70,7 +73,6 @@ export class ResultadosAreas {
     this.cctAndGrupoService.conteoNumeroAciertosByPreguntaByMateria(this.cct, this.grupo, this.materiaSelected).subscribe({
       next: (resp) => {
         // this.agruparPorUnidad(resp)
-        console.log(this.buildChartDataPorPorcentaje(resp))
         this.dataChart = this.buildChartDataPorPorcentaje(resp)
         this.loader = false
         this.cd.detectChanges()

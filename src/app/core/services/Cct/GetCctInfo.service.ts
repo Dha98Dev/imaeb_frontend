@@ -6,57 +6,69 @@ import { DatosCct } from '../../Interfaces/DatosCct.interface';
 
 @Injectable({ providedIn: 'root' })
 export class GetCctInfoSErvice {
-    private urlservice: string = Enviroments.UrlServiceBackend
+  private urlservice: string = Enviroments.UrlServiceBackend;
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    private centroTrabajoSubject = new BehaviorSubject<any>(null)
-    centroTrabajo$ = this.centroTrabajoSubject.asObservable()
+  private centroTrabajoSubject = new BehaviorSubject<any>(null);
+  centroTrabajo$ = this.centroTrabajoSubject.asObservable();
 
-    private cctSubject = new BehaviorSubject<any>(null)
-    cct$ = this.cctSubject.asObservable()
+  private cctSubject = new BehaviorSubject<any>(null);
+  cct$ = this.cctSubject.asObservable();
 
-    private grupoSubject = new BehaviorSubject<any>(null)
-    grupo$ = this.grupoSubject.asObservable()
+  private grupoSubject = new BehaviorSubject<any>(null);
+  grupo$ = this.grupoSubject.asObservable();
 
-    private zonaSubject = new BehaviorSubject<any>(null)
-    zona$ = this.zonaSubject.asObservable()
+  private zonaSubject = new BehaviorSubject<any>(null);
+  zona$ = this.zonaSubject.asObservable();
 
-    private sectorSubject = new BehaviorSubject<any>(null)
-    sector$ = this.sectorSubject.asObservable()
+  private sectorSubject = new BehaviorSubject<any>(null);
+  sector$ = this.sectorSubject.asObservable();
 
-    private nivelSubject = new BehaviorSubject<any>(null)
-    nivel$ = this.nivelSubject.asObservable()
+  private nivelSubject = new BehaviorSubject<any>(null);
+  nivel$ = this.nivelSubject.asObservable();
 
+  private alumnoSubject = new BehaviorSubject<any>(null);
+  alumno$ = this.alumnoSubject.asObservable();
 
-    setCentroTrabajo(data: any) {
-        this.centroTrabajoSubject.next(data)
-    }
-    setCct(cct: string) {
-        this.cctSubject.next(cct)
-    }
-    setGrupo(grupo: string) {
-        this.grupoSubject.next(grupo)
-    }
-    setZona(zona: string) {
-        this.zonaSubject.next(zona)
-    }
-    setSector(sector: string) {
-        this.sectorSubject.next(sector)
-    }
-    setNivel(nivel: string) {
-        this.nivelSubject.next(nivel)
-    }
+  setCentroTrabajo(data: any) {
+    this.centroTrabajoSubject.next(data);
+  }
 
-    getInfoCct(cct: string) {
-        let params = new HttpParams()
-            .set('cct', cct)
-        return this.http.get<any>(this.urlservice + 'api/centros-trabajo/info', { params })
-    }
-    getIdNivel(): number | null {
-        const data = this.centroTrabajoSubject.value;
-        return data ? data.idNivel : null;
-    }
+  setCct(cct: string) {
+    this.cctSubject.next(cct);
+  }
 
+  setGrupo(grupo: string) {
+    this.grupoSubject.next(grupo);
+  }
 
+  setZona(zona: string) {
+    this.zonaSubject.next(zona);
+  }
+
+  setSector(sector: string) {
+    this.sectorSubject.next(sector);
+  }
+
+  setNivel(nivel: string) {
+    this.nivelSubject.next(nivel);
+  }
+
+  setAlumno(alumno: string) {
+    this.alumnoSubject.next(alumno);
+  }
+
+  getInfoCct(cct: string) {
+    const params = new HttpParams().set('cct', cct);
+    return this.http.get<any>(
+      this.urlservice + 'api/centros-trabajo/info',
+      { params }
+    );
+  }
+
+  getIdNivel(): number | null {
+    const data = this.centroTrabajoSubject.value;
+    return data ? data.idNivel : null;
+  }
 }

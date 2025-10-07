@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ModalidadesService } from '../../../core/services/Modalidades/Modalidades.service';
 import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
 import { CatalogoService } from '../../../core/services/Catalogos/catalogo.service';
@@ -8,6 +8,7 @@ import { PromedioEstatalCct } from '../../../core/Interfaces/promediosEstatales.
 import { firstValueFrom, forkJoin, map } from 'rxjs';
 import { MunicipiosOrLocalidades } from '../../../core/Interfaces/catalogo.interface';
 import { GetBackgroundService } from '../../../core/services/getColors/getBackground.service';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 interface promedio {
   nivel: string,
   promedio: number,
@@ -31,12 +32,20 @@ export class PrincipalEstadisticaGeneral {
   public promedioGeneralesEstatalesBynivelAndMateria: promedio[] = []
   public municipios:MunicipiosOrLocalidades[]=[]
   public PromedioByNivelAndMunicipioAndMateria:promedio[][]=[]
+  private breadCrumb=inject(BreadCrumService)
 
 
   ngOnInit() {
     // this.getEstadistica(1)
     this.getPromediosEstatales()
     this.getMunicipio()
+       this.breadCrumb.addItem({
+      jerarquia:1,
+      icon:'',
+      label:'Estadistica general',
+      urlLink:'/Auth/main-filter',
+      home:''
+    })
   }
 
   getMunicipio() {
@@ -54,7 +63,6 @@ export class PrincipalEstadisticaGeneral {
     this.nivelSeleccionado = nivel
     this.modalidadesService.getModalidadesNivel(nivel).subscribe({
       next: resp => {
-        console.log(resp)
         this.modalidades = resp
         this.getPromediosEstatalesPorModalidad(this.getModalidadesUnicas())
         this.getPromedioGeneralByMateriaAndNivel()
@@ -73,7 +81,6 @@ export class PrincipalEstadisticaGeneral {
       new Map(this.modalidades.map(m => [m.idModalidad, { id: m.idModalidad, descripcion: m.descripcionModalidad }]))
         .values()
     );
-    console.log(modalidadesUnicas)
     return modalidadesUnicas
   }
 
@@ -125,7 +132,6 @@ export class PrincipalEstadisticaGeneral {
 
       this.cd?.markForCheck?.();
     } catch (err) {
-      console.error('Error obteniendo promedios por modalidad:', err);
       // Manejo mínimo en caso de error
     }
   }
@@ -155,9 +161,7 @@ export class PrincipalEstadisticaGeneral {
       this.cd.detectChanges()
 
 
-      console.log(this.promediosGeneralesEstatales)
     } catch (err) {
-      console.error('Error cargando promedios estatales:', err);
       this.promediosGeneralesEstatales = [];
     }
   }
@@ -182,10 +186,8 @@ export class PrincipalEstadisticaGeneral {
       // guarda los resultados en tu arreglo
       this.promedioGeneralesEstatalesBynivelAndMateria = responses;
       this.cd.detectChanges()
-      console.log('Resultados:', this.promedioGeneralesEstatalesBynivelAndMateria);
 
     } catch (err) {
-      console.error('Error obteniendo promedios por materia y nivel:', err);
       this.promedioGeneralesEstatalesBynivelAndMateria = [];
     }
   }
@@ -216,9 +218,7 @@ async getEstadisticaByNivelAndMunicipio(): Promise<void> {
       categorias
     };
     this.cd.detectChanges()
-    console.log(this.dataChartNivelAndMunicipio);
   } catch (err) {
-    console.error('Error obteniendo promedios:', err);
   }
 }
 
@@ -262,10 +262,8 @@ getPromedioByNivelAndMunicipioAndMateria(): void {
       // resultadoPorMunicipio es Promedio[][] con el mismo orden que this.municipios
       this.PromedioByNivelAndMunicipioAndMateria = resultadoPorMunicipio;
       this.cd.detectChanges()
-      console.log('PromedioByNivelAndMunicipioAndMateria', this.PromedioByNivelAndMunicipioAndMateria);
     },
     error: (err) => {
-      console.error('Error obteniendo promedios:', err);
     },
   });
 }

@@ -36,7 +36,6 @@ export class EstadisticaPrincipal {
     this.nivelSeleccionado = nivel
     this.modalidadesService.getModalidadesNivel(nivel).subscribe({
       next: resp => {
-        console.log(resp)
         this.modalidades = resp
         this.getPromediosEstatalesPorModalidad(this.getModalidadesUnicas())
         this.getPromedioGeneralByMateriaAndNivel()
@@ -53,7 +52,6 @@ export class EstadisticaPrincipal {
       new Map(this.modalidades.map(m => [m.idModalidad, { id: m.idModalidad, descripcion: m.descripcionModalidad }]))
         .values()
     );
-    console.log(modalidadesUnicas)
     return modalidadesUnicas
   }
 
@@ -105,7 +103,6 @@ export class EstadisticaPrincipal {
 
       this.cd?.markForCheck?.();
     } catch (err) {
-      console.error('Error obteniendo promedios por modalidad:', err);
       // Manejo mínimo en caso de error
     }
   }
@@ -135,9 +132,7 @@ export class EstadisticaPrincipal {
       this.cd.detectChanges()
 
 
-      console.log(this.promediosGeneralesEstatales)
     } catch (err) {
-      console.error('Error cargando promedios estatales:', err);
       this.promediosGeneralesEstatales = [];
     }
   }
@@ -161,10 +156,8 @@ async getPromedioGeneralByMateriaAndNivel() {
     );
     // guarda los resultados en tu arreglo
     this.promedioGeneralesEstatalesBynivelAndMateria = responses;
-    console.log('Resultados:', this.promedioGeneralesEstatalesBynivelAndMateria);
 
   } catch (err) {
-    console.error('Error obteniendo promedios por materia y nivel:', err);
     this.promedioGeneralesEstatalesBynivelAndMateria = [];
   }
 }

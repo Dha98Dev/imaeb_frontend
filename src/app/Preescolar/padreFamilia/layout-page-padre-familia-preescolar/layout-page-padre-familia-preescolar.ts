@@ -19,7 +19,6 @@ export class LayoutPagePadreFamiliaPreescolar {
         label: 'Inicio ',
         icon: 'pi pi-home',
         command: () => {
-          console.log('redireccionando')
           this.router.navigate(['/prees_1/alumno_pree'])
         }
       },

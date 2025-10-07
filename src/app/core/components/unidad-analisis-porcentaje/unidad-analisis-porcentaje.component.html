@@ -16,10 +16,12 @@
             <p class="mb-2 text-sm font-medium">Porcentaje Aciertos</p>
             <p class="text-xl text-green font-medium flex-1"> {{item.porcentajeAciertos}} </p>
         </div>
-        <div class="text-center px-1  w-1/2 border">
+       @if (item.porcentajeEstatal && item.porcentajeEstatal > 0) {
+         <div class="text-center px-1  w-1/2 border">
             <p class="mb-2 text-sm font-medium">Promedio estatal</p>
             <p class="text-xl font-medium flex-1">61%</p>
         </div>
+       }
     </div>
 
     <!-- bloque 3 -->

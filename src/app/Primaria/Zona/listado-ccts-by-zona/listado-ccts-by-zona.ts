@@ -6,6 +6,7 @@ import { CatalogoService } from '../../../core/services/Catalogos/catalogo.servi
 import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
 import { firstValueFrom } from 'rxjs';
 import { DinamicTableData, TableColumn } from '../../../core/Interfaces/TablaDinamica.interface';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 
 
@@ -16,7 +17,7 @@ import { DinamicTableData, TableColumn } from '../../../core/Interfaces/TablaDin
   styleUrl: './listado-ccts-by-zona.scss'
 })
 export class ListadoCctsByZona {
-  constructor(private route: ActivatedRoute, private router:Router, private observable: GetCctInfoSErvice, private catalogoService: CatalogoService, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef) { }
+  constructor(private route: ActivatedRoute, private router:Router, private observable: GetCctInfoSErvice, private catalogoService: CatalogoService, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private breadCrumbService:BreadCrumService) { }
   private centrosTrabajos: CentrosTrabajo[] = []
   public nivel: string = ''
   public zona: string = ''
@@ -29,7 +30,7 @@ export class ListadoCctsByZona {
       this.zona = params.get('zona') || ''
       this.observable.setNivel(this.nivel)
       this.observable.setZona(this.zona)
-
+      this.breadCrumbService.addItem({jerarquia:3, label:'Ccts zona '+  this.zona, urlLink:'/sz/cctstByZona/'+this.nivel+'/'+this.zona, icon:''})
       this.getCentrosTrabajoZona()
     });
   }
@@ -71,7 +72,6 @@ export class ListadoCctsByZona {
         categorias.push(data)
 
       } catch (error) {
-        console.error('Error al obtener promedio para', cct, error);
       }
     }
 
@@ -89,7 +89,6 @@ export class ListadoCctsByZona {
       globalSearchKeys:['cct']
     }
     this.cd.detectChanges()
-    console.log(categorias)
     // return { categorias, dataSet };
   }
     getNivelDescription() {
@@ -97,7 +96,6 @@ export class ListadoCctsByZona {
   }
 
   onRow(event:any){
-    console.log(event.cct)
     this.cctSelected=event.cct
   }
 

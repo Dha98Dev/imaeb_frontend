@@ -13,12 +13,14 @@ public title:string=''
 @Input()
 public data:ResultadoPreguntasMateriaAumno= {} as ResultadoPreguntasMateriaAumno
 
+@Input() public isPreescolar:boolean=false
+
 public promedioCorrectas:number=0
 public promedioIncorrectas:number=0
 
 ngOnChanges(changes:SimpleChanges){
 if (changes['data']) {
-  if (this.data &&  this.data.preguntas.length > 0) {
+  if (this.data &&  this.data.preguntas && this.data.preguntas.length > 0 && !this.isPreescolar) {
     this.calcularPromedioAciertos()
   }
 }

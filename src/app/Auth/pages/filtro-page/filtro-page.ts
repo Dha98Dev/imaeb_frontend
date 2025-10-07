@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CatalogoService } from '../../../core/services/Catalogos/catalogo.service';
 import { catalogo, CentrosTrabajo, Nivele, responseCatalogo, Sectores, Zona } from '../../../core/Interfaces/catalogo.interface';
 import { distinctUntilChanged, firstValueFrom } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-filtro-page',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './filtro-page.scss'
 })
 export class FiltroPage {
-  constructor(private cataloService: CatalogoService, private cd: ChangeDetectorRef, private fb: FormBuilder, private router: Router) { }
+  constructor(private cataloService: CatalogoService, private cd: ChangeDetectorRef, private fb: FormBuilder, private router: Router, ) { }
   public niveles: Nivele[] = [];
   public sectores: Sectores[] = [];
   public zonas: Zona[] = [];
@@ -21,6 +22,7 @@ export class FiltroPage {
   public nivelSelected: string = '';
   public filtros: FormGroup = {} as FormGroup;
   public nivelFiltroSeleccionado: number = 0
+  private breadCrumb=inject(BreadCrumService)
 
   ngOnInit() {
     this.getNiveles();
@@ -31,11 +33,18 @@ export class FiltroPage {
       cct: ['', []],
       curpAlumno: ['', []]
     });
+      this.breadCrumb.addItem({
+      jerarquia:1,
+      icon:'',
+      label:'filtros',
+      urlLink:'/Auth/main-filter',
+      home:''
+    })
+
   }
 
   async realizarPeticionCatalogoService(params: catalogo): Promise<responseCatalogo> {
     try {
-      console.log(params)
       const resp = await firstValueFrom(
         this.cataloService.getCatalogo(params)
       );
@@ -57,7 +66,6 @@ export class FiltroPage {
 
   async getSectores() {
     if (this.filtros.get('nivelSelected')?.value == 3) {
-      console.log("limpiando sectores seleccionado nivel secundaria")
       this.limpiarPropiedades(2)
       this.limpiarCampos(['zona', 'cct', 'sector'])
 
@@ -65,7 +73,6 @@ export class FiltroPage {
       this.sectores = [];
     } else {
       try {
-        console.log("limpiando zonas seleccionado sector")
         this.limpiarPropiedades(1)
         this.limpiarCampos(['sector', 'zona', 'cct'])
 
@@ -86,13 +93,11 @@ export class FiltroPage {
 
   async getZonas() {
     try {
-      console.log("limpiando centros de trabajo seleccionado zona")
       this.limpiarPropiedades(3)
       const resp = await this.realizarPeticionCatalogoService({
         nivelId: this.filtros.get('nivelSelected')?.value,
         sector: this.filtros.get('sector')?.value
       });
-      console.log(resp)
       this.zonas = resp.zonas.sort((a, b) =>
         (a.zonaEscolar || 0) - (b.zonaEscolar || 0)
       );
@@ -103,7 +108,6 @@ export class FiltroPage {
   }
 
   async getCentrosTrabajo() {
-    console.log("")
     try {
       const resp = await this.realizarPeticionCatalogoService({
         nivelId: this.filtros.get('nivelSelected')?.value,
@@ -127,7 +131,6 @@ export class FiltroPage {
   }
 
   limpiarPropiedades(nivelLimpieza: number) {
-    console.log(nivelLimpieza)
     switch (nivelLimpieza) {
       case 1:
         this.sectores = []
@@ -153,18 +156,37 @@ export class FiltroPage {
 
   generarUrl() {
     let url = ''
+    let sector = this.filtros.get('sector')?.value ?? ''
+    let zona=  this.filtros.get('zona')?.value ?? ''
+    let nivel= this.filtros.get('nivelSelected')?.value ?? ''
+    let rutaSector='/ss/resultados-sector/'+nivel+'/'+ sector
+    let rutaZona='/sz/resultados-zona/'+nivel+'/'+zona
     if (this.filtros.get('cct')?.value) {
       let cctSelected: CentrosTrabajo = this.centrosTrabajo.filter(cct => cct.id == this.filtros.get('cct')?.value)[0]
       url = '/prim_3/resultados-ct/'
       this.router.navigate([url, cctSelected.cct]);
+      this.addBread(1,'filtros' ,'/Auth/main-filter', '')
+      if (nivel != '3') {
+      this.addBread(2,'sector' + sector,rutaSector, '')
+      }
+      this.addBread(3,'zona ' + zona,rutaZona, '')
+      this.addBread(4, 'Resultados '+cctSelected.cct ,'/prim_3/resultados-ct/'+cctSelected.cct, '')
+      // this.addBread(3,cctSelected.cct,'/prim_3/resultados-ct/'+cctSelected.cct, '')
+      
+
     }
     else if (this.filtros.get('zona')?.value) {
+      this.addBread(3,'zona ' + zona,rutaZona, '')
       this.router.navigate(['/sz/resultados-zona', this.filtros.get('nivelSelected')?.value, this.filtros.get('zona')?.value])
     }
     else if (this.filtros.get('sector')?.value) {
+      this.addBread(2,'sector' + sector,rutaSector, '')
       url = '/ss/resultados-sector'
       this.router.navigate([url, this.filtros.get('nivelSelected')?.value, this.filtros.get('sector')?.value])
     }
+  }
+  addBread(jerarquia:number, label:string, urlLink:string, icon:string ){
+          this.breadCrumb.addItem({jerarquia,label,urlLink,icon,home:''})
   }
 
 

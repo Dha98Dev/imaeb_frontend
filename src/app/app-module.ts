@@ -6,6 +6,7 @@ import { App } from './app';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ComponetsModule } from "./core/components/Components.module";
 
 @NgModule({
   declarations: [
@@ -15,8 +16,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   imports: [
     BrowserModule,
     AppRoutingModule,
-
-  ],
+    ComponetsModule
+],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),

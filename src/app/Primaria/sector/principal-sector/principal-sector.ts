@@ -9,6 +9,7 @@ import { catalogo, CentrosTrabajo, Sectores, Zona } from '../../../core/Interfac
 import { DataGraficaBarra } from '../../../core/Interfaces/grafica.interface';
 import { ParamsPromediosEstatales } from '../../../core/Interfaces/promediosEstatales.interface';
 import { firstValueFrom } from 'rxjs';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-principal-sector',
@@ -18,7 +19,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class PrincipalSector {
 
-    constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService,  private observable:GetCctInfoSErvice) { }
+    constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService,  private observable:GetCctInfoSErvice, private breadCrumbService:BreadCrumService) { }
   public nivel: string = ''
   public sector: string = ''
   public promedioZona: number = 0
@@ -38,6 +39,7 @@ export class PrincipalSector {
       this.getPromedioEstatal()
       this.getPromedioByMateriasAndZonaAndNivelAsync()
       this.getZonasFromSector()
+      this.breadCrumbService.addItem({jerarquia:2, label:'Resultados '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector, icon:''})
     });
   }
 
@@ -121,8 +123,7 @@ export class PrincipalSector {
       next: resp => {
         this.zonas=resp.zonas
         this.getPromediosZonaFromSector()
-        console.log(this.zonas)
-        
+
       },
       error: error => {
 

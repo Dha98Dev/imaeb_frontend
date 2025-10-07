@@ -33,7 +33,7 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { Toast, ToastModule } from 'primeng/toast';
 import { Tooltip } from 'primeng/tooltip';
-
+import { Menubar } from 'primeng/menubar';
 
 @NgModule({
     imports: [
@@ -66,6 +66,8 @@ import { Tooltip } from 'primeng/tooltip';
         Toast,
         ToastModule,
         Tooltip,
+        Menubar,
+        
     ],
     exports: [
         AccordionModule,
@@ -97,6 +99,8 @@ import { Tooltip } from 'primeng/tooltip';
         Toast,
         ToastModule,
         Tooltip,
+        Menubar,
+        
     ],
     declarations: [],
     providers: [

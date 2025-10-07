@@ -8,6 +8,7 @@ import { conteoNivelDesempenioByGrupoAndCct, MateriaPlano } from '../../../core/
 import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
 import { DatosCct } from '../../../core/Interfaces/DatosCct.interface';
 import { datosCct } from '../../../core/Interfaces/listadoAlumno.interface';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-principal-docente',
@@ -16,7 +17,7 @@ import { datosCct } from '../../../core/Interfaces/listadoAlumno.interface';
   styleUrl: './principal-docente.scss'
 })
 export class PrincipalDocente {
-  constructor(private route: ActivatedRoute, private cctService:GetCctInfoSErvice, private cctAndGrupoService:CctAndGrupoService, private cd:ChangeDetectorRef, private estadisticaService:GetEstadisticaService) { }
+  constructor(private route: ActivatedRoute, private cctService:GetCctInfoSErvice, private cctAndGrupoService:CctAndGrupoService, private cd:ChangeDetectorRef, private estadisticaService:GetEstadisticaService, private breadCrumbService:BreadCrumService) { }
   private jerarquia: number = 8
   public porcentajeNinos: number = 54.5
   public porcentajeNinas: number = 45.5
@@ -41,9 +42,10 @@ export class PrincipalDocente {
       this.conteoSexoGrupo()
       this.conteoExamenesUtilizados()
       this.conteoNivelDesempenioByGrupoAndCct()
+      this.breadCrumbService.addItem({ jerarquia: 5, label: 'grupo ' + this.grupo, urlLink: '/prim_2/resultados-grupo/' + this.cct+'/'+this.grupo , icon: '' })
+
     });
     this.cctService.cct$.subscribe(data =>{
-      console.log(data)
     })
   }
 
@@ -97,7 +99,6 @@ export class PrincipalDocente {
         this.cctAndGrupoService.conteoNivelDesempenioByGrupoAndCct(this.cct, this.grupo).subscribe({
       next:(resp) =>{
         this.conteNivelDesempenio=this.transformarArreglo(resp)
-        console.log(this.conteNivelDesempenio)
         this.loader=false
         this.cd.detectChanges()
       },
@@ -139,7 +140,6 @@ transformarArreglo(data: conteoNivelDesempenioByGrupoAndCct[]): MateriaPlano[] {
     this.estadisticaService.getPromedioEstatalByNivel({escuelaId: idCct!, grupoId:this.getGrupoId(this.grupo)!}).subscribe({
       next: resp => {
         this.promedioGrupo = resp[0].promedio
-        console.log(this.promedioGrupo)
         this.cd.detectChanges()
       },
       error: error => {

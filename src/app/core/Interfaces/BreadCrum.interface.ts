@@ -1,6 +1,7 @@
 export interface breadCrumb{
-    home:string,
-    jerarqia:number,
+    home?:string,
+    jerarquia:number,
     label:string,
     urlLink:string
+    icon:string
 }

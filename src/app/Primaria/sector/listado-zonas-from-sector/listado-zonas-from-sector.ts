@@ -6,6 +6,7 @@ import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedi
 import { firstValueFrom } from 'rxjs';
 import { catalogo, Zona } from '../../../core/Interfaces/catalogo.interface';
 import { DinamicTableData, TableColumn } from '../../../core/Interfaces/TablaDinamica.interface';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-listado-zonas-from-sector',
@@ -17,9 +18,9 @@ export class ListadoZonasFromSector {
   public nivel: string = ''
   public sector: string = ''
   public zonas: Zona[] = []
-  public zonaSelected:string=''
+  public zonaSelected: string = ''
   public dataTable: DinamicTableData = {} as DinamicTableData
-  constructor(private route: ActivatedRoute, private router: Router, private observable: GetCctInfoSErvice, private catalogoService: CatalogoService, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef) { }
+  constructor(private route: ActivatedRoute, private router: Router, private observable: GetCctInfoSErvice, private catalogoService: CatalogoService, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private breadCrumbService: BreadCrumService) { }
 
 
   ngOnInit(): void {
@@ -30,6 +31,7 @@ export class ListadoZonasFromSector {
       this.observable.setNivel(this.nivel)
       this.observable.setSector(this.sector)
       this.getZonasFromSector()
+      this.breadCrumbService.addItem({jerarquia:2, label:'Zonas nivel '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector, icon:''})
 
     });
   }
@@ -43,7 +45,6 @@ export class ListadoZonasFromSector {
       next: resp => {
         this.zonas = resp.zonas
         this.getPromediosZonaFromSector()
-        console.log(this.zonas)
 
       },
       error: error => {
@@ -73,7 +74,6 @@ export class ListadoZonasFromSector {
         categorias.push(data)
 
       } catch (error) {
-        console.error('Error al obtener promedio para', this.zonas[i].zonaEscolar, error);
       }
     }
 
@@ -90,15 +90,13 @@ export class ListadoZonasFromSector {
       globalSearchKeys: ['zona']
     }
     this.cd.detectChanges()
-    console.log(categorias)
     // return { categorias, dataSet };
   }
-    onRow(event:any){
-    console.log(event.cct)
-    this.zonaSelected=event.zona
+  onRow(event: any) {
+    this.zonaSelected = event.zona
   }
-  confirmVerDetalles(event:any){
-     this.router.navigate(['/sz/resultados-zona',this.nivel, this.zonaSelected])
+  confirmVerDetalles(event: any) {
+    this.router.navigate(['/sz/resultados-zona', this.nivel, this.zonaSelected])
   }
 
   getNivelDescription() {

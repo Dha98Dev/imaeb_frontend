@@ -31,11 +31,13 @@ import { Subtitle } from './subtitle/subtitle';
 import { subtitle } from '@primeuix/themes/aura/card';
 import { CharBarraSingleDataSet } from './char-barra-single-data-set/char-barra-single-data-set';
 import { TablaDinamica } from './tabla-dinamica/tabla-dinamica';
+import { Navbar } from './navbar/navbar';
 @NgModule({
     imports: [
     PrimeNgModule,
     HighchartsChartModule,
-    FormsModule
+    FormsModule,
+    RouterModule
 ],
     exports: [
         HeaderComponent,
@@ -63,7 +65,8 @@ import { TablaDinamica } from './tabla-dinamica/tabla-dinamica';
         TablaResultadosGrupoCT,
         Subtitle,
         CharBarraSingleDataSet,
-        TablaDinamica
+        TablaDinamica,
+        Navbar
     ],
     declarations: [
         HeaderComponent,
@@ -92,7 +95,8 @@ import { TablaDinamica } from './tabla-dinamica/tabla-dinamica';
         TablaResultadosGrupoCT,
         Subtitle,
         CharBarraSingleDataSet,
-        TablaDinamica
+        TablaDinamica,
+        Navbar
     ],
     providers: [],
 })

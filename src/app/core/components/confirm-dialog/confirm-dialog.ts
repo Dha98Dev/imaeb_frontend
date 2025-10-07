@@ -25,7 +25,6 @@ open(mensaje:string) {
 }
 
 emitSeleccion(action: 'confirm' | 'cancel') {
-  console.log(action);
   
   if (action === 'confirm') {
     this.confirm.emit();
@@ -37,7 +36,6 @@ emitSeleccion(action: 'confirm' | 'cancel') {
 }
 
 close() {
-  console.log('cerrando modal');
 
     this.visible = false;
 

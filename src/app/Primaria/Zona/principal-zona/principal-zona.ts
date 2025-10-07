@@ -9,6 +9,7 @@ import { CatalogoService } from '../../../core/services/Catalogos/catalogo.servi
 import { catalogo, CentrosTrabajo } from '../../../core/Interfaces/catalogo.interface';
 import { DataGraficaBarra } from '../../../core/Interfaces/grafica.interface';
 import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
+import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 
 @Component({
   selector: 'app-principal-zona',
@@ -17,7 +18,7 @@ import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service
   styleUrl: './principal-zona.scss'
 })
 export class PrincipalZona {
-  constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService,  private observable:GetCctInfoSErvice) { }
+  constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService,  private observable:GetCctInfoSErvice, private breadCrumbService:BreadCrumService ) { }
   public nivel: string = ''
   public zona: string = ''
   public promedioZona: number = 0
@@ -37,6 +38,7 @@ export class PrincipalZona {
       this.getPromedioEstatal()
       this.getPromedioByMateriasAndZonaAndNivelAsync()
       this.getCentrosTrabajoZona()
+      this.breadCrumbService.addItem({jerarquia:3, label:'Resultados zona '+  this.zona, urlLink:'/sz/resultados-zona/'+this.nivel+'/'+this.zona, icon:''})
     });
   }
 
@@ -90,7 +92,6 @@ export class PrincipalZona {
       return { ...item, promedioEstatalMateria: resp?.[0]?.promedio ?? 0 };
     }));
 
-    console.log('RESULT:', result);
     this.formatearAPorcentajeAreaEvaluada(result)
   }
   
@@ -108,7 +109,6 @@ export class PrincipalZona {
     });
     this.cd.detectChanges()
 
-    console.log(this.PorcentajeAreaEvaluada)
   }
 
   getCentrosTrabajoZona() {
@@ -142,7 +142,6 @@ export class PrincipalZona {
         categorias.push(cct);
         dataSet.push(resp[0].promedio);
       } catch (error) {
-        console.error('Error al obtener promedio para', cct, error);
       }
     }
 

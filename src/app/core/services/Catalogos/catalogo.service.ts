@@ -23,8 +23,6 @@ getCatalogo(data: catalogo): Observable<responseCatalogo> {
     params = params.set('zonaEscolar', data.zonaEscolar.toString());
   }
 
-  console.log(params.toString());
-
   return this.http.get<responseCatalogo>(
     this.url + 'api/catalogos/flujo-completo',
     { params }
