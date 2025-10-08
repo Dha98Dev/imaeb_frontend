@@ -9,8 +9,8 @@ const routes: Routes = [
     path: '', 
     component: LayoutSector,
     children: [
-      { path: 'resultados-sector/:nivel/:sector', component:PrincipalSector},
-      { path:'zonasFromSector/:nivel/:sector', component:ListadoZonasFromSector  },
+      { path: 'resultados-sector/:nivel/:sector/:modalidad', component:PrincipalSector},
+      { path:'zonasFromSector/:nivel/:sector/:modalidad', component:ListadoZonasFromSector  },
       { path: '', redirectTo: 'resultados-sector', pathMatch: 'full' },
       { path: '**', redirectTo: 'resultados-sector' }
     ]

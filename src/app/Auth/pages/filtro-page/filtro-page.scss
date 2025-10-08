@@ -1,14 +1,21 @@
 
 @media(max-width:900px){
-    .first-inputs{
-        padding-top: 20px;
-        flex-direction: column;
-        div{
-            width: 100%;
-        }
-        .select-nivel{
-            width: 100%;
-        }
+    // .first-inputs{
+    //     padding-top: 20px;
+    //     flex-direction: column;
+    //     div{
+    //         width: 100%;
+    //     }
+    //     .select-nivel{
+    //         width: 100%;
+    //     }
+    // }
+    .item-input{
+        width: 100% !important;
+        flex-direction: row;
+    }
+    .input-container{
+       flex-wrap: wrap;
     }
     .cct-select{
         width: 100%;

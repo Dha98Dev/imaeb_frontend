@@ -22,7 +22,8 @@ export class PrincipalSector {
     constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService,  private observable:GetCctInfoSErvice, private breadCrumbService:BreadCrumService) { }
   public nivel: string = ''
   public sector: string = ''
-  public promedioZona: number = 0
+  public modalidad: string = ''
+  public promedioSector: number = 0
   public promedioEstatal: number = 0
   public PorcentajeAreaEvaluada: itemPorcentajeAreaEvaluadaInterface[] = []
   public dataGrafica: DataGraficaBarra = {} as DataGraficaBarra
@@ -33,21 +34,23 @@ export class PrincipalSector {
     this.route.paramMap.subscribe(params => {
       this.nivel = params.get('nivel') || '';
       this.sector = params.get('sector') || ''
+      this.modalidad = params.get('modalidad') || ''
       this.observable.setNivel(this.nivel)
       this.observable.setSector(this.sector)
+      this.observable.setModalidad(this.modalidad)
       this.getPromedioBySectorAndNivel()
       this.getPromedioEstatal()
       this.getPromedioByMateriasAndZonaAndNivelAsync()
       this.getZonasFromSector()
-      this.breadCrumbService.addItem({jerarquia:2, label:'Resultados '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector, icon:''})
+      this.breadCrumbService.addItem({jerarquia:2, label:'Resultados '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector+'/'+this.modalidad, icon:''})
     });
   }
 
   getPromedioBySectorAndNivel() {
-    let params: ParamsPromediosEstatales = { sectorId: parseInt(this.sector), nivelId: parseInt(this.nivel) }
+    let params: ParamsPromediosEstatales = { sectorId: parseInt(this.sector), nivelId: parseInt(this.nivel), modalidadId:parseInt(this.modalidad) }
     this.estadisticaService.getPromedioEstatalByNivel(params).subscribe({
       next: resp => {
-        this.promedioZona = resp[0].promedio
+        this.promedioSector = resp[0].promedio
         this.cd.detectChanges()
       },
       error: error => {
@@ -117,7 +120,8 @@ export class PrincipalSector {
   getZonasFromSector() {
     let params: catalogo = {
       sector: parseInt(this.sector),
-      nivelId:parseInt(this.nivel)
+      nivelId:parseInt(this.nivel),
+      modalidadId:parseInt(this.modalidad)
     }
     this.catalogoService.getCatalogo(params).subscribe({
       next: resp => {
@@ -138,7 +142,7 @@ export class PrincipalSector {
       const zonaId = this.zonas[i].zonaEscolar;
       try {
         const resp = await firstValueFrom(
-          this.estadisticaService.getPromedioEstatalByNivel({ nivelId:parseInt(this.nivel), zonaId: zonaId })
+          this.estadisticaService.getPromedioEstatalByNivel({ nivelId:parseInt(this.nivel), zonaId: zonaId , modalidadId:parseInt(this.modalidad)})
         );
 
         categorias.push('Zona '+zonaId.toString());

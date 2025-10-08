@@ -21,6 +21,7 @@ export class ListadoCctsByZona {
   private centrosTrabajos: CentrosTrabajo[] = []
   public nivel: string = ''
   public zona: string = ''
+  public modalidad: string = ''
   public dataTable:DinamicTableData={} as DinamicTableData
   public cctSelected:string=''
   ngOnInit(): void {
@@ -28,16 +29,19 @@ export class ListadoCctsByZona {
     this.route.paramMap.subscribe(params => {
       this.nivel = params.get('nivel') || '';
       this.zona = params.get('zona') || ''
+      this.modalidad = params.get('modalidad') || ''
       this.observable.setNivel(this.nivel)
       this.observable.setZona(this.zona)
-      this.breadCrumbService.addItem({jerarquia:3, label:'Ccts zona '+  this.zona, urlLink:'/sz/cctstByZona/'+this.nivel+'/'+this.zona, icon:''})
+      this.observable.setModalidad(this.modalidad)
+      this.breadCrumbService.addItem({jerarquia:3, label:'Ccts zona '+  this.zona, urlLink:'/sz/cctstByZona/'+this.nivel+'/'+this.zona+'/'+this.modalidad, icon:''})
       this.getCentrosTrabajoZona()
     });
   }
   getCentrosTrabajoZona() {
     let params: catalogo = {
       zonaEscolar: parseInt(this.zona),
-      nivelId: parseInt(this.nivel)
+      nivelId: parseInt(this.nivel),
+      modalidadId:parseInt(this.modalidad)
     }
     this.catalogoService.getCatalogo(params).subscribe({
       next: resp => {

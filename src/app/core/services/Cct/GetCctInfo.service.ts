@@ -28,6 +28,10 @@ export class GetCctInfoSErvice {
   private nivelSubject = new BehaviorSubject<any>(null);
   nivel$ = this.nivelSubject.asObservable();
 
+  private modalidadSubject = new BehaviorSubject<any>(null);
+  modalidad$ = this.modalidadSubject.asObservable();
+
+
   private alumnoSubject = new BehaviorSubject<any>(null);
   alumno$ = this.alumnoSubject.asObservable();
 
@@ -53,6 +57,9 @@ export class GetCctInfoSErvice {
 
   setNivel(nivel: string) {
     this.nivelSubject.next(nivel);
+  }
+  setModalidad(modalidad: string) {
+    this.modalidadSubject.next(modalidad);
   }
 
   setAlumno(alumno: string) {

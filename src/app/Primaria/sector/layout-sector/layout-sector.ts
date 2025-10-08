@@ -12,6 +12,7 @@ import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service
 export class LayoutSector {
   public nivel:string=''
   public sector:string=''
+  public modalidad:string=''
     constructor(private router:Router, private cctService:GetCctInfoSErvice, private cd:ChangeDetectorRef){}
   items: MenuItem[] | null = [];
 
@@ -25,6 +26,11 @@ export class LayoutSector {
       this.nivel=data
       this.cd.detectChanges()
     })
+        this.cctService.modalidad$.subscribe(data =>{
+          console.log(data)
+      this.modalidad=data
+      this.cd.detectChanges()
+    })
 
         this.items = [
       {
@@ -32,7 +38,7 @@ export class LayoutSector {
         icon: 'pi pi-home',
         // url: '/prim_2/resultados-grupo',
         command: () => {
-          this.router.navigate(['/ss/resultados-sector', this.nivel , this.sector])
+          this.router.navigate(['/ss/resultados-sector', this.nivel , this.sector, this.modalidad])
         },
       },
       {
@@ -40,7 +46,7 @@ export class LayoutSector {
         icon: 'fa-solid fa-list',
         // url: '/prim_2/listado-grupo',
         command: () => {
-          this.router.navigate(['/ss/zonasFromSector',this.nivel, this.sector])
+          this.router.navigate(['/ss/zonasFromSector',this.nivel, this.sector, this.modalidad])
         },
 
       },

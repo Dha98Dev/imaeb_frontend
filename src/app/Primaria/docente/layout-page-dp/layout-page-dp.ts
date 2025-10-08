@@ -50,24 +50,31 @@ export class LayoutPageDP {
       this.cd.detectChanges();
     })
 
-    this.cctService.centroTrabajo$.subscribe(data => {
-      if (data) {
-        this.datosCct = data
-        if (this.datosCct.nivel != 'Preescolar') {
-          this.cd.detectChanges();
-          this.items?.push(      {
-        label: 'result-area',
-        icon: 'pi pi-pen-to-square',
-        url: '/prim_2/resultados-grupo-area',
-        command: () => {
-          this.router.navigate(['/prim_2/resultados-grupo-area',  this.cct, this.grupo])
-        },
-      },)
-        }
-      }
-    })
+this.cctService.centroTrabajo$.subscribe(data => {
+  if (data) {
+    this.datosCct = data;
 
+    if (this.datosCct.nivel !== 'Preescolar') {
+      this.cd.detectChanges();
+
+      // Verifica si ya existe un ítem con ese label
+      const existe = this.items?.some(item => item.label === 'result-area');
+
+      if (!existe) {
+        this.items?.push({
+          label: 'result-area',
+          icon: 'pi pi-pen-to-square',
+          url: '/prim_2/resultados-grupo-area',
+          command: () => {
+            this.router.navigate(['/prim_2/resultados-grupo-area', this.cct, this.grupo]);
+          },
+        });
+      }
+    }
   }
+});
+
+}
 }
 
 // this.itemsBreadCrum=this.bread.getaDataBreadCrumbs()

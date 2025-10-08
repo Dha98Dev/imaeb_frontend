@@ -1,7 +1,8 @@
 export interface catalogo {
     nivelId?: number,
     sector?: number,
-    zonaEscolar?: number
+    zonaEscolar?: number,
+    modalidadId?:number
 }
 
 export interface responseCatalogo {
@@ -9,7 +10,12 @@ export interface responseCatalogo {
     sectores:       Sectores[];
     niveles:        Nivele[];
     zonas:          Zona[]
+    modalidades:    singleModalidad[]
 }
+export interface singleModalidad{
+    id:number,
+    descripcion:string
+} 
 
 export interface CentrosTrabajo {
     id:     number;

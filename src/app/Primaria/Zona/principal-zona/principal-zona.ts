@@ -18,9 +18,10 @@ import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb
   styleUrl: './principal-zona.scss'
 })
 export class PrincipalZona {
-  constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService,  private observable:GetCctInfoSErvice, private breadCrumbService:BreadCrumService ) { }
+  constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService, private observable: GetCctInfoSErvice, private breadCrumbService: BreadCrumService) { }
   public nivel: string = ''
   public zona: string = ''
+  public modalidad: string = ''
   public promedioZona: number = 0
   public promedioEstatal: number = 0
   public PorcentajeAreaEvaluada: itemPorcentajeAreaEvaluadaInterface[] = []
@@ -32,21 +33,24 @@ export class PrincipalZona {
     this.route.paramMap.subscribe(params => {
       this.nivel = params.get('nivel') || '';
       this.zona = params.get('zona') || ''
+      this.modalidad = params.get('modalidad') || ''
       this.observable.setNivel(this.nivel)
       this.observable.setZona(this.zona)
+      this.observable.setModalidad(this.modalidad)
       this.getPromedioByZonaAndNivel()
       this.getPromedioEstatal()
       this.getPromedioByMateriasAndZonaAndNivelAsync()
       this.getCentrosTrabajoZona()
-      this.breadCrumbService.addItem({jerarquia:3, label:'Resultados zona '+  this.zona, urlLink:'/sz/resultados-zona/'+this.nivel+'/'+this.zona, icon:''})
+      this.breadCrumbService.addItem({ jerarquia: 3, label: 'Resultados zona ' + this.zona, urlLink: '/sz/resultados-zona/' + this.nivel + '/' + this.zona + '/' + this.modalidad, icon: '' })
     });
   }
 
   getPromedioByZonaAndNivel() {
-    let params: ParamsPromediosEstatales = { zonaId: parseInt(this.zona), nivelId: parseInt(this.nivel) }
+    let params: ParamsPromediosEstatales = { zonaId: parseInt(this.zona), nivelId: parseInt(this.nivel), modalidadId: parseInt(this.modalidad) }
     this.estadisticaService.getPromedioEstatalByNivel(params).subscribe({
       next: resp => {
         this.promedioZona = resp[0].promedio
+        console.log(resp)
         this.cd.detectChanges()
       },
       error: error => {
@@ -75,7 +79,7 @@ export class PrincipalZona {
     // zona
     const zonaArr = await Promise.all(materias.map(async materiaId => {
       const resp = await firstValueFrom(
-        this.estadisticaService.getPromedioEstatalByNivel({ nivelId, materiaId, zonaId })
+        this.estadisticaService.getPromedioEstatalByNivel({ nivelId, materiaId, zonaId, modalidadId: parseInt(this.modalidad) })
       );
       return {
         materiaId,
@@ -94,7 +98,7 @@ export class PrincipalZona {
 
     this.formatearAPorcentajeAreaEvaluada(result)
   }
-  
+
   formatearAPorcentajeAreaEvaluada(result: any[]) {
     result.forEach(el => {
       let data: itemPorcentajeAreaEvaluadaInterface = {
@@ -114,7 +118,8 @@ export class PrincipalZona {
   getCentrosTrabajoZona() {
     let params: catalogo = {
       zonaEscolar: parseInt(this.zona),
-      nivelId:parseInt(this.nivel)
+      nivelId: parseInt(this.nivel),
+      modalidadId: parseInt(this.modalidad)
     }
     this.catalogoService.getCatalogo(params).subscribe({
       next: resp => {
@@ -145,14 +150,14 @@ export class PrincipalZona {
       }
     }
 
-    this.dataGrafica={
-      firstDataSet:dataSet,
-      firstLeyend:'Promedio',
-      categorias:categorias,
-      title:'Promedio de cc de la zona ' + this.zona + ' del nivel ' + this.nivel,
-      secondDataSet:[],
-      secondLeyend:'',
-      description:'promedios de la zona ' + this.zona 
+    this.dataGrafica = {
+      firstDataSet: dataSet,
+      firstLeyend: 'Promedio',
+      categorias: categorias,
+      title: 'Promedio de cc de la zona ' + this.zona + ' del nivel ' + this.nivel,
+      secondDataSet: [],
+      secondLeyend: '',
+      description: 'promedios de la zona ' + this.zona
     }
     this.cd.detectChanges()
     // return { categorias, dataSet };

@@ -14,6 +14,7 @@ export class LayoutZona {
   items: MenuItem[] | null = [];
   private nivel:string=''
   private zona:string=''
+  private modalidad:string=''
 
   ngOnInit(){
   
@@ -24,6 +25,10 @@ export class LayoutZona {
     this.cctService.nivel$.subscribe(data =>{
       this.nivel=data
       this.cd.detectChanges()
+    })    
+    this.cctService.modalidad$.subscribe(data =>{
+      this.modalidad=data
+      this.cd.detectChanges()
     })
 
         this.items = [
@@ -32,7 +37,7 @@ export class LayoutZona {
         icon: 'pi pi-home',
         // url: '/prim_2/resultados-grupo',
         command: () => {
-          this.router.navigate(['/sz/resultados-zona', this.nivel , this.zona])
+          this.router.navigate(['/sz/resultados-zona', this.nivel , this.zona, this.modalidad])
         },
       },
       {
@@ -40,7 +45,7 @@ export class LayoutZona {
         icon: 'fa-solid fa-list',
         // url: '/prim_2/listado-grupo',
         command: () => {
-          this.router.navigate(['/sz/cctstByZona',this.nivel, this.zona])
+          this.router.navigate(['/sz/cctstByZona',this.nivel, this.zona, this.modalidad])
         },
 
       },

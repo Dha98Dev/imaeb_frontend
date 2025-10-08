@@ -13,6 +13,9 @@ getCatalogo(data: catalogo): Observable<responseCatalogo> {
 
   if (data.nivelId != null) {
     params = params.set('nivelId', data.nivelId.toString());
+  } 
+  if (data.modalidadId != null) {
+    params = params.set('modalidadId', data.modalidadId.toString());
   }
 
   if (data.sector != null) {   // 👈 así no se salta el 0

@@ -17,6 +17,7 @@ import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb
 export class ListadoZonasFromSector {
   public nivel: string = ''
   public sector: string = ''
+  private modalidad:string=''
   public zonas: Zona[] = []
   public zonaSelected: string = ''
   public dataTable: DinamicTableData = {} as DinamicTableData
@@ -28,18 +29,22 @@ export class ListadoZonasFromSector {
     this.route.paramMap.subscribe(params => {
       this.nivel = params.get('nivel') || '';
       this.sector = params.get('sector') || ''
+      this.modalidad=params.get('modalidad') || ''
       this.observable.setNivel(this.nivel)
       this.observable.setSector(this.sector)
+      this.observable.setModalidad(this.modalidad)
       this.getZonasFromSector()
-      this.breadCrumbService.addItem({jerarquia:2, label:'Zonas nivel '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector, icon:''})
-
+      
     });
+    this.observable.modalidad$.subscribe(data=>{this.modalidad=data})
+    this.breadCrumbService.addItem({jerarquia:2, label:'Zonas nivel '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector+'/'+this.modalidad, icon:''})
   }
 
   getZonasFromSector() {
     let params: catalogo = {
       sector: parseInt(this.sector),
-      nivelId: parseInt(this.nivel)
+      nivelId: parseInt(this.nivel),
+      modalidadId:parseInt(this.modalidad)
     }
     this.catalogoService.getCatalogo(params).subscribe({
       next: resp => {
@@ -60,8 +65,9 @@ export class ListadoZonasFromSector {
 
 
       try {
+        console.log({ nivelId: parseInt(this.nivel), zonaId: this.zonas[i].zonaEscolar, modalidadId:parseInt(this.modalidad) })
         const resp = await firstValueFrom(
-          this.estadisticaService.getPromedioEstatalByNivel({ nivelId: parseInt(this.nivel), zonaId: this.zonas[i].zonaEscolar })
+          this.estadisticaService.getPromedioEstatalByNivel({ nivelId: parseInt(this.nivel), zonaId: this.zonas[i].zonaEscolar, modalidadId:parseInt(this.modalidad) })
         );
 
         let data = {
@@ -96,7 +102,7 @@ export class ListadoZonasFromSector {
     this.zonaSelected = event.zona
   }
   confirmVerDetalles(event: any) {
-    this.router.navigate(['/sz/resultados-zona', this.nivel, this.zonaSelected])
+    this.router.navigate(['/sz/resultados-zona', this.nivel, this.zonaSelected, this.modalidad])
   }
 
   getNivelDescription() {
