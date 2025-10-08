@@ -80,14 +80,22 @@ export class TablaDinamica {
     return rows;
   });
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['columns']) {
-      // inicializa filtros por columna
-      const init: Record<string, string> = {};
-      for (const c of this.columns) init[c.key] = '';
-      this.filtrosPorCol.set(init);
+ngOnChanges(changes: SimpleChanges): void {
+  if (changes['columns']) {
+    const cols = changes['columns'].currentValue as TableColumn[] | undefined;
+
+    // Si aún no hay columnas, inicializa vacío y sal
+    if (!Array.isArray(cols) || cols.length === 0) {
+      this.filtrosPorCol.set({});
+      return;
     }
+
+    // Inicializa filtros por columna
+    const init: Record<string, string> = {};
+    for (const c of cols) init[c.key] = '';
+    this.filtrosPorCol.set(init);
   }
+}
 
   onHeaderClick(col: TableColumn) {
     if (!col?.key) return;

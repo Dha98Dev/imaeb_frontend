@@ -13,57 +13,58 @@ import { CryptoJsService } from '../../core/services/CriptoJs/cryptojs.service';
   styleUrl: './layout-page-padre-familia.scss'
 })
 export class LayoutPagePadreFamilia {
-  constructor(private router: Router, private storage: StorageService, private CctService:GetCctInfoSErvice, private cd: ChangeDetectorRef, private cripto:CryptoJsService) { }
+  constructor(private router: Router, private storage: StorageService, private CctService: GetCctInfoSErvice, private cd: ChangeDetectorRef, private cripto: CryptoJsService) { }
   items: MenuItem[] | null = [];
   // items:any
-  public datosCct:DatosCct={} as DatosCct
+  public datosCct: DatosCct = {} as DatosCct
 
-  ngOnInit() {
-    // const nav = (url: string) => ({ command: () => this.router.navigateByUrl(url) });
-    let alSeleccionado = this.storage.getCriptAlSeleccionado()
-    this.items = [
-      {
-        label: 'Inicio ',
-        icon: 'pi pi-home',
-        command: () => {
-          this.router.navigate(['/s/principal_alumno', alSeleccionado])
-        }
-      },
-    ];
-
-
-    this.CctService.centroTrabajo$.subscribe(data =>{
-      if (data) {
-        this.datosCct=data
-        if (this.datosCct.idNivel != 1) {
-    this.items?.push(
-      {
-        icon: 'fa-solid fa-book',
-        label: 'Lenguajes',
-        styleClass: 'bg-sky-500 text-white',
-        command: () => {
-          this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('1'), alSeleccionado])
-        }
-      },
-      {
-        icon: 'fa-solid fa-calculator',
-        label: 'Matematicas',
-        command: () => {
-          this.router.navigate(['/s/resultados_area',this.cripto.Encriptar('3'), alSeleccionado])
-        }
-      },
-      {
-        icon: 'fa-solid fa-flask',
-        label: 'Ciencias',
-        command: () => {
-          this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('4'), alSeleccionado])
-        }
-      })
-  
-        }
-         this.cd.detectChanges();
+ ngOnInit() {
+  let alSeleccionado = this.storage.getCriptAlSeleccionado()
+  this.items = [
+    {
+      label: 'Inicio',
+      icon: 'pi pi-home',
+      command: () => {
+        this.router.navigate(['/s/principal_alumno', alSeleccionado])
       }
-    })
+    },
+  ];
+
+  let itemsAgregados = false; // Bandera para controlar
+
+  this.CctService.centroTrabajo$.subscribe(data => {
+    if (data && !itemsAgregados) { // Solo agregar si no se han agregado antes
+      this.datosCct = data
+      if (this.datosCct.idNivel != 1) {
+        this.items?.push(
+          {
+            icon: 'fa-solid fa-book',
+            label: 'Lenguajes',
+            styleClass: 'bg-sky-500 text-white',
+            command: () => {
+              this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('1'), alSeleccionado])
+            }
+          },
+          {
+            icon: 'fa-solid fa-calculator',
+            label: 'Matematicas',
+            command: () => {
+              this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('3'), alSeleccionado])
+            }
+          },
+          {
+            icon: 'fa-solid fa-flask',
+            label: 'Ciencias',
+            command: () => {
+              this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('4'), alSeleccionado])
+            }
+          });
+        itemsAgregados = true; // Marcar como agregados
+      }
+    }
+  });
+}
+  agregarItes() {
 
   }
 

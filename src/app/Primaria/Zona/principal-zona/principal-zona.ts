@@ -50,7 +50,6 @@ export class PrincipalZona {
     this.estadisticaService.getPromedioEstatalByNivel(params).subscribe({
       next: resp => {
         this.promedioZona = resp[0].promedio
-        console.log(resp)
         this.cd.detectChanges()
       },
       error: error => {

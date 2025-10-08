@@ -27,7 +27,6 @@ export class LayoutSector {
       this.cd.detectChanges()
     })
         this.cctService.modalidad$.subscribe(data =>{
-          console.log(data)
       this.modalidad=data
       this.cd.detectChanges()
     })

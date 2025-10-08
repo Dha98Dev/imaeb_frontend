@@ -6,7 +6,7 @@ import { DataGraficaBarra } from '../../core/Interfaces/grafica.interface';
 import { firstValueFrom } from 'rxjs';
 import { CatalogoService } from '../../core/services/Catalogos/catalogo.service';
 
-interface promedio {
+export interface promedio {
   nivel: string,
   promedio: number,
   materia?:string

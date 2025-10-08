@@ -65,7 +65,6 @@ export class ListadoZonasFromSector {
 
 
       try {
-        console.log({ nivelId: parseInt(this.nivel), zonaId: this.zonas[i].zonaEscolar, modalidadId:parseInt(this.modalidad) })
         const resp = await firstValueFrom(
           this.estadisticaService.getPromedioEstatalByNivel({ nivelId: parseInt(this.nivel), zonaId: this.zonas[i].zonaEscolar, modalidadId:parseInt(this.modalidad) })
         );

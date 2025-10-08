@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 import { modalidad } from '../../../core/Interfaces/Modalidad.interface';
+import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 
 @Component({
   selector: 'app-filtro-page',
@@ -14,7 +15,7 @@ import { modalidad } from '../../../core/Interfaces/Modalidad.interface';
   styleUrl: './filtro-page.scss'
 })
 export class FiltroPage {
-  constructor(private cataloService: CatalogoService, private cd: ChangeDetectorRef, private fb: FormBuilder, private router: Router,) { }
+  constructor(private cataloService: CatalogoService, private cd: ChangeDetectorRef, private fb: FormBuilder, private router: Router, private crypto:CryptoJsService) { }
   public niveles: Nivele[] = [];
   public modalidades: singleModalidad[] = []
   public sectores: Sectores[] = [];
@@ -51,7 +52,6 @@ export class FiltroPage {
       const resp = await firstValueFrom(
         this.cataloService.getCatalogo(params)
       );
-      console.log(params)
       return resp;
     } catch (error) {
       throw error; // o devuelve un objeto vacío si prefieres
@@ -203,6 +203,12 @@ export class FiltroPage {
       this.addBread(2, 'sector' + sector, rutaSector, '')
       url = '/ss/resultados-sector'
       this.router.navigate([url, nivel, sector,modalidad ])
+    }
+    else if (this.filtros.get('modalidad')?.value){
+      url = '/m/resultadosModalidad'
+      let modalidadSelected=this.modalidades.filter(mod => mod.id == modalidad)
+      let modalidadCripto = this.crypto.toBase64Url(this.crypto.Encriptar(modalidadSelected[0].descripcion))
+      this.router.navigate([url, nivel, modalidad, modalidadCripto ])
     }
   }
   addBread(jerarquia: number, label: string, urlLink: string, icon: string) {
