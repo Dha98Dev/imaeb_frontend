@@ -32,13 +32,17 @@
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.8",
     "crypto-js": "^4.2.0",
+    "file-saver": "^2.0.5",
     "highcharts": "^11.2.0",
     "highcharts-angular": "^4.0.1",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
     "primeicons": "^7.0.0",
     "primeng": "^20.1.1",
     "rxjs": "~7.8.0",
     "tailwindcss-primeui": "^0.6.1",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@angular/build": "^20.2.0",

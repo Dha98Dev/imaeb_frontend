@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 import { modalidad } from '../../../core/Interfaces/Modalidad.interface';
 import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-filtro-page',
@@ -15,7 +16,7 @@ import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.servic
   styleUrl: './filtro-page.scss'
 })
 export class FiltroPage {
-  constructor(private cataloService: CatalogoService, private cd: ChangeDetectorRef, private fb: FormBuilder, private router: Router, private crypto:CryptoJsService) { }
+  constructor(private cataloService: CatalogoService, private cd: ChangeDetectorRef, private fb: FormBuilder, private router: Router, private crypto:CryptoJsService, private messageService: MessageService) { }
   public niveles: Nivele[] = [];
   public modalidades: singleModalidad[] = []
   public sectores: Sectores[] = [];
@@ -187,7 +188,7 @@ export class FiltroPage {
       this.router.navigate([url, cctSelected.cct]);
       this.addBread(1, 'filtros', '/Auth/main-filter', '')
       if (nivel != '3') {
-        this.addBread(2, 'sector' + sector, rutaSector, '')
+        this.addBread(2, 'sector ' + sector, rutaSector, '')
       }
       this.addBread(3, 'zona ' + zona, rutaZona, '')
       this.addBread(4, 'Resultados ' + cctSelected.cct, '/prim_3/resultados-ct/' + cctSelected.cct, '')
@@ -200,7 +201,7 @@ export class FiltroPage {
       this.router.navigate(['/sz/resultados-zona', nivel, zona, modalidad])
     }
     else if (this.filtros.get('sector')?.value) {
-      this.addBread(2, 'sector' + sector, rutaSector, '')
+      this.addBread(2, 'sector ' + sector, rutaSector, '')
       url = '/ss/resultados-sector'
       this.router.navigate([url, nivel, sector,modalidad ])
     }
@@ -209,6 +210,8 @@ export class FiltroPage {
       let modalidadSelected=this.modalidades.filter(mod => mod.id == modalidad)
       let modalidadCripto = this.crypto.toBase64Url(this.crypto.Encriptar(modalidadSelected[0].descripcion))
       this.router.navigate([url, nivel, modalidad, modalidadCripto ])
+    }else{
+      this.messageService.add({ severity: 'secondary', summary: 'Filtro de la informacion', detail: 'Debe de seleccionar un nivel y una modalidad al menos' });
     }
   }
   addBread(jerarquia: number, label: string, urlLink: string, icon: string) {

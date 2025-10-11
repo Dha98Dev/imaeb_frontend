@@ -316,7 +316,7 @@ getPromedioMateriasByModalidadAndNivel(): void {
 
           this.tableDinamica = {
             columns: [
-              { key: 'nivel', label: 'Nivel', type: 'number', filterable: true },
+              { key: 'nivel', label: 'Nivel', type: 'number', filterable: false },
               { key: 'promedioNivel', label: 'Promedio Nivel', type: 'number' },
               { key: 'modalidad', label: 'Modalidad', type: 'text', filterable: true },
 

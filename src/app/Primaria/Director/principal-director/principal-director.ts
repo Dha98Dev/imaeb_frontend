@@ -145,6 +145,7 @@ export class PrincipalDirector {
       this.getEstadistica.getPromedioEstatalByNivel(paramProm).subscribe({
         next: resp => {
           this.PromedioEstatal = resp[0].promedio
+          this.cd.detectChanges()
         },
         error: error => {
 

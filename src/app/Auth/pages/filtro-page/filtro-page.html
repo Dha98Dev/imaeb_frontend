@@ -81,7 +81,7 @@
                   </div>
                   }
 
-                  @if ((filtros.get('sector')?.value || filtros.get('nivelSelected')?.value == 3) || zonas.length > 0) {
+                  @if ((filtros.get('sector')?.value || (filtros.get('nivelSelected')?.value == 3) && filtros.get('modalidad')?.value) || zonas.length > 0) {
                   <div
                     class="item-input mt-5 flex flex-col md:flex-row items-center justify-center gap-2 w-full md:w-1/2">
                     <p-floatlabel class="flex-1 w-full">
@@ -158,3 +158,6 @@
       </p-accordion>
     </div>
   </div>
+
+
+    <p-toast />
