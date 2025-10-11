@@ -1,4 +1,8 @@
-<div>
+@if(loader){
+<app-loader-page></app-loader-page>
+}
+@if (!loader) {
+    <div>
     <app-title [title]="'Resultados  de  modalidad ' + modalidad + ' de nivel ' + getnivelDescription()"></app-title>
 </div>
 
@@ -23,4 +27,5 @@
         [globalSearchKeys]="tableDinamica.globalSearchKeys"></app-tabla-dinamica>
 </div>
 
+}
 }

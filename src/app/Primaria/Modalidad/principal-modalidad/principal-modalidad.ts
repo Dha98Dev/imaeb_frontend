@@ -310,7 +310,7 @@ getPromedioMateriasByModalidadAndNivel(): void {
       .subscribe({
         next: (rows: resultadosModalidad[]) => {
           this.resultados = rows;
-
+          this.loader=false
           // Para secundaria ocultamos columnas de sector con className (o condicional en template)
           const esSec = esSecundaria;
 
@@ -318,7 +318,7 @@ getPromedioMateriasByModalidadAndNivel(): void {
             columns: [
               { key: 'nivel', label: 'Nivel', type: 'number', filterable: false },
               { key: 'promedioNivel', label: 'Promedio Nivel', type: 'number' },
-              { key: 'modalidad', label: 'Modalidad', type: 'text', filterable: true },
+              { key: 'modalidad', label: 'Modalidad', type: 'text', filterable: false },
 
               // Oculta columnas de sector si es secundaria
               { key: 'sector', label: 'Sector', type: 'number', filterable: true, },
