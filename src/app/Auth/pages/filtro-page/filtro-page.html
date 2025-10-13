@@ -113,7 +113,7 @@
                 <p-floatlabel class="cct-select w-full">
                   <p-select inputId="over_label" [options]="centrosTrabajo" optionValue="id" optionLabel="cct"
                     class="w-full" formControlName="cct" filter="true" filterBy="cct" />
-                  <label for="over_label">seleccione cct</label>
+                  <label for="over_label">Seleccione CCT</label>
                 </p-floatlabel>
                 }
                 @if (filtros.get('cct')?.value && filtros.get('cct')?.value != null ) {
@@ -138,7 +138,7 @@
 
 
         <p-accordion-panel value="1">
-          <p-accordion-header>Estadistica General </p-accordion-header>
+          <p-accordion-header>Estadística General </p-accordion-header>
           <p-accordion-content>
             <div class="flex flex-col gap-3">
               <p-message severity="secondary" class="m-0 ">
@@ -148,7 +148,7 @@
                   desagregada por nivel educativo, modalidad y demás criterios establecidos para su análisis.
                 </small>
               </p-message>
-              <p-button severity="contrast" label="Ver Estadistica general" icon="pi pi-chart-bar" size="small"
+              <p-button severity="contrast" label="Ver Estadística general" icon="pi pi-chart-bar" size="small"
                 routerLink="/e/estadistica-general" />
             </div>
           </p-accordion-content>

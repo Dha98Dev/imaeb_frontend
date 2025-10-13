@@ -20,7 +20,7 @@
 <!-- <li></li> -->
     @for (bc of itemsBread ; track bc.jerarquia) {
     <li class="">
-      <a [routerLink]="bc.urlLink" class="text-gray-500 text-sm">
+      <a [routerLink]="bc.urlLink" class="text-gray-500 text-sm text-capitalize">
         @if(bc.icon){
         <i [class]="bc.icon" class="me-1"></i>
         }@else{

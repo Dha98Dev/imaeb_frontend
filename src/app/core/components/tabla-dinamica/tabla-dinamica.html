@@ -89,7 +89,7 @@
       <tr class="bg-white rounded-lg">
         @for (col of columns; track $index) {
           <th
-            class="px-4 py-3 font-semibold uppercase tracking-wide text-[11px] text-gray-500 text-center cursor-pointer select-none first:rounded-l-xl last:rounded-r-xl"
+            class="px-4 py-3 font-semibold uppercase tracking-wide text-[11px] text-gray-800 text-center cursor-pointer select-none first:rounded-l-xl last:rounded-r-xl"
             (click)="onHeaderClick(col)"
             title="Ordenar por {{ col.label }}">
             <div class="flex justify-center items-center gap-1">
@@ -120,7 +120,7 @@
             (click)="onRowClick(row)"
             title="Ver detalles">
             @for (col of columns; track $index) {
-              <td class="px-4 py-3 whitespace-nowrap text-gray-800 text-center first:rounded-l-xl last:rounded-r-xl {{ col.className || '' }}">
+              <td class="px-4 py-3 whitespace-nowrap text-gray-600 text-center first:rounded-l-xl last:rounded-r-xl {{ col.className || '' }}">
                 @if (col.key === 'porcentaje') {
                   <div class="flex items-center gap-3">
                     <div class="h-2 w-40 bg-gray-200 rounded-full overflow-hidden">
