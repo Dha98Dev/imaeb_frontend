@@ -42,7 +42,7 @@ export class PrincipalEstadisticaGeneral {
        this.breadCrumb.addItem({
       jerarquia:1,
       icon:'',
-      label:'Estadistica general',
+      label:'Estadística general',
       urlLink:'/Auth/main-filter',
       home:''
     })

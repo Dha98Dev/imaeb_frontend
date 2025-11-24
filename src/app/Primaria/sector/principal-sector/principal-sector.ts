@@ -104,9 +104,9 @@ export class PrincipalSector {
   formatearAPorcentajeAreaEvaluada(result: any[]) {
     result.forEach(el => {
       let data: itemPorcentajeAreaEvaluadaInterface = {
-        firstLeyendPercent: 'Promedio en ' + el.nombreMateria + ' del sector ' + this.sector,
+        firstLeyendPercent: 'Promedio',
         firstPercent: el.promedio,
-        secondLeyendPercent: 'Promedio Estatal de ' + el.nombreMateria,
+        secondLeyendPercent: 'Promedio Estatal',
         secondPercent: el.promedioEstatalMateria,
         bgTitle: this.getBg.getBackgroundMateria(el.nombreMateria),
         title: el.nombreMateria
@@ -155,7 +155,7 @@ export class PrincipalSector {
       firstDataSet:dataSet,
       firstLeyend:'Promedio',
       categorias:categorias,
-      title:'Promedios de zonas del sector ' + this.sector + ' del nivel ' + this.getNivelDescription(),
+      title:'Promedios de zonas del sector ' + this.sector ,
       secondDataSet:[],
       secondLeyend:'',
       description:'promedios de las zonas del sector ' + this.sector 

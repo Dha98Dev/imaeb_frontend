@@ -60,7 +60,7 @@ export class PrincipalPadreFamilia {
         this.cctInfo.setAlumno(nombre)
         this.getDataCentroTrabajo(this.datosAlumno.datosEscolares.cct)
         this.resultadosPorcentajes = this.datosAlumno.resultados!
-        this.calcularPorcentajeEstatalMateria()
+        // this.calcularPorcentajeEstatalMateria()
 
         this.promedioAlumno = this.datosAlumno.promedioGeneral
         this.loader = false
@@ -73,6 +73,7 @@ export class PrincipalPadreFamilia {
   }
 
   calcularPorcentajeEstatalMateria() {
+    this.resultadosPorcentajes=this.resultadosPorcentajes.reverse()
     this.resultadosPorcentajes.forEach(element => {
       let params: ParamsPromediosEstatales = {} as ParamsPromediosEstatales
       params.materiaId = element.idMateria;
@@ -87,6 +88,7 @@ export class PrincipalPadreFamilia {
             title: element.materia + '',
             bgTitle: this.getBgMateria(element.materia)
           }
+          console.log(params)
           this.porcentajesAreaEvaluada.push(data)
           this.cd.detectChanges()
         },
@@ -104,6 +106,8 @@ export class PrincipalPadreFamilia {
         this.DatosCct = resp[0]
         this.cctInfo.setCentroTrabajo(this.DatosCct)
         this.nivel = resp[0].idNivel
+        this.calcularPorcentajeEstatalMateria()
+        console.log(resp)
         this.calcularPromedioEstatal()
         if (resp[0].idNivel == 1) {
           this.calcularPromedioAlumnoPreescolar()

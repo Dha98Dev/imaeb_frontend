@@ -1,24 +1,23 @@
 <div class="contenido flex bg-white rounded-lg px-2">
   <!-- Unidad de análisis -->
-  <div class="item-1  p-2 w-3/12 flex flex-col">
+  <!-- <div class="item-1  p-2 w-3/12 flex flex-col">
     <p class="flex-3 flex items-center justify-center font-semibold">Unidad de análisis</p>
     <div class="flex-1 flex items-center justify-center">
       <p class="text-center">{{ unidadAnalisis }}</p>
     </div>
-  </div>
+  </div> -->
 
   <!-- Reactivos -->
-  <div class="contenedor-chart item-2 p-2 w-6/12 flex flex-col">
-    <p class="flex-1 flex items-center justify-center font-semibold">Reactivos</p>
+  <div class="contenedor-chart item-2 p-2 w-full flex flex-col">
+    <p class="flex-1 flex items-center justify-center font-semibold">Porcentaje de aciertos por unidad de análisis</p>
     <div class="flex-3 w-full h-full">
       <app-chart-barra [dataChart]="dataSet" class="w-full h-full block"></app-chart-barra>
     </div>
   </div>
 
-<div class="w-3/12 flex item-3">
+<!-- <div class="w-3/12 flex item-3">
 
   @if (!isAlumno && alumnos !='') {
-        <!-- Alumnos -->
   <div class=" p-2 w-1/3 flex flex-col">
     <p class="flex-3 flex items-center justify-center font-semibold text-sky-500">Alumnos</p>
     <div class="flex-1 flex items-center justify-center">
@@ -26,21 +25,21 @@
     </div>
   </div>
 
-  }
+  } -->
   <!-- Aciertos -->
-  <div class="  p-2 flex flex-col" [ngClass]="isAlumno ? 'w-1/2' : 'w-1/3'">
+  <!-- <div class="  p-2 flex flex-col" [ngClass]="isAlumno ? 'w-1/2' : 'w-1/3'">
     <p class="flex-3 flex items-center justify-center font-semibold text-green">Aciertos</p>
     <div class="flex-1 flex items-center justify-center">
       <p class="text-center font-semibold text-3xl text-green">{{ aciertos }}</p>
     </div>
-  </div>
+  </div> -->
 
   <!-- Desaciertos -->
-  <div class="  p-2 flex flex-col" [ngClass]="isAlumno ? 'w-1/2' : 'w-1/3'">
+  <!-- <div class="  p-2 flex flex-col" [ngClass]="isAlumno ? 'w-1/2' : 'w-1/3'">
     <p class="flex-3 flex items-center justify-center font-semibold text-red">Desaciertos</p>
     <div class="flex-1 flex items-center justify-center">
       <p class="text-center font-semibold text-3xl text-red">{{ desaciertos }}</p>
     </div>
-  </div>
-</div>
+  </div> -->
+<!-- </div> -->
 </div>

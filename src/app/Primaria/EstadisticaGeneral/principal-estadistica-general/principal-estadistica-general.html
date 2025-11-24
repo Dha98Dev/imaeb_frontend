@@ -14,7 +14,7 @@
 
 <div class="flex justify-center">
     <div class="w-fit">
-        <app-subtitle [subtitle]="'Resultados generales por nivel'"></app-subtitle>
+        <app-subtitle [subtitle]="'Promedios Estatales por Nivel Educativo'"></app-subtitle>
     </div>
 </div>
 
@@ -22,7 +22,7 @@
 <div class=" prom-estatales flex justify-around mt-5">
     @for (item of promediosGeneralesEstatales; track $index) {
     <app-single-promedio [isEstatal]="false" [content]="item.promedio.toString()"
-        [title]="'Promedio de ' + item.nivel"></app-single-promedio>
+        [title]="item.nivel"></app-single-promedio>
     }
 </div>
 

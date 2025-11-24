@@ -33,7 +33,7 @@ export class ListadoCctsByZona {
       this.observable.setNivel(this.nivel)
       this.observable.setZona(this.zona)
       this.observable.setModalidad(this.modalidad)
-      this.breadCrumbService.addItem({jerarquia:3, label:'Ccts zona '+  this.zona, urlLink:'/sz/cctstByZona/'+this.nivel+'/'+this.zona+'/'+this.modalidad, icon:''})
+      this.breadCrumbService.addItem({jerarquia:3, label:'CCT zona '+  this.zona, urlLink:'/sz/cctstByZona/'+this.nivel+'/'+this.zona+'/'+this.modalidad, icon:''})
       this.getCentrosTrabajoZona()
     });
   }
@@ -67,10 +67,10 @@ export class ListadoCctsByZona {
         );
 
         let data = {
-          '#':i,
+          '#':i+1,
           zona: this.zona,
           cct: cct,
-          nivel: this.catalogoService.getNivelDescription(this.nivel),
+          nivel: this.catalogoService.getNivelDescription(this.nivel).toUpperCase(),
           promedio: resp[0].promedio
         }
         categorias.push(data)

@@ -153,7 +153,7 @@ export class PrincipalZona {
       firstDataSet: dataSet,
       firstLeyend: 'Promedio',
       categorias: categorias,
-      title: 'Promedio de cc de la zona ' + this.zona + ' del nivel ' + this.nivel,
+      title: 'Promedio de zona ' + this.zona ,
       secondDataSet: [],
       secondLeyend: '',
       description: 'promedios de la zona ' + this.zona

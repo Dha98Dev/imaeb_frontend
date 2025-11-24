@@ -9,4 +9,6 @@ import { Component, Input } from '@angular/core';
 export class Title {
 @Input()
 public title:string='consulta de resultados alumnos imaeb'
+@Input()
+public classTitle:string=''
 }

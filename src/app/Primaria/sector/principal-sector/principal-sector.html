@@ -3,7 +3,7 @@
 
   <!-- Título -->
   <div class="flex justify-center rounded-lg py-2">
-    <app-subtitle [subtitle]="'Resultados de sector ' + sector + ' del nivel ' + getNivelDescription()">
+    <app-subtitle [subtitle]="'Resultados del Sector ' + sector ">
     </app-subtitle>
   </div>
 
@@ -13,7 +13,7 @@
     <div class="md:basis-1/3 md:max-w-[33%]">
       <div class="flex flex-col gap-3">
         <app-single-promedio [isEstatal]="false" [content]="promedioSector.toString()"
-          [title]="'Promedio de nivel ' + getNivelDescription() + ' en sector ' + sector">
+          [title]="'Promedio del Sector ' + sector">
         </app-single-promedio>
 
         <!-- evita prop duplicada -->

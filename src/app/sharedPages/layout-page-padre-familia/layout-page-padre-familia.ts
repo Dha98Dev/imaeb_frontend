@@ -38,11 +38,10 @@ export class LayoutPagePadreFamilia {
       if (this.datosCct.idNivel != 1) {
         this.items?.push(
           {
-            icon: 'fa-solid fa-book',
-            label: 'Lenguajes',
-            styleClass: 'bg-sky-500 text-white',
+            icon: 'fa-solid fa-flask',
+            label: 'Ciencias',
             command: () => {
-              this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('1'), alSeleccionado])
+              this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('4'), alSeleccionado])
             }
           },
           {
@@ -53,12 +52,14 @@ export class LayoutPagePadreFamilia {
             }
           },
           {
-            icon: 'fa-solid fa-flask',
-            label: 'Ciencias',
+            icon: 'fa-solid fa-book',
+            label: 'Lenguajes',
+            styleClass: 'bg-sky-500 text-white',
             command: () => {
-              this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('4'), alSeleccionado])
+              this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('1'), alSeleccionado])
             }
-          });
+          }
+          );
         itemsAgregados = true; // Marcar como agregados
       }
     }

@@ -20,7 +20,7 @@ export class Navbar {
         command : e=> this.router.navigate(['/Auth/main-filter'])
       },
       {
-        label: 'Estadistica General',
+        label: 'Estadística General',
         icon: 'pi pi-chart-bar',
         command: e => this.router.navigate(['/e/estadistica-general'])
       }

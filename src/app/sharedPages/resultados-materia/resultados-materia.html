@@ -2,11 +2,11 @@
 
 @if (!loader) {
     <div class="contenedor mt-2 flex flex-col  gap-2 mx-2 ">
-    <h2 class="font-semibold text-center text-c2 text-xl mb-3">Resultados de la materia {{resultadosPreguntasAlumnoMateria.nombre}}  </h2>
+    <h2 class="font-semibold text-center text-c2 text-xl mb-3">Resultado de {{resultadosPreguntasAlumnoMateria.nombre}}  </h2>
     <div class="items-container  flex gap-3 pb-5 flex-col">
         <div class="bloque-1  px-3 py-3  flex flex-col align-items-center shadow-md rounded-lg">
-            <div class="flex justify-center">
-                <app-subtitle [subtitle]="'Unidades de analisis'"></app-subtitle>
+            <div class="flex w-fit w-100">
+                <app-subtitle [subtitle]="'Unidades de análisis'"></app-subtitle>
             </div>
             <div class="flex-1 w-100 ">
                 <app-unidad-analisis-porcentaje [dataUnidadAnalisis]="porcentajeResultado"></app-unidad-analisis-porcentaje>

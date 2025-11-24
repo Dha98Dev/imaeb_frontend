@@ -18,7 +18,7 @@
             @for (al of alumnosFiltrados; let i=$index; track $index) {
             <tr class="hover:bg-gray-100"
                 [title]="'ver detalles de ' + al['APELLIDO_P'] + ' ' + al['APELLIDO_M'] + ' ' +al['NOMBRE'] + ' '"
-                (click)="confirmDialog.open('ver detalles de ' + al['APELLIDO_P'] + ' ' + al['APELLIDO_M'] + ' ' +al['NOMBRE'] + ' '); alumnoSeleccionado= al.idAlumno">
+                (click)="confirmDialog.open(' Desea ver los resultados de ' + al['APELLIDO_P'] + ' ' + al['APELLIDO_M'] + ' ' +al['NOMBRE'] + ' '); alumnoSeleccionado= al.idAlumno">
                 @for (item of encabezados; track $index) {
                 <td class="  border border-gray-200 text-center" [ngClass]="{'bg-green-200': al[item] == 1 && !preescolar}"> {{al[item]}} </td>
                 }

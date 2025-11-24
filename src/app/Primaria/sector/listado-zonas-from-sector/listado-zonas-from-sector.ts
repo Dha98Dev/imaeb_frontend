@@ -70,10 +70,10 @@ export class ListadoZonasFromSector {
         );
 
         let data = {
-          '#': i,
+          '#': i+1,
           sector: this.sector,
           zona: this.zonas[i].zonaEscolar,
-          nivel: this.catalogoService.getNivelDescription(this.nivel),
+          nivel: this.catalogoService.getNivelDescription(this.nivel).toUpperCase(),
           promedio: resp[0].promedio
         }
         categorias.push(data)

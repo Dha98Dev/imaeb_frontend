@@ -1,46 +1,68 @@
 <div class="ct-data  mx-2 px-2 py-3 rounded   bg-white shadow">
     <h2 class="mb-3 text-center text-xl text-c2 fw-semibold">
-        Informacion de la Escuela
+        Información de la Escuela
     </h2>
     <hr class="divider">
     <div class="d-flex flex-wrap gap-3 mt-3 justify-around">
 
         <div class="par flex  gap-1 ">
-            <p class="fw-bold">Ciclo: </p>
+            <p class="fw-bold">Ciclo Escolar: </p>
             <p class="bg-c1 text-white px-3 font-semibold rounded"> 2024-2025</p>
+        </div>
+        <div class="par flex  gap-1 ">
+            <p class="fw-bold">Sector: </p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.sector}} </p>
+        </div>
+        <div class="par flex  gap-1 ">
+            <p class="fw-bold">Zona: </p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.zonaEscolar}} </p>
+        </div>
+        <div class="par flex  gap-1 ">
+            <p class="fw-bold">CCT: </p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.cct}} </p>
+        </div>
+        <div class="par flex  gap-1 ">
+            <p class="fw-bold">Turno: </p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded">
+                @for (item of datosCct.turnos ;let i=$index; track $index) {
+                @if (i % 2 !=0 ) {
+                <small>
+                    , {{item.nombre}}
+                </small>
+                }@else {
+                <small>
+                    {{item.nombre}}
+                </small>
+                }
+                }
+                <!-- {{datosCct.turnos}} </p> -->
+
+        </div>
+        <div class="par flex  gap-1 ">
+            <p class="fw-bold">Nombre de la escuela: </p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.nombre}} </p>
         </div>
         <div class="par flex  gap-1 ">
             <p class="fw-bold">Grado: </p>
             @if (datosCct.nivel == "Primaria") {
-                <p class="bg-c1 text-white px-3 font-semibold rounded">6</p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded">6</p>
             }@else {
-                <p class="bg-c1 text-white px-3 font-semibold rounded">3</p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded">3</p>
             }
         </div>
         <!-- <div class="par flex  gap-1 ">
             <p class="fw-bold">grupo: </p>
             <p class="bg-c1 text-white px-3 font-semibold rounded"> A</p>
         </div> -->
-        <div class="par flex  gap-1 ">
-            <p class="fw-bold">Cct: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.cct}} </p>
-        </div>
-        <div class="par flex  gap-1 ">
-            <p class="fw-bold">Escuela: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.nombre}} </p>
-        </div>
 
         <div class="par flex  gap-1 ">
-            <p class="fw-bold">Zona: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.zonaEscolar}} </p>
-        </div>
-        <div class="par flex  gap-1 ">
-            <p class="fw-bold">localidad: </p>
-            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.localidad}} </p>
-        </div>
-        <div class="par flex  gap-1 ">
-            <p class="fw-bold">Municpio: </p>
+            <p class="fw-bold">Municipio: </p>
             <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.municipio}} </p>
         </div>
+        <div class="par flex  gap-1 ">
+            <p class="fw-bold">Localidad: </p>
+            <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.localidad}} </p>
+        </div>
     </div>
+
 </div>
