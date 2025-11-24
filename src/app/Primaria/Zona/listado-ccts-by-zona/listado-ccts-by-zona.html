@@ -1,0 +1,17 @@
+<div class="flex justify-center">
+    <app-subtitle [subtitle]="'Listado de promedios de los centros de trabajo de la zona ' + zona "></app-subtitle>
+</div>
+@if(dataTable.data && dataTable.data.length > 0){
+    <div class="mx-3">
+    <app-tabla-dinamica
+  [columns]="dataTable.columns"
+  [data]="dataTable.data"
+  [globalSearchKeys]="dataTable.globalSearchKeys"
+  (rowClick)="onRow($event)"
+  (rowClick)="confirmDialog.visible=true"
+  >
+></app-tabla-dinamica>
+</div>
+}
+
+<app-confirm-dialog #confirmDialog [mensaje]="'Ver resultados del centro de trabajo ' + cctSelected" (confirm)="confirmVerDetalles($event)"></app-confirm-dialog>

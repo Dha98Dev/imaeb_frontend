@@ -1,0 +1,14 @@
+
+ @if (!loader) {
+       <div class="mx-2 mb-4">
+    <app-subtitle [subtitle]="'Resultados por alumno'"></app-subtitle>
+</div>
+<div class="bg-white mx-2  pb-20 mb-7">
+    
+        <app-table-resultados-grupo [listadoAlumnos]="registrosFormateados" [preescolar]="nivel == 1 ? true : false"></app-table-resultados-grupo>
+    
+</div>
+ }
+ @else{
+    <app-loader-page></app-loader-page>
+ }

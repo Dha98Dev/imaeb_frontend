@@ -1,0 +1,168 @@
+<div class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+
+  <!-- Acciones -->
+  <div class="flex gap-2 flex-wrap">
+    <!-- <button class="px-3 py-2 border rounded text-sm" type="button" (click)="copyToClipboard()">
+      Copiar
+    </button> -->
+    <button class="px-3 py-2 border rounded text-sm" type="button" (click)="exportToExcel()">
+      Exportar Excel
+    </button>
+    <button class="px-3 py-2 border rounded text-sm" type="button" (click)="exportToPDF()">
+      Exportar PDF
+    </button>
+  </div>
+
+  <!-- ⚙️ Tamaño de página -->
+  <div class="flex items-center gap-2">
+    <label class="text-sm text-gray-600">Mostrar</label>
+    <select
+      class="border rounded px-2 py-1 text-sm"
+      [ngModel]="pageSize()"
+      (ngModelChange)="onChangePageSize($event)"
+    >
+      @for (opt of pageSizeOptions; track $index) {
+        <option [value]="opt">{{ opt }}</option>
+      }
+    </select>
+    <span class="text-sm text-gray-600">por página</span>
+  </div>
+</div>
+
+<!-- Barra de filtros -->
+<div class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+  <!-- 🔍 Búsqueda global -->
+  <input
+    type="text"
+    [ngModel]="filtroGlobal()"
+    (ngModelChange)="setFiltroGlobal($event)"
+    placeholder="Buscar en toda la tabla..."
+    class="border rounded px-3 py-2 text-sm w-full sm:w-80" />
+
+  <!-- Filtros por columna -->
+  @if (columns?.length) {
+    <div class="flex gap-2 flex-wrap">
+      @for (col of columns; track $index) {
+        @if (col.filterable) {
+          <input
+            [type]="col.type ?? 'text'"
+            [placeholder]="'Filtrar ' + col.label"
+            class="border rounded px-2 py-1 text-xs w-36"
+            [ngModel]="filtrosPorCol()[col.key]"
+            (ngModelChange)="updateFiltro(col.key, $event)" />
+        }
+      }
+    </div>
+  }
+</div>
+
+<!-- Resumen y paginación superior (opcional) -->
+<div class="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+  <div class="text-sm text-gray-600">
+    Mostrando
+    <strong>{{ startIndex() }}</strong>–<strong>{{ endIndex() }}</strong>
+    de <strong>{{ totalItems() }}</strong> registros
+  </div>
+
+  <!-- <div class="flex items-center gap-1">
+    <button class="px-2 py-1 border rounded text-sm" (click)="goToFirst()" [disabled]="page() === 1">«</button>
+    <button class="px-2 py-1 border rounded text-sm" (click)="prevPage()" [disabled]="page() === 1">‹</button>
+
+    @for (p of pagesWindow(); track $index) {
+      <button
+        class="px-2 py-1 border rounded text-sm"
+        [class.bg-gray-900]="p === page()"
+        [class.text-white]="p === page()"
+        (click)="goToPage(p)">
+        {{ p }}
+      </button>
+    }
+
+    <button class="px-2 py-1 border rounded text-sm" (click)="nextPage()" [disabled]="page() === totalPages()">›</button>
+    <button class="px-2 py-1 border rounded text-sm" (click)="goToLast()" [disabled]="page() === totalPages()">»</button>
+  </div> -->
+</div>
+
+<div class="overflow-auto rounded-xl bg-slate-100 px-5">
+  <table class="min-w-full text-[13px] border-separate border-spacing-y-3">
+    <thead class="text-gray-600 sticky top-0 z-10 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <tr class="bg-white rounded-lg">
+        @for (col of columns; track $index) {
+          <th
+            class="px-4 py-3 font-semibold uppercase tracking-wide text-[11px] text-gray-800 text-center cursor-pointer select-none first:rounded-l-xl last:rounded-r-xl"
+            (click)="onHeaderClick(col)"
+            title="Ordenar por {{ col.label }}">
+            <div class="flex justify-center items-center gap-1">
+              <span>{{ col.label }}</span>
+              @if (sortKey() === col.key) {
+                <span class="text-gray-400 text-[10px]">
+                  {{ sortDir() === 'asc' ? '▲' : '▼' }}
+                </span>
+              }
+            </div>
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (totalItems() === 0) {
+        <tr>
+          <td class="px-4 py-6 text-center text-gray-500 bg-white rounded-xl shadow-sm"
+              [attr.colspan]="(columns?.length || 1)">
+            Sin resultados
+          </td>
+        </tr>
+      } @else {
+        @for (row of pagedData(); track trackByIndex($index, row)) {
+          <tr
+            class="bg-white rounded-2xl ring-gray-200 hover:shadow-md transition-all cursor-pointer"
+            (click)="onRowClick(row)"
+            title="Ver detalles">
+            @for (col of columns; track $index) {
+              <td class="px-4 py-3 whitespace-nowrap text-gray-600 text-center first:rounded-l-xl last:rounded-r-xl {{ col.className || '' }}">
+                @if (col.key === 'porcentaje') {
+                  <div class="flex items-center gap-3">
+                    <div class="h-2 w-40 bg-gray-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-emerald-500" [style.width.%]="row[col.key] || 0"></div>
+                    </div>
+                    <span class="text-emerald-600 font-medium">
+                      {{ row[col.key] ?? 0 }}%
+                    </span>
+                  </div>
+                } @else {
+                  {{ row[col.key] }}
+                }
+              </td>
+            }
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Paginación inferior (opcional, espejo de la superior) -->
+<div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+  <div class="text-sm text-gray-600">
+    Página <strong>{{ page() }}</strong> de <strong>{{ totalPages() }}</strong>
+  </div>
+
+  <div class="flex items-center gap-1">
+    <button class="px-2 py-1 border rounded text-sm" (click)="goToFirst()" [disabled]="page() === 1">«</button>
+    <button class="px-2 py-1 border rounded text-sm" (click)="prevPage()" [disabled]="page() === 1">‹</button>
+
+    @for (p of pagesWindow(); track $index) {
+      <button
+        class="px-2 py-1 border rounded text-sm"
+        [class.bg-gray-900]="p === page()"
+        [class.text-white]="p === page()"
+        (click)="goToPage(p)">
+        {{ p }}
+      </button>
+    }
+
+    <button class="px-2 py-1 border rounded text-sm" (click)="nextPage()" [disabled]="page() === totalPages()">›</button>
+    <button class="px-2 py-1 border rounded text-sm" (click)="goToLast()" [disabled]="page() === totalPages()">»</button>
+  </div>
+</div>

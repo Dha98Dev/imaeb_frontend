@@ -1,0 +1,39 @@
+<div class="mx-2 border px-2 py-2 rounded-lg shadow-md contenedor bg-white mt-5 flex gap-3 pb-5">
+
+
+    <!-- bloque 1 donde tendra  la imagen del niño o niña dependiendo del sexo del alumno -->
+    <div class="bloque-1 w-2/6 flex justify-center align-items-center px-2">
+
+        <app-datos-alumno class="w-100"></app-datos-alumno>
+
+    </div>
+
+
+
+    <!-- bloque 2 donde tendra un par de single promedio, uno sera estatal y el otro sera el que saco el alumno -->
+    <div class="bloque-2 w-1/6 flex flex-col justify-content-center aling-items-center gap-3">
+        <div class="flex justify-center">
+            <app-single-promedio class="w-fit" [title]="'Calificación'"></app-single-promedio>
+        </div>
+        <div class="flex justify-center">
+            <app-single-promedio class="w-fit" [isEstatal]="true" [title]="'Promedio Estatal'"></app-single-promedio>
+        </div>
+    </div>
+
+
+
+    <!-- bloque 3 donde iran las areas evaluadas con el porcentaje de aciertos por materia y el promedio estatal -->
+    <div class="bloque-3 w-3/6 flex align-items-center flex-col">
+       <app-subtitle [subtitle]="'Areas Evaluadas'"></app-subtitle>
+        <div class="w-100 mt-5">
+            <app-ejercicio-resultado [bgColorTitle]="fondos.blue"></app-ejercicio-resultado>
+        </div>
+        <div class="w-100 mt-5">
+            <app-ejercicio-resultado [bgColorTitle]="fondos.green"></app-ejercicio-resultado>
+        </div>
+        <div class="w-100 mt-5">
+            <app-ejercicio-resultado [bgColorTitle]="fondos.yellow"></app-ejercicio-resultado>
+        </div>
+
+    </div>
+</div>

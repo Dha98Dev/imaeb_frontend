@@ -1,0 +1,48 @@
+<!-- Contenedor principal -->
+<div class=" mx-auto px-4 sm:px-6 lg:px-8">
+
+  <!-- Título -->
+  <div class="flex justify-center rounded-lg py-2">
+    <app-subtitle [subtitle]="'Resultados del Sector ' + sector ">
+    </app-subtitle>
+  </div>
+
+  <!-- Dos columnas: resumen y tarjetas -->
+  <div class="flex flex-col md:flex-row gap-5 mt-3">
+    <!-- Columna izquierda (1/3 en md+) -->
+    <div class="md:basis-1/3 md:max-w-[33%]">
+      <div class="flex flex-col gap-3">
+        <app-single-promedio [isEstatal]="false" [content]="promedioSector.toString()"
+          [title]="'Promedio del Sector ' + sector">
+        </app-single-promedio>
+
+        <!-- evita prop duplicada -->
+        <app-single-promedio [isEstatal]="true" [content]="promedioEstatal.toString()">
+        </app-single-promedio>
+      </div>
+    </div>
+
+    <!-- Columna derecha (2/3 en md+) -->
+    <div class="md:basis-2/3 md:max-w-[67%]">
+      <div class="flex flex-col gap-5">
+        @for (item of PorcentajeAreaEvaluada; track $index) {
+        <app-item-porcentaje-area-evaluada [bgTitle]="item.bgTitle" [title]="item.title"
+          [firstLeyendPercent]="item.firstLeyendPercent" [firstPercent]="item.firstPercent"
+          [secondLeyendPercent]="item.secondLeyendPercent" [secondPercent]="item.secondPercent">
+        </app-item-porcentaje-area-evaluada>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfica -->
+  <div class="mt-5 flex justify-center">
+    <app-subtitle [subtitle]="'Zonas del sector ' + sector"></app-subtitle>
+  </div>
+  <div class="chart mt-5">
+    <div>
+      <app-char-barra-single-data-set [randomColors]="true" [dataChart]="dataGrafica"></app-char-barra-single-data-set>
+    </div>
+  </div>
+
+</div>

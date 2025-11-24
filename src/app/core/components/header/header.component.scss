@@ -1,0 +1,35 @@
+header {
+    box-shadow: 1px 1px 10px var(--principal-cafe);
+    padding: 10px; /* mejor que height fijo */
+    height: 100px;
+    background-image: url('./../../../../../public/assets/images/degradado.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 50px;
+  }
+  a{
+    text-decoration: none;
+  }
+
+.logo-secretaria, .imaeb-logo{
+  width: 35%;
+}
+
+
+
+@media (max-width:850px){
+
+  .logo-secretaria,  .imaeb-logo{
+    width: 60%;
+    height: auto;
+  }
+
+}
+@media (max-width:450px){
+
+  .logo-secretaria,  .imaeb-logo{
+    width: 80%;
+    height: auto;
+  }
+
+}

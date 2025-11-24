@@ -1,0 +1,12 @@
+.contenedor{
+    position: relative;
+}
+.line {
+    position: absolute;
+    top: 50%;           /* coloca la línea en la mitad */
+    transform: translateY(-50%); /* ajusta para centrarla exacta */
+    height: 3px;
+    width: 100%;
+    background: var(--principal-cafe);
+    z-index: -1;
+}

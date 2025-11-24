@@ -1,0 +1,75 @@
+@if (data.preguntas && data.preguntas.length > 0) {
+  <div class="flex justify-center mt-5">
+    @if (title !== '') {
+      <app-subtitle [subtitle]="title"></app-subtitle>
+    }
+  </div>
+
+  <div class="overflow-auto rounded-xl bg-slate-100 px-5 py-4 mt-4">
+    <table class="min-w-[720px] w-full text-[13px] border-separate border-spacing-y-3">
+      <thead class="text-gray-600 sticky top-0 z-10 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+        <tr class="bg-white rounded-lg">
+          <th class="px-4 py-3 font-semibold uppercase tracking-wide text-[11px] text-white  first:rounded-l-xl bg-c1">
+            Campo formativo
+          </th>
+          <th class="px-4 py-3 font-semibold uppercase tracking-wide text-[11px] text-white  bg-c1">
+            Aspecto evaluado
+          </th>
+          <th class="px-4 py-3 font-semibold uppercase tracking-wide text-[11px] text-white  bg-c1">
+            Nombre y número de consigna
+          </th>
+          <th class="px-4 py-3 font-semibold uppercase tracking-wide text-[11px] text-white  last:rounded-r-xl bg-c1">
+            Resultado
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (item of data.preguntas; track $index) {
+          <tr class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <td class="px-4 py-3  text-gray-800 first:rounded-l-xl">
+              {{ data.nombre }}
+            </td>
+
+            <td class="px-4 py-3  text-gray-800">
+              {{ item.especificacion }}
+            </td>
+
+            <td class="px-4 py-3  text-gray-800">
+              Ejercicio {{ item.numeroPregunta }} — {{ item.contenido }}
+            </td>
+
+            <td class="px-4 py-3  text-gray-800 last:rounded-r-xl">
+              @if (!isPreescolar) {
+                <i
+                  class="pi !font-bold"
+                  [ngClass]="item.respuesta == '1' ? 'pi-check text-emerald-600' : 'pi-times text-rose-600'">
+                </i>
+              } @else {
+                <small class="font-medium">{{ item.respuesta || '0' }}</small>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (!isPreescolar) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 ">
+        <p class="mb-1 font-medium">Promedio total de aciertos</p>
+        <p class="text-emerald-600 font-bold text-xl">
+          {{ promedioCorrectas.toFixed(1) }}
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 ">
+        <p class="mb-1 font-medium">Promedio total de desaciertos</p>
+        <p class="text-rose-600 font-bold text-xl">
+          {{ promedioIncorrectas.toFixed(1) }}
+        </p>
+      </div>
+    </div>
+  }
+}

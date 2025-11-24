@@ -1,0 +1,36 @@
+@if (loader) {<app-loader-page></app-loader-page>}
+
+@if (!loader) {
+    <div class="contenedor mt-2 flex flex-col  gap-2 mx-2 ">
+    <h2 class="font-semibold text-center text-c2 text-xl mb-3">Resultado de {{resultadosPreguntasAlumnoMateria.nombre}}  </h2>
+    <div class="items-container  flex gap-3 pb-5 flex-col">
+        <div class="bloque-1  px-3 py-3  flex flex-col align-items-center shadow-md rounded-lg">
+            <div class="flex w-fit w-100">
+                <app-subtitle [subtitle]="'Unidades de análisis'"></app-subtitle>
+            </div>
+            <div class="flex-1 w-100 ">
+                <app-unidad-analisis-porcentaje [dataUnidadAnalisis]="porcentajeResultado"></app-unidad-analisis-porcentaje>
+            </div>
+        </div>
+        <div class="bloque-2  px-3 py-3 shadow-md rounded-lg ">
+            <div class="flex justify-center">
+                <app-subtitle [subtitle]="'Mis Resultados en Imaeb'"></app-subtitle>
+            </div>
+            <div class="">
+                <app-tabla-resultado-by-campo-formativo-aciertos [data]="resultadosPreguntasAlumnoMateria"></app-tabla-resultado-by-campo-formativo-aciertos>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="mx-2 border py-2 px-2 shadow-md rounded-lg">
+<div class="flex justify-center">
+        <app-subtitle [subtitle]="'Resultados de '+ resultadosPreguntasAlumnoMateria.nombre"></app-subtitle>
+</div>
+    <div class="item-container">
+        <app-item-chart-resltado-area [dataSet]="dataGrafica" [aciertos]="porcentajeAciertos.toFixed(1)" [desaciertos]="porcentajeDesaciertos.toFixed(1)"
+            [unidadAnalisis]="''" [isAlumno]="true"></app-item-chart-resltado-area>
+    </div>
+</div>
+}

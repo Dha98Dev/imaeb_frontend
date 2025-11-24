@@ -1,0 +1,77 @@
+@if (loader) {
+<app-loader-page></app-loader-page>
+}
+@if (!loader) {
+<app-title></app-title>
+
+<div class="contenedor bg-white mt-5 mx-2 flex flex-col lg:flex-row gap-5 pb-5">
+
+  <!-- bloque 1 -->
+  <div class="bloque-1 w-full md:w-1/3 flex flex-col">
+    <div class="flex justify-center">
+      <!-- <app-subtitle [subtitle]="datosAlumno.nombre +' '+datosAlumno.apellidoPaterno+' '+ datosAlumno.apellidoMaterno">
+      </app-subtitle> -->
+    </div>
+    <div class="flex justify-center items-center flex-1 px-3">
+      <app-datos-alumno class="w-full" [datosAlumnos]="datosAlumno"></app-datos-alumno>
+    </div>
+  </div>
+
+  <!-- bloque 2 -->
+  <div class="bloque-2 w-full md:w-1/3 flex flex-col justify-center items-center gap-3">
+    <div class="flex justify-center">
+      <app-single-promedio class="w-100" [isEstatal]="true" [title]="'Calificación'"
+        [content]="promedioAlumno.toString()">
+      </app-single-promedio>
+    </div>
+    <div class="flex justify-center">
+      <app-single-promedio class="w-100" [title]="'Promedio Estatal'"
+        [content]="promedioEstatal.toString()"></app-single-promedio>
+    </div>
+  </div>
+
+  <!-- bloque 3 -->
+
+  @if (nivel != 1) {
+  <div class="bloque-3 w-full md:w-1/3">
+    <div class="flex justify-center">
+      <app-subtitle [subtitle]="'Areas Evaluadas'"></app-subtitle>
+    </div>
+    <div class="flex flex-col gap-5 px-3">
+      @for (item of porcentajesAreaEvaluada; track $index) {
+      <div>
+        <app-item-porcentaje-area-evaluada [title]="item.title" [firstLeyendPercent]="item.firstLeyendPercent"
+          [secondLeyendPercent]="item.secondLeyendPercent" [firstPercent]="item.firstPercent"
+          [secondPercent]="item.secondPercent" [bgTitle]="item.bgTitle">
+        </app-item-porcentaje-area-evaluada>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+</div>
+<!-- esto se mostrara si el nivel es de preescolar  -->
+@if (nivel==1) {
+
+
+<div class="">
+  @for (item of resultadoPreguntasMateriaAlumno; track $index) {
+
+  <div class="mx-3">
+    <app-tabla-resultado-by-campo-formativo-aciertos [isPreescolar]="true"
+      [title]="'Resultados en la materia de ' + item.nombre"
+      [data]="item"></app-tabla-resultado-by-campo-formativo-aciertos>
+  </div>
+  }
+</div>
+
+<div class="mt-5 pb-4 mx-3">
+  <app-item-nivel-desempeno></app-item-nivel-desempeno>
+</div>
+}
+<!-- <pre>
+    {{resultadoPreguntasMateriaAlumno | json}}
+  </pre> -->
+
+}

@@ -1,0 +1,31 @@
+@if(loader){
+<app-loader-page></app-loader-page>
+}
+@if (!loader) {
+    <div>
+    <app-title [title]="'Resultados  de  modalidad ' + modalidad + ' de nivel ' + getnivelDescription()"></app-title>
+</div>
+
+<div class="mt-5 flex justify-center">
+    <app-subtitle [subtitle]="'Resultados por Área '"></app-subtitle>
+</div>
+<div class="flex gap-3 mx-3 ">
+    @for (item of promediosMateriaByNivelAndModalidad; track $index) {
+      <div class="flex-1">     
+      <app-ejercicio-resultado [contenido]="item.promedio.toString()" [title]="item.materia!" [bgColorTitle]="getBgMateria(item.materia!)"></app-ejercicio-resultado>
+    </div>
+  }
+</div>
+
+<div class="mt-[50px] flex justify-center">
+    <app-subtitle [subtitle]="'Resumen de nivel '+ getnivelDescription() + ' '+ ' en la modalidad ' + modalidad "></app-subtitle>
+</div>
+
+@if (tableDinamica.columns && tableDinamica.columns.length > 0) {
+    <div class="mx-3 mt-2 pb-5">
+    <app-tabla-dinamica [columns]="tableDinamica.columns" [data]="tableDinamica.data" 
+        [globalSearchKeys]="tableDinamica.globalSearchKeys"></app-tabla-dinamica>
+</div>
+
+}
+}

@@ -1,0 +1,163 @@
+<div class="min-h-[calc(100vh-150px)] flex items-center justify-center bg-gradient-to-r from-c2 to-c3 p-4">
+  <div class="bg-white shadow-lg py-5 rounded-2xl p-3 w-full lg:w-1/2">
+
+    <div>
+      <app-imaeb-logo></app-imaeb-logo>
+    </div>
+
+    <div class="card flex justify-center">
+      <p-accordion value="0">
+
+
+        <p-accordion-panel value="0">
+          <p-accordion-header>Filtrar información</p-accordion-header>
+          <p-accordion-content>
+            <div class="">
+              <p-message severity="secondary">
+                <small class="text-gray-500"> La información estadística de los resultados de IMAEB que se mostrará será
+                  generada en función de los
+                  parámetros seleccionados en el formulario, garantizando que los resultados correspondan de manera
+                  precisa a
+                  las opciones definidas por el usuario.</small>
+              </p-message>
+            </div>
+            <form class="flex gap-2 flex-col shadow-sm p-3 rounded" [formGroup]="filtros">
+              <!-- Usuario -->
+              <div class="first-inputs flex-wrap  mb-4 mt-2 flex align-items-center gap-2">
+                <div class="w-100 d-flex flex-column align-items-center justify-content-center gap-3">
+
+                  <div class="w-100 d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
+                    <p-floatlabel class="mt-3 w-100 w-md-50 select-nivel ">
+                      <p-select inputId="over_label" [options]="niveles" optionValue="id" optionLabel="descripcion"
+                        class="w-100 " (onChange)="getModalidades()" formControlName="nivelSelected" />
+                      <label for="over_label" class="">Seleccione el nivel</label>
+                    </p-floatlabel>
+
+                    @if (filtros.get('nivelSelected')?.value) {
+                    <div
+                      class="mt-3 item-input d-flex align-items-center justify-content-center gap-2 w-100 w-md-50 ">
+                      <p-floatlabel class="flex-grow-1 w-100 ">
+                        <p-select inputId="over_label" [options]="modalidades" optionValue="id"
+                          optionLabel="descripcion" class="w-100 " (onChange)="getSectores()"
+                          formControlName="modalidad" filter="true" filterBy="modalidad" />
+                        <label for="over_label" class="">Seleccione la modalidad</label>
+                      </p-floatlabel>
+
+                      <div class="d-flex justify-content-center align-items-center">
+                        @if ((filtros.get('modalidad')?.value).toString() && filtros.get('modalidad')?.value != null) {
+                        <p-button class=" d-flex justify-content-center align-items-center rounded-0"
+                          pTooltip="Limpiar selección" tooltipPosition="bottom" (click)="limpiarCampos(['modalidad']);"
+                          severity="danger" variant="text">
+                          <i class="pi pi-trash"></i>
+                        </p-button>
+                        }
+                      </div>
+                    </div>
+                    }
+                  </div>
+                </div>
+
+                <div class=" w-full flex input-container align-items-center ">
+
+                  @if (filtros.get('modalidad')?.value && filtros.get('nivelSelected')?.value !=3) {
+                  <div
+                    class="item-input mt-5 flex flex-col md:flex-row items-center justify-center gap-2 w-full md:w-1/2">
+                    <p-floatlabel class="flex-1 w-full">
+                      <p-select inputId="over_label" [options]="sectores" optionValue="sector" optionLabel="sector"
+                        class="w-full " (onChange)="getZonas()" formControlName="sector" filter="true"
+                        filterBy="sector" />
+                      <label for="over_label" class="">Seleccione el sector</label>
+                    </p-floatlabel>
+
+                    @if ((filtros.get('sector')?.value).toString() && filtros.get('sector')?.value != null) {
+                    <div class="d-flex justify-content-center align-items-center">
+                      <p-button class="d-flex justify-content-center align-items-center rounded-0"
+                        pTooltip="Limpiar selección" tooltipPosition="bottom"
+                        (click)="limpiarCampos(['sector']); limpiarPropiedades(3)" severity="danger" variant="text">
+                        <i class="pi pi-trash"></i>
+                      </p-button>
+                    </div>
+                    }
+                  </div>
+                  }
+
+                  @if ((filtros.get('sector')?.value || (filtros.get('nivelSelected')?.value == 3) && filtros.get('modalidad')?.value) || zonas.length > 0) {
+                  <div
+                    class="item-input mt-5 flex flex-col md:flex-row items-center justify-center gap-2 w-full md:w-1/2">
+                    <p-floatlabel class="flex-1 w-full">
+                      <p-select inputId="over_label" [options]="zonas" optionValue="zonaEscolar"
+                        optionLabel="zonaEscolar" class="w-full " (onChange)="getCentrosTrabajo()"
+                        formControlName="zona" filter="true" filterBy="zonaEscolar" />
+                      <label for="over_label" class="">Seleccione la zona</label>
+                    </p-floatlabel>
+
+                    @if (filtros.get('zona')?.value && filtros.get('zona')?.value != null) {
+                    <div class="flex justify-center items-center">
+                      <p-button class=" d-flex justify-center items-center rounded-none h-10 w-10"
+                        pTooltip="Limpiar selección" tooltipPosition="bottom"
+                        (click)="limpiarCampos(['zona']); limpiarPropiedades(4)" severity="danger" variant="text">
+                        <i class="pi pi-trash"></i>
+                      </p-button>
+                    </div>
+                    }
+                  </div>
+                  }
+
+                </div>
+              </div>
+
+
+              <div class="item-input mt-5 flex flex-col md:flex-row items-center justify-center gap-2 w-full  ">
+
+                @if (filtros.get('zona')?.value && centrosTrabajo.length > 0) {
+                <p-floatlabel class="cct-select w-full">
+                  <p-select inputId="over_label" [options]="centrosTrabajo" optionValue="id" optionLabel="cct"
+                    class="w-full" formControlName="cct" filter="true" filterBy="cct" />
+                  <label for="over_label">Seleccione CCT</label>
+                </p-floatlabel>
+                }
+                @if (filtros.get('cct')?.value && filtros.get('cct')?.value != null ) {
+                <div class="flex justify-center items-center">
+                  <p-button class=" d-flex justify-center items-center rounded-none h-10 w-10" icon="pi pi-trash"
+                    size="small" severity="danger" variant="text" pTooltip="Limpiar selección" tooltipPosition="bottom"
+                    (onClick)="limpiarCampos(['cct']); " />
+                </div>
+                }
+              </div>
+
+              <!-- Botón Iniciar Sesión -->
+              <div class="flex justify-center">
+                <p-button label="Realizar Filtro" icon="pi pi-filter"
+                  class="w-full md:w-auto px-6 py-2 rounded-lg text-white hover:bg-c2/90" (onClick)="generarUrl()"
+                  size="small" severity="contrast"></p-button>
+              </div>
+            </form>
+
+          </p-accordion-content>
+        </p-accordion-panel>
+
+
+        <p-accordion-panel value="1">
+          <p-accordion-header>Estadística General </p-accordion-header>
+          <p-accordion-content>
+            <div class="flex flex-col gap-3">
+              <p-message severity="secondary" class="m-0 ">
+                <small>
+                  De igual forma, se encuentra disponible la consulta de la estadística general de los resultados del
+                  IMAEB,
+                  desagregada por nivel educativo, modalidad y demás criterios establecidos para su análisis.
+                </small>
+              </p-message>
+              <p-button severity="contrast" label="Ver Estadística general" icon="pi pi-chart-bar" size="small"
+                routerLink="/e/estadistica-general" />
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+
+
+      </p-accordion>
+    </div>
+  </div>
+
+
+    <p-toast />

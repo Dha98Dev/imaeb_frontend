@@ -1,0 +1,18 @@
+<div class="b-c1 px-5 py-3 rounded-xl w-100">
+    <div class="par mt-2 text-center">
+        <p class="font-semibold ">Nombre del Alumno</p>
+        <p class="bg-c1 text-white text-sm font-semibold px-5  rounded-lg text-capitalize"> {{datosAlumnos.nombre +' '+datosAlumnos.apellidoPaterno+' '+ datosAlumnos.apellidoMaterno}} </p>
+    </div>
+
+    <div class="par mt-2 text-center">
+        <p class="font-semibold ">Grado y Grupo</p>
+        <p class="bg-c1 text-white text-lg font-semibold px-5  rounded-lg text-capitalize">
+            
+            {{datosAlumnos.datosEscolares.grado + ' ' + datosAlumnos.datosEscolares.nivel + ' ' + datosAlumnos.datosEscolares.grupo }} </p>
+    </div>
+
+    <div class="par mt-2 text-center">
+        <p class="font-semibold text-capitalize">Escuela</p>
+        <p class="bg-c1 text-white text-lg font-semibold px-5  rounded-lg text-capitalize"> {{datosAlumnos.datosEscolares.nombreEscuela}} </p>
+    </div>
+</div>

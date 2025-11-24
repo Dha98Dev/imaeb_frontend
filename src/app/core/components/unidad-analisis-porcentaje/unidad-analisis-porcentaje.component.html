@@ -1,0 +1,38 @@
+@if (dataUnidadAnalisis.length > 0 ) {
+
+@for (item of dataUnidadAnalisis; track $index) {
+<div
+    class="contenedor flex flex-col align-items-center justify-center md:flex-row gap-2 mt-5 shadow-md md:shadow-none rounded-lg ">
+    <!-- bloque 1 -->
+    @if (item.unidadDescripcion && item.unidadDescripcion != '') {
+
+    <div class="d-flex justify-content-center items-center py-2 bg-sky-500 rounded-lg w-full md:w-1/3">
+        <p class="px-2 text-capitalize text-white text-center"> {{item.unidadDescripcion}} </p>
+    </div>
+
+    }
+    <!-- bloque 2 -->
+    <div class="flex gap-2 w-full " [ngClass]="onlyPorcentaje ? 'w-2/3' :'w-1/3'">
+        <div class="text-center px-1  w-1/2 border">
+            <p class="mb-2 text-sm font-medium">Porcentaje de aciertos</p>
+            <p class="text-xl text-green font-medium flex-1"> {{item.porcentajeAciertos}} </p>
+        </div>
+       @if (item.porcentajeEstatal && item.porcentajeEstatal > 0) {
+         <div class="text-center px-1  w-1/2 border">
+            <p class="mb-2 text-sm font-medium">Promedio estatal</p>
+            <p class="text-xl font-medium flex-1">61%</p>
+        </div>
+       }
+    </div>
+
+    <!-- bloque 3 -->
+    <div class="w-full md:w-1/3 ">
+        <div class="h-full flex justify-center items-center flex-col text-gray-500 font-medium ">
+            <small class="mb-2">Zona de dominio</small>
+            <app-nivel-desempeno-imagen [bgColorContent]="getBackgroundAndText(item.porcentajeAciertos).color" [content]="getBackgroundAndText(item.porcentajeAciertos).text" class="w-full"></app-nivel-desempeno-imagen>
+        </div>
+    </div>
+</div>
+}
+
+}

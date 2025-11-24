@@ -1,0 +1,47 @@
+<app-title></app-title>
+
+<div class="contenedor bg-white mt-5 mx-2 flex gap-3 pb-5">
+
+
+    <!-- bloque 1 donde tendra  la imagen del niño o niña dependiendo del sexo del alumno -->
+    <div class="bloque-1 w-1/3 flex flex-col">
+
+        <div class="flex justify-center">
+         <app-subtitle [subtitle]="'Pedrito Ramirez de la cruz'"></app-subtitle>
+        </div>
+        <div class="flex justify-center align-items-center  flex-1  px-3">
+           <app-datos-alumno class="w-100"></app-datos-alumno>
+        </div>
+
+    </div>
+
+
+
+    <!-- bloque 2 donde tendra un par de single promedio, uno sera estatal y el otro sera el que saco el alumno -->
+    <div class="bloque-2 w-1/3  flex flex-col justify-content-center aling-items-center gap-3">
+        <div class="flex justify-center"> 
+            <app-single-promedio class="w-fit" [isEstatal]="true" [title]="'Calificación'"></app-single-promedio>
+        </div>
+        <div class="flex justify-center"> 
+            <app-single-promedio class="w-fit"  [title]="'Promedio Estatal'"></app-single-promedio>
+        </div>
+    </div>
+
+
+
+    <!-- bloque 3 donde iran las areas evaluadas con el porcentaje de aciertos por materia y el promedio estatal -->
+    <div class="bloque-3 w-1/3 ">
+        <div class="flex justify-center">
+                    <app-subtitle [subtitle]="'Areas Evaluadas'"></app-subtitle>
+        </div>
+        <div class="flex gap-5 flex-col  px-3">
+            <app-item-porcentaje-area-evaluada [title]="'Lenguajes'" [firstLeyendPercent]="'Aciertos'" [secondLeyendPercent]="'Promedio Estatal'" [firstPercent]="60" [secondPercent]="40" [bgTitle]="'bg-sky-500'"></app-item-porcentaje-area-evaluada>
+
+
+            <app-item-porcentaje-area-evaluada [title]="'Saberes y Pensamiento Cientifico: Matematicas'" [firstLeyendPercent]="'Aciertos'" [secondLeyendPercent]="'Promedio Estatal'" [firstPercent]="60" [secondPercent]="40" [bgTitle]="'bg-emerald-500'"></app-item-porcentaje-area-evaluada>
+
+
+            <app-item-porcentaje-area-evaluada [title]="'Saberes y Pensamiento Cientifico: Ciencias'" [firstLeyendPercent]="'Aciertos'" [secondLeyendPercent]="'Promedio Estatal'" [firstPercent]="60" [secondPercent]="40" [bgTitle]="'bg-yellow-500'"></app-item-porcentaje-area-evaluada>
+        </div>
+    </div>
+</div>

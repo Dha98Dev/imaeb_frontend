@@ -1,0 +1,14 @@
+<div class="flex justify-center">
+  <h4 class="font-semibold text-center  text-xl  rounded-md w-fit px-4 " [ngClass]="isBoy ? 'text-blue' : 'text-pink'"> {{relleno.toFixed(1)}} % </h4>
+</div>
+<div class="grafica">
+<div class="img-container">
+    <div class="relleno" [ngClass]=" isBoy ? 'bg-blue': 'bg-pink' " [style]="{'height':relleno+'%'}"></div>
+  @if(isBoy){
+  <img src="./assets/images/Imagen4.png" alt="" class="">
+  }
+  @else{
+  <img src="./assets/images/Imagen2.png" alt="" class="">
+  }
+</div>
+</div>

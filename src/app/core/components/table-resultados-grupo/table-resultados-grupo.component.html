@@ -1,0 +1,34 @@
+<div class="mb-2">
+    <!-- 🔍 Búsqueda global -->
+    <input type="text" [(ngModel)]="filtroGlobal" (input)="aplicarFiltrosCombinados()"
+        placeholder="Buscar en toda la tabla..." class="border rounded px-2 py-1 text-sm w-1/3">
+</div>
+
+@if (encabezados.length>0) {
+<div class="table-responsive">
+    <table class="table-auto border border-gray-300 text-[10px]" id="resultadosBusqueda">
+        <thead>
+            <tr>
+                @for (item of encabezados; track $index) {
+                <th class="px-2 py-1 border ">{{ item }}</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (al of alumnosFiltrados; let i=$index; track $index) {
+            <tr class="hover:bg-gray-100"
+                [title]="'ver detalles de ' + al['APELLIDO_P'] + ' ' + al['APELLIDO_M'] + ' ' +al['NOMBRE'] + ' '"
+                (click)="confirmDialog.open(' Desea ver los resultados de ' + al['APELLIDO_P'] + ' ' + al['APELLIDO_M'] + ' ' +al['NOMBRE'] + ' '); alumnoSeleccionado= al.idAlumno">
+                @for (item of encabezados; track $index) {
+                <td class="  border border-gray-200 text-center" [ngClass]="{'bg-green-200': al[item] == 1 && !preescolar}"> {{al[item]}} </td>
+                }
+
+            </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+}
+<app-confirm-dialog #confirmDialog (confirm)="confirmarVerDetalles()"
+    (cancel)="alumnoSeleccionado = ''"></app-confirm-dialog>
