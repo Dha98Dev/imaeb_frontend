@@ -5,6 +5,7 @@ import { CctAndGrupoService } from '../../../core/services/CctAndGrupo/CctAndGru
 import { GrupoPorUnidad, PreguntaStat } from '../../../core/Interfaces/conteoRespuestasByPreguntaAndCct.interface';
 import { UnidadChartData } from '../../../core/Interfaces/grafica.interface';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 
 @Component({
   selector: 'app-resultados-areas',
@@ -13,7 +14,7 @@ import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb
   styleUrl: './resultados-areas.scss'
 })
 export class ResultadosAreas {
-  constructor(private cctService: GetCctInfoSErvice, private route: ActivatedRoute, private cctAndGrupoService: CctAndGrupoService, private cd: ChangeDetectorRef, private breadCrumbService:BreadCrumService) { }
+  constructor(private cctService: GetCctInfoSErvice, private route: ActivatedRoute, private cctAndGrupoService: CctAndGrupoService, private cd: ChangeDetectorRef, private breadCrumbService:BreadCrumService, private crypto:CryptoJsService) { }
   public materiaSelected: number = 1
   public subtitle: string = ''
   public cct: string = '';
@@ -25,13 +26,13 @@ export class ResultadosAreas {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.cct = params.get('cct') || '';
+      this.cct = this.crypto.Desencriptar(params.get('cct')!) || '';
       this.grupo = params.get('grupo') || '';
       this.cctService.setCct(this.cct)
       this.cctService.setGrupo(this.grupo)
       this.getInfoCct()
       this.conteoNivelDesempenioByGrupoAndCct()
-      this.breadCrumbService.addItem({ jerarquia: 5, label: 'grupo area ' + this.grupo, urlLink: 'prim_2/resultados-grupo-area/' + this.cct+'/'+this.grupo , icon: '' })
+      this.breadCrumbService.addItem({ jerarquia: 5, label: 'grupo area ' + this.grupo, urlLink: 'prim_2/resultados-grupo-area/' + this.crypto.Encriptar(this.cct)+'/'+this.grupo , icon: '' })
       
     });
 

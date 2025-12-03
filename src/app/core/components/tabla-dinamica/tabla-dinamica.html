@@ -121,7 +121,7 @@
             title="Ver detalles">
             @for (col of columns; track $index) {
               <td class="px-4 py-3 whitespace-nowrap text-gray-600 text-center first:rounded-l-xl last:rounded-r-xl {{ col.className || '' }}">
-                @if (col.key === 'porcentaje') {
+                <!-- @if (col.key === 'porcentaje') {
                   <div class="flex items-center gap-3">
                     <div class="h-2 w-40 bg-gray-200 rounded-full overflow-hidden">
                       <div class="h-full bg-emerald-500" [style.width.%]="row[col.key] || 0"></div>
@@ -129,10 +129,12 @@
                     <span class="text-emerald-600 font-medium">
                       {{ row[col.key] ?? 0 }}%
                     </span>
-                  </div>
-                } @else {
+                  </div> -->
+                <!-- } @else { -->
                   {{ row[col.key] }}
-                }
+                 
+                <!-- } -->
+               
               </td>
             }
           </tr>

@@ -1,6 +1,6 @@
 
 
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
@@ -34,9 +34,20 @@ import { TagModule } from 'primeng/tag';
 import { Toast, ToastModule } from 'primeng/toast';
 import { Tooltip } from 'primeng/tooltip';
 import { Menubar } from 'primeng/menubar';
-
+import { DividerModule } from 'primeng/divider';
+import { PasswordModule } from 'primeng/password';
+import { StepperModule } from 'primeng/stepper';
+import { RadioButton } from 'primeng/radiobutton';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Menu } from 'primeng/menu';
+import { Dock } from 'primeng/dock';
+import { ContextMenu } from 'primeng/contextmenu';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { TabsModule } from 'primeng/tabs';
 @NgModule({
     imports: [
+        FormsModule,
+        ReactiveFormsModule,
         AccordionModule,
         BadgeModule,
         ButtonModule,
@@ -67,6 +78,18 @@ import { Menubar } from 'primeng/menubar';
         ToastModule,
         Tooltip,
         Menubar,
+        DividerModule,
+        PasswordModule,
+        StepperModule,
+        RadioButton,
+        Menu,
+        Dock,
+        ContextMenu,
+        BadgeModule ,
+        OverlayBadgeModule,
+        TabsModule,
+        
+        
         
     ],
     exports: [
@@ -100,6 +123,18 @@ import { Menubar } from 'primeng/menubar';
         ToastModule,
         Tooltip,
         Menubar,
+        DividerModule,
+        PasswordModule,
+        StepperModule,
+        RadioButton,
+        Menu,
+        Dock,
+        ContextMenu,
+        BadgeModule ,
+        OverlayBadgeModule,
+        TabsModule,
+        
+        
         
     ],
     declarations: [],

@@ -9,6 +9,7 @@ import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedi
 import { DatosCct } from '../../../core/Interfaces/DatosCct.interface';
 import { datosCct } from '../../../core/Interfaces/listadoAlumno.interface';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 
 @Component({
   selector: 'app-principal-docente',
@@ -17,7 +18,7 @@ import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb
   styleUrl: './principal-docente.scss'
 })
 export class PrincipalDocente {
-  constructor(private route: ActivatedRoute, private cctService:GetCctInfoSErvice, private cctAndGrupoService:CctAndGrupoService, private cd:ChangeDetectorRef, private estadisticaService:GetEstadisticaService, private breadCrumbService:BreadCrumService) { }
+  constructor(private route: ActivatedRoute, private cctService:GetCctInfoSErvice, private cctAndGrupoService:CctAndGrupoService, private cd:ChangeDetectorRef, private estadisticaService:GetEstadisticaService, private breadCrumbService:BreadCrumService, private crypto:CryptoJsService) { }
   private jerarquia: number = 8
   public porcentajeNinos: number = 54.5
   public porcentajeNinas: number = 45.5
@@ -34,7 +35,7 @@ export class PrincipalDocente {
   ngOnInit(): void {
     this.loader = true
     this.route.paramMap.subscribe(params => {
-      this.cct = params.get('cct') || '';
+      this.cct = this.crypto.Desencriptar(params.get('cct')!) || '';
       this.grupo = params.get('grupo') || '';
       this.cctService.setCct(this.cct)
       this.cctService.setGrupo(this.grupo)
@@ -42,7 +43,7 @@ export class PrincipalDocente {
       this.conteoSexoGrupo()
       this.conteoExamenesUtilizados()
       this.conteoNivelDesempenioByGrupoAndCct()
-      this.breadCrumbService.addItem({ jerarquia: 5, label: 'grupo ' + this.grupo, urlLink: '/prim_2/resultados-grupo/' + this.cct+'/'+this.grupo , icon: '' })
+      this.breadCrumbService.addItem({ jerarquia: 5, label: 'grupo ' + this.grupo, urlLink: '/prim_2/resultados-grupo/' + this.crypto.Encriptar(this.cct)+'/'+this.grupo , icon: '' })
 
     });
     this.cctService.cct$.subscribe(data =>{

@@ -1,7 +1,79 @@
-<div class="card ">
-    <p-menubar   [model]="items" />
-    <div class="leyend-cont flex justify-end">
-        <p class="leyend text-xs text-gray-500 font-medium mx-3 text-center">® Dirección de Servicios Administrativos: Departamento de Informática</p>
-    </div>
+<!-- <div class=" ">
+@if (isAutenticated) {
+    <p-menubar   [model]="items" class="!b-0" />
+}
+</div> -->
 
+<div class="leyend-cont flex  py-3 px-3" [ngClass]="isAutenticated ? 'justify-between': 'justify-end' ">
+    @if (isAutenticated) {
+    <p-button (click)="visible = true" icon="pi pi-bars" severity="contrast" label="Menu" />
+    }
+    <p class="leyend text-xs text-gray-500 font-medium mx-3 text-center">® Dirección de Servicios Administrativos:
+        Departamento de Informática</p>
 </div>
+
+
+<p-drawer [(visible)]="visible" [modal]="false" header="Menu de navegación">
+    <ul class="flex flex-col divide-y divide-gray-100 pl-0">
+
+        <!-- Se van a mostrar los links si el usuario esta autenticado -->
+        @if (isAutenticated) {
+        <li>
+            <a routerLink="/Auth/main-filter" (click)="visible=false"
+                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
+                routerLinkActive="bg-gray-100">
+                <i class="pi pi-filter"></i>
+                <span>Nuevo filtro</span>
+            </a>
+        </li>
+        <!-- se va a mostrar el ver la estadistica general si es un nivel el que inicio la sesion -->
+        @if (scope == 'NIVEL') {
+        <li>
+            <a routerLink="/e/estadistica-general" (click)="visible=false"
+                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
+                routerLinkActive="bg-gray-100">
+                <i class="pi pi-home"></i>
+                <span>Estadística General</span>
+            </a>
+        </li>
+        }
+
+        <!-- se va a mostrar el agregar un nuevo usuario si el scope es de planeacion -->
+        @if (scope == 'EJECUTIVO' || scope == 'ADMIN') {
+        <li>
+            <a routerLink="/admin/register" (click)="visible=false"
+                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
+                routerLinkActive="bg-gray-100">
+                <i class="pi pi-home"></i>
+                <span>Nuevo usuario</span>
+            </a>
+        </li>
+        }
+
+        <!-- se va a mostrar el listado de usuarios si el scope es un admin -->
+        @if (scope == 'ADMIN' ) {
+        <li>
+            <a routerLink="/admin/listado-usuarios" (click)="visible=false"
+                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
+                routerLinkActive="bg-gray-100">
+                <i class="pi pi-users"></i>
+                <span>Listado de usuarios</span>
+            </a>
+        </li>
+        }
+
+        <li>
+            <a (click)="visible=false; confirmCloseSesion($event)"
+                class="px-3 flex items-center gap-3 py-3 text-red-600   transition-colors rounded-lg no-underline font-medium  text-stone-500"
+                routerLinkActive="bg-gray-100">
+                <i class="pi pi-sign-out"></i>
+                <span>Cerrar sesión</span>
+            </a>
+        </li>
+        }
+
+    </ul>
+</p-drawer>
+
+<p-confirmdialog />
+<p-toast />

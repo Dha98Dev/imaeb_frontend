@@ -9,10 +9,12 @@
             <p class="fw-bold">Ciclo Escolar: </p>
             <p class="bg-c1 text-white px-3 font-semibold rounded"> 2024-2025</p>
         </div>
-        <div class="par flex  gap-1 ">
+@if (datosCct.sector) {
+            <div class="par flex  gap-1 ">
             <p class="fw-bold">Sector: </p>
             <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.sector}} </p>
         </div>
+}
         <div class="par flex  gap-1 ">
             <p class="fw-bold">Zona: </p>
             <p class="bg-c1 text-white px-3 font-semibold rounded"> {{datosCct.zonaEscolar}} </p>

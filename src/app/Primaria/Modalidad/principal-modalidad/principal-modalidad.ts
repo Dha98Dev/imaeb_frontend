@@ -18,7 +18,7 @@ import { promedio } from '../../../sharedPages/estadistica-principal/estadistica
   styleUrl: './principal-modalidad.scss'
 })
 export class PrincipalModalidad {
-  constructor(private route: ActivatedRoute, private breadCrumbService: BreadCrumService, private cryptoJs: CryptoJsService, private catalogo: CatalogoService, private estadistica: GetEstadisticaService, private cd: ChangeDetectorRef, private getBgMateriaService: GetBackgroundService) { }
+  constructor(private route: ActivatedRoute, private breadCrumbService: BreadCrumService, private cryptoJs: CryptoJsService, private catalogo: CatalogoService, private estadistica: GetEstadisticaService, private cd: ChangeDetectorRef, private getBgMateriaService: GetBackgroundService, private crypto:CryptoJsService) { }
   public modalidad: string = ''
   public nivel: string = ''
   private idModalidad: string = ''
@@ -31,12 +31,12 @@ export class PrincipalModalidad {
   ngOnInit(): void {
     this.loader = true
     this.route.paramMap.subscribe(params => {
-      this.idModalidad = params.get('modalidad') || '';
-      this.nivel = params.get('nivel') || '';
+      this.idModalidad = atob(params.get('modalidad')!) || '';
+      this.nivel = atob(params.get('nivel')!) || '';
       this.modalidad = this.cryptoJs.Desencriptar(this.cryptoJs.fromBase64Url(params.get('mod_des')!)) || ''
       this.getSectoresAndZonasAndCct()
       this.getPromedioMateriasByModalidadAndNivel()
-      this.breadCrumbService.addItem({ jerarquia: 2, label: this.getnivelDescription() + ' ' + this.modalidad, urlLink: '/m/resultadosModalidad/' + this.nivel + '/' + this.idModalidad, icon: '' })
+      this.breadCrumbService.addItem({ jerarquia: 2, label: this.getnivelDescription() + ' ' + this.modalidad, urlLink: '/m/resultadosModalidad/' + params.get('nivel') + '/' + params.get('modalidad')+'/'+params.get('mod_des'), icon: '' })
 
     });
   }
@@ -65,7 +65,6 @@ getPromedioMateriasByModalidadAndNivel(): void {
   forkJoin(requests$).subscribe({
     next: (result) => {
       this.promediosMateriaByNivelAndModalidad = result;
-      console.log(this.promediosMateriaByNivelAndModalidad);
     },
     error: (err) => console.error('Error obteniendo promedios por materia:', err)
   });

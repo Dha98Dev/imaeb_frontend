@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
 import { datosCct } from '../../../core/Interfaces/listadoAlumno.interface';
+import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 
 @Component({
   selector: 'app-layout-page-dp',
@@ -11,7 +12,7 @@ import { datosCct } from '../../../core/Interfaces/listadoAlumno.interface';
   styleUrl: './layout-page-dp.scss'
 })
 export class LayoutPageDP {
-  constructor(private router: Router, private cctService: GetCctInfoSErvice, private cd: ChangeDetectorRef) { }
+  constructor(private router: Router, private cctService: GetCctInfoSErvice, private cd: ChangeDetectorRef, private crypto:CryptoJsService) { }
   items: MenuItem[] | null = [];
   private grupo: string = ''
   private cct: string = ''
@@ -26,7 +27,7 @@ export class LayoutPageDP {
         icon: 'pi pi-home',
         url: '/prim_2/resultados-grupo',
         command: () => {
-          this.router.navigate(['/prim_2/resultados-grupo', this.cct, this.grupo])
+          this.router.navigate(['/prim_2/resultados-grupo', this.crypto.Encriptar(this.cct), this.grupo])
         },
       },
       {
@@ -34,7 +35,7 @@ export class LayoutPageDP {
         icon: 'fa-solid fa-users',
         url: '/prim_2/listado-grupo',
         command: () => {
-          this.router.navigate(['/prim_2/listado-grupo',  this.cct, this.grupo])
+          this.router.navigate(['/prim_2/listado-grupo',  this.crypto.Encriptar(this.cct), this.grupo])
         },
 
       },
@@ -62,11 +63,11 @@ this.cctService.centroTrabajo$.subscribe(data => {
 
       if (!existe) {
         this.items?.push({
-          label: 'result-area',
+          label: 'resultado-area',
           icon: 'pi pi-pen-to-square',
           url: '/prim_2/resultados-grupo-area',
           command: () => {
-            this.router.navigate(['/prim_2/resultados-grupo-area', this.cct, this.grupo]);
+            this.router.navigate(['/prim_2/resultados-grupo-area', this.crypto.Encriptar(this.cct), this.grupo]);
           },
         });
       }

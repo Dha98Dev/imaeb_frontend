@@ -10,125 +10,148 @@ import { catalogo, CentrosTrabajo } from '../../../core/Interfaces/catalogo.inte
 import { DataGraficaBarra } from '../../../core/Interfaces/grafica.interface';
 import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+import { paramsFilters } from '../../../core/Interfaces/paramsFilters.interface';
+import { AuthService } from '../../../Auth/services/auth.service';
 
 @Component({
   selector: 'app-principal-zona',
   standalone: false,
   templateUrl: './principal-zona.html',
-  styleUrl: './principal-zona.scss'
+  styleUrl: './principal-zona.scss',
 })
 export class PrincipalZona {
-  constructor(private route: ActivatedRoute, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private getBg: GetBackgroundService, private catalogoService: CatalogoService, private observable: GetCctInfoSErvice, private breadCrumbService: BreadCrumService) { }
-  public nivel: string = ''
-  public zona: string = ''
-  public modalidad: string = ''
-  public promedioZona: number = 0
-  public promedioEstatal: number = 0
-  public PorcentajeAreaEvaluada: itemPorcentajeAreaEvaluadaInterface[] = []
-  private centrosTrabajos: CentrosTrabajo[] = []
-  public dataGrafica: DataGraficaBarra = {} as DataGraficaBarra
-
+  constructor(
+    private route: ActivatedRoute,
+    private estadisticaService: GetEstadisticaService,
+    private cd: ChangeDetectorRef,
+    private getBg: GetBackgroundService,
+    private catalogoService: CatalogoService,
+    private observable: GetCctInfoSErvice,
+    private breadCrumbService: BreadCrumService,
+    private authService: AuthService
+  ) {}
+  public nivel: string = '';
+  public zona: string = '';
+  public modalidad: string = '';
+  public promedioZona: number = 0;
+  public promedioEstatal: number = 0;
+  public PorcentajeAreaEvaluada: itemPorcentajeAreaEvaluadaInterface[] = [];
+  private centrosTrabajos: CentrosTrabajo[] = [];
+  public dataGrafica: DataGraficaBarra = {} as DataGraficaBarra;
+  public dataUser: paramsFilters = {} as paramsFilters;
   ngOnInit(): void {
+    this.dataUser = this.authService.getObjectParams();
     // Opción 2: Suscribiéndose a cambios (para parámetros dinámicos)
-    this.route.paramMap.subscribe(params => {
-      this.nivel = params.get('nivel') || '';
-      this.zona = params.get('zona') || ''
-      this.modalidad = params.get('modalidad') || ''
-      this.observable.setNivel(this.nivel)
-      this.observable.setZona(this.zona)
-      this.observable.setModalidad(this.modalidad)
-      this.getPromedioByZonaAndNivel()
-      this.getPromedioEstatal()
-      this.getPromedioByMateriasAndZonaAndNivelAsync()
-      this.getCentrosTrabajoZona()
-      this.breadCrumbService.addItem({ jerarquia: 3, label: 'Resultados zona ' + this.zona, urlLink: '/sz/resultados-zona/' + this.nivel + '/' + this.zona + '/' + this.modalidad, icon: '' })
+    this.route.paramMap.subscribe((params) => {
+      this.nivel = atob(params.get('nivel')!) || '';
+      this.zona = atob(params.get('zona')!) || '';
+      this.modalidad = atob(params.get('modalidad')!) || '';
+      this.observable.setNivel(this.nivel);
+      this.observable.setZona(this.zona);
+      this.observable.setModalidad(this.modalidad);
+      this.getPromedioByZonaAndNivel();
+      this.getPromedioEstatal();
+      this.getPromedioByMateriasAndZonaAndNivelAsync();
+      this.getCentrosTrabajoZona();
+      this.breadCrumbService.addItem({
+        jerarquia: 3,
+        label: 'Resultados zona ' + this.zona,
+        urlLink: '/sz/resultados-zona/' + this.nivel + '/' + this.zona + '/' + this.modalidad,
+        icon: '',
+      });
     });
   }
 
   getPromedioByZonaAndNivel() {
-    let params: ParamsPromediosEstatales = { zonaId: parseInt(this.zona), nivelId: parseInt(this.nivel), modalidadId: parseInt(this.modalidad) }
+    let params: ParamsPromediosEstatales = {
+      zonaId: parseInt(this.zona),
+      nivelId: parseInt(this.nivel),
+      modalidadId: parseInt(this.modalidad),
+    };
     this.estadisticaService.getPromedioEstatalByNivel(params).subscribe({
-      next: resp => {
-        this.promedioZona = resp[0].promedio
-        this.cd.detectChanges()
+      next: (resp) => {
+        this.promedioZona = resp[0].promedio;
+        this.cd.detectChanges();
       },
-      error: error => {
-
-      }
-    })
+      error: (error) => {},
+    });
   }
   getPromedioEstatal() {
-    let params: ParamsPromediosEstatales = { nivelId: parseInt(this.nivel) }
+    let params: ParamsPromediosEstatales = { nivelId: parseInt(this.nivel) };
     this.estadisticaService.getPromedioEstatalByNivel(params).subscribe({
-      next: resp => {
-        this.promedioEstatal = resp[0].promedio
-        this.cd.detectChanges()
+      next: (resp) => {
+        this.promedioEstatal = resp[0].promedio;
+        this.cd.detectChanges();
       },
-      error: error => {
-
-      }
-    })
+      error: (error) => {},
+    });
   }
 
   async getPromedioByMateriasAndZonaAndNivelAsync() {
     const nivelId = +this.nivel;
     const zonaId = +this.zona;
-    const materias = (this.nivel === '1') ? [1, 2] : [1, 3, 4];
+    const materias = this.nivel === '1' ? [1, 2] : [1, 3, 4];
 
     // zona
-    const zonaArr = await Promise.all(materias.map(async materiaId => {
-      const resp = await firstValueFrom(
-        this.estadisticaService.getPromedioEstatalByNivel({ nivelId, materiaId, zonaId, modalidadId: parseInt(this.modalidad) })
-      );
-      return {
-        materiaId,
-        nombreMateria: this.getNombreMateria(materiaId),
-        promedio: resp?.[0]?.promedio ?? 0
-      };
-    }));
+    const zonaArr = await Promise.all(
+      materias.map(async (materiaId) => {
+        const resp = await firstValueFrom(
+          this.estadisticaService.getPromedioEstatalByNivel({
+            nivelId,
+            materiaId,
+            zonaId,
+            modalidadId: parseInt(this.modalidad),
+          })
+        );
+        return {
+          materiaId,
+          nombreMateria: this.getNombreMateria(materiaId),
+          promedio: resp?.[0]?.promedio ?? 0,
+        };
+      })
+    );
 
     // estatal
-    const result = await Promise.all(zonaArr.map(async item => {
-      const resp = await firstValueFrom(
-        this.estadisticaService.getPromedioEstatalByNivel({ nivelId, materiaId: item.materiaId })
-      );
-      return { ...item, promedioEstatalMateria: resp?.[0]?.promedio ?? 0 };
-    }));
+    const result = await Promise.all(
+      zonaArr.map(async (item) => {
+        const resp = await firstValueFrom(
+          this.estadisticaService.getPromedioEstatalByNivel({ nivelId, materiaId: item.materiaId })
+        );
+        return { ...item, promedioEstatalMateria: resp?.[0]?.promedio ?? 0 };
+      })
+    );
 
-    this.formatearAPorcentajeAreaEvaluada(result)
+    this.formatearAPorcentajeAreaEvaluada(result);
   }
 
   formatearAPorcentajeAreaEvaluada(result: any[]) {
-    result.forEach(el => {
+    result.forEach((el) => {
       let data: itemPorcentajeAreaEvaluadaInterface = {
         firstLeyendPercent: 'Promedio en ' + el.nombreMateria + ' de zona ' + this.zona,
         firstPercent: el.promedio,
         secondLeyendPercent: 'Promedio Estatal de ' + el.nombreMateria,
         secondPercent: el.promedioEstatalMateria,
         bgTitle: this.getBg.getBackgroundMateria(el.nombreMateria),
-        title: el.nombreMateria
-      }
-      this.PorcentajeAreaEvaluada.push(data)
+        title: el.nombreMateria,
+      };
+      this.PorcentajeAreaEvaluada.push(data);
     });
-    this.cd.detectChanges()
-
+    this.cd.detectChanges();
   }
 
   getCentrosTrabajoZona() {
     let params: catalogo = {
       zonaEscolar: parseInt(this.zona),
       nivelId: parseInt(this.nivel),
-      modalidadId: parseInt(this.modalidad)
-    }
+      modalidadId: parseInt(this.modalidad),
+    };
     this.catalogoService.getCatalogo(params).subscribe({
-      next: resp => {
-        this.centrosTrabajos = resp.centrosTrabajo
-        this.getPromediosCctZona()
+      next: (resp) => {
+        this.centrosTrabajos = resp.centrosTrabajo;
+        this.getPromediosCctZona();
       },
-      error: error => {
-
-      }
-    })
+      error: (error) => {},
+    });
   }
   async getPromediosCctZona() {
     const categorias: string[] = [];
@@ -145,29 +168,26 @@ export class PrincipalZona {
 
         categorias.push(cct);
         dataSet.push(resp[0].promedio);
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     this.dataGrafica = {
       firstDataSet: dataSet,
       firstLeyend: 'Promedio',
       categorias: categorias,
-      title: 'Promedio de zona ' + this.zona ,
+      title: 'Promedio de zona ' + this.zona,
       secondDataSet: [],
       secondLeyend: '',
-      description: 'promedios de la zona ' + this.zona
-    }
-    this.cd.detectChanges()
+      description: 'promedios de la zona ' + this.zona,
+    };
+    this.cd.detectChanges();
     // return { categorias, dataSet };
   }
 
   getNivelDescription() {
-    return this.catalogoService.getNivelDescription(this.nivel)
+    return this.catalogoService.getNivelDescription(this.nivel);
   }
   getNombreMateria(materia: number) {
-    return this.catalogoService.getNombreMateria(materia)
+    return this.catalogoService.getNombreMateria(materia);
   }
-
-
 }

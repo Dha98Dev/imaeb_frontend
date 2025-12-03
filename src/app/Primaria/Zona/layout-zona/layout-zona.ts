@@ -37,15 +37,15 @@ export class LayoutZona {
         icon: 'pi pi-home',
         // url: '/prim_2/resultados-grupo',
         command: () => {
-          this.router.navigate(['/sz/resultados-zona', this.nivel , this.zona, this.modalidad])
+          this.router.navigate(['/sz/resultados-zona', btoa(this.nivel) , btoa(this.zona), btoa(this.modalidad)])
         },
       },
       {
-        label: 'ccts de zona ' +this.zona,
+        label: 'CCT de zona ' +this.zona,
         icon: 'fa-solid fa-list',
         // url: '/prim_2/listado-grupo',
         command: () => {
-          this.router.navigate(['/sz/cctstByZona',this.nivel, this.zona, this.modalidad])
+          this.router.navigate(['/sz/cctstByZona',btoa(this.nivel), btoa(this.zona), btoa(this.modalidad)])
         },
 
       },

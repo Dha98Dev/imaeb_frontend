@@ -1,11 +1,37 @@
 <div class=" flex flex-column align-items-end justify-content-end mx-3">
     <div class="buttons flex gap-4 mx-3">
-        <p-button icon="fa-solid fa-children" pTooltip="Preescolar" [tooltipPosition]="'bottom'" raised="true"
-            [severity]="nivelSeleccionado == 1 ? 'warn' : 'secondary'" (onClick)="getEstadistica(1)" />
-        <p-button icon="fa-solid fa-school" pTooltip="Primaria" [tooltipPosition]="'bottom'" raised="true"
-            [severity]="nivelSeleccionado == 2 ? 'warn' : 'secondary'" (onClick)="getEstadistica(2)" />
+@if (getNivelUser == 1) {
+<p-button 
+      icon="fa-solid fa-children"
+      pTooltip="Preescolar"
+      tooltipPosition="bottom"
+      raised="true"
+      [severity]="nivelSeleccionado == 1 ? 'warn' : 'secondary'"
+      (onClick)="getEstadistica(1)"
+    />
+}
+@else if (getNivelUser == 2) {
+<p-button 
+      icon="fa-solid fa-school"
+      pTooltip="Primaria"
+      tooltipPosition="bottom"
+      raised="true"
+      [severity]="nivelSeleccionado == 2 ? 'warn' : 'secondary'"
+      (onClick)="getEstadistica(2)"
+    />
+}@else if (getNivelUser == 3) {
+    <p-button 
+      icon="fa-solid fa-building-columns"
+      pTooltip="Secundaria"
+      tooltipPosition="bottom"
+      raised="true"
+      [severity]="nivelSeleccionado == 3 ? 'warn' : 'secondary'"
+      (onClick)="getEstadistica(3)"
+    />
+}
+<!-- 
         <p-button icon="fa-solid fa-school-flag" pTooltip="Secundaria" [tooltipPosition]="'bottom'" raised="true"
-            [severity]="nivelSeleccionado == 3 ? 'warn' : 'secondary'" (onClick)="getEstadistica(3)" />
+            [severity]="nivelSeleccionado == 3 ? 'warn' : 'secondary'" (onClick)="getEstadistica(3)" /> -->
     </div>
     <div class="mt-3 mx-3">
         <small class="text-gray-400 font-medium "> Seleccione para filtrar por nivel</small>
@@ -21,8 +47,9 @@
 <!-- estos son los promedios estatales de cada nivel, preescolar, primaria y secundaria -->
 <div class=" prom-estatales flex justify-around mt-5">
     @for (item of promediosGeneralesEstatales; track $index) {
-    <app-single-promedio [isEstatal]="false" [content]="item.promedio.toString()"
-        [title]="item.nivel"></app-single-promedio>
+            <app-single-promedio [isEstatal]="false" [content]="item.promedio.toString()"
+                [title]="item.nivel"></app-single-promedio>
+      
     }
 </div>
 

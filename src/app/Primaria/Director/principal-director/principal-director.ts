@@ -11,6 +11,7 @@ import { DataGraficaBarra } from '../../../core/Interfaces/grafica.interface';
 import { ParamsPromediosEstatales, PromedioEstatalCct } from '../../../core/Interfaces/promediosEstatales.interface';
 import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 
 @Component({
   selector: 'app-principal-director',
@@ -19,7 +20,7 @@ import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb
   styleUrl: './principal-director.scss'
 })
 export class PrincipalDirector {
-  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice, private router: Router, private cctAndGrupoService: CctAndGrupoService, private getEstadistica: GetEstadisticaService,  private breadCrumbService:BreadCrumService) { }
+  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice, private router: Router, private cctAndGrupoService: CctAndGrupoService, private getEstadistica: GetEstadisticaService,  private breadCrumbService:BreadCrumService,private crypto:CryptoJsService) { }
 
   public loader: boolean = false
   private cct: string = ''
@@ -37,13 +38,13 @@ export class PrincipalDirector {
   ngOnInit(): void {
     // Opción 2: Suscribiéndose a cambios (para parámetros dinámicos)
     this.route.paramMap.subscribe(params => {
-      this.cct = params.get('cct') || '';
+      this.cct = this.crypto.Desencriptar(params.get('cct')!) || '';
       this.getDatosCct()
       this.conteoNivelDesempenioByGrupoAndCct()
       this.conteoExamenesUtilizados()
       this.getPromedioGruposcct()
       this.getNumeroAlumnosByCctandSexo()
-      this.breadCrumbService.addItem({ jerarquia: 4, label:  this.cct, urlLink: '/prim_3/resultados-ct/' + this.cct , icon: '' })
+      this.breadCrumbService.addItem({ jerarquia: 4, label:  this.cct, urlLink: '/prim_3/resultados-ct/' + this.crypto.Encriptar(this.cct) , icon: '' })
 
     });
   }
@@ -70,7 +71,7 @@ export class PrincipalDirector {
     return centro.turnos.flatMap(turno => turno.grupos ?? []);
   }
   redireccioarResultadosGrupo(grupo: string) {
-    this.router.navigate(['/prim_2/resultados-grupo', this.cct, grupo])
+    this.router.navigate(['/prim_2/resultados-grupo', this.crypto.Encriptar(this.cct), grupo])
   }
   conteoNivelDesempenioByGrupoAndCct() {
     this.loader = true

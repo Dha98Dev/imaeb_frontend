@@ -1,24 +1,17 @@
 ::ng-deep .p-menubar ul.p-menubar-root-list {
-    width: 100%;
-    justify-content: center !important;
-    align-items: center !important;
-    margin: 0 auto !important;
+  width: 100%;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+}
+.p-menubar{
+  border: 0px !important;
 }
 
 .leyend-cont {
-    position: relative;
+  position: static;
 }
 
 .leyend {
-    position: absolute;
-    top: 0;
-    right: 20px;
-    top: -35px;
-}
-
-@media(max-width:1200px){
-    .leyend-cont, .leyend{
-        position: static;
-    }
-
+  position: static;
 }

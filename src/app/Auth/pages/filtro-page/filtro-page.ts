@@ -1,6 +1,14 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CatalogoService } from '../../../core/services/Catalogos/catalogo.service';
-import { catalogo, CentrosTrabajo, Nivele, responseCatalogo, Sectores, singleModalidad, Zona } from '../../../core/Interfaces/catalogo.interface';
+import {
+  catalogo,
+  CentrosTrabajo,
+  Nivele,
+  responseCatalogo,
+  Sectores,
+  singleModalidad,
+  Zona,
+} from '../../../core/Interfaces/catalogo.interface';
 import { distinctUntilChanged, firstValueFrom } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,27 +16,43 @@ import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb
 import { modalidad } from '../../../core/Interfaces/Modalidad.interface';
 import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 import { MessageService } from 'primeng/api';
+import { paramsFilters } from '../../../core/Interfaces/paramsFilters.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-filtro-page',
   standalone: false,
   templateUrl: './filtro-page.html',
-  styleUrl: './filtro-page.scss'
+  styleUrl: './filtro-page.scss',
 })
 export class FiltroPage {
-  constructor(private cataloService: CatalogoService, private cd: ChangeDetectorRef, private fb: FormBuilder, private router: Router, private crypto:CryptoJsService, private messageService: MessageService) { }
+  constructor(
+    private cataloService: CatalogoService,
+    private cd: ChangeDetectorRef,
+    private fb: FormBuilder,
+    private router: Router,
+    private crypto: CryptoJsService,
+    private messageService: MessageService,
+    private authService: AuthService
+  ) {}
   public niveles: Nivele[] = [];
-  public modalidades: singleModalidad[] = []
+  public modalidades: singleModalidad[] = [];
   public sectores: Sectores[] = [];
   public zonas: Zona[] = [];
   public centrosTrabajo: CentrosTrabajo[] = [];
   public datosAlumno: any;
   public nivelSelected: string = '';
   public filtros: FormGroup = {} as FormGroup;
-  public nivelFiltroSeleccionado: number = 0
-  private breadCrumb = inject(BreadCrumService)
+  public nivelFiltroSeleccionado: number = 0;
+  private breadCrumb = inject(BreadCrumService);
+  params: paramsFilters = {} as paramsFilters;
 
   ngOnInit() {
+    this.params = this.authService.getObjectParams();
+    setTimeout(() => {
+      this.setValues();
+    }, 200);
+
     this.getNiveles();
     this.filtros = this.fb.group({
       nivelSelected: ['', []],
@@ -36,23 +60,20 @@ export class FiltroPage {
       sector: ['', []],
       zona: ['', []],
       cct: ['', []],
-      curpAlumno: ['', []]
+      curpAlumno: ['', []],
     });
     this.breadCrumb.addItem({
       jerarquia: 1,
       icon: '',
       label: 'filtros',
       urlLink: '/Auth/main-filter',
-      home: ''
-    })
-
+      home: '',
+    });
   }
 
   async realizarPeticionCatalogoService(params: catalogo): Promise<responseCatalogo> {
     try {
-      const resp = await firstValueFrom(
-        this.cataloService.getCatalogo(params)
-      );
+      const resp = await firstValueFrom(this.cataloService.getCatalogo(params));
       return resp;
     } catch (error) {
       throw error; // o devuelve un objeto vacío si prefieres
@@ -70,31 +91,34 @@ export class FiltroPage {
   }
   async getModalidades() {
     try {
-      const resp = await this.realizarPeticionCatalogoService({ nivelId: this.filtros.get('nivelSelected')?.value })
-      this.modalidades = resp.modalidades
-      this.cd.detectChanges()
+      const resp = await this.realizarPeticionCatalogoService({
+        nivelId: this.filtros.get('nivelSelected')?.value,
+      });
+      this.modalidades = resp.modalidades;
+      this.cd.detectChanges();
     } catch (err) {
-      this.modalidades = []
+      this.modalidades = [];
     }
   }
 
   async getSectores() {
     if (this.filtros.get('nivelSelected')?.value == 3) {
-      this.limpiarPropiedades(3)
-      this.limpiarCampos(['zona', 'cct', 'sector'])
+      this.limpiarPropiedades(3);
+      this.limpiarCampos(['zona', 'cct', 'sector']);
 
       this.getZonas();
       this.sectores = [];
     } else {
       try {
-        this.limpiarPropiedades(2)
-        this.limpiarCampos(['sector', 'zona', 'cct'])
-        const resp = await this.realizarPeticionCatalogoService({ nivelId: this.filtros.get('nivelSelected')?.value, modalidadId: this.filtros.get('modalidad')?.value });
+        this.limpiarPropiedades(2);
+        this.limpiarCampos(['sector', 'zona', 'cct']);
+        const resp = await this.realizarPeticionCatalogoService({
+          nivelId: this.filtros.get('nivelSelected')?.value,
+          modalidadId: this.filtros.get('modalidad')?.value,
+        });
         // Ordenar alfabéticamente por la propiedad 'sector'
         // Ordenar por ID numérico (si la propiedad existe)
-        this.sectores = resp.sectores.sort((a, b) =>
-          (a.sector || 0) - (b.sector || 0)
-        );
+        this.sectores = resp.sectores.sort((a, b) => (a.sector || 0) - (b.sector || 0));
         this.cd.detectChanges();
       } catch (error) {
         this.sectores = [];
@@ -104,15 +128,13 @@ export class FiltroPage {
 
   async getZonas() {
     try {
-      this.limpiarPropiedades(4)
+      this.limpiarPropiedades(4);
       const resp = await this.realizarPeticionCatalogoService({
         nivelId: this.filtros.get('nivelSelected')?.value,
         modalidadId: this.filtros.get('modalidad')?.value,
-        sector: this.filtros.get('sector')?.value
+        sector: this.filtros.get('sector')?.value,
       });
-      this.zonas = resp.zonas.sort((a, b) =>
-        (a.zonaEscolar || 0) - (b.zonaEscolar || 0)
-      );
+      this.zonas = resp.zonas.sort((a, b) => (a.zonaEscolar || 0) - (b.zonaEscolar || 0));
       this.cd.detectChanges();
     } catch (error) {
       this.zonas = [];
@@ -125,7 +147,7 @@ export class FiltroPage {
         nivelId: this.filtros.get('nivelSelected')?.value,
         modalidadId: this.filtros.get('modalidad')?.value,
         sector: this.filtros.get('sector')?.value,
-        zonaEscolar: this.filtros.get('zona')?.value
+        zonaEscolar: this.filtros.get('zona')?.value,
       });
       this.centrosTrabajo = resp.centrosTrabajo;
       this.cd.detectChanges();
@@ -136,87 +158,170 @@ export class FiltroPage {
 
   limpiarCampos(campos: string[]) {
     const patch: any = {};
-    campos.forEach(campo => {
+    campos.forEach((campo) => {
       patch[campo] = '';
     });
     this.filtros.patchValue(patch);
-    this.cd.detectChanges()
+    this.cd.detectChanges();
   }
 
   limpiarPropiedades(nivelLimpieza: number) {
     switch (nivelLimpieza) {
       case 1:
-        this.modalidades = []
-        this.sectores = []
-        this.zonas = []
-        this.centrosTrabajo = []
-        this.cd.detectChanges()
+        this.modalidades = [];
+        this.sectores = [];
+        this.zonas = [];
+        this.centrosTrabajo = [];
+        this.cd.detectChanges();
         break;
       case 2:
-        this.sectores = []
-        this.zonas = []
-        this.centrosTrabajo = []
-        this.cd.detectChanges()
+        this.sectores = [];
+        this.zonas = [];
+        this.centrosTrabajo = [];
+        this.cd.detectChanges();
         break;
       case 3:
-        this.zonas = []
-        this.centrosTrabajo = []
-        this.cd.detectChanges()
+        this.zonas = [];
+        this.centrosTrabajo = [];
+        this.cd.detectChanges();
         break;
       case 4:
-        this.centrosTrabajo = []
-        this.cd.detectChanges()
+        this.centrosTrabajo = [];
+        this.cd.detectChanges();
         break;
 
       default:
         break;
     }
-
   }
 
   generarUrl() {
-    let url = ''
-    let sector = this.filtros.get('sector')?.value ?? ''
-    let zona = this.filtros.get('zona')?.value ?? ''
-    let modalidad = this.filtros.get('modalidad')?.value ?? ''
-    let nivel = this.filtros.get('nivelSelected')?.value ?? ''
-    let rutaSector = '/ss/resultados-sector/' + nivel + '/' + sector+'/'+modalidad
-    let rutaZona = '/sz/resultados-zona/' + nivel + '/' + zona
+    let url = '';
+    let sector = this.filtros.get('sector')?.value ?? '';
+    let zona = this.filtros.get('zona')?.value ?? '';
+    let modalidad = this.filtros.get('modalidad')?.value ?? '';
+    let nivel = this.filtros.get('nivelSelected')?.value ?? '';
+    let rutaSector = '/ss/resultados-sector/' + btoa(nivel) + '/' + btoa(sector) + '/' + btoa(modalidad);
+    let rutaZona = '/sz/resultados-zona/' + btoa(nivel) + '/' + btoa(zona);
+
+// variables encriptadas
+
+
     if (this.filtros.get('cct')?.value) {
-      let cctSelected: CentrosTrabajo = this.centrosTrabajo.filter(cct => cct.id == this.filtros.get('cct')?.value)[0]
-      url = '/prim_3/resultados-ct/'
-      this.router.navigate([url, cctSelected.cct]);
-      this.addBread(1, 'filtros', '/Auth/main-filter', '')
+      let cctSelected: CentrosTrabajo = this.centrosTrabajo.filter(
+        (cct) => cct.id == this.filtros.get('cct')?.value
+      )[0];
+      url = '/prim_3/resultados-ct/';
+      this.router.navigate([url, this.crypto.Encriptar(cctSelected.cct)]);
+      this.addBread(1, 'filtros', '/Auth/main-filter', '');
       if (nivel != '3') {
-        this.addBread(2, 'sector ' + sector, rutaSector, '')
+        this.addBread(2, 'sector ' + sector, rutaSector, '');
       }
-      this.addBread(3, 'zona ' + zona, rutaZona, '')
-      this.addBread(4, 'Resultados ' + cctSelected.cct, '/prim_3/resultados-ct/' + cctSelected.cct, '')
+      this.addBread(3, 'zona ' + zona, rutaZona, '');
+      this.addBread(
+        4,
+        'Resultados ' + cctSelected.cct,
+        '/prim_3/resultados-ct/' + this.crypto.Encriptar(cctSelected.cct),
+        ''
+      );
       // this.addBread(3,cctSelected.cct,'/prim_3/resultados-ct/'+cctSelected.cct, '')
-
-
-    }
-    else if (this.filtros.get('zona')?.value) {
-      this.addBread(3, 'zona ' + zona, rutaZona, '')
-      this.router.navigate(['/sz/resultados-zona', nivel, zona, modalidad])
-    }
+    } else if (this.filtros.get('zona')?.value) {
+      this.addBread(3, 'zona ' + zona, rutaZona, '');
+      this.router.navigate(['/sz/resultados-zona', btoa(nivel), btoa(zona), btoa(modalidad)]);
+    } 
+    
     else if (this.filtros.get('sector')?.value) {
-      this.addBread(2, 'sector ' + sector, rutaSector, '')
-      url = '/ss/resultados-sector'
-      this.router.navigate([url, nivel, sector,modalidad ])
+      this.addBread(2, 'sector ' + sector, rutaSector, '');
+      url = '/ss/resultados-sector';
+      this.router.navigate([url, btoa(nivel), btoa(sector), btoa(modalidad)]);
     }
-    else if (this.filtros.get('modalidad')?.value){
-      url = '/m/resultadosModalidad'
-      let modalidadSelected=this.modalidades.filter(mod => mod.id == modalidad)
-      let modalidadCripto = this.crypto.toBase64Url(this.crypto.Encriptar(modalidadSelected[0].descripcion))
-      this.router.navigate([url, nivel, modalidad, modalidadCripto ])
-    }else{
-      this.messageService.add({ severity: 'secondary', summary: 'Filtro de la informacion', detail: 'Debe de seleccionar un nivel y una modalidad al menos' });
+    
+    else if (this.filtros.get('modalidad')?.value) {
+      url = '/m/resultadosModalidad';
+      let modalidadSelected = this.modalidades.filter((mod) => mod.id == modalidad);
+      let modalidadCripto = this.crypto.toBase64Url(
+        this.crypto.Encriptar(modalidadSelected[0].descripcion)
+      );
+      this.router.navigate([url, btoa(nivel), btoa(modalidad), modalidadCripto]);
+    } 
+    
+    else {
+      this.messageService.add({
+        severity: 'secondary',
+        summary: 'Filtro de la informacion',
+        detail: 'Debe de seleccionar un nivel y una modalidad al menos',
+      });
     }
   }
   addBread(jerarquia: number, label: string, urlLink: string, icon: string) {
-    this.breadCrumb.addItem({ jerarquia, label, urlLink, icon, home: '' })
+    this.breadCrumb.addItem({ jerarquia, label, urlLink, icon, home: '' });
   }
 
+  setValues() {
 
+    const { nivelId, modalidadId, sectorId, zonaId, escuelaId } = this.params || {};
+
+    // Si no hay nivel, no hacemos nada
+    if (nivelId == null) {
+      return;
+    }
+
+    // 1) Nivel
+    this.niveles = this.niveles.filter((n) => n.id === nivelId);
+    this.filtros.patchValue({ nivelSelected: nivelId });
+    this.getModalidades();
+
+    // Esperamos a que se carguen las modalidades
+    setTimeout(() => {
+      // 2) Modalidad
+      if (modalidadId == null) {
+        return;
+      }
+
+      this.modalidades = this.modalidades.filter((m) => m.id === modalidadId);
+      this.cd.detectChanges();
+      this.filtros.patchValue({ modalidad: modalidadId });
+      this.getSectores();
+
+      // Esperamos a que se carguen los sectores
+      setTimeout(() => {
+        // 3) Sector (opcional)
+        if (sectorId != null) {
+          this.sectores = this.sectores.filter((s) => s.sector === sectorId);
+          this.cd.detectChanges();
+          this.filtros.patchValue({ sector: sectorId });
+        }
+
+        // En cualquier caso, cargamos zonas
+        this.getZonas();
+
+        // Esperamos a que se carguen las zonas y luego aplicamos zona/escuela
+        setTimeout(() => {
+          this.aplicarZonaYEscuela(zonaId, escuelaId);
+        }, 200);
+      }, 200);
+    }, 200);
+  }
+
+  private aplicarZonaYEscuela(zonaId?: number, escuelaId?: number) {
+    // 4) Zona (opcional)
+    if (zonaId == null) {
+      return;
+    }
+
+    this.zonas = this.zonas.filter((z) => z.zonaEscolar === zonaId);
+    this.filtros.patchValue({ zona: zonaId });
+    this.getCentrosTrabajo();
+
+    // Esperamos a que se carguen los CT
+    setTimeout(() => {
+      // 5) Escuela / CCT (opcional)
+      if (escuelaId == null) {
+        return;
+      }
+
+      this.centrosTrabajo = this.centrosTrabajo.filter((ct) => ct.id === escuelaId);
+      this.filtros.patchValue({ cct: escuelaId });
+    }, 200);
+  }
 }

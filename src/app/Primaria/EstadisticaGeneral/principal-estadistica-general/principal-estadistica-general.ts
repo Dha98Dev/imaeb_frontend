@@ -9,11 +9,13 @@ import { firstValueFrom, forkJoin, map } from 'rxjs';
 import { MunicipiosOrLocalidades } from '../../../core/Interfaces/catalogo.interface';
 import { GetBackgroundService } from '../../../core/services/getColors/getBackground.service';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+import { AuthService } from '../../../Auth/services/auth.service';
 interface promedio {
   nivel: string,
   promedio: number,
   materia?: string,
-  municipio?:string
+  municipio?:string,
+  nivel_id?:number
 }
 
 @Component({
@@ -23,7 +25,7 @@ interface promedio {
   styleUrl: './principal-estadistica-general.scss'
 })
 export class PrincipalEstadisticaGeneral {
-  constructor(private modalidadesService: ModalidadesService, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private catalogoService: CatalogoService, private getBgMateriaService:GetBackgroundService) { }
+  constructor(private modalidadesService: ModalidadesService, private estadisticaService: GetEstadisticaService, private cd: ChangeDetectorRef, private catalogoService: CatalogoService, private getBgMateriaService:GetBackgroundService, private authService:AuthService) { }
   public nivelSeleccionado: number = 0
   public modalidades: modalidad[] = []
   public dataChartModalidades: DataGraficaBarra = {} as DataGraficaBarra
@@ -33,9 +35,12 @@ export class PrincipalEstadisticaGeneral {
   public municipios:MunicipiosOrLocalidades[]=[]
   public PromedioByNivelAndMunicipioAndMateria:promedio[][]=[]
   private breadCrumb=inject(BreadCrumService)
+  private nivelUser:number=0
 
 
   ngOnInit() {
+    this.nivelUser=this.authService.getNivel()
+    this.getEstadistica(this.nivelUser)
     // this.getEstadistica(1)
     this.getPromediosEstatales()
     this.getMunicipio()
@@ -46,6 +51,10 @@ export class PrincipalEstadisticaGeneral {
       urlLink:'/Auth/main-filter',
       home:''
     })
+  }
+
+  get getNivelUser(){
+    return this.nivelUser
   }
 
   getMunicipio() {
@@ -135,36 +144,44 @@ export class PrincipalEstadisticaGeneral {
       // Manejo mínimo en caso de error
     }
   }
-
-  async getPromediosEstatales() {
-    const niveles = [1, 2, 3];
-    try {
-      // Dispara todas las peticiones en paralelo
-      const responses = await Promise.all(
-        niveles.map(nivelId =>
-          firstValueFrom(this.estadisticaService.getPromedioEstatalByNivel({ nivelId }))
-            .then(resp => ({
-              nivelId,
-              promedio: Number(resp?.[0]?.promedio ?? 0)
-            }))
-        )
-      );
-
-      // Orden garantizado por niveles y mapeo a tu estructura
-      const data: promedio[] = responses
-        .sort((a, b) => a.nivelId - b.nivelId)
-        .map(r => ({
-          nivel: this.getNivelDescription(String(r.nivelId)),
-          promedio: r.promedio
-        }));
-      this.promediosGeneralesEstatales = data
-      this.cd.detectChanges()
-
-
-    } catch (err) {
-      this.promediosGeneralesEstatales = [];
+getPromediosEstatales(){
+  this.estadisticaService.getPromedioEstatalByNivel({nivelId:this.nivelUser}).subscribe({
+    next: resp =>{
+      let data:promedio = {promedio:resp?.[0]?.promedio ?? 0, nivel: this.getNivelDescription(this.nivelUser.toString())}
+      this.promediosGeneralesEstatales.push(data)
     }
-  }
+  })
+}
+  // async getPromediosEstatales() {
+  //   const niveles = [1, 2, 3];
+  //   try {
+  //     // Dispara todas las peticiones en paralelo
+  //     const responses = await Promise.all(
+  //       niveles.map(nivelId =>
+  //         firstValueFrom(this.estadisticaService.getPromedioEstatalByNivel({ nivelId }))
+  //           .then(resp => ({
+  //             nivelId,
+  //             promedio: Number(resp?.[0]?.promedio ?? 0)
+  //           }))
+  //       )
+  //     );
+
+  //     // Orden garantizado por niveles y mapeo a tu estructura
+  //     const data: promedio[] = responses
+  //       .sort((a, b) => a.nivelId - b.nivelId)
+  //       .map(r => ({
+  //         nivel: this.getNivelDescription(String(r.nivelId)),
+  //         promedio: r.promedio,
+  //       }));
+  //     this.promediosGeneralesEstatales = data
+  //     console.log(this.promediosGeneralesEstatales)
+  //     this.cd.detectChanges()
+
+
+  //   } catch (err) {
+  //     this.promediosGeneralesEstatales = [];
+  //   }
+  // }
 
   async getPromedioGeneralByMateriaAndNivel() {
     const materias = this.nivelSeleccionado == 1 ? [1, 2] : [1, 3, 4];

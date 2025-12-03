@@ -2,14 +2,9 @@ import { Component, computed, EventEmitter, Input, Output, signal, SimpleChanges
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { TableColumn } from '../../Interfaces/TablaDinamica.interface';
 
-export interface TableColumn {
-  key: string;
-  label: string;
-  filterable?: boolean;
-  type?: 'text' | 'number';
-  className?: string;
-}
+
 export interface DinamicTableData{
   columns:TableColumn[],
   data:any,

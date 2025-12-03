@@ -1,0 +1,113 @@
+<h2 class="text-xl font-medium text-stone-600 text-center ">Listado de usuarios</h2>
+
+@if(dataTable.data && dataTable.data.length > 0){
+<div class="mx-3">
+  <app-tabla-dinamica [columns]="dataTable.columns" [data]="dataTable.data"
+    [globalSearchKeys]="dataTable.globalSearchKeys" (rowClick)="onRow($event)">
+    ></app-tabla-dinamica>
+</div>
+}
+
+<p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false" (onHide)="reestablecerPasswordForm.reset()">
+  <div class="card">
+    <p-tabs value="0">
+      <p-tablist>
+        <p-tab value="0">Inhabilitar / Habilitar usuario</p-tab>
+        <p-tab value="1">Reestablecer contraseña</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          @if (usuarioSeleccionado.estado == 'ACTIVO') {
+          <p-message severity="error">Si inhabilita el usuario ya no podra acceder al sistema</p-message>
+          <div class="mt-4">
+            <p-button label="Inhabilitar usuario" severity="danger" (onClick)="desactivarUsuario(false); visible=false;" />
+          </div>
+          }@else {
+          <p-message severity="info">si habilita el usuario podra acceder de nuevo al sistema</p-message>
+          <div class="mt-4">
+            <p-button label="Habilitar usuario" severity="info" (onClick)="desactivarUsuario(true); visible=false;" />
+          </div>
+          }
+
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <p-message severity="secondary">
+            <small>
+              La nueva contraseña debe contener al menos una letra mayúscula, un número y un carácter especial, además
+              de
+              tener una longitud mínima de 8 caracteres.
+            </small>
+          </p-message>
+
+          <form action="" class="w-full px-2 mt-4" [formGroup]="reestablecerPasswordForm">
+            <div class="flex w-full gap-4">
+
+              <!-- Contraseña -->
+              <div class="flex-1">
+                <div class="relative">
+                  <!-- Input -->
+                  <div>
+                    <label for="password" class="text-sm text-gray-500 font-medium px-2">Contraseña</label>
+                    <input [type]="showPass ? 'text' : 'password'" id="password" [invalid]="isInvalid(reestablecerPasswordForm,'password')" pInputText formControlName="password"
+                      placeholder=" " class="peer w-full rounded-lg  px-3 py-2
+               text-sm text-slate-900
+               focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400" />
+                  </div>
+
+                  <!-- Botón ojito -->
+                  <button type="button" (click)="showPass = !showPass"
+                    class="absolute right-3 top-2/3 -translate-y-1/2 text-slate-500 hover:text-slate-700">
+                    @if (!showConfirm) {
+                    <i class="pi pi-eye"></i>
+                    }@else {
+                    <i class="pi pi-eye-slash"></i>
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <!-- Confirmar contraseña -->
+              <div class="flex-1">
+                <div class="relative">
+                  <div>
+                    <label for="password" class="text-sm text-gray-500 font-medium px-2">Confirmar contraseña</label>
+                    <!-- Input -->
+                    <input [type]="showConfirm ? 'text' : 'password'" id="confirmPassword"
+                      [invalid]="isInvalid(reestablecerPasswordForm,'confirmPassword')" pInputText formControlName="confirmPassword" placeholder=" " class="peer w-full rounded-lg  px-3 py-2
+               text-sm text-slate-900
+               focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400" />
+                  </div>
+
+
+
+                  <!-- Botón ojito -->
+                  <button type="button" (click)="showConfirm = !showConfirm"
+                    class="absolute right-3 top-2/3  -translate-y-1/2 text-slate-500 hover:text-slate-700">
+                    @if (!showConfirm) {
+                    <i class="pi pi-eye"></i>
+                    }@else {
+                    <i class="pi pi-eye-slash"></i>
+                    }
+                  </button>
+                </div>
+              </div>
+
+            </div>
+            <!-- Botón Iniciar Sesión -->
+            <div class="flex justify-center mt-[35px]">
+              <p-button label="Reestablecer contraseña" icon="pi pi-save"
+                class="w-full md:w-auto px-6 py-2 rounded-lg text-white hover:bg-c2/90" size="small" severity="contrast"
+                (onClick)="reestablecerPassword()" />
+            </div>
+
+          </form>
+
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+</p-dialog>
+
+
+<p-toast />

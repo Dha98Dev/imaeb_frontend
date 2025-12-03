@@ -4,6 +4,7 @@ import { listadoAlumnosService } from '../../../core/services/listadoAlumnos.ser
 import { Alumno, AlumnoFormateado, Respuesta } from '../../../core/Interfaces/listadoAlumno.interface';
 import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 
 @Component({
   selector: 'app-listado-grupo',
@@ -19,7 +20,7 @@ export class ListadoGrupo {
   public registrosFormateados: AlumnoFormateado[] = []
   public nivel: string | number = ''
 
-  constructor(private route: ActivatedRoute, private listadoAlumnosService: listadoAlumnosService, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice, private breadCrumbService: BreadCrumService) { }
+  constructor(private route: ActivatedRoute, private listadoAlumnosService: listadoAlumnosService, private cd: ChangeDetectorRef, private cctService: GetCctInfoSErvice, private breadCrumbService: BreadCrumService, private crypto:CryptoJsService) { }
 
   ngOnInit(): void {
     this.loader = true
@@ -27,7 +28,7 @@ export class ListadoGrupo {
 
     // Opción 2: Suscribiéndose a cambios (para parámetros dinámicos)
     this.route.paramMap.subscribe(params => {
-      this.cct = params.get('cct') || '';
+      this.cct = this.crypto.Desencriptar(params.get('cct')!) || '';
       this.grupo = params.get('grupo') || '';
       this.cctService.setCct(this.cct)
       this.cctService.setGrupo(this.grupo)

@@ -88,7 +88,6 @@ export class PrincipalPadreFamilia {
             title: element.materia + '',
             bgTitle: this.getBgMateria(element.materia)
           }
-          console.log(params)
           this.porcentajesAreaEvaluada.push(data)
           this.cd.detectChanges()
         },
@@ -107,7 +106,6 @@ export class PrincipalPadreFamilia {
         this.cctInfo.setCentroTrabajo(this.DatosCct)
         this.nivel = resp[0].idNivel
         this.calcularPorcentajeEstatalMateria()
-        console.log(resp)
         this.calcularPromedioEstatal()
         if (resp[0].idNivel == 1) {
           this.calcularPromedioAlumnoPreescolar()

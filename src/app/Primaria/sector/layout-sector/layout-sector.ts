@@ -37,7 +37,7 @@ export class LayoutSector {
         icon: 'pi pi-home',
         // url: '/prim_2/resultados-grupo',
         command: () => {
-          this.router.navigate(['/ss/resultados-sector', this.nivel , this.sector, this.modalidad])
+          this.router.navigate(['/ss/resultados-sector', btoa(this.nivel) , btoa(this.sector), btoa(this.modalidad)])
         },
       },
       {
@@ -45,7 +45,7 @@ export class LayoutSector {
         icon: 'fa-solid fa-list',
         // url: '/prim_2/listado-grupo',
         command: () => {
-          this.router.navigate(['/ss/zonasFromSector',this.nivel, this.sector, this.modalidad])
+          this.router.navigate(['/ss/zonasFromSector',btoa(this.nivel), btoa(this.sector), btoa(this.modalidad)])
         },
 
       },

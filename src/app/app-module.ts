@@ -3,10 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import Aura from '@primeuix/themes/aura';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ComponetsModule } from "./core/components/Components.module";
+import { AuthInterceptor } from './core/interceptors/authInterceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,11 @@ import { ComponetsModule } from "./core/components/Components.module";
     }
       }
     }),
+        {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [App]
 })

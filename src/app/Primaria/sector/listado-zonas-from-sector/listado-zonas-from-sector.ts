@@ -27,9 +27,9 @@ export class ListadoZonasFromSector {
   ngOnInit(): void {
     // Opción 2: Suscribiéndose a cambios (para parámetros dinámicos)
     this.route.paramMap.subscribe(params => {
-      this.nivel = params.get('nivel') || '';
-      this.sector = params.get('sector') || ''
-      this.modalidad=params.get('modalidad') || ''
+      this.nivel = atob(params.get('nivel')!) || '';
+      this.sector = atob(params.get('sector')!) || ''
+      this.modalidad=atob(params.get('modalidad')!) || ''
       this.observable.setNivel(this.nivel)
       this.observable.setSector(this.sector)
       this.observable.setModalidad(this.modalidad)
@@ -37,7 +37,7 @@ export class ListadoZonasFromSector {
       
     });
     this.observable.modalidad$.subscribe(data=>{this.modalidad=data})
-    this.breadCrumbService.addItem({jerarquia:2, label:'Zonas nivel '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector+'/'+this.modalidad, icon:''})
+    this.breadCrumbService.addItem({jerarquia:2, label:'Zonas nivel '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+btoa(this.nivel)+'/'+btoa(this.sector)+'/'+btoa(this.modalidad), icon:''})
   }
 
   getZonasFromSector() {
@@ -101,7 +101,7 @@ export class ListadoZonasFromSector {
     this.zonaSelected = event.zona
   }
   confirmVerDetalles(event: any) {
-    this.router.navigate(['/sz/resultados-zona', this.nivel, this.zonaSelected, this.modalidad])
+    this.router.navigate(['/sz/resultados-zona', btoa(this.nivel), btoa(this.zonaSelected), btoa(this.modalidad)])
   }
 
   getNivelDescription() {

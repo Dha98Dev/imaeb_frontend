@@ -4,6 +4,8 @@ export interface TableColumn {
   filterable?: boolean;
   type?: 'text' | 'number';
   className?: string;
+  icon?:string,
+  iconClass?:string
 }
  export interface DinamicTableData{
   columns:TableColumn[],

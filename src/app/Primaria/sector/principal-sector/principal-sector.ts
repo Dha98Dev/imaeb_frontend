@@ -32,9 +32,9 @@ export class PrincipalSector {
   ngOnInit(): void {
     // Opción 2: Suscribiéndose a cambios (para parámetros dinámicos)
     this.route.paramMap.subscribe(params => {
-      this.nivel = params.get('nivel') || '';
-      this.sector = params.get('sector') || ''
-      this.modalidad = params.get('modalidad') || ''
+      this.nivel = atob(params.get('nivel')!) || '';
+      this.sector = atob(params.get('sector')!) || ''
+      this.modalidad = atob(params.get('modalidad')!) || ''
       this.observable.setNivel(this.nivel)
       this.observable.setSector(this.sector)
       this.observable.setModalidad(this.modalidad)
@@ -42,7 +42,7 @@ export class PrincipalSector {
       this.getPromedioEstatal()
       this.getPromedioByMateriasAndZonaAndNivelAsync()
       this.getZonasFromSector()
-      this.breadCrumbService.addItem({jerarquia:2, label:'Resultados '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/zonasFromSector/'+this.nivel+'/'+this.sector+'/'+this.modalidad, icon:''})
+      this.breadCrumbService.addItem({jerarquia:2, label:'Resultados '+this.getNivelDescription() + ' sector '+ this.sector, urlLink:'/ss/resultados-sector/'+btoa(this.nivel)+'/'+btoa(this.sector)+'/'+btoa(this.modalidad), icon:''})
     });
   }
 
