@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../../Auth/services/auth.service'; 
+import { AuthService } from '../../Auth/services/auth.service';
 
 export const DirectorGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -8,7 +8,7 @@ export const DirectorGuard: CanActivateFn = (route, state) => {
 
   const scope = authService.getScope?.() ?? '';
 
-  if (scope === 'NIVEL' || scope === 'MODALIDAD' || scope === 'SECTOR' || scope === 'ZONA' ||  scope === 'ESCUELA' || scope === 'EJECUTIVO' || scope === 'ADMIN') {
+  if (['PERSONALIZADO','NIVEL', 'MODALIDAD', 'SECTOR', 'ZONA', 'ESCUELA', 'EJECUTIVO', 'ADMIN'].includes(scope)) {
     return true;
   }
 

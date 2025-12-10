@@ -8,7 +8,7 @@ export const EjecutivoGuard: CanActivateFn = (route, state) => {
 
   const scope = authService.getScope?.() ?? '';
 
-  if (scope === 'EJECUTIVO' || scope === 'ADMIN') {
+  if ( ['EJECUTIVO','ADMIN'].includes(scope) ) {
     return true;
   }
 

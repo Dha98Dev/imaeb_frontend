@@ -6,7 +6,7 @@ import { Register } from './pages/register/register';
 import { LayoutAdminPage } from './pages/layout-admin-page/layout-admin-page';
 import { PrimeNgModule } from '../core/shared/PrimeNg.module';
 import { ComponetsModule } from '../core/components/Components.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListadoUsuarios } from './pages/listado-usuarios/listado-usuarios';
 
 
@@ -21,7 +21,8 @@ import { ListadoUsuarios } from './pages/listado-usuarios/listado-usuarios';
     AdminRoutingModule,
     PrimeNgModule,
     ComponetsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class AdminModule { }

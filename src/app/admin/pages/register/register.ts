@@ -16,6 +16,10 @@ import { UsuariosService } from '../../services/usuarios.service';
 import { TipoUsuario } from '../../interfaces/usuarios.interface';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import {
+  modalidadesNivel,
+  modalidadesSelectedByNivel,
+} from '../../interfaces/dataNewRegister.interface';
 
 @Component({
   selector: 'app-register',
@@ -49,7 +53,9 @@ export class Register {
   showPass: boolean = false;
   showConfirm: boolean = false;
   usuarioGuardado: boolean = false;
-
+  public scope: string = '';
+  public modalidadesPersonalizado: modalidadesNivel[] = [];
+  public modalidadesSelectedByNivel: modalidadesSelectedByNivel[] = [];
   ngOnInit() {
     this.getNiveles();
     this.getTipoPersonas();
@@ -59,6 +65,8 @@ export class Register {
       sectorId: ['', []],
       zonaId: ['', []],
       escuelaId: ['', []],
+      nivelIds: this.fb.control([]),
+      modalidadIds: this.fb.control([]),
     });
     this.datosPersonales = this.fb.group({
       nombre: ['', [Validators.required]],
@@ -248,7 +256,6 @@ export class Register {
     this.usuarioService.getListadoTipoUsuarios().subscribe({
       next: (resp) => {
         this.listadoTipoPersonas = resp;
-        console.log(this.listadoTipoPersonas);
         this.cd.detectChanges();
       },
     });
@@ -261,8 +268,7 @@ export class Register {
     const scope = tipoPersona?.scope || null;
 
     this.datosPersonales.patchValue({ scope });
-
-    console.log(scope);
+    this.scope = scope!;
 
     if (scope) {
       this.addOrRemoveValidations(scope);
@@ -277,6 +283,7 @@ export class Register {
       MODALIDAD: ['modalidadId', 'nivelId'],
       NIVEL: ['nivelId'],
       EJECUTIVO: [],
+      PERSONALIZADO: ['nivelIds', 'modalidadesIds'],
     };
 
     const fields = rules[scope] || [];
@@ -294,6 +301,7 @@ export class Register {
       MODALIDAD: ['escuelaId', 'zonaId', 'sectorId'],
       NIVEL: ['escuelaId', 'zonaId', 'modalidadId', 'sectorId'],
       EJECUTIVO: ['escuelaId', 'zonaId', 'modalidadId', 'nivelId', 'sectorId'],
+      PERSONALIZADO: ['escuelaId', 'zonaId', 'modalidadId', 'nivelId', 'sectorId'],
     };
 
     const fieldsToClear = clearRules[scope] || [];
@@ -318,6 +326,22 @@ export class Register {
     if (this.auth.valid && this.datosPersonales.valid && this.alcancePermisoConsulta.valid) {
       let scope = this.datosPersonales.get('scope')?.value;
       this.clearValuesByScope(scope);
+
+      // validamos que el scope sea personalizado y haya al menos una modalidad seleccionada
+      if (
+        scope == 'PERSONALIZADO' &&
+        this.alcancePermisoConsulta.get('modalidadIds')?.value.length == 0
+      ) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Nota',
+          detail:
+            'Para el tipo de usuario PERSONALIZADO debe de seleccionar al menos una modalidad',
+          life: 3000,
+        });
+        return;
+      }
+
       if (this.auth.get('password')?.value != this.auth.get('confirmPassword')?.value) {
         this.messageService.add({
           severity: 'warn',
@@ -331,11 +355,12 @@ export class Register {
           ...this.datosPersonales.value,
           ...this.alcancePermisoConsulta.value,
         };
+        dataCompleta.nivelId = [dataCompleta.nivelId];
+        dataCompleta.modalidadId = [dataCompleta.modalidadId];
         delete dataCompleta.confirmPassword;
 
         this.usuarioService.saveUsuario(dataCompleta).subscribe({
-          next: (resp) => {
-            console.log(dataCompleta);
+          next: (resp) => {    
             this.usuarioGuardado = true;
             this.activeStep = 4;
             this.messageService.add({
@@ -349,10 +374,6 @@ export class Register {
                 this.router.navigate(['/admin/register']);
               });
             }, 1500);
-            // this.auth.reset();
-            // this.datosPersonales.reset();
-            // this.alcancePermisoConsulta.reset();
-            // Object.values(this.alcancePermisoConsulta.controls).forEach((c) => c.clearValidators());
           },
           error: (err) => {
             this.messageService.add({
@@ -383,5 +404,74 @@ export class Register {
       control?.clearValidators();
       control?.updateValueAndValidity();
     });
+  }
+
+  async getListadoModCompletas(nivelId: number) {
+    try {
+      const resp = await this.realizarPeticionCatalogoService({
+        nivelId,
+      });
+      this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: resp.modalidades };
+      this.cd.detectChanges();
+    } catch (err) {
+      console.error(err);
+      this.modalidadesPersonalizado = [];
+    }
+  }
+
+  private getRegistroNivel(idNivel: number): modalidadesSelectedByNivel {
+    let registro = this.modalidadesSelectedByNivel.find((x) => x.idNivel === idNivel);
+
+    if (!registro) {
+      registro = { idNivel, modalidadesSelected: [] };
+      this.modalidadesSelectedByNivel.push(registro);
+    }
+
+    return registro;
+  }
+  public agregarModalidad(idNivel: number, idModalidad: number) {
+    const registro = this.getRegistroNivel(idNivel);
+
+    if (!registro.modalidadesSelected.includes(idModalidad)) {
+      registro.modalidadesSelected.push(idModalidad);
+    }
+  }
+
+  public eliminarModalidad(idNivel: number, idModalidad: number) {
+    const registro = this.modalidadesSelectedByNivel.find((x) => x.idNivel === idNivel);
+    if (!registro) return;
+
+    registro.modalidadesSelected = registro.modalidadesSelected.filter((m) => m !== idModalidad);
+
+    // Si el nivel ya no tiene modalidades, eliminar el registro completo
+    if (registro.modalidadesSelected.length === 0) {
+      this.modalidadesSelectedByNivel = this.modalidadesSelectedByNivel.filter(
+        (x) => x.idNivel !== idNivel
+      );
+    }
+  }
+  public onChangeModalidad(idNivel: number, idModalidad: number, checked: boolean) {
+    if (checked) {
+      this.agregarModalidad(idNivel, idModalidad);
+    } else {
+      this.eliminarModalidad(idNivel, idModalidad);
+    }
+
+    this.obtenerNivelesYModalidadesUnicos(); // si la quieres seguir llamando aquí
+  }
+  public obtenerNivelesYModalidadesUnicos() {
+    // 1. Niveles únicos
+    const nivelesUnicos = Array.from(
+      new Set(this.modalidadesSelectedByNivel.map((x) => x.idNivel))
+    );
+    // 2. Modalidades únicas de todos los niveles
+    const modalidadesUnicas = Array.from(
+      new Set(this.modalidadesSelectedByNivel.flatMap((x) => x.modalidadesSelected))
+    );
+    this.alcancePermisoConsulta.patchValue({ modalidadIds: modalidadesUnicas });
+  }
+  public estaSeleccionada(idNivel: number, idModalidad: number): boolean {
+    const registro = this.modalidadesSelectedByNivel.find((r) => r.idNivel === idNivel);
+    return !!registro && registro.modalidadesSelected.includes(idModalidad);
   }
 }

@@ -105,7 +105,9 @@ export class AuthService {
         zonaId:jwt.zonaId,
         escuelaId:jwt.escuelaId,
         scope:jwt.scope,
-        sub:jwt.sub
+        sub:jwt.sub,
+        nivelIds:jwt.nivelIds,
+        modalidadIds:jwt.modalidadIds
       }
     }
     return data

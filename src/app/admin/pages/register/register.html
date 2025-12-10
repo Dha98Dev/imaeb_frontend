@@ -15,6 +15,7 @@
                 </ng-template>
             </p-step>
 
+            @if (scope !='EJECUTIVO') {
             <p-step [value]="2" class="flex flex-row flex-auto gap-2">
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
                     <button class="bg-transparent border-0 inline-flex flex-col gap-2"
@@ -28,6 +29,7 @@
                     </button>
                 </ng-template>
             </p-step>
+            }
 
             <p-step [value]="3" class="flex flex-row flex-auto gap-2">
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
@@ -67,7 +69,8 @@
                         <!-- cuerpo del form de datos de la persona -->
                         <form action="" [formGroup]="datosPersonales">
                             <p-floatlabel>
-                                <input pInputText id="nombre" class="w-full" autocomplete="off" formControlName="nombre"
+                                <input pInputText id="nombre" #nombre (input)="nombre.value=nombre.value.toUpperCase()"
+                                    class="w-full" autocomplete="off" formControlName="nombre"
                                     [invalid]="isInvalid(datosPersonales,'nombre' )" />
                                 <label for="nombre">Nombre (s)</label>
                             </p-floatlabel>
@@ -76,7 +79,8 @@
                                     <p-floatlabel>
                                         <input pInputText id="apellidoPaterno" class="w-full" autocomplete="off"
                                             formControlName="apellidoPaterno"
-                                            [invalid]="isInvalid(datosPersonales,'apellidoPaterno' )" />
+                                            [invalid]="isInvalid(datosPersonales,'apellidoPaterno' )" #ap1
+                                            (input)="ap1.value=ap1.value.toUpperCase()" />
                                         <label for="apellidoPaterno">Apellido paterno</label>
                                     </p-floatlabel>
                                 </div>
@@ -84,7 +88,8 @@
                                     <p-floatlabel>
                                         <input pInputText id="apellidoMaterno" class="w-full" autocomplete="off"
                                             formControlName="apellidoMaterno"
-                                            [invalid]="isInvalid(datosPersonales,'apellidoMaterno' )" />
+                                            [invalid]="isInvalid(datosPersonales,'apellidoMaterno')" #ap2
+                                            (input)="ap2.value=ap2.value.toUpperCase()" />
                                         <label for="apellidoMaterno">Apellido materno</label>
                                     </p-floatlabel>
                                 </div>
@@ -115,8 +120,13 @@
 
                     </div>
                     <div class="flex pt-6 justify-end ">
-                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" label="Next"
+                        @if(scope != 'EJECUTIVO'){
+                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" label=""
                             icon="pi pi-arrow-right" iconPos="right" />
+                        }@else {
+                        <p-button (onClick)="activateCallback(3); usuarioGuardado=false" label=""
+                            icon="pi pi-arrow-right" iconPos="right" />
+                        }
                     </div>
                 </ng-template>
             </p-step-panel>
@@ -128,6 +138,7 @@
 
 
 
+            @if (['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL'].includes(scope)) {
             <p-step-panel [value]="2">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-col gap-2 mx-auto" style="min-height: 50vh; max-width: 40rem">
@@ -227,13 +238,97 @@
 
                     </div>
                     <div class="flex pt-6 justify-between">
-                        <p-button (onClick)="activateCallback(1)" label="Back" severity="secondary"
+                        <p-button (onClick)="activateCallback(1)" label="" severity="secondary"
                             icon="pi pi-arrow-left" />
-                        <p-button (onClick)="activateCallback(3)" label="Next" icon="pi pi-arrow-right"
-                            iconPos="right" />
+                        <p-button (onClick)="activateCallback(3)" label="" icon="pi pi-arrow-right" iconPos="right" />
                     </div>
                 </ng-template>
             </p-step-panel>
+            }
+
+            @if (['PERSONALIZADO'].includes(scope)) {
+            <p-step-panel [value]="2">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 50vh; max-width: 40rem">
+                        <div class="text-center mt-4 mb-2 text-xl font-semibold">Alcance de consulta de usuario</div>
+                        <p-message severity="secondary">
+                            <div class="flex items-center gap-3">
+                                <i class="pi pi-lightbulb"></i>
+                                <div class="mensaje">
+                                    <b class="font-semibold text-sm">Nota:</b>
+                                    <small class="!text-xs">
+                                        El alcance de consulta que se otorgará al usuario será determinado con base en
+                                        los datos
+                                        proporcionados en el formulario.
+                                    </small>
+                                </div>
+                            </div>
+                        </p-message>
+
+                        <form class="flex gap-2 flex-col w-100 p-3  rounded" [formGroup]="alcancePermisoConsulta">
+                            <!-- seleccion  de los niveles que puede consultar un usuario personalizado -->
+                            <div class="shadow-md px-2 py-2 rounded-lg">
+                                <span class="font-medium">Seleccione los niveles que podra consultar</span>
+
+                                <div class="flex flex-col px-3 py-3 gap-3">
+                                    @for (nivel of niveles; track $index) {
+                                    <div class="flex flex-col gap-2">
+
+                                        <!-- Checkbox de nivel -->
+                                        <div class="flex items-center">
+                                            <p-checkbox [inputId]="'nivel'+nivel.id" formControlName="nivelIds"
+                                                [value]="nivel.id"
+                                                (onChange)="getListadoModCompletas(nivel.id)"></p-checkbox>
+
+                                            <label [for]="'nivel'+nivel.id" class="ml-2">
+                                                {{ nivel.descripcion }}
+                                            </label>
+                                        </div>
+
+                                        <!-- Modalidades de ese nivel (solo si existen y tienen length) -->
+                                        @if (modalidadesPersonalizado[nivel.id]?.modalidades?.length) {
+                                        <div class="shadow-md px-2 py-2 rounded-lg mt-2">
+                                            <span class="font-medium">
+                                                Seleccione las modalidades que podra consultar
+                                            </span>
+
+                                            <div class="flex justify-between flex-wrap gap-3 px-3 py-3">
+                                                @for (mod of modalidadesPersonalizado[nivel.id].modalidades; track
+                                                $index) {
+                                                <div class="flex items-center">
+                                                    <p-checkbox [inputId]="'mod'+nivel.id+'-'+mod.id" [binary]="true"
+                                                        [ngModel]="estaSeleccionada(nivel.id, mod.id)"
+                                                        (ngModelChange)="onChangeModalidad(nivel.id, mod.id, $event)"
+                                                        [ngModelOptions]="{ standalone: true }"></p-checkbox>
+
+                                                    <label [for]="'mod'+nivel.id+'-'+mod.id" class="ml-2">
+                                                        {{ mod.descripcion }}
+                                                    </label>
+                                                </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                        }
+
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+
+
+                        </form>
+
+                    </div>
+                    <div class="flex pt-6 justify-between">
+                        <p-button (onClick)="activateCallback(1)" label="" severity="secondary"
+                            icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(3)" label="" icon="pi pi-arrow-right" iconPos="right" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+            }
 
 
 
@@ -252,20 +347,8 @@
                                 <div class="mensaje">
                                     <b class="font-semibold text-sm">Nota:</b>
                                     <small class="!text-xs">
-                                        El alcance de consulta que se otorgará al usuario será determinado con base en
-                                        los datos
-                                        proporcionados en el formulario.
-                                    </small>
-                                </div>
-                            </div>
-                        </p-message>
-                        <p-message severity="secondary">
-                            <div class="flex items-center gap-3">
-                                <i class="pi pi-lightbulb"></i>
-                                <div class="mensaje">
-                                    <b class="font-semibold text-sm">Nota:</b>
-                                    <small class="!text-xs">
-                                        La contraseña debe incluir al menos una letra mayúscula, un número, un carácter especial y tener una longitud mínima de 8 caracteres.
+                                        La contraseña debe incluir al menos una letra mayúscula, un número, un carácter
+                                        especial y tener una longitud mínima de 8 caracteres.
                                     </small>
                                 </div>
                             </div>
@@ -358,9 +441,14 @@
 
                     </div>
                     <div class="flex pt-6 justify-between">
-                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" label="Back"
-                            severity="secondary" icon="pi pi-arrow-left" />
-                        <!-- <p-button (onClick)="activateCallback(4); usuarioGuardado=false" label="Next" icon="pi pi-arrow-right"
+                        @if (scope !='EJECUTIVO') {
+                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" label="" severity="secondary"
+                            icon="pi pi-arrow-left" />
+                        }@else{
+                        <p-button (onClick)="activateCallback(1); usuarioGuardado=false" label="" severity="secondary"
+                            icon="pi pi-arrow-left" />
+                        }
+                        <!-- <p-button (onClick)="activateCallback(4); usuarioGuardado=false" label="" icon="pi pi-arrow-right"
                             iconPos="right" /> -->
                     </div>
                 </ng-template>

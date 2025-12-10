@@ -18,7 +18,7 @@
       <div class="mb-6 relative ">
         <p-floatlabel>
           <input [type]="showPassword ? 'text' : 'password'" pInputText id="password" autocomplete="off"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-c2" formControlName="password" />
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-c2" formControlName="password" (keydown.enter)="iniciarSesion()" />
           <label for="password">Ingrese su contraseña</label>
         </p-floatlabel>
         <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-c2"

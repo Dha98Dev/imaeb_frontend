@@ -95,7 +95,7 @@ export class FiltroPage {
         nivelId: this.filtros.get('nivelSelected')?.value,
       });
       this.modalidades = resp.modalidades;
-      this.cd.detectChanges();
+      // this.setValues()
     } catch (err) {
       this.modalidades = [];
     }
@@ -208,6 +208,7 @@ export class FiltroPage {
 
 
     if (this.filtros.get('cct')?.value) {
+      
       let cctSelected: CentrosTrabajo = this.centrosTrabajo.filter(
         (cct) => cct.id == this.filtros.get('cct')?.value
       )[0];
@@ -259,7 +260,7 @@ export class FiltroPage {
 
   setValues() {
 
-    const { nivelId, modalidadId, sectorId, zonaId, escuelaId } = this.params || {};
+    const { nivelId, modalidadId, sectorId, zonaId, escuelaId, nivelIds, modalidadIds } = this.params || {};
 
     // Si no hay nivel, no hacemos nada
     if (nivelId == null) {
@@ -267,8 +268,8 @@ export class FiltroPage {
     }
 
     // 1) Nivel
-    this.niveles = this.niveles.filter((n) => n.id === nivelId);
-    this.filtros.patchValue({ nivelSelected: nivelId });
+    this.niveles = this.niveles.filter((n) => nivelIds.includes(n.id));
+    // this.filtros.patchValue({ nivelSelected: nivelIds[0] });
     this.getModalidades();
 
     // Esperamos a que se carguen las modalidades
@@ -278,9 +279,9 @@ export class FiltroPage {
         return;
       }
 
-      this.modalidades = this.modalidades.filter((m) => m.id === modalidadId);
+      this.modalidades = this.modalidades.filter((m) => modalidadIds.includes(m.id));
       this.cd.detectChanges();
-      this.filtros.patchValue({ modalidad: modalidadId });
+      this.filtros.patchValue({ modalidad: modalidadIds[0] });
       this.getSectores();
 
       // Esperamos a que se carguen los sectores
