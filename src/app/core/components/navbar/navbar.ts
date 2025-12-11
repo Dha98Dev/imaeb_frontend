@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { AuthService } from '../../../Auth/services/auth.service';
 import { inArray } from 'highcharts';
+import { paramsFilters } from '../../Interfaces/paramsFilters.interface';
 
 @Component({
   selector: 'app-navbar',
@@ -20,6 +21,7 @@ export class Navbar {
   ) {}
   public items: MenuItem[] | undefined;
   public visible: boolean = false;
+  private jwtParams:paramsFilters={} as paramsFilters
 
   // variables de autenticacion
   public isAutenticated: boolean = false;
@@ -32,11 +34,16 @@ export class Navbar {
 
     if (state) {
       const params = this.authService.getObjectParams();
+      this.jwtParams=params
       this.scope = params.scope;
     } else {
       this.scope = undefined; // o null, como manejes
     }
   });
+}
+
+get getUser():string{
+  return this.jwtParams.sub
 }
 
 

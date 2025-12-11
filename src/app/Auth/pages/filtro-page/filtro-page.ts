@@ -259,6 +259,7 @@ export class FiltroPage {
   }
 
   setValues() {
+console.log(this.params);
 
     const { nivelId, modalidadId, sectorId, zonaId, escuelaId, nivelIds, modalidadIds } = this.params || {};
 

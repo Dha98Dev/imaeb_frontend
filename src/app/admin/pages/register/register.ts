@@ -357,10 +357,16 @@ export class Register {
         };
         dataCompleta.nivelId = [dataCompleta.nivelId];
         dataCompleta.modalidadId = [dataCompleta.modalidadId];
+        dataCompleta.modalidadIds =
+          dataCompleta.modalidadIds.length > 0
+            ? dataCompleta.modalidadIds
+            : dataCompleta.modalidadId;
+        dataCompleta.nivelIds =
+          dataCompleta.nivelIds.length > 0 ? dataCompleta.nivelIds : dataCompleta.nivelId;
         delete dataCompleta.confirmPassword;
 
         this.usuarioService.saveUsuario(dataCompleta).subscribe({
-          next: (resp) => {    
+          next: (resp) => {
             this.usuarioGuardado = true;
             this.activeStep = 4;
             this.messageService.add({

@@ -14,6 +14,14 @@
 
 
 <p-drawer [(visible)]="visible" [modal]="false" header="Menu de navegación">
+<div class="user-card flex flex-col items-center mb-4">
+    <div class="avatar h-16 w-16 flex items-center justify-center rounded-full bg-[#CCB6A1] border-2 border-[#CCB6A1]/20 shadow-sm">
+        <i class="pi pi-user text-white text-xl"></i>
+    </div>
+    <p class="mt-2 font-medium text-slate-600">{{getUser}}</p>
+    <div class="divider mt-2 py-1 bg-gradient-to-r from-[#CCB6A1] via-[#886849] to-[#CCB6A1] w-full rounded-full"></div>
+</div>
+
     <ul class="flex flex-col divide-y divide-gray-100 pl-0">
 
         <!-- Se van a mostrar los links si el usuario esta autenticado -->
@@ -62,7 +70,7 @@
         </li>
         }
 
-        <li>
+        <li class="cursor-pointer">
             <a (click)="visible=false; confirmCloseSesion($event)"
                 class="px-3 flex items-center gap-3 py-3 text-red-600   transition-colors rounded-lg no-underline font-medium  text-stone-500"
                 routerLinkActive="bg-gray-100">

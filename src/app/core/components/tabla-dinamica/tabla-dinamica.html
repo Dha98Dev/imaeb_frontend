@@ -40,7 +40,7 @@
     class="border rounded px-3 py-2 text-sm w-full sm:w-80" />
 
   <!-- Filtros por columna -->
-  @if (columns?.length) {
+  @if (columns.length) {
     <div class="flex gap-2 flex-wrap">
       @for (col of columns; track $index) {
         @if (col.filterable) {
@@ -109,7 +109,7 @@
       @if (totalItems() === 0) {
         <tr>
           <td class="px-4 py-6 text-center text-gray-500 bg-white rounded-xl shadow-sm"
-              [attr.colspan]="(columns?.length || 1)">
+              [attr.colspan]="(columns.length || 1)">
             Sin resultados
           </td>
         </tr>
