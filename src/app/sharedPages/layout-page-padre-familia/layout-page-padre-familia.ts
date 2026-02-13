@@ -38,21 +38,21 @@ export class LayoutPagePadreFamilia {
       if (this.datosCct.idNivel != 1) {
         this.items?.push(
           {
-            icon: 'fa-solid fa-flask',
+            icon: 'pi pi-building',
             label: 'Ciencias',
             command: () => {
               this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('4'), alSeleccionado])
             }
           },
           {
-            icon: 'fa-solid fa-calculator',
+            icon: 'pi pi-chart-pie',
             label: 'Matematicas',
             command: () => {
               this.router.navigate(['/s/resultados_area', this.cripto.Encriptar('3'), alSeleccionado])
             }
           },
           {
-            icon: 'fa-solid fa-book',
+            icon: 'pi pi-book',
             label: 'Lenguajes',
             styleClass: 'bg-sky-500 text-white',
             command: () => {

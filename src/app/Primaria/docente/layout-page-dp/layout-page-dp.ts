@@ -32,7 +32,7 @@ export class LayoutPageDP {
       },
       {
         label: 'listado alumnos',
-        icon: 'fa-solid fa-users',
+        icon: 'pi pi-list',
         url: '/prim_2/listado-grupo',
         command: () => {
           this.router.navigate(['/prim_2/listado-grupo',  this.crypto.Encriptar(this.cct), this.grupo])
@@ -59,7 +59,7 @@ this.cctService.centroTrabajo$.subscribe(data => {
       this.cd.detectChanges();
 
       // Verifica si ya existe un ítem con ese label
-      const existe = this.items?.some(item => item.label === 'result-area');
+      const existe = this.items?.some(item => item.label === 'resultado-area');
 
       if (!existe) {
         this.items?.push({

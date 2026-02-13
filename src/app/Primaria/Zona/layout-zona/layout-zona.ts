@@ -42,7 +42,7 @@ export class LayoutZona {
       },
       {
         label: 'CCT de zona ' +this.zona,
-        icon: 'fa-solid fa-list',
+        icon: 'pi pi-list',
         // url: '/prim_2/listado-grupo',
         command: () => {
           this.router.navigate(['/sz/cctstByZona',btoa(this.nivel), btoa(this.zona), btoa(this.modalidad)])

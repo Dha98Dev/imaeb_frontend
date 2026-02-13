@@ -7,23 +7,23 @@
     <app-subtitle [subtitle]="getSubtitle"></app-subtitle>
 </div>
 <div class="flex justify-end px-5 gap-3">
-    <p-button icon="fa-solid fa-book" [severity]="materiaSelected == 1 ? 'help' : 'secondary'"
+    <p-button icon="pi pi-book" [severity]="materiaSelected == 1 ? 'help' : 'secondary'"
         [raised]=" materiaSelected ==1 ? true : false  " [rounded]="true" pTooltip="Resultados de Lenguaje"
         tooltipPosition="bottom" (onClick)="onPick(1)" />
 
     @if(nivel != 1){
 
-    <p-button icon="fa-solid fa-calculator" [severity]="materiaSelected  == 3 ? 'help' : 'secondary'"
+    <p-button icon="pi pi-chart-pie" [severity]="materiaSelected  == 3 ? 'help' : 'secondary'"
         [raised]=" materiaSelected ==3 ? true : false  " [rounded]="true" pTooltip="Resultados de Matematicas"
         tooltipPosition="bottom" (onClick)="onPick(3)" />
-    <p-button icon="fa-solid fa-flask" [severity]="materiaSelected == 4 ? 'help' : 'secondary'"
+    <p-button icon="pi pi-building" [severity]="materiaSelected == 4 ? 'help' : 'secondary'"
         [raised]=" materiaSelected ==4 ? true : false  " [rounded]="true" pTooltip="Resultados de Ciencias"
         tooltipPosition="bottom" (onClick)="onPick(4)" />
 
     }
 
     @if(nivel == 1){
-    <p-button icon="fa-solid fa-flask" [severity]="materiaSelected == 4 ? 'help' : 'secondary'"
+    <p-button icon="pi pi-building" [severity]="materiaSelected == 4 ? 'help' : 'secondary'"
         [raised]=" materiaSelected ==2 ? true : false  " [rounded]="true" pTooltip="Saberes y pensamiento científico"
         tooltipPosition="bottom" (onClick)="onPick(2)" />
     }

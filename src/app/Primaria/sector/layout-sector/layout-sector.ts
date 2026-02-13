@@ -42,7 +42,7 @@ export class LayoutSector {
       },
       {
         label: 'zonas del sector ' +this.sector,
-        icon: 'fa-solid fa-list',
+        icon: 'pi pi-list',
         // url: '/prim_2/listado-grupo',
         command: () => {
           this.router.navigate(['/ss/zonasFromSector',btoa(this.nivel), btoa(this.sector), btoa(this.modalidad)])
