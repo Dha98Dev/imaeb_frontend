@@ -89,7 +89,7 @@ export class ListadoUsuarios {
             'estado',
           ],
         };
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
       error: (err) => {
       },
@@ -156,7 +156,7 @@ export class ListadoUsuarios {
             detail: 'Se cambio corrrectamente el estado del usuario',
             life: 3000,
           });
-          this.cd.detectChanges();
+          this.cd.markForCheck();
         },
         error: (err) => {
           this.messageService.add({

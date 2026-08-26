@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { catalogo, Zona } from '../../../core/Interfaces/catalogo.interface';
 import { DinamicTableData, TableColumn } from '../../../core/Interfaces/TablaDinamica.interface';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+import { getPromedioClass } from '../../../core/utilsFunctions/getPromedioClass';
 
 @Component({
   selector: 'app-listado-zonas-from-sector',
@@ -82,19 +83,26 @@ export class ListadoZonasFromSector {
       }
     }
 
-    const columns: TableColumn[] = [
-      { key: "#", label: '#', filterable: false },
-      { key: 'zona', label: 'Zona', filterable: true },
-      { key: 'nivel', label: 'Nivel', filterable: false },
-      { key: 'promedio', label: 'Promedio', filterable: false, type: 'number', className: 'text-center' }
-    ];
+const columns: TableColumn[] = [
+  { key: '#', label: '#', filterable: false },
+  { key: 'zona', label: 'Zona', filterable: true },
+  { key: 'nivel', label: 'Nivel', filterable: false },
+  {
+    key: 'promedio',
+    label: 'Promedio',
+    filterable: false,
+    type: 'number',
+    className: 'text-center',
+    cellClass: (value) =>getPromedioClass(value)
+  }
+];
 
-    this.dataTable = {
-      columns: columns,
-      data: categorias,
-      globalSearchKeys: ['zona']
-    }
-    this.cd.detectChanges()
+this.dataTable = {
+  columns,
+  data: categorias,
+  globalSearchKeys: ['zona']
+};
+    this.cd.markForCheck()
     // return { categorias, dataSet };
   }
   onRow(event: any) {

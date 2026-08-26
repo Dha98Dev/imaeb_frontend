@@ -74,7 +74,7 @@ export class PrincipalDocente {
         this.conteoAlumnos=resp
 
         // this.loader=false
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) =>{
 
@@ -87,7 +87,7 @@ export class PrincipalDocente {
       next:(resp) =>{
         this.resConteoExamenesUtilizados=resp
         // this.loader=false
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) =>{
 
@@ -101,7 +101,7 @@ export class PrincipalDocente {
       next:(resp) =>{
         this.conteNivelDesempenio=this.transformarArreglo(resp)
         this.loader=false
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) =>{
 
@@ -124,7 +124,7 @@ transformarArreglo(data: conteoNivelDesempenioByGrupoAndCct[]): MateriaPlano[] {
     this.estadisticaService.getPromedioEstatalByNivel({ nivelId: this.nivel }).subscribe({
       next: resp => {
         this.promedioEstatal = resp[0].promedio
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: error => {
 
@@ -141,7 +141,7 @@ transformarArreglo(data: conteoNivelDesempenioByGrupoAndCct[]): MateriaPlano[] {
     this.estadisticaService.getPromedioEstatalByNivel({escuelaId: idCct!, grupoId:this.getGrupoId(this.grupo)!}).subscribe({
       next: resp => {
         this.promedioGrupo = resp[0].promedio
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: error => {
 

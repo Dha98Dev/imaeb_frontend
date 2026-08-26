@@ -1,17 +1,50 @@
-<div class="contenedor flex flex-col">
+<div class="overflow-hidden rounded-2xl bg-white">
+
+    <!-- MODO COMPLETO -->
     @if(title != ''){
-        <div class="leyend w-100">
-        <p class="text-center border px-3 py-3  text-white font-medium text-xl rounded-xl mb-2" [ngClass]="bgTitle"> {{title}} </p>
-    </div>
+        <div class="px-6 pb-8 pt-5 text-white" [ngClass]="bgTitle">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] opacity-70">Análisis</p>
+            <h3 class="mt-1 text-xl font-bold">{{ title }}</h3>
+        </div>
+
+        <div class="relative -mt-4 mx-5 mb-5 space-y-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-md">
+            <div>
+                <div class="mb-2 flex items-end justify-between gap-4">
+                    <p class="text-sm font-semibold text-gray-600">{{ firstLeyendPercent }}</p>
+                    <p class="text-3xl font-black text-emerald-500">{{ firstPercent }}</p>
+                </div>
+                <div class="h-2.5 overflow-hidden rounded-full bg-emerald-50">
+                    <div class="progress-fill h-full rounded-full bg-emerald-500" [style.--progress.%]="firstPercent"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="mb-2 flex items-end justify-between gap-4">
+                    <p class="text-sm font-semibold text-gray-600">{{ secondLeyendPercent }}</p>
+                    <p class="text-3xl font-black text-gray-800">{{ secondPercent }}</p>
+                </div>
+                <div class="h-2.5 overflow-hidden rounded-full bg-gray-100">
+                    <div class="progress-fill progress-delay h-full rounded-full bg-gray-700" [style.--progress.%]="secondPercent"></div>
+                </div>
+            </div>
+        </div>
     }
-    <div class="porcentajes w-100 flex gap-3">
-        <div class="item w-1/2 text-center border rounded-lg ">
-            <p class="title text-sm font-medium  py-1"> {{firstLeyendPercent}} </p>
-            <p class="text-3xl text-emerald-500 font-medium  mt-2"> {{firstPercent}} </p>
+
+<!-- MODO COMPACTO -->
+@else {
+    <div class="grid grid-cols-2 gap-3 rounded-2xl bg-white p-4 shadow-md">
+        <div class="relative overflow-hidden rounded-xl bg-emerald-50 p-4">
+            <span class="absolute left-0 top-0 h-full w-1 bg-emerald-500"></span>
+            <p class="text-4xl font-black tracking-tight text-emerald-500">{{ firstPercent }}</p>
+            <p class="mt-2 text-sm font-semibold leading-tight text-gray-600">{{ firstLeyendPercent }}</p>
         </div>
-        <div class="item w-1/2 text-center border rounded-lg ">
-            <p class="title text-sm font-medium py-1"> {{secondLeyendPercent}} </p>
-            <p class="text-3xl font-medium  mt-2"> {{secondPercent   }} </p>
+
+        <div class="relative overflow-hidden rounded-xl bg-gray-50 p-4">
+            <span class="absolute left-0 top-0 h-full w-1 bg-gray-500"></span>
+            <p class="text-4xl font-black tracking-tight text-gray-800">{{ secondPercent }}</p>
+            <p class="mt-2 text-sm font-semibold leading-tight text-gray-600">{{ secondLeyendPercent }}</p>
         </div>
     </div>
+}
+
 </div>

@@ -84,7 +84,7 @@ export class FiltroPage {
     try {
       const resp = await this.realizarPeticionCatalogoService({});
       this.niveles = resp.niveles;
-      this.cd.detectChanges(); // solo si usas OnPush y necesitas forzar CD
+      this.cd.markForCheck(); // solo si usas OnPush y necesitas forzar CD
     } catch (err) {
       this.niveles = [];
     }
@@ -119,7 +119,7 @@ export class FiltroPage {
         // Ordenar alfabéticamente por la propiedad 'sector'
         // Ordenar por ID numérico (si la propiedad existe)
         this.sectores = resp.sectores.sort((a, b) => (a.sector || 0) - (b.sector || 0));
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       } catch (error) {
         this.sectores = [];
       }
@@ -135,7 +135,7 @@ export class FiltroPage {
         sector: this.filtros.get('sector')?.value,
       });
       this.zonas = resp.zonas.sort((a, b) => (a.zonaEscolar || 0) - (b.zonaEscolar || 0));
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     } catch (error) {
       this.zonas = [];
     }
@@ -150,7 +150,7 @@ export class FiltroPage {
         zonaEscolar: this.filtros.get('zona')?.value,
       });
       this.centrosTrabajo = resp.centrosTrabajo;
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     } catch (error) {
       this.centrosTrabajo = [];
     }
@@ -162,7 +162,7 @@ export class FiltroPage {
       patch[campo] = '';
     });
     this.filtros.patchValue(patch);
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
 
   limpiarPropiedades(nivelLimpieza: number) {
@@ -172,22 +172,22 @@ export class FiltroPage {
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
       case 2:
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
       case 3:
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
       case 4:
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
 
       default:
@@ -281,7 +281,7 @@ console.log(this.params);
       }
 
       this.modalidades = this.modalidades.filter((m) => modalidadIds.includes(m.id));
-      this.cd.detectChanges();
+      this.cd.markForCheck();
       this.filtros.patchValue({ modalidad: modalidadIds[0] });
       this.getSectores();
 
@@ -290,7 +290,7 @@ console.log(this.params);
         // 3) Sector (opcional)
         if (sectorId != null) {
           this.sectores = this.sectores.filter((s) => s.sector === sectorId);
-          this.cd.detectChanges();
+          this.cd.markForCheck();
           this.filtros.patchValue({ sector: sectorId });
         }
 

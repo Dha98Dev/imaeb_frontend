@@ -129,7 +129,7 @@ export class EstadisticaPrincipal {
           promedio: r.promedio
         }));
       this.promediosGeneralesEstatales = data
-      this.cd.detectChanges()
+      this.cd.markForCheck()
 
 
     } catch (err) {

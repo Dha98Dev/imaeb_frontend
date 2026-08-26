@@ -20,15 +20,15 @@ export class LayoutSector {
   
     this.cctService.sector$.subscribe(data =>{
       this.sector=data
-      this.cd.detectChanges()
+      this.cd.markForCheck()
     })
     this.cctService.nivel$.subscribe(data =>{
       this.nivel=data
-      this.cd.detectChanges()
+      this.cd.markForCheck()
     })
         this.cctService.modalidad$.subscribe(data =>{
       this.modalidad=data
-      this.cd.detectChanges()
+      this.cd.markForCheck()
     })
 
         this.items = [

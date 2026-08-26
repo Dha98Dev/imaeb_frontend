@@ -46,7 +46,7 @@ export class LoginPage {
             detail: 'Bienvenido de nuevo',
           });
           this.loader = false;
-          this.cd.detectChanges()
+          this.cd.markForCheck()
           setTimeout(() => {
           }, 1000);
         },

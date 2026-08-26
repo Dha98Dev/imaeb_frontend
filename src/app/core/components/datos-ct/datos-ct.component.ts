@@ -17,7 +17,7 @@ ngOnInit(){
       this.CctService.centroTrabajo$.subscribe(data =>{
       if (data) {
         this.datosCct=data
-         this.cd.detectChanges();
+         this.cd.markForCheck();
       }
     })
 }

@@ -63,7 +63,7 @@ this.getResultadosAlumnos.resultadosbyAlumnoAndMateria(this.alumnoID.toString(),
     this.resultadosPreguntasAlumnoMateria=resp[0]
     this.loader=false
     this.calcularPromedioAciertos()
-    this.cd.detectChanges()
+    this.cd.markForCheck()
   },
   error: (error) =>{
     this.loader=false
@@ -81,7 +81,7 @@ resultadosbyAlumnoAndMateriaAndUnidadAnalisis(){
 
     this.transformarParaGraficas()
     this.loader=false
-    this.cd.detectChanges()
+    this.cd.markForCheck()
   },
   error: (error) =>{
     this.loader=false

@@ -64,7 +64,7 @@ export class PrincipalPadreFamilia {
 
         this.promedioAlumno = this.datosAlumno.promedioGeneral
         this.loader = false
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
       error: (error) => {
 
@@ -89,7 +89,7 @@ export class PrincipalPadreFamilia {
             bgTitle: this.getBgMateria(element.materia)
           }
           this.porcentajesAreaEvaluada.push(data)
-          this.cd.detectChanges()
+          this.cd.markForCheck()
         },
         error: error => {
 
@@ -124,7 +124,7 @@ export class PrincipalPadreFamilia {
     this.estadisticaService.getPromedioEstatalByNivel({ personaId: this.alumnoID }).subscribe({
       next: resp => {
         this.promedioAlumno = resp[0].promedio
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: error => {
 
@@ -136,7 +136,7 @@ export class PrincipalPadreFamilia {
     this.estadisticaService.getPromedioEstatalByNivel({ nivelId: this.nivel }).subscribe({
       next: resp => {
         this.promedioEstatal = resp[0].promedio
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: error => {
 
@@ -165,7 +165,7 @@ async resultadosbyAlumnoAndMateria(): Promise<void> {
  respuestas.forEach(resp =>{
   this.resultadoPreguntasMateriaAlumno.push(resp[0])
  })
- this.cd.detectChanges();
+ this.cd.markForCheck();
     // Ejemplo: this.resultados = respuestas;
 
   } catch (error) {

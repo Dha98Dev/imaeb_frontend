@@ -49,7 +49,7 @@ get getUser():string{
 
   cerrarSesion() {
     this.authService.logout();
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
   confirmCloseSesion(event: Event) {
     this.confirmationService.confirm({

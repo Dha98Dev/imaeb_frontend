@@ -20,15 +20,15 @@ export class LayoutZona {
   
     this.cctService.zona$.subscribe(data =>{
       this.zona=data
-      this.cd.detectChanges()
+      this.cd.markForCheck()
     })
     this.cctService.nivel$.subscribe(data =>{
       this.nivel=data
-      this.cd.detectChanges()
+      this.cd.markForCheck()
     })    
     this.cctService.modalidad$.subscribe(data =>{
       this.modalidad=data
-      this.cd.detectChanges()
+      this.cd.markForCheck()
     })
 
         this.items = [

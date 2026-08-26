@@ -1,14 +1,21 @@
-import { Component, computed, EventEmitter, Input, Output, signal, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  computed,
+  EventEmitter,
+  Input,
+  Output,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { TableColumn } from '../../Interfaces/TablaDinamica.interface';
 
-
-export interface DinamicTableData{
-  columns:TableColumn[],
-  data:any,
-  globalSearchKeys:string[]
+export interface DinamicTableData {
+  columns: TableColumn[];
+  data: any;
+  globalSearchKeys: string[];
 }
 export type Row = Record<string, any>;
 
@@ -16,11 +23,13 @@ export type Row = Record<string, any>;
   selector: 'app-tabla-dinamica',
   standalone: false,
   templateUrl: './tabla-dinamica.html',
-  styleUrl: './tabla-dinamica.scss'
+  styleUrl: './tabla-dinamica.scss',
 })
 export class TablaDinamica {
   @Input() data: Row[] = [];
   @Input() columns: TableColumn[] = [];
+  @Input() iconButton: string = 'pi pi-eye';
+  @Input() showButtonExportData: boolean = true;
   @Input() globalSearchKeys?: string[];
   @Output() rowClick = new EventEmitter<Row>();
 
@@ -51,16 +60,18 @@ export class TablaDinamica {
     if (g) {
       const keys = this.globalSearchKeys?.length
         ? this.globalSearchKeys
-        : Array.from(new Set(this.columns.map(c => c.key)));
-      rows = rows.filter(r => keys.some(k => this.normalize(r[k]).includes(g)));
+        : Array.from(new Set(this.columns.map((c) => c.key)));
+      rows = rows.filter((r) => keys.some((k) => this.normalize(r[k]).includes(g)));
     }
 
     // filtros por columna
     const colFilters = this.filtrosPorCol();
-    const colKeys = Object.keys(colFilters).filter(k => (colFilters[k] ?? '').toString().trim() !== '');
+    const colKeys = Object.keys(colFilters).filter(
+      (k) => (colFilters[k] ?? '').toString().trim() !== '',
+    );
     if (colKeys.length) {
-      rows = rows.filter(r =>
-        colKeys.every(k => this.normalize(r[k]).includes(this.normalize(colFilters[k])))
+      rows = rows.filter((r) =>
+        colKeys.every((k) => this.normalize(r[k]).includes(this.normalize(colFilters[k]))),
       );
     }
 
@@ -100,8 +111,8 @@ export class TablaDinamica {
   });
 
   // Rangos mostrados ("Mostrando X–Y de N")
-  startIndex = computed(() => this.totalItems() ? (this.page() - 1) * this.pageSize() + 1 : 0);
-  endIndex   = computed(() => Math.min(this.page() * this.pageSize(), this.totalItems()));
+  startIndex = computed(() => (this.totalItems() ? (this.page() - 1) * this.pageSize() + 1 : 0));
+  endIndex = computed(() => Math.min(this.page() * this.pageSize(), this.totalItems()));
 
   // Ventana de páginas (ej. 2 antes y 2 después)
   pagesWindow = computed(() => {
@@ -164,11 +175,21 @@ export class TablaDinamica {
     this.pageSize.set(parsed);
     this.page.set(1);
   }
-  goToPage(p: number) { this.page.set(Math.min(Math.max(1, p), this.totalPages())); }
-  nextPage()          { this.goToPage(this.page() + 1); }
-  prevPage()          { this.goToPage(this.page() - 1); }
-  goToFirst()         { this.goToPage(1); }
-  goToLast()          { this.goToPage(this.totalPages()); }
+  goToPage(p: number) {
+    this.page.set(Math.min(Math.max(1, p), this.totalPages()));
+  }
+  nextPage() {
+    this.goToPage(this.page() + 1);
+  }
+  prevPage() {
+    this.goToPage(this.page() - 1);
+  }
+  goToFirst() {
+    this.goToPage(1);
+  }
+  goToLast() {
+    this.goToPage(this.totalPages());
+  }
 
   // ===== Exportaciones / copiar =====
   private getVisibleRows(): Row[] {
@@ -179,9 +200,9 @@ export class TablaDinamica {
   private asLabeledRows(): any[] {
     const rows = this.getVisibleRows();
     const cols = this.columns ?? [];
-    return rows.map(r => {
+    return rows.map((r) => {
       const obj: any = {};
-      cols.forEach(c => obj[c.label] = r[c.key] ?? '');
+      cols.forEach((c) => (obj[c.label] = r[c.key] ?? ''));
       return obj;
     });
   }
@@ -191,15 +212,15 @@ export class TablaDinamica {
     const ws = XLSX.utils.json_to_sheet(labeled);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Datos');
-    const file = `tabla_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.xlsx`;
+    const file = `tabla_${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.xlsx`;
     XLSX.writeFile(wb, file);
   }
 
   async copyToClipboard(): Promise<void> {
     const rows = this.getVisibleRows();
     const cols = this.columns ?? [];
-    const header = cols.map(c => c.label).join('\t');
-    const body = rows.map(r => cols.map(c => (r[c.key] ?? '')).join('\t')).join('\n');
+    const header = cols.map((c) => c.label).join('\t');
+    const body = rows.map((r) => cols.map((c) => r[c.key] ?? '').join('\t')).join('\n');
     const tsv = `${header}\n${body}`;
     await navigator.clipboard.writeText(tsv);
   }
@@ -207,8 +228,8 @@ export class TablaDinamica {
   exportToPDF(): void {
     const rows = this.getVisibleRows();
     const cols = this.columns ?? [];
-    const head = [cols.map(c => c.label)];
-    const body = rows.map(r => cols.map(c => r[c.key] ?? ''));
+    const head = [cols.map((c) => c.label)];
+    const body = rows.map((r) => cols.map((c) => r[c.key] ?? ''));
 
     const doc = new jsPDF({ orientation: 'landscape', unit: 'pt' });
     autoTable(doc, {
@@ -225,7 +246,7 @@ export class TablaDinamica {
       margin: { top: 50, right: 30, bottom: 30, left: 30 },
     });
 
-    const file = `tabla_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.pdf`;
+    const file = `tabla_${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.pdf`;
     doc.save(file);
   }
 }

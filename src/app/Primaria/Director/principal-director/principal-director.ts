@@ -56,7 +56,7 @@ export class PrincipalDirector {
         this.gruposCct = this.extraerGrupos(resp[0])
         this.nivel=resp[0].idNivel
         this.loader = false
-        this.cd.detectChanges()
+        this.cd.markForCheck()
         this.getPromediosEstatales()
       },
       error: (error) => {
@@ -79,7 +79,7 @@ export class PrincipalDirector {
       next: (resp) => {
         this.conteNivelDesempenio = this.transformarArreglo(resp)
         this.loader = false
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) => {
 
@@ -101,7 +101,7 @@ export class PrincipalDirector {
       next: (resp) => {
         this.resConteoExamenesUtilizados = resp
         this.loader = false
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) => {
 
@@ -113,7 +113,7 @@ export class PrincipalDirector {
     this.cctAndGrupoService.getPromedioGruposcct(this.cct).subscribe({
       next: (resp) => {
         this.dataChartPromedioGrupos = this.buildDataChart(resp)
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) => {
 
@@ -130,7 +130,7 @@ export class PrincipalDirector {
           this.totalAlumnos += el.totalAlumnos
 
         })
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) => {
 
@@ -146,7 +146,7 @@ export class PrincipalDirector {
       this.getEstadistica.getPromedioEstatalByNivel(paramProm).subscribe({
         next: resp => {
           this.PromedioEstatal = resp[0].promedio
-          this.cd.detectChanges()
+          this.cd.markForCheck()
         },
         error: error => {
 
@@ -170,7 +170,7 @@ export class PrincipalDirector {
 
           }
         })
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       })
     })
   }

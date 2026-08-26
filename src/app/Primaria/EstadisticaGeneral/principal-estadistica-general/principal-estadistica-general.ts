@@ -175,7 +175,7 @@ getPromediosEstatales(){
   //       }));
   //     this.promediosGeneralesEstatales = data
   //     console.log(this.promediosGeneralesEstatales)
-  //     this.cd.detectChanges()
+  //     this.cd.markForCheck()
 
 
   //   } catch (err) {
@@ -202,7 +202,7 @@ getPromediosEstatales(){
       );
       // guarda los resultados en tu arreglo
       this.promedioGeneralesEstatalesBynivelAndMateria = responses;
-      this.cd.detectChanges()
+      this.cd.markForCheck()
 
     } catch (err) {
       this.promedioGeneralesEstatalesBynivelAndMateria = [];
@@ -234,7 +234,7 @@ async getEstadisticaByNivelAndMunicipio(): Promise<void> {
       description: 'Promedios',
       categorias
     };
-    this.cd.detectChanges()
+    this.cd.markForCheck()
   } catch (err) {
   }
 }
@@ -278,7 +278,7 @@ getPromedioByNivelAndMunicipioAndMateria(): void {
     next: (resultadoPorMunicipio: promedio[][]) => {
       // resultadoPorMunicipio es Promedio[][] con el mismo orden que this.municipios
       this.PromedioByNivelAndMunicipioAndMateria = resultadoPorMunicipio;
-      this.cd.detectChanges()
+      this.cd.markForCheck()
     },
     error: (err) => {
     },

@@ -44,11 +44,11 @@ export class LayoutPageDP {
 
     this.cctService.cct$.subscribe(cct => {
       this.cct = cct
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     })
     this.cctService.grupo$.subscribe(grupo => {
       this.grupo = grupo
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     })
 
 this.cctService.centroTrabajo$.subscribe(data => {
@@ -56,7 +56,7 @@ this.cctService.centroTrabajo$.subscribe(data => {
     this.datosCct = data;
 
     if (this.datosCct.nivel !== 'Preescolar') {
-      this.cd.detectChanges();
+      this.cd.markForCheck();
 
       // Verifica si ya existe un ítem con ese label
       const existe = this.items?.some(item => item.label === 'resultado-area');

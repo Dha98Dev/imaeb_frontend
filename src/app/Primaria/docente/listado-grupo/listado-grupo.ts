@@ -46,7 +46,7 @@ export class ListadoGrupo {
         this.registrosFormateados = this.formatearAlumnos(this.listadoAlumnos)
         this.loader = false
 
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
       error: (error) => {
 
@@ -108,7 +108,7 @@ formatearAlumnos(alumnos: Alumno[]): AlumnoFormateado[] {
       next: (resp) => {
         this.cctService.setCentroTrabajo(resp[0])
         this.nivel = resp[0].idNivel
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) => {
 

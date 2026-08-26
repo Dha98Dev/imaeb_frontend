@@ -1,86 +1,87 @@
-<!-- <div class=" ">
-@if (isAutenticated) {
-    <p-menubar   [model]="items" class="!b-0" />
-}
-</div> -->
-
-<div class="leyend-cont flex  py-3 px-3" [ngClass]="isAutenticated ? 'justify-between': 'justify-end' ">
+<div class="flex items-center px-4 py-3" [ngClass]="isAutenticated ? 'justify-between' : 'justify-end'">
     @if (isAutenticated) {
-    <p-button (click)="visible = true" icon="pi pi-bars" severity="contrast" label="Menu" />
+        <button type="button" (click)="visible = true" class="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition-all hover:bg-gray-50 hover:shadow-md">
+            <i class="pi pi-bars text-sm"></i>
+            <span>Menú</span>
+        </button>
     }
-    <p class="leyend text-xs text-gray-500 font-medium mx-3 text-center">® Dirección de Servicios Administrativos:
-        Departamento de Informática</p>
+
+    <p class="mx-3 text-center text-xs font-medium text-gray-400">
+        ® Dirección de Servicios Administrativos · Departamento de Informática
+    </p>
 </div>
 
+<p-drawer [(visible)]="visible" [modal]="false" header="Menú de navegación">
+    <div class="mb-5 rounded-2xl bg-gradient-to-br from-stone-50 via-white to-stone-100 p-4">
+        <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#886849] text-white shadow-sm">
+                <i class="pi pi-user"></i>
+            </div>
 
-<p-drawer [(visible)]="visible" [modal]="false" header="Menu de navegación">
-<div class="user-card flex flex-col items-center mb-4">
-    <div class="avatar h-16 w-16 flex items-center justify-center rounded-full bg-[#CCB6A1] border-2 border-[#CCB6A1]/20 shadow-sm">
-        <i class="pi pi-user text-white text-xl"></i>
+            <div class="min-w-0">
+                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Usuario</p>
+                <p class="truncate text-base font-bold text-gray-700">{{ getUser }}</p>
+            </div>
+        </div>
     </div>
-    <p class="mt-2 font-medium text-slate-600">{{getUser}}</p>
-    <div class="divider mt-2 py-1 bg-gradient-to-r from-[#CCB6A1] via-[#886849] to-[#CCB6A1] w-full rounded-full"></div>
-</div>
 
-    <ul class="flex flex-col divide-y divide-gray-100 pl-0">
+    @if (isAutenticated) {
+        <nav>
+            <p class="mb-2 px-2 text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">Navegación</p>
 
-        <!-- Se van a mostrar los links si el usuario esta autenticado -->
-        @if (isAutenticated) {
-        <li>
-            <a routerLink="/Auth/main-filter" (click)="visible=false"
-                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
-                routerLinkActive="bg-gray-100">
-                <i class="pi pi-filter"></i>
-                <span>Nuevo filtro</span>
-            </a>
-        </li>
-        <!-- se va a mostrar el ver la estadistica general si es un nivel el que inicio la sesion -->
-        @if (scope == 'NIVEL') {
-        <li>
-            <a routerLink="/e/estadistica-general" (click)="visible=false"
-                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
-                routerLinkActive="bg-gray-100">
-                <i class="pi pi-home"></i>
-                <span>Estadística General</span>
-            </a>
-        </li>
-        }
+            <ul class="flex flex-col gap-1 p-0">
+                <li>
+                    <a routerLink="/Auth/main-filter" (click)="visible = false"
+                        class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-gray-600 no-underline transition-all hover:bg-gray-100 hover:text-gray-900"
+                        routerLinkActive="bg-stone-100 !text-[#886849]">
+                        <i class="pi pi-filter w-5 text-center"></i>
+                        <span>Nuevo filtro</span>
+                    </a>
+                </li>
 
-        <!-- se va a mostrar el agregar un nuevo usuario si el scope es de planeacion -->
-        @if (scope == 'EJECUTIVO' || scope == 'ADMIN') {
-        <li>
-            <a routerLink="/admin/register" (click)="visible=false"
-                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
-                routerLinkActive="bg-gray-100">
-                <i class="pi pi-home"></i>
-                <span>Nuevo usuario</span>
-            </a>
-        </li>
-        }
+                @if (scope == 'NIVEL') {
+                    <li>
+                        <a routerLink="/e/estadistica-general" (click)="visible = false"
+                            class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-gray-600 no-underline transition-all hover:bg-gray-100 hover:text-gray-900"
+                            routerLinkActive="bg-stone-100 !text-[#886849]">
+                            <i class="pi pi-chart-bar w-5 text-center"></i>
+                            <span>Estadística general</span>
+                        </a>
+                    </li>
+                }
 
-        <!-- se va a mostrar el listado de usuarios si el scope es un admin -->
-        @if (scope == 'ADMIN' ) {
-        <li>
-            <a routerLink="/admin/listado-usuarios" (click)="visible=false"
-                class="px-3 flex items-center gap-3 py-3 text-gray-700   transition-colors rounded-lg no-underline font-medium  text-stone-500"
-                routerLinkActive="bg-gray-100">
-                <i class="pi pi-users"></i>
-                <span>Listado de usuarios</span>
-            </a>
-        </li>
-        }
+                @if (scope == 'EJECUTIVO' || scope == 'ADMIN') {
+                    <li>
+                        <a routerLink="/admin/register" (click)="visible = false"
+                            class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-gray-600 no-underline transition-all hover:bg-gray-100 hover:text-gray-900"
+                            routerLinkActive="bg-stone-100 !text-[#886849]">
+                            <i class="pi pi-user-plus w-5 text-center"></i>
+                            <span>Nuevo usuario</span>
+                        </a>
+                    </li>
+                }
 
-        <li class="cursor-pointer">
-            <a (click)="visible=false; confirmCloseSesion($event)"
-                class="px-3 flex items-center gap-3 py-3 text-red-600   transition-colors rounded-lg no-underline font-medium  text-stone-500"
-                routerLinkActive="bg-gray-100">
-                <i class="pi pi-sign-out"></i>
+                @if (scope == 'ADMIN') {
+                    <li>
+                        <a routerLink="/admin/listado-usuarios" (click)="visible = false"
+                            class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-gray-600 no-underline transition-all hover:bg-gray-100 hover:text-gray-900"
+                            routerLinkActive="bg-stone-100 !text-[#886849]">
+                            <i class="pi pi-users w-5 text-center"></i>
+                            <span>Listado de usuarios</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            <div class="my-4 border-t border-gray-100"></div>
+
+            <button type="button" (click)="visible = false; confirmCloseSesion($event)"
+                class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-red-500 transition-all hover:bg-red-50 hover:text-red-600">
+                <i class="pi pi-sign-out w-5 text-center"></i>
                 <span>Cerrar sesión</span>
-            </a>
-        </li>
-        }
-
-    </ul>
+            </button>
+        </nav>
+    }
 </p-drawer>
 
 <p-confirmdialog />

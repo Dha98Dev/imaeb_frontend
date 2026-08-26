@@ -17,6 +17,7 @@ import { firstValueFrom } from 'rxjs';
 import { DinamicTableData, TableColumn } from '../../../core/Interfaces/TablaDinamica.interface';
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
 import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
+import { getPromedioClass } from '../../../core/utilsFunctions/getPromedioClass';
 
 @Component({
   selector: 'app-listado-ccts-by-zona',
@@ -33,7 +34,7 @@ export class ListadoCctsByZona {
     private estadisticaService: GetEstadisticaService,
     private cd: ChangeDetectorRef,
     private breadCrumbService: BreadCrumService,
-    private crypto: CryptoJsService
+    private crypto: CryptoJsService,
   ) {}
   private centrosTrabajos: CentrosTrabajo[] = [];
   public nivel: string = '';
@@ -53,7 +54,13 @@ export class ListadoCctsByZona {
       this.breadCrumbService.addItem({
         jerarquia: 3,
         label: 'CCT zona ' + this.zona,
-        urlLink: '/sz/cctstByZona/' + btoa(this.nivel) + '/' + btoa(this.zona) + '/' + btoa(this.modalidad),
+        urlLink:
+          '/sz/cctstByZona/' +
+          btoa(this.nivel) +
+          '/' +
+          btoa(this.zona) +
+          '/' +
+          btoa(this.modalidad),
         icon: '',
       });
       this.getCentrosTrabajoZona();
@@ -82,7 +89,7 @@ export class ListadoCctsByZona {
 
       try {
         const resp = await firstValueFrom(
-          this.estadisticaService.getPromedioEstatalByNivel({ escuelaId })
+          this.estadisticaService.getPromedioEstatalByNivel({ escuelaId }),
         );
 
         let data = {
@@ -107,15 +114,16 @@ export class ListadoCctsByZona {
         filterable: false,
         type: 'number',
         className: 'text-center',
+        cellClass: (value) => getPromedioClass(value),
       },
     ];
 
     this.dataTable = {
-      columns: columns,
+      columns,
       data: categorias,
       globalSearchKeys: ['cct'],
     };
-    this.cd.detectChanges();
+    this.cd.markForCheck();
     // return { categorias, dataSet };
   }
   getNivelDescription() {

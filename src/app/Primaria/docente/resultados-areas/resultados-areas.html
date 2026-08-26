@@ -6,32 +6,29 @@
 <div class="flex justify-center">
     <app-subtitle [subtitle]="getSubtitle"></app-subtitle>
 </div>
-<div class="flex justify-end px-5 gap-3">
-    <p-button icon="pi pi-book" [severity]="materiaSelected == 1 ? 'help' : 'secondary'"
-        [raised]=" materiaSelected ==1 ? true : false  " [rounded]="true" pTooltip="Resultados de Lenguaje"
-        tooltipPosition="bottom" (onClick)="onPick(1)" />
+<div class="flex justify-end px-5">
+    <div class="inline-flex gap-1 rounded-xl border border-gray-200 bg-gray-100 p-1">
+        <button type="button" (click)="onPick(1)" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200" [ngClass]="materiaSelected == 1 ? 'bg-c2 text-white shadow-md' : 'text-gray-500 hover:bg-white hover:text-gray-700'">
+            <i class="pi pi-book text-sm"></i><span>Lenguaje</span>
+        </button>
 
-    @if(nivel != 1){
+        @if(nivel != 1){
+            <button type="button" (click)="onPick(3)" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200" [ngClass]="materiaSelected == 3 ? 'bg-c2 text-white shadow-md' : 'text-gray-500 hover:bg-white hover:text-gray-700'">
+                <i class="pi pi-chart-pie text-sm"></i><span>Matemáticas</span>
+            </button>
 
-    <p-button icon="pi pi-chart-pie" [severity]="materiaSelected  == 3 ? 'help' : 'secondary'"
-        [raised]=" materiaSelected ==3 ? true : false  " [rounded]="true" pTooltip="Resultados de Matematicas"
-        tooltipPosition="bottom" (onClick)="onPick(3)" />
-    <p-button icon="pi pi-building" [severity]="materiaSelected == 4 ? 'help' : 'secondary'"
-        [raised]=" materiaSelected ==4 ? true : false  " [rounded]="true" pTooltip="Resultados de Ciencias"
-        tooltipPosition="bottom" (onClick)="onPick(4)" />
+            <button type="button" (click)="onPick(4)" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200" [ngClass]="materiaSelected == 4 ? 'bg-c2 text-white shadow-md' : 'text-gray-500 hover:bg-white hover:text-gray-700'">
+                <i class="pi pi-building text-sm"></i><span>Ciencias</span>
+            </button>
+        }
 
-    }
-
-    @if(nivel == 1){
-    <p-button icon="pi pi-building" [severity]="materiaSelected == 4 ? 'help' : 'secondary'"
-        [raised]=" materiaSelected ==2 ? true : false  " [rounded]="true" pTooltip="Saberes y pensamiento científico"
-        tooltipPosition="bottom" (onClick)="onPick(2)" />
-    }
-
-
-
+        @if(nivel == 1){
+            <button type="button" (click)="onPick(2)" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200" [ngClass]="materiaSelected == 2 ? 'bg-c2 text-white shadow-md' : 'text-gray-500 hover:bg-white hover:text-gray-700'">
+                <i class="pi pi-sparkles text-sm"></i><span>Saberes y pensamiento científico</span>
+            </button>
+        }
+    </div>
 </div>
-
 
 
 <div class="tabla px-3">

@@ -1,77 +1,101 @@
 @if (loader) {
-<app-loader-page></app-loader-page>
+    <app-loader-page></app-loader-page>
 }
+
 @if (!loader) {
-<app-title></app-title>
+    <main class="mx-auto w-full space-y-8 px-4 sm:px-6 lg:px-8">
 
-<div class="contenedor bg-white mt-5 mx-2 flex flex-col lg:flex-row gap-5 pb-5">
+        <!-- Encabezado -->
+        <section>
+            <app-title></app-title>
+        </section>
 
-  <!-- bloque 1 -->
-  <div class="bloque-1 w-full md:w-1/3 flex flex-col">
-    <div class="flex justify-center">
-      <!-- <app-subtitle [subtitle]="datosAlumno.nombre +' '+datosAlumno.apellidoPaterno+' '+ datosAlumno.apellidoMaterno">
-      </app-subtitle> -->
-    </div>
-    <div class="flex justify-center items-center flex-1 px-3">
-      <app-datos-alumno class="w-full" [datosAlumnos]="datosAlumno"></app-datos-alumno>
-    </div>
-  </div>
+        <!-- Información del alumno -->
+        <section>
+            <div class="mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Información del alumno</h2>
+                <p class="mt-1 text-sm text-gray-500">Datos generales y escolares del alumno evaluado.</p>
+            </div>
 
-  <!-- bloque 2 -->
-  <div class="bloque-2 w-full md:w-1/3 flex flex-col justify-center items-center gap-3">
-    <div class="flex justify-center">
-      <app-single-promedio class="w-100" [isEstatal]="true" [title]="'Calificación'"
-        [content]="promedioAlumno.toString()">
-      </app-single-promedio>
-    </div>
-    <div class="flex justify-center">
-      <app-single-promedio class="w-100" [title]="'Promedio Estatal'"
-        [content]="promedioEstatal.toString()"></app-single-promedio>
-    </div>
-  </div>
+            <app-datos-alumno class="block w-full" [datosAlumnos]="datosAlumno"></app-datos-alumno>
+        </section>
 
-  <!-- bloque 3 -->
+        <!-- Resultados generales -->
+        <section>
+            <div class="mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Resultados generales</h2>
+                <p class="mt-1 text-sm text-gray-500">Comparación entre la calificación del alumno y el promedio estatal.</p>
+            </div>
 
-  @if (nivel != 1) {
-  <div class="bloque-3 w-full md:w-1/3">
-    <div class="flex justify-center">
-      <app-subtitle [subtitle]="'Areas Evaluadas'"></app-subtitle>
-    </div>
-    <div class="flex flex-col gap-5 px-3">
-      @for (item of porcentajesAreaEvaluada; track $index) {
-      <div>
-        <app-item-porcentaje-area-evaluada [title]="item.title" [firstLeyendPercent]="item.firstLeyendPercent"
-          [secondLeyendPercent]="item.secondLeyendPercent" [firstPercent]="item.firstPercent"
-          [secondPercent]="item.secondPercent" [bgTitle]="item.bgTitle">
-        </app-item-porcentaje-area-evaluada>
-      </div>
-      }
-    </div>
-  </div>
-  }
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <app-single-promedio
+                    [title]="'Calificación'"
+                    [content]="promedioAlumno.toString()">
+                </app-single-promedio>
 
-</div>
-<!-- esto se mostrara si el nivel es de preescolar  -->
-@if (nivel==1) {
+                <app-single-promedio
+                    [isEstatal]="true"
+                    [title]="'Promedio Estatal'"
+                    [content]="promedioEstatal.toString()">
+                </app-single-promedio>
+            </div>
+        </section>
 
+        <!-- Áreas evaluadas -->
+        @if (nivel != 1 && porcentajesAreaEvaluada && porcentajesAreaEvaluada.length > 0) {
+            <section>
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Áreas evaluadas</h2>
+                    <p class="mt-1 text-sm text-gray-500">Resultados obtenidos por el alumno en cada área de evaluación.</p>
+                </div>
 
-<div class="">
-  @for (item of resultadoPreguntasMateriaAlumno; track $index) {
+                <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                    @for (item of porcentajesAreaEvaluada; track $index) {
+                        <app-item-porcentaje-area-evaluada
+                            [title]="item.title"
+                            [firstLeyendPercent]="item.firstLeyendPercent"
+                            [secondLeyendPercent]="item.secondLeyendPercent"
+                            [firstPercent]="item.firstPercent"
+                            [secondPercent]="item.secondPercent"
+                            [bgTitle]="item.bgTitle">
+                        </app-item-porcentaje-area-evaluada>
+                    }
+                </div>
+            </section>
+        }
 
-  <div class="mx-3">
-    <app-tabla-resultado-by-campo-formativo-aciertos [isPreescolar]="true"
-      [title]="'Resultados en la materia de ' + item.nombre"
-      [data]="item"></app-tabla-resultado-by-campo-formativo-aciertos>
-  </div>
-  }
-</div>
+        <!-- Resultados de preescolar -->
+        @if (nivel == 1) {
+            <section>
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Resultados por campo formativo</h2>
+                    <p class="mt-1 text-sm text-gray-500">Detalle de los resultados obtenidos en cada campo formativo evaluado.</p>
+                </div>
 
-<div class="mt-5 pb-4 mx-3">
-  <app-item-nivel-desempeno></app-item-nivel-desempeno>
-</div>
-}
-<!-- <pre>
-    {{resultadoPreguntasMateriaAlumno | json}}
-  </pre> -->
+                <div class="space-y-5">
+                    @for (item of resultadoPreguntasMateriaAlumno; track $index) {
+                        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+                            <app-tabla-resultado-by-campo-formativo-aciertos
+                                [isPreescolar]="true"
+                                [title]="'Resultados en ' + item.nombre"
+                                [data]="item">
+                            </app-tabla-resultado-by-campo-formativo-aciertos>
+                        </div>
+                    }
+                </div>
+            </section>
 
+            <section>
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Nivel de desempeño</h2>
+                    <p class="mt-1 text-sm text-gray-500">Referencia del nivel alcanzado de acuerdo con los resultados obtenidos.</p>
+                </div>
+
+                <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                    <app-item-nivel-desempeno></app-item-nivel-desempeno>
+                </div>
+            </section>
+        }
+
+    </main>
 }

@@ -109,7 +109,7 @@ export class Register {
     try {
       const resp = await this.realizarPeticionCatalogoService({});
       this.niveles = resp.niveles;
-      this.cd.detectChanges(); // solo si usas OnPush y necesitas forzar CD
+      this.cd.markForCheck(); // solo si usas OnPush y necesitas forzar CD
     } catch (err) {
       this.niveles = [];
     }
@@ -132,7 +132,7 @@ export class Register {
         // Ordenar alfabéticamente por la propiedad 'sector'
         // Ordenar por ID numérico (si la propiedad existe)
         this.sectores = resp.sectores.sort((a, b) => (a.sector || 0) - (b.sector || 0));
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       } catch (error) {
         this.sectores = [];
       }
@@ -144,7 +144,7 @@ export class Register {
         nivelId: this.alcancePermisoConsulta.get('nivelId')?.value,
       });
       this.modalidades = resp.modalidades;
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     } catch (err) {
       this.modalidades = [];
     }
@@ -168,7 +168,7 @@ export class Register {
         // Ordenar alfabéticamente por la propiedad 'sector'
         // Ordenar por ID numérico (si la propiedad existe)
         this.sectores = resp.sectores.sort((a, b) => (a.sector || 0) - (b.sector || 0));
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       } catch (error) {
         this.sectores = [];
       }
@@ -184,7 +184,7 @@ export class Register {
         sector: this.alcancePermisoConsulta.get('sectorId')?.value,
       });
       this.zonas = resp.zonas.sort((a, b) => (a.zonaEscolar || 0) - (b.zonaEscolar || 0));
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     } catch (error) {
       this.zonas = [];
     }
@@ -199,7 +199,7 @@ export class Register {
         zonaEscolar: this.alcancePermisoConsulta.get('zonaId')?.value,
       });
       this.centrosTrabajo = resp.centrosTrabajo;
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     } catch (error) {
       this.centrosTrabajo = [];
     }
@@ -211,7 +211,7 @@ export class Register {
       patch[campo] = '';
     });
     this.alcancePermisoConsulta.patchValue(patch);
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
 
   limpiarPropiedades(nivelLimpieza: number) {
@@ -221,22 +221,22 @@ export class Register {
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
       case 2:
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
       case 3:
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
       case 4:
         this.centrosTrabajo = [];
-        this.cd.detectChanges();
+        this.cd.markForCheck();
         break;
 
       default:
@@ -256,7 +256,7 @@ export class Register {
     this.usuarioService.getListadoTipoUsuarios().subscribe({
       next: (resp) => {
         this.listadoTipoPersonas = resp;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
     });
   }
@@ -418,7 +418,7 @@ export class Register {
         nivelId,
       });
       this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: resp.modalidades };
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     } catch (err) {
       console.error(err);
       this.modalidadesPersonalizado = [];

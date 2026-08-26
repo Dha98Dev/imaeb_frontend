@@ -61,7 +61,7 @@ export class ResultadosAreas {
       next: (resp) => {
         this.cctService.setCentroTrabajo(resp[0])
         this.nivel= resp[0].idNivel
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) => {
 
@@ -76,7 +76,7 @@ export class ResultadosAreas {
         // this.agruparPorUnidad(resp)
         this.dataChart = this.buildChartDataPorPorcentaje(resp)
         this.loader = false
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       },
       error: (error) => {
 

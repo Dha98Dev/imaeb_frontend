@@ -71,7 +71,7 @@ export class PrincipalZona {
     this.estadisticaService.getPromedioEstatalByNivel(params).subscribe({
       next: (resp) => {
         this.promedioZona = resp[0].promedio;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
       error: (error) => {},
     });
@@ -81,7 +81,7 @@ export class PrincipalZona {
     this.estadisticaService.getPromedioEstatalByNivel(params).subscribe({
       next: (resp) => {
         this.promedioEstatal = resp[0].promedio;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
       error: (error) => {},
     });
@@ -136,7 +136,7 @@ export class PrincipalZona {
       };
       this.PorcentajeAreaEvaluada.push(data);
     });
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
 
   getCentrosTrabajoZona() {
@@ -180,7 +180,7 @@ export class PrincipalZona {
       secondLeyend: '',
       description: 'promedios de la zona ' + this.zona,
     };
-    this.cd.detectChanges();
+    this.cd.markForCheck();
     // return { categorias, dataSet };
   }
 

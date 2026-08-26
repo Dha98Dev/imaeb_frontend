@@ -1,27 +1,45 @@
-<div class="border border-gray-100 rounded-xl shadow-md bg-gradient-to-br from-white to-gray-50 px-2 w-100">
-  <button 
-    class="materia w-full px-4 py-2 text-center rounded-lg font-bold text-white shadow-sm truncate " 
-    [ngClass]="getBg(title)" 
-    (click)="EmitMateriaSelected()">
-    {{title}}
-  </button>
+<div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-lg">
+    <button type="button" (click)="EmitMateriaSelected()" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-left text-white transition-all duration-200" [ngClass]="getBg(title)">
+        <div class="min-w-0">
+            <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">Área evaluada</p>
+            <h3 class="mt-1 truncate text-base font-bold md:text-lg">{{ title }}</h3>
+        </div>
+        <i class="pi pi-chevron-right shrink-0 text-sm text-white/70"></i>
+    </button>
 
-  <table class="mt-4 w-full border-separate border-spacing-0 ">
-    <tr class="bg-gray-100">
-      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tl-lg">Grupo</td>
-      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tl-lg">Insuficiente</td>
-      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600">Básico</td>
-      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600">Elemental</td>
-      <td class="text-sm text-center border border-gray-200 font-semibold text-gray-600 first:rounded-tr-lg">Satisfactorio</td>
-    </tr>
-    @for (item of data; track $index) {
-      <tr class="bg-white">
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs first:rounded-bl-lg"> {{item.grupo}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs first:rounded-bl-lg"> {{item.insuficiente}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs"> {{item.basico}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs"> {{item.elemental}} </td>
-      <td class="text-center border border-gray-200 font-bold text-gray-800 text-xs first:rounded-br-lg"> {{item.satisfactorio}} </td>
-    </tr>
-    }
-  </table>
+    <div class="p-3">
+        <table class="w-full table-fixed border-collapse">
+            <thead>
+                <tr class="border-b border-gray-200">
+                    <th class="px-1 py-2.5 text-center text-[10px] font-bold uppercase tracking-wide text-gray-500">Grupo</th>
+                    <th class="px-1 py-2.5 text-center text-[10px] font-bold uppercase tracking-wide text-red-500">Insuficiente</th>
+                    <th class="px-1 py-2.5 text-center text-[10px] font-bold uppercase tracking-wide text-amber-500">Básico</th>
+                    <th class="px-1 py-2.5 text-center text-[10px] font-bold uppercase tracking-wide text-sky-500">Elemental</th>
+                    <th class="px-1 py-2.5 text-center text-[10px] font-bold uppercase tracking-wide text-emerald-500">Satisfactorio</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-100">
+                @for (item of data; track $index) {
+                    <tr class="transition-colors duration-200 hover:bg-gray-50">
+                        <td class="px-1 py-3 text-center">
+                            <span class="inline-flex min-w-8 items-center justify-center rounded-lg bg-gray-100 px-2 py-1 text-sm font-bold text-gray-700">{{ item.grupo }}</span>
+                        </td>
+                        <td class="px-1 py-3 text-center">
+                            <span class="inline-flex min-w-10 justify-center rounded-lg bg-red-50 px-2 py-1.5 text-sm font-bold text-red-600">{{ item.insuficiente }}</span>
+                        </td>
+                        <td class="px-1 py-3 text-center">
+                            <span class="inline-flex min-w-10 justify-center rounded-lg bg-amber-50 px-2 py-1.5 text-sm font-bold text-amber-600">{{ item.basico }}</span>
+                        </td>
+                        <td class="px-1 py-3 text-center">
+                            <span class="inline-flex min-w-10 justify-center rounded-lg bg-sky-50 px-2 py-1.5 text-sm font-bold text-sky-600">{{ item.elemental }}</span>
+                        </td>
+                        <td class="px-1 py-3 text-center">
+                            <span class="inline-flex min-w-10 justify-center rounded-lg bg-emerald-50 px-2 py-1.5 text-sm font-bold text-emerald-600">{{ item.satisfactorio }}</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
