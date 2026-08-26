@@ -8,10 +8,12 @@ import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ComponetsModule } from "./core/components/Components.module";
 import { AuthInterceptor } from './core/interceptors/authInterceptor.interceptor';
+import { Inicio } from './pages/inicio/inicio';
 
 @NgModule({
   declarations: [
     App,
+    Inicio,
   ],
   imports: [
     BrowserModule,
