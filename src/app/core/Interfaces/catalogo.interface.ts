@@ -65,3 +65,34 @@ export interface CatalogoExamen {
   tipoEvaluacion: string;
   puntajeMaximoPregunta: number;
 }
+
+export interface EstructuraExamen {
+  examenId: number;
+  descripcion: string;
+  ciclo: number;
+  nivelId: number;
+  nivel: string;
+  tipoEvaluacion: string;
+  puntajeMaximoPregunta: number;
+  materias: MateriaEstructuraExamen[];
+}
+
+export interface MateriaEstructuraExamen {
+  materiaId: number;
+  descripcion: string;
+  unidades: UnidadEstructuraExamen[];
+}
+
+export interface UnidadEstructuraExamen {
+  unidadId: number;
+  descripcion: string;
+  preguntas: PreguntaEstructuraExamen[];
+}
+
+export interface PreguntaEstructuraExamen {
+  preguntaId: number;
+  numeroPregunta: number;
+  contenido: string;
+  pda: string | null;
+  especificacion: string | null;
+}

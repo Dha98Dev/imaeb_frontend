@@ -5,6 +5,7 @@ import {
   catalogo,
   CatalogoCiclos,
   CatalogoExamen,
+  EstructuraExamen,
   MunicipiosOrLocalidades,
   responseCatalogo,
 } from '../../Interfaces/catalogo.interface';
@@ -52,6 +53,10 @@ export class CatalogoService {
 
   getExamenes(): Observable<CatalogoExamen[]> {
     return this.http.get<CatalogoExamen[]>(this.url + 'api/catalogos/examenes');
+  }
+
+  getEstructuraExamen(examenId: number): Observable<EstructuraExamen> {
+    return this.http.get<EstructuraExamen>(this.url + `api/examenes/${examenId}/estructura`);
   }
 
   getNivelDescription(nivel: string) {

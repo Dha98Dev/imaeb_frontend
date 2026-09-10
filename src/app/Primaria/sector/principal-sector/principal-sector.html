@@ -1,41 +1,299 @@
-<div class="mx-auto w-full px-4 sm:px-6 lg:px-8">
+@if (loader) {
+<app-loader-page></app-loader-page>
+}
 
-    <!-- Encabezado -->
-    <div class="mb-6">
-        <app-subtitle [subtitle]="'Resultados del Sector ' + sector"></app-subtitle>
-    </div>
+@if (!loader) {
 
-    <!-- Indicadores principales -->
-    <section class="mb-8">
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <app-single-promedio [isEstatal]="false" [content]="promedioSector.toString()" [title]="'Promedio del Sector ' + sector"></app-single-promedio>
-            <app-single-promedio [isEstatal]="true" [content]="promedioEstatal.toString()"></app-single-promedio>
-        </div>
-    </section>
+<div class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
 
-    <!-- Resultados por área -->
-    <section class="mb-10">
-        <div class="mb-4">
-            <h2 class="text-lg font-bold text-gray-800">Resultados por área evaluada</h2>
-            <p class="mt-1 text-sm text-gray-500">Distribución de los resultados obtenidos en cada área de evaluación.</p>
-        </div>
+    <main class="space-y-7">
 
-        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            @for (item of PorcentajeAreaEvaluada; track $index) {
-                <app-item-porcentaje-area-evaluada [bgTitle]="item.bgTitle" [title]="item.title" [firstLeyendPercent]="item.firstLeyendPercent" [firstPercent]="item.firstPercent" [secondLeyendPercent]="item.secondLeyendPercent" [secondPercent]="item.secondPercent"></app-item-porcentaje-area-evaluada>
+        <section class="pt-4">
+
+            <div class="mb-2">
+
+                <app-subtitle [subtitle]="'Resultados del Sector ' + sector">
+                </app-subtitle>
+
+            </div>
+
+            <p class="text-sm text-slate-500">
+                Resultados de
+                {{ getNivelDescription() }}
+                correspondientes al sector
+                {{ sector }}.
+            </p>
+
+        </section>
+
+
+        @if (examenActual) {
+
+        <section class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+                        <i class="pi pi-file-edit"></i>
+
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs font-medium text-slate-400">
+                            Evaluación
+                        </p>
+
+                        <p class="font-semibold text-slate-900">
+                            {{ examenActual.descripcion }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="flex flex-wrap gap-2">
+
+                    <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+
+                        Ciclo
+                        {{ examenActual.ciclo }}
+
+                    </span>
+
+                    <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+
+                        {{ getNivelDescription() }}
+
+                    </span>
+
+                    <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+
+                        Sector {{ sector }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        }
+
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+                    Resumen general
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Comparación del resultado del sector con el resultado estatal.
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+                <div
+                    class="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/70 to-white p-5 shadow-sm">
+
+                    <div class="flex items-center gap-4">
+
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+
+                            <i class="pi pi-building text-lg">
+                            </i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs font-medium text-slate-500">
+                                Resultado del sector
+                            </p>
+
+                            <p class="mt-1 text-2xl font-bold text-slate-900">
+
+                                {{
+                                promedioSector
+                                | number:'1.0-2'
+                                }}%
+
+                            </p>
+
+                            <p class="mt-0.5 text-xs font-medium text-blue-600">
+
+                                Sector {{ sector }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50/70 to-white p-5 shadow-sm">
+
+                    <div class="flex items-center gap-4">
+
+                        <div
+                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+
+                            <i class="pi pi-chart-line text-lg">
+                            </i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs font-medium text-slate-500">
+                                Resultado estatal
+                            </p>
+
+                            <p class="mt-1 text-2xl font-bold text-slate-900">
+
+                                {{
+                                promedioEstatal
+                                | number:'1.0-2'
+                                }}%
+
+                            </p>
+
+                            <p class="mt-0.5 text-xs font-medium text-violet-600">
+
+                                {{ getNivelDescription() }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        @if (
+        PorcentajeAreaEvaluada.length > 0
+        ) {
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+
+                    Resultados por área evaluada
+
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+
+                    Comparación entre el resultado del sector y el resultado estatal por área.
+
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+
+                @for (
+                item of PorcentajeAreaEvaluada;
+                track item.title
+                ) {
+
+                <app-item-porcentaje-area-evaluada [bgTitle]="item.bgTitle" [title]="item.title"
+                    [firstLeyendPercent]="item.firstLeyendPercent" [firstPercent]="item.firstPercent"
+                    [secondLeyendPercent]="item.secondLeyendPercent" [secondPercent]="item.secondPercent">
+                </app-item-porcentaje-area-evaluada>
+
+                }
+
+            </div>
+
+        </section>
+
+        }
+
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+
+                    Zonas del sector {{ sector }}
+
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+
+                    Comparación de los resultados obtenidos por cada zona escolar.
+
+                </p>
+
+            </div>
+
+
+            @if (
+            zonas.length > 0
+            ) {
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+
+                <app-char-barra-single-data-set [randomColors]="true" [dataChart]="dataGrafica">
+                </app-char-barra-single-data-set>
+
+            </div>
+
+            } @else {
+
+            <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+
+                <div
+                    class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white text-slate-400 shadow-sm">
+
+                    <i class="pi pi-map-marker">
+                    </i>
+
+                </div>
+
+                <p class="mt-3 text-sm font-semibold text-slate-700">
+
+                    No se encontraron zonas
+
+                </p>
+
+                <p class="mt-1 text-xs text-slate-500">
+
+                    No existen zonas asociadas al sector seleccionado.
+
+                </p>
+
+            </div>
+
             }
-        </div>
-    </section>
 
-    <!-- Zonas -->
-    <section>
-        <div class="mb-5">
-            <app-subtitle [subtitle]="'Zonas del sector ' + sector"></app-subtitle>
-        </div>
+        </section>
 
-        <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-            <app-char-barra-single-data-set [randomColors]="true" [dataChart]="dataGrafica"></app-char-barra-single-data-set>
-        </div>
-    </section>
+    </main>
 
 </div>
+
+}
