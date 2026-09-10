@@ -67,13 +67,13 @@ export class ListadoZonasFromSector {
 
       try {
         const resp = await firstValueFrom(
-          this.estadisticaService.getPromedioEstatalByNivel({ nivelId: parseInt(this.nivel), zonaId: this.zonas[i].zonaEscolar, modalidadId:parseInt(this.modalidad) })
+          this.estadisticaService.getPromedioEstatalByNivel({ nivelId: parseInt(this.nivel), zonaId: this.zonas[i].numero, modalidadId:parseInt(this.modalidad) })
         );
 
         let data = {
           '#': i+1,
           sector: this.sector,
-          zona: this.zonas[i].zonaEscolar,
+          zona: this.zonas[i].numero,
           nivel: this.catalogoService.getNivelDescription(this.nivel).toUpperCase(),
           promedio: resp[0].promedio
         }

@@ -160,6 +160,7 @@
                         <form class="flex gap-2 flex-col w-100 p-3  rounded" [formGroup]="alcancePermisoConsulta">
                             <!-- Usuario -->
                             <div class="first-inputs flex-wrap  mb-4 mt-2 flex align-items-center gap-2">
+                                @if (niveles) {
                                 <p-floatlabel class="mt-3 w-100 w-md-50 select-nivel ">
                                     <p-select inputId="over_label" [options]="niveles" optionValue="id"
                                         optionLabel="descripcion" class="w-100 " (onChange)="getModalidades()"
@@ -167,6 +168,7 @@
                                         formControlName="nivelId" />
                                     <label for="over_label" class="">Seleccione el nivel</label>
                                 </p-floatlabel>
+                                }
 
                                 @if (alcancePermisoConsulta.get('nivelId')?.value) {
                                 <div
@@ -188,6 +190,7 @@
                                     alcancePermisoConsulta.get('nivelId')?.value !=3) {
                                     <div
                                         class="item-input mt-[30px] flex flex-col md:flex-row items-center justify-center gap-2 w-full ">
+                                        @if (sectores) {
                                         <p-floatlabel class="flex-1 w-full">
                                             <p-select inputId="over_label" [options]="sectores" optionValue="sector"
                                                 optionLabel="sector" class="w-full " (onChange)="getZonas()"
@@ -195,6 +198,7 @@
                                                 formControlName="sectorId" filter="true" filterBy="sector" />
                                             <label for="over_label" class="">Seleccione el sector</label>
                                         </p-floatlabel>
+                                        }
 
 
                                     </div>
@@ -202,9 +206,10 @@
 
                                     @if ((alcancePermisoConsulta.get('sectorId')?.value ||
                                     (alcancePermisoConsulta.get('nivelId')?.value == 3) &&
-                                    alcancePermisoConsulta.get('modalidadId')?.value) || zonas.length > 0) {
+                                    alcancePermisoConsulta.get('modalidadId')?.value) || (zonas && zonas.length > 0)) {
                                     <div
                                         class="item-input mt-[30px] flex flex-col md:flex-row items-center justify-center gap-2 w-full ">
+                                        @if (zonas) {
                                         <p-floatlabel class="flex-1 w-full">
                                             <p-select inputId="over_label" [options]="zonas" optionValue="zonaEscolar"
                                                 optionLabel="zonaEscolar" class="w-full "
@@ -213,6 +218,7 @@
                                                 formControlName="zonaId" filter="true" filterBy="zonaEscolar" />
                                             <label for="over_label" class="">Seleccione la zona</label>
                                         </p-floatlabel>
+                                        }
 
                                     </div>
                                     }

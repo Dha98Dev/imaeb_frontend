@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 export class CatalogoService {
   private url: string = Enviroments.UrlServiceBackend;
   constructor(private http: HttpClient) {}
-  getCatalogo(data: catalogo): Observable<responseCatalogo> {
+  getCatalogo(data: catalogo): Observable<any> {
     let params = new HttpParams();
 
     if (data.nivelId != null) {
@@ -33,7 +33,7 @@ export class CatalogoService {
       params = params.set('zonaEscolar', data.zonaEscolar.toString());
     }
 
-    return this.http.get<responseCatalogo>(this.url + 'api/catalogos/flujo-completo', { params });
+    return this.http.get<any>(this.url + 'api/catalogos/flujo-completo', { params });
   }
 
   getMunicipios(): Observable<MunicipiosOrLocalidades[]> {

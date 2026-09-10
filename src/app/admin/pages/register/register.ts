@@ -39,10 +39,10 @@ export class Register {
   ) {}
   showPassword = false;
   activeStep: number = 1;
-  public niveles: Nivele[] = [];
-  public modalidades: singleModalidad[] = [];
-  public sectores: Sectores[] = [];
-  public zonas: Zona[] = [];
+  public niveles: Nivele[] | null = [];
+  public modalidades: singleModalidad[]= [];
+  public sectores: Sectores[] |null = [];
+  public zonas: Zona[] | null= [];
   public centrosTrabajo: CentrosTrabajo[] = [];
   public nivelId: string = '';
   public alcancePermisoConsulta: FormGroup = {} as FormGroup;
@@ -144,7 +144,7 @@ export class Register {
       const resp = await this.realizarPeticionCatalogoService({
         nivelId: this.alcancePermisoConsulta.get('nivelId')?.value,
       });
-      this.modalidades = resp.modalidades;
+      this.modalidades = resp.modalidades!;
       this.cd.markForCheck();
     } catch (err) {
       this.modalidades = [];
@@ -185,7 +185,10 @@ export class Register {
         modalidadId: this.alcancePermisoConsulta.get('modalidadId')?.value,
         sector: this.alcancePermisoConsulta.get('sectorId')?.value,
       });
-      this.zonas = resp.zonas.sort((a, b) => (a.zonaEscolar || 0) - (b.zonaEscolar || 0));
+      if (resp.zonas) {
+      this.zonas = resp.zonas.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+        
+      }
       this.cd.markForCheck();
     } catch (error) {
       this.zonas = [];
@@ -200,7 +203,7 @@ export class Register {
         sector: this.alcancePermisoConsulta.get('sectorId')?.value,
         zonaEscolar: this.alcancePermisoConsulta.get('zonaId')?.value,
       });
-      this.centrosTrabajo = resp.centrosTrabajo;
+      this.centrosTrabajo = resp.centrosTrabajo!;
       this.cd.markForCheck();
     } catch (error) {
       this.centrosTrabajo = [];
@@ -419,7 +422,7 @@ export class Register {
       const resp = await this.realizarPeticionCatalogoService({
         nivelId,
       });
-      this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: resp.modalidades };
+      this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: resp.modalidades! };
       this.cd.markForCheck();
     } catch (err) {
       console.error(err);

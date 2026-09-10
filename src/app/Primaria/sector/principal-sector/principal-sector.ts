@@ -139,7 +139,7 @@ export class PrincipalSector {
     const dataSet: number[] = [];
 
     for (let i = 0; i < this.zonas.length; i++) {
-      const zonaId = this.zonas[i].zonaEscolar;
+      const zonaId = this.zonas[i].numero;
       try {
         const resp = await firstValueFrom(
           this.estadisticaService.getPromedioEstatalByNivel({ nivelId:parseInt(this.nivel), zonaId: zonaId , modalidadId:parseInt(this.modalidad)})

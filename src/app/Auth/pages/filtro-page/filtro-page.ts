@@ -33,7 +33,7 @@ export class FiltroPage {
     private router: Router,
     private crypto: CryptoJsService,
     private messageService: MessageService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
   public niveles: Nivele[] = [];
   public modalidades: singleModalidad[] = [];
@@ -83,7 +83,7 @@ export class FiltroPage {
   async getNiveles() {
     try {
       const resp = await this.realizarPeticionCatalogoService({});
-      this.niveles = resp.niveles;
+      this.niveles = resp.niveles!;
       this.cd.markForCheck(); // solo si usas OnPush y necesitas forzar CD
     } catch (err) {
       this.niveles = [];
@@ -94,7 +94,7 @@ export class FiltroPage {
       const resp = await this.realizarPeticionCatalogoService({
         nivelId: this.filtros.get('nivelSelected')?.value,
       });
-      this.modalidades = resp.modalidades;
+      this.modalidades = resp.modalidades!;
       // this.setValues()
     } catch (err) {
       this.modalidades = [];
@@ -103,26 +103,28 @@ export class FiltroPage {
 
   async getSectores() {
     // if (this.filtros.get('nivelSelected')?.value == 3) {
-      // this.limpiarPropiedades(3);
-      // this.limpiarCampos(['zona', 'cct', 'sector']);
+    // this.limpiarPropiedades(3);
+    // this.limpiarCampos(['zona', 'cct', 'sector']);
 
-      // this.getZonas();
-      // this.sectores = [];
+    // this.getZonas();
+    // this.sectores = [];
     // } else {
-      try {
-        this.limpiarPropiedades(2);
-        this.limpiarCampos(['sector', 'zona', 'cct']);
-        const resp = await this.realizarPeticionCatalogoService({
-          nivelId: this.filtros.get('nivelSelected')?.value,
-          modalidadId: this.filtros.get('modalidad')?.value,
-        });
-        // Ordenar alfabéticamente por la propiedad 'sector'
-        // Ordenar por ID numérico (si la propiedad existe)
-        this.sectores = resp.sectores
-        this.cd.markForCheck();
-      } catch (error) {
-        this.sectores = [];
-      }
+    try {
+      this.limpiarPropiedades(2);
+      this.limpiarCampos(['sector', 'zona', 'cct']);
+      const resp = await this.realizarPeticionCatalogoService({
+        nivelId: this.filtros.get('nivelSelected')?.value,
+        modalidadId: this.filtros.get('modalidad')?.value,
+      });
+      // Ordenar alfabéticamente por la propiedad 'sector'
+      // Ordenar por ID numérico (si la propiedad existe)
+     if (resp.sectores) {
+       this.sectores = resp.sectores.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+     }
+      this.cd.markForCheck();
+    } catch (error) {
+      this.sectores = [];
+    }
     // }
   }
 
@@ -134,7 +136,9 @@ export class FiltroPage {
         modalidadId: this.filtros.get('modalidad')?.value,
         sector: this.filtros.get('sector')?.value,
       });
-      this.zonas = resp.zonas.sort((a, b) => (a.zonaEscolar || 0) - (b.zonaEscolar || 0));
+      if (resp.zonas) {
+        this.zonas = resp.zonas.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+      }
       this.cd.markForCheck();
     } catch (error) {
       this.zonas = [];
@@ -149,7 +153,7 @@ export class FiltroPage {
         sector: this.filtros.get('sector')?.value,
         zonaEscolar: this.filtros.get('zona')?.value,
       });
-      this.centrosTrabajo = resp.centrosTrabajo;
+      this.centrosTrabajo = resp.centrosTrabajo!;
       this.cd.markForCheck();
     } catch (error) {
       this.centrosTrabajo = [];
@@ -201,16 +205,15 @@ export class FiltroPage {
     let zona = this.filtros.get('zona')?.value ?? '';
     let modalidad = this.filtros.get('modalidad')?.value ?? '';
     let nivel = this.filtros.get('nivelSelected')?.value ?? '';
-    let rutaSector = '/ss/resultados-sector/' + btoa(nivel) + '/' + btoa(sector) + '/' + btoa(modalidad);
+    let rutaSector =
+      '/ss/resultados-sector/' + btoa(nivel) + '/' + btoa(sector) + '/' + btoa(modalidad);
     let rutaZona = '/sz/resultados-zona/' + btoa(nivel) + '/' + btoa(zona);
 
-// variables encriptadas
-
+    // variables encriptadas
 
     if (this.filtros.get('cct')?.value) {
-      
       let cctSelected: CentrosTrabajo = this.centrosTrabajo.filter(
-        (cct) => cct.id == this.filtros.get('cct')?.value
+        (cct) => cct.id == this.filtros.get('cct')?.value,
       )[0];
       url = '/prim_3/resultados-ct/';
       this.router.navigate([url, this.crypto.Encriptar(cctSelected.cct)]);
@@ -223,30 +226,24 @@ export class FiltroPage {
         4,
         'Resultados ' + cctSelected.cct,
         '/prim_3/resultados-ct/' + this.crypto.Encriptar(cctSelected.cct),
-        ''
+        '',
       );
       // this.addBread(3,cctSelected.cct,'/prim_3/resultados-ct/'+cctSelected.cct, '')
     } else if (this.filtros.get('zona')?.value) {
       this.addBread(3, 'zona ' + zona, rutaZona, '');
       this.router.navigate(['/sz/resultados-zona', btoa(nivel), btoa(zona), btoa(modalidad)]);
-    } 
-    
-    else if (this.filtros.get('sector')?.value) {
+    } else if (this.filtros.get('sector')?.value) {
       this.addBread(2, 'sector ' + sector, rutaSector, '');
       url = '/ss/resultados-sector';
       this.router.navigate([url, btoa(nivel), btoa(sector), btoa(modalidad)]);
-    }
-    
-    else if (this.filtros.get('modalidad')?.value) {
+    } else if (this.filtros.get('modalidad')?.value) {
       url = '/m/resultadosModalidad';
       let modalidadSelected = this.modalidades.filter((mod) => mod.id == modalidad);
       let modalidadCripto = this.crypto.toBase64Url(
-        this.crypto.Encriptar(modalidadSelected[0].descripcion)
+        this.crypto.Encriptar(modalidadSelected[0].descripcion),
       );
       this.router.navigate([url, btoa(nivel), btoa(modalidad), modalidadCripto]);
-    } 
-    
-    else {
+    } else {
       this.messageService.add({
         severity: 'secondary',
         summary: 'Filtro de la informacion',
@@ -259,9 +256,10 @@ export class FiltroPage {
   }
 
   setValues() {
-console.log(this.params);
+    console.log(this.params);
 
-    const { nivelId, modalidadId, sectorId, zonaId, escuelaId, nivelIds, modalidadIds } = this.params || {};
+    const { nivelId, modalidadId, sectorId, zonaId, escuelaId, nivelIds, modalidadIds } =
+      this.params || {};
 
     // Si no hay nivel, no hacemos nada
     if (nivelId == null) {
@@ -311,7 +309,7 @@ console.log(this.params);
       return;
     }
 
-    this.zonas = this.zonas.filter((z) => z.zonaEscolar === zonaId);
+    this.zonas = this.zonas.filter((z) => z.numero === zonaId);
     this.filtros.patchValue({ zona: zonaId });
     this.getCentrosTrabajo();
 
