@@ -1,14 +1,426 @@
+@if (loader) {
 
- @if (!loader) {
-       <div class="mx-2 mb-4">
-    <app-subtitle [subtitle]="'Resultados por alumno'"></app-subtitle>
+<app-loader-page>
+</app-loader-page>
+
+}
+
+@if (!loader) {
+
+<div class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+
+   <!-- ====================================================== -->
+   <!-- ENCABEZADO -->
+   <!-- ====================================================== -->
+
+   <section class="pt-5">
+
+      <app-subtitle [subtitle]="'Resultados por alumno'">
+      </app-subtitle>
+
+   </section>
+
+
+   <!-- ====================================================== -->
+   <!-- INFORMACIÓN DEL GRUPO -->
+   <!-- ====================================================== -->
+
+   @if (examenActual) {
+
+   <section class="mt-5 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+         <div class="flex items-center gap-3">
+
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+               <i class="pi pi-users">
+               </i>
+
+            </div>
+
+            <div>
+
+               <p class="text-xs font-medium text-slate-400">
+                  Grupo
+               </p>
+
+               <h2 class="font-bold text-slate-900">
+
+                  Grupo {{ grupo }}
+
+               </h2>
+
+            </div>
+
+         </div>
+
+
+         <div class="flex flex-wrap gap-2">
+
+            <span class="rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700">
+
+               {{ examenActual.descripcion }}
+
+            </span>
+
+            <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+
+               Ciclo
+               {{ examenActual.ciclo }}
+
+            </span>
+
+            <span class="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+
+               {{ alumnos.length }}
+               alumnos
+
+            </span>
+
+         </div>
+
+      </div>
+
+   </section>
+
+   }
+
+
+   <!-- ====================================================== -->
+   <!-- TABLA -->
+   <!-- ====================================================== -->
+
+   @if (alumnos.length > 0) {
+
+   <section class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+      <div class="border-b border-slate-100 px-5 py-4">
+
+         <h2 class="text-lg font-bold text-slate-900">
+
+            Alumnos del grupo
+
+         </h2>
+
+         <p class="mt-1 text-sm text-slate-500">
+
+            Listado de alumnos y resultado general obtenido en la evaluación.
+
+         </p>
+
+      </div>
+
+
+      <div class="overflow-x-auto">
+
+         <table class="w-full min-w-[900px] text-sm">
+
+
+            <!-- HEADER -->
+
+            <thead>
+
+               <tr
+                  class="border-b border-slate-200 bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+
+                  <th class="px-5 py-3">
+                     Alumno
+                  </th>
+
+                  <th class="px-4 py-3">
+                     Folio
+                  </th>
+
+                  <th class="px-4 py-3 text-center">
+                     Sexo
+                  </th>
+
+                  <th class="px-4 py-3 text-center">
+                     Turno
+                  </th>
+
+                  <th class="px-4 py-3 text-center">
+                     Aciertos
+                  </th>
+
+                  <th class="px-4 py-3 text-center">
+                     Puntaje
+                  </th>
+
+                  <th class="px-4 py-3 text-center">
+                     Resultado
+                  </th>
+                  <th class="px-4 py-3 text-right">
+                  </th>
+
+               </tr>
+
+            </thead>
+
+
+            <!-- BODY -->
+
+            <tbody>
+
+               @for (
+               alumno of alumnos;
+               track alumno.alumnoId
+               ) {
+
+               <tr class="border-b border-slate-100 transition-colors hover:bg-slate-50/70">
+
+
+                  <!-- ALUMNO -->
+
+                  <td class="px-5 py-4">
+
+                     <div class="flex items-center gap-3">
+
+                        <div
+                           class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 font-bold text-slate-600">
+
+                           {{
+                           alumno.nombre
+                           .charAt(0)
+                           .toUpperCase()
+                           }}
+
+                           {{
+                           alumno.apellidoPaterno
+                           .charAt(0)
+                           .toUpperCase()
+                           }}
+
+                        </div>
+
+
+                        <div>
+
+                           <p class="font-semibold text-slate-900">
+
+                              {{ alumno.nombreCompleto }}
+
+                           </p>
+
+                           <p class="mt-0.5 text-xs text-slate-400">
+
+                              {{ alumno.nivel }}
+                              ·
+                              Grupo {{ alumno.grupo }}
+
+                           </p>
+
+                        </div>
+
+                     </div>
+
+                  </td>
+
+
+                  <!-- FOLIO -->
+
+                  <td class="px-4 py-4">
+
+                     <span class="font-mono text-xs text-slate-600">
+
+                        {{ alumno.folio }}
+
+                     </span>
+
+                  </td>
+
+
+                  <!-- SEXO -->
+
+                  <td class="px-4 py-4 text-center">
+
+                     <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+
+                        {{ getSexo(alumno.sexo) }}
+
+                     </span>
+
+                  </td>
+
+
+                  <!-- TURNO -->
+
+                  <td class="px-4 py-4 text-center text-slate-600">
+
+                     {{ alumno.turno }}
+
+                  </td>
+
+
+                  <!-- ACIERTOS -->
+
+                  <td class="px-4 py-4 text-center">
+
+                     @if (
+                     alumno.totalAciertos !== null &&
+                     alumno.totalPreguntas !== null
+                     ) {
+
+                     <span class="font-semibold text-slate-700">
+
+                        {{ alumno.totalAciertos }}
+
+                     </span>
+
+                     <span class="text-slate-400">
+
+                        /
+                        {{ alumno.totalPreguntas }}
+
+                     </span>
+
+                     }
+
+                     @else {
+
+                     <span class="text-slate-400">
+                        —
+                     </span>
+
+                     }
+
+                  </td>
+
+
+                  <!-- PUNTAJE -->
+
+                  <td class="px-4 py-4 text-center">
+
+                     @if (
+                     alumno.puntajeObtenido !== null &&
+                     alumno.puntajeMaximo !== null
+                     ) {
+
+                     <span class="font-semibold text-slate-700">
+
+                        {{ alumno.puntajeObtenido }}
+
+                     </span>
+
+                     <span class="text-slate-400">
+
+                        /
+                        {{ alumno.puntajeMaximo }}
+
+                     </span>
+
+                     }
+
+                     @else {
+
+                     <span class="text-slate-400">
+                        —
+                     </span>
+
+                     }
+
+                  </td>
+
+
+                  <!-- RESULTADO -->
+
+                  <td class="px-4 py-4 text-center">
+
+                     @if (
+                     alumno.promedio !== null
+                     ) {
+
+                     <span class="inline-flex min-w-[70px] justify-center rounded-full px-3 py-1.5 text-xs font-bold"
+                        [ngClass]="
+                                                getClasePromedio(
+                                                    alumno.promedio
+                                                )
+                                            ">
+
+                        {{
+                        alumno.promedio
+                        | number:'1.0-2'
+                        }}%
+
+                     </span>
+
+                     }
+
+                     @else {
+
+                     <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-400">
+
+                        Sin resultado
+
+                     </span>
+
+                     }
+
+                  </td>
+                  <td class="px-4 py-4 text-right">
+
+                     <button type="button" (click)="verResultadoAlumno(alumno)" pTooltip="Ver resultados del alumno"
+                        tooltipPosition="bottom"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-blue-50 hover:text-blue-600">
+
+                        <i class="pi pi-arrow-right">
+                        </i>
+
+                     </button>
+
+                  </td>
+
+               </tr>
+
+               }
+
+            </tbody>
+
+         </table>
+
+      </div>
+
+   </section>
+
+   }
+
+
+   <!-- ====================================================== -->
+   <!-- SIN ALUMNOS -->
+   <!-- ====================================================== -->
+
+   @if (
+   alumnos.length === 0
+   ) {
+
+   <section class="mt-6 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
+
+         <i class="pi pi-users text-xl">
+         </i>
+
+      </div>
+
+      <h3 class="mt-4 text-base font-semibold text-slate-800">
+
+         Sin alumnos disponibles
+
+      </h3>
+
+      <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+
+         No se encontraron alumnos para el grupo
+         {{ grupo }} y la evaluación seleccionada.
+
+      </p>
+
+   </section>
+
+   }
+
 </div>
-<div class="bg-white mx-2  pb-20 mb-7">
-    
-        <app-table-resultados-grupo [listadoAlumnos]="registrosFormateados" [preescolar]="nivel == 1 ? true : false"></app-table-resultados-grupo>
-    
-</div>
- }
- @else{
-    <app-loader-page></app-loader-page>
- }
+
+}

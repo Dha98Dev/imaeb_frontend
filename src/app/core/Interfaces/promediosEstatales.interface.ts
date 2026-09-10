@@ -5,6 +5,7 @@ export interface PromedioEstatalCct {
 }
 
 export interface ParamsPromediosEstatales {
+    examenId?:number;
     nivelId?: number;
     materiaId?: number;
     escuelaId?: number;

@@ -1,34 +1,47 @@
-<app-navbar></app-navbar>
-<header class=" flex align-items-center">
+<header class="mb-1 bg-[url('/assets/images/degradado.png')] bg-cover bg-center bg-no-repeat">
 
-  <!-- Logos de secretarías -->
-  <div class=" header-item d-flex flex-wrap gap-3 align-items-center py-3">
-    <img class="logo-secretaria" src="./assets/images/logos.png" alt="">
-  </div>
+    <!-- Primera fila -->
+    <div class="flex flex-col items-center gap-2 px-4 py-2 sm:flex-row sm:justify-between sm:gap-4">
+        <app-navbar></app-navbar>
 
-  <!-- Logo IMAEB -->
-  <div class="imaeb mr-[0%]">
-    <img src="./assets/images/logoImaeb.png" alt="WhatsApp" class=" imaeb-logo img-fluid rounded-3  hover-zoom ">
+        <p class="text-center text-xs font-medium leading-relaxed text-gray-500 sm:text-right sm:text-sm">
+            ® Dirección de Servicios Administrativos · Departamento de Informática
+        </p>
+    </div>
 
-  </div>
+    <!-- Segunda fila: logos -->
+    <div class="flex flex-col items-center justify-center gap-3 px-4 py-3 sm:h-[90px] sm:flex-row sm:justify-between sm:gap-5 sm:px-6 lg:px-8">
+
+        <!-- Logos institucionales -->
+        <div class="flex w-full items-center justify-center sm:flex-1 sm:justify-start">
+            <img src="./assets/images/logos.png" alt="Logos institucionales"
+                class="h-auto max-h-[55px] w-auto max-w-[85%] object-contain sm:max-h-[65px] sm:max-w-[60%] lg:max-w-[45%]">
+        </div>
+
+        <!-- Logo IMAEB -->
+        <div class="flex w-full items-center justify-center sm:flex-1 sm:justify-end">
+            <img src="./assets/images/logoImaeb.png" alt="IMAEB"
+                class="h-auto max-h-[55px] w-auto max-w-[55%] object-contain sm:max-h-[65px] sm:max-w-[50%] lg:max-w-[30%]">
+        </div>
+
+    </div>
 
 </header>
-<!-- componente.html -->
-<nav aria-label="breadcrumb mx-3">
-  <ol class="breadcrumb flex align-items-center">
-    <!-- <i class="pi pi-angle-right"></i> -->
-<!-- <li></li> -->
-    @for (bc of itemsBread ; track bc.jerarquia) {
-    <li class="">
-      <a class="text-gray-500 text-sm text-capitalize">
-        @if(bc.icon){
-        <i [class]="bc.icon" class="me-1"></i>
-        }@else{
-              <i class="pi pi-angle-right !text-xs"></i>
+
+<!-- Breadcrumb -->
+<nav class="mx-auto w-full px-4 py-2 sm:px-6 lg:px-8" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-1 p-0">
+        @for (bc of itemsBread; track bc.jerarquia) {
+            <li class="flex items-center">
+                <a class="flex items-center gap-1 text-xs font-medium capitalize text-gray-500 no-underline transition-colors hover:text-c1 sm:text-sm">
+                    @if (bc.icon) {
+                        <i [class]="bc.icon" class="mr-1 text-xs"></i>
+                    } @else {
+                        <i class="pi pi-angle-right text-[10px] text-gray-300"></i>
+                    }
+                    <span>{{ bc.label }}</span>
+                </a>
+            </li>
         }
-        {{ bc.label }}
-      </a>
-    </li>
-    }
-  </ol>
+    </ol>
 </nav>

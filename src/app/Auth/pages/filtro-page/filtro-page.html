@@ -1,4 +1,5 @@
-<div class="min-h-[calc(100vh-150px)] bg-gradient-to-br from-[#fffdf9] via-white to-[#f5ede6] px-4 py-8 sm:px-6 lg:px-8">
+<div
+    class="min-h-[calc(100vh-150px)] bg-gradient-to-br from-[#fffdf9] via-white to-[#f5ede6] px-4 py-8 sm:px-6 lg:px-8">
     <div class="mx-auto w-full max-w-5xl">
 
         <!-- Encabezado -->
@@ -22,7 +23,8 @@
                     </div>
 
                     <p class="text-sm leading-6 text-gray-500">
-                        La información mostrada se generará con base en los parámetros seleccionados, garantizando que los resultados correspondan de forma precisa a los criterios definidos.
+                        La información mostrada se generará con base en los parámetros seleccionados, garantizando que
+                        los resultados correspondan de forma precisa a los criterios definidos.
                     </p>
                 </div>
             </div>
@@ -34,142 +36,100 @@
                     <div>
                         <label class="mb-2 block text-sm font-semibold text-gray-700">Nivel educativo</label>
 
-                        <p-select
-                            [options]="niveles"
-                            optionValue="id"
-                            optionLabel="descripcion"
-                            formControlName="nivelSelected"
-                            (onChange)="getModalidades(); setValues()"
-                            placeholder="Seleccione el nivel"
-                            class="w-full" />
+                        <p-select [options]="niveles" optionValue="id" optionLabel="descripcion"
+                            formControlName="nivelSelected" (onChange)="getModalidades(); setValues()"
+                            placeholder="Seleccione el nivel" class="w-full" />
                     </div>
 
                     @if (filtros.get('nivelSelected')?.value) {
-                        <div>
-                            <label class="mb-2 block text-sm font-semibold text-gray-700">Modalidad</label>
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-gray-700">Modalidad</label>
 
-                            <div class="flex items-center gap-2">
-                                <p-select
-                                    [options]="modalidades"
-                                    optionValue="id"
-                                    optionLabel="descripcion"
-                                    formControlName="modalidad"
-                                    (onChange)="getSectores()"
-                                    filter="true"
-                                    filterBy="descripcion"
-                                    placeholder="Seleccione la modalidad"
-                                    class="flex-1" />
+                        <div class="flex items-center gap-2">
+                            <p-select [options]="modalidades" optionValue="id" optionLabel="descripcion"
+                                formControlName="modalidad" (onChange)="getSectores()" filter="true"
+                                filterBy="descripcion" placeholder="Seleccione la modalidad" class="flex-1" />
 
-                                @if (filtros.get('modalidad')?.value != null) {
-                                    <button type="button"
-                                        (click)="limpiarCampos(['modalidad'])"
-                                        pTooltip="Limpiar selección"
-                                        tooltipPosition="bottom"
-                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
-                                        <i class="pi pi-trash text-sm"></i>
-                                    </button>
-                                }
-                            </div>
+                            @if (filtros.get('modalidad')?.value != null) {
+                            <button type="button" (click)="limpiarCampos(['modalidad'])" pTooltip="Limpiar selección"
+                                tooltipPosition="bottom"
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
+                                <i class="pi pi-trash text-sm"></i>
+                            </button>
+                            }
                         </div>
+                    </div>
                     }
                 </div>
 
                 <!-- Sector y zona -->
                 <div class="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                    <!-- && filtros.get('nivelSelected')?.value != 3 -->
+                    @if (filtros.get('modalidad')?.value ) {
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-gray-700">Sector</label>
 
-                    @if (filtros.get('modalidad')?.value && filtros.get('nivelSelected')?.value != 3) {
-                        <div>
-                            <label class="mb-2 block text-sm font-semibold text-gray-700">Sector</label>
+                        <div class="flex items-center gap-2">
+                            <p-select [options]="sectores" optionValue="numero" optionLabel="numero"
+                                formControlName="sector" (onChange)="getZonas()" filter="true" filterBy="sector"
+                                placeholder="Seleccione el sector" class="flex-1" />
 
-                            <div class="flex items-center gap-2">
-                                <p-select
-                                    [options]="sectores"
-                                    optionValue="sector"
-                                    optionLabel="sector"
-                                    formControlName="sector"
-                                    (onChange)="getZonas()"
-                                    filter="true"
-                                    filterBy="sector"
-                                    placeholder="Seleccione el sector"
-                                    class="flex-1" />
-
-                                @if (filtros.get('sector')?.value != null) {
-                                    <button type="button"
-                                        (click)="limpiarCampos(['sector']); limpiarPropiedades(3)"
-                                        pTooltip="Limpiar selección"
-                                        tooltipPosition="bottom"
-                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
-                                        <i class="pi pi-trash text-sm"></i>
-                                    </button>
-                                }
-                            </div>
+                            @if (filtros.get('sector')?.value != null) {
+                            <button type="button" (click)="limpiarCampos(['sector']); limpiarPropiedades(3)"
+                                pTooltip="Limpiar selección" tooltipPosition="bottom"
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
+                                <i class="pi pi-trash text-sm"></i>
+                            </button>
+                            }
                         </div>
+                    </div>
                     }
+                    <!-- || (filtros.get('nivelSelected')?.value == 3 && filtros.get('modalidad')?.value) -->
+                    @if ((filtros.get('sector')?.value ) || zonas.length > 0) {
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-gray-700">Zona escolar</label>
 
-                    @if ((filtros.get('sector')?.value || (filtros.get('nivelSelected')?.value == 3 && filtros.get('modalidad')?.value)) || zonas.length > 0) {
-                        <div>
-                            <label class="mb-2 block text-sm font-semibold text-gray-700">Zona escolar</label>
+                        <div class="flex items-center gap-2">
+                            <p-select [options]="zonas" optionValue="numero" optionLabel="numero" formControlName="zona"
+                                (onChange)="getCentrosTrabajo()" filter="true" filterBy="numero"
+                                placeholder="Seleccione la zona" class="flex-1" />
 
-                            <div class="flex items-center gap-2">
-                                <p-select
-                                    [options]="zonas"
-                                    optionValue="zonaEscolar"
-                                    optionLabel="zonaEscolar"
-                                    formControlName="zona"
-                                    (onChange)="getCentrosTrabajo()"
-                                    filter="true"
-                                    filterBy="zonaEscolar"
-                                    placeholder="Seleccione la zona"
-                                    class="flex-1" />
-
-                                @if (filtros.get('zona')?.value != null) {
-                                    <button type="button"
-                                        (click)="limpiarCampos(['zona']); limpiarPropiedades(4)"
-                                        pTooltip="Limpiar selección"
-                                        tooltipPosition="bottom"
-                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
-                                        <i class="pi pi-trash text-sm"></i>
-                                    </button>
-                                }
-                            </div>
+                            @if (filtros.get('zona')?.value != null) {
+                            <button type="button" (click)="limpiarCampos(['zona']); limpiarPropiedades(4)"
+                                pTooltip="Limpiar selección" tooltipPosition="bottom"
+                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
+                                <i class="pi pi-trash text-sm"></i>
+                            </button>
+                            }
                         </div>
+                    </div>
                     }
 
                 </div>
 
                 <!-- CCT -->
                 @if (filtros.get('zona')?.value && centrosTrabajo.length > 0) {
-                    <div class="mt-5">
-                        <label class="mb-2 block text-sm font-semibold text-gray-700">Centro de trabajo</label>
+                <div class="mt-5">
+                    <label class="mb-2 block text-sm font-semibold text-gray-700">Centro de trabajo</label>
 
-                        <div class="flex items-center gap-2">
-                            <p-select
-                                [options]="centrosTrabajo"
-                                optionValue="id"
-                                optionLabel="cct"
-                                formControlName="cct"
-                                filter="true"
-                                filterBy="cct"
-                                placeholder="Seleccione el CCT"
-                                class="flex-1" />
+                    <div class="flex items-center gap-2">
+                        <p-select [options]="centrosTrabajo" optionValue="id" optionLabel="cct" formControlName="cct"
+                            filter="true" filterBy="cct" placeholder="Seleccione el CCT" class="flex-1" />
 
-                            @if (filtros.get('cct')?.value != null) {
-                                <button type="button"
-                                    (click)="limpiarCampos(['cct'])"
-                                    pTooltip="Limpiar selección"
-                                    tooltipPosition="bottom"
-                                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
-                                    <i class="pi pi-trash text-sm"></i>
-                                </button>
-                            }
-                        </div>
+                        @if (filtros.get('cct')?.value != null) {
+                        <button type="button" (click)="limpiarCampos(['cct'])" pTooltip="Limpiar selección"
+                            tooltipPosition="bottom"
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition hover:bg-red-100">
+                            <i class="pi pi-trash text-sm"></i>
+                        </button>
+                        }
                     </div>
+                </div>
                 }
 
                 <!-- Acción -->
                 <div class="mt-7 flex justify-end border-t border-gray-100 pt-5">
-                    <button type="button"
-                        (click)="generarUrl()"
+                    <button type="button" (click)="generarUrl()"
                         class="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-c2 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-c2/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg sm:w-auto">
                         <i class="pi pi-filter"></i>
                         Aplicar filtros

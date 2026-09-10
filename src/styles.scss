@@ -6,15 +6,18 @@
 @import url('./../public/assets/css/primeNgcss.css');
 
 :root {
-  --blue: #7D9CCF;
+  --blue: #0188f7;
   --green: #68AD68;
   --yellow: #EFC36C;
   --principal-cafe: #C7B29E;
   --secundario-cafe: #5F5A5E;
   --orange: #E58741;
   --red: #D12A56;
-  --pink: #fca2b8
+  --pink: #fa0092;
 }
+// *{
+//   border: 1px solid red;
+// }
 .bg-c1 {
   background: var(--principal-cafe) !important;
 }

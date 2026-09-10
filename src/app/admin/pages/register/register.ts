@@ -131,7 +131,8 @@ export class Register {
         });
         // Ordenar alfabéticamente por la propiedad 'sector'
         // Ordenar por ID numérico (si la propiedad existe)
-        this.sectores = resp.sectores.sort((a, b) => (a.sector || 0) - (b.sector || 0));
+        // .sort((a, b) => (a.sector || 0) - (b.sector || 0)); ordenamiento
+        this.sectores = resp.sectores
         this.cd.markForCheck();
       } catch (error) {
         this.sectores = [];
@@ -167,7 +168,8 @@ export class Register {
         });
         // Ordenar alfabéticamente por la propiedad 'sector'
         // Ordenar por ID numérico (si la propiedad existe)
-        this.sectores = resp.sectores.sort((a, b) => (a.sector || 0) - (b.sector || 0));
+        // ordenamiento : .sort((a, b) => (a.sector || 0) - (b.sector || 0));
+        this.sectores = resp.sectores
         this.cd.markForCheck();
       } catch (error) {
         this.sectores = [];

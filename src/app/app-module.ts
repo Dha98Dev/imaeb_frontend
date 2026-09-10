@@ -9,6 +9,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { ComponetsModule } from "./core/components/Components.module";
 import { AuthInterceptor } from './core/interceptors/authInterceptor.interceptor';
 import { Inicio } from './pages/inicio/inicio';
+import { PrimeNgModule } from './core/shared/PrimeNg.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { Inicio } from './pages/inicio/inicio';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ComponetsModule
+    ComponetsModule,
+    PrimeNgModule
 ],
   providers: [
     provideBrowserGlobalErrorListeners(),

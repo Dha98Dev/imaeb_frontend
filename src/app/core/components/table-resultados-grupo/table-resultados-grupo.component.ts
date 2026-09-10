@@ -121,7 +121,7 @@ aplicarFiltrosCombinados() {
 }
 
 confirmarVerDetalles(){
-  this.storageService.saveAlumnoSeleccionado(this.alumnoSeleccionado)
+  // this.storageService.saveAlumnoSeleccionado(this.alumnoSeleccionado)
   this.router.navigate(['/s/principal_alumno/', this.storageService.getCriptAlSeleccionado()])
 }
 

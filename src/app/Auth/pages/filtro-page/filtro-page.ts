@@ -102,13 +102,13 @@ export class FiltroPage {
   }
 
   async getSectores() {
-    if (this.filtros.get('nivelSelected')?.value == 3) {
-      this.limpiarPropiedades(3);
-      this.limpiarCampos(['zona', 'cct', 'sector']);
+    // if (this.filtros.get('nivelSelected')?.value == 3) {
+      // this.limpiarPropiedades(3);
+      // this.limpiarCampos(['zona', 'cct', 'sector']);
 
-      this.getZonas();
-      this.sectores = [];
-    } else {
+      // this.getZonas();
+      // this.sectores = [];
+    // } else {
       try {
         this.limpiarPropiedades(2);
         this.limpiarCampos(['sector', 'zona', 'cct']);
@@ -118,12 +118,12 @@ export class FiltroPage {
         });
         // Ordenar alfabéticamente por la propiedad 'sector'
         // Ordenar por ID numérico (si la propiedad existe)
-        this.sectores = resp.sectores.sort((a, b) => (a.sector || 0) - (b.sector || 0));
+        this.sectores = resp.sectores
         this.cd.markForCheck();
       } catch (error) {
         this.sectores = [];
       }
-    }
+    // }
   }
 
   async getZonas() {
@@ -289,7 +289,7 @@ console.log(this.params);
       setTimeout(() => {
         // 3) Sector (opcional)
         if (sectorId != null) {
-          this.sectores = this.sectores.filter((s) => s.sector === sectorId);
+          this.sectores = this.sectores.filter((s) => s.numero === sectorId);
           this.cd.markForCheck();
           this.filtros.patchValue({ sector: sectorId });
         }

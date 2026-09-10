@@ -6,11 +6,12 @@ import { ParamsPromediosEstatales } from '../../Interfaces/promediosEstatales.in
 @Injectable({ providedIn: 'root' })
 export class GetEstadisticaService {
     constructor(private http: HttpClient) { }
-    private url: string = Enviroments.UrlServiceBackend
+    private url: string = Enviroments.UrlServiceBackend+'api/'
     getPromedioEstatalByNivel(data: ParamsPromediosEstatales) {
         let params = new HttpParams();
 
         if (data.nivelId) params = params.set('nivelId', data.nivelId.toString());
+        if (data.examenId) params = params.set('examenId', data.examenId.toString());
         if (data.materiaId) params = params.set('materiaId', data.materiaId.toString());
         if (data.escuelaId) params = params.set('escuelaId', data.escuelaId.toString());
         if (data.grupoId) params = params.set('grupoId', data.grupoId.toString());

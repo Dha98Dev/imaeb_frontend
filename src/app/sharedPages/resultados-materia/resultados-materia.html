@@ -1,36 +1,524 @@
-@if (loader) {<app-loader-page></app-loader-page>}
+@if (loader) {
+
+<app-loader-page>
+</app-loader-page>
+
+}
 
 @if (!loader) {
-    <div class="contenedor mt-2 flex flex-col  gap-2 mx-2 ">
-    <h2 class="font-semibold text-center text-c2 text-xl mb-3">Resultado de {{resultadosPreguntasAlumnoMateria.nombre}}  </h2>
-    <div class="items-container  flex gap-3 pb-5 flex-col">
-        <div class="bloque-1  px-3 py-3  flex flex-col align-items-center shadow-md rounded-lg">
-            <div class="flex w-fit w-100">
-                <app-subtitle [subtitle]="'Unidades de análisis'"></app-subtitle>
+
+<div class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+
+    @if (resultadoMateria) {
+
+    <main class="space-y-7">
+
+        <section class="pt-4">
+
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+
+                    <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                        Resultados de la materia
+                    </p>
+
+                    <h1 class="mt-1 text-xl font-bold text-slate-900">
+
+                        {{ resultadoMateria.materia }}
+
+                    </h1>
+                </div>
+
+                <span class="inline-flex self-start rounded-full border px-3 py-1.5 text-sm font-bold sm:self-auto"
+                    [ngClass]="
+                            getClaseResultado(
+                                resultadoMateria.porcentaje
+                            )
+                        ">
+
+                    {{
+                    resultadoMateria.porcentaje
+                    | number:'1.0-2'
+                    }}%
+
+                </span>
+
             </div>
-            <div class="flex-1 w-100 ">
-                <app-unidad-analisis-porcentaje [dataUnidadAnalisis]="porcentajeResultado"></app-unidad-analisis-porcentaje>
-            </div>
-        </div>
-        <div class="bloque-2  px-3 py-3 shadow-md rounded-lg ">
-            <div class="flex justify-center">
-                <app-subtitle [subtitle]="'Mis Resultados en Imaeb'"></app-subtitle>
-            </div>
-            <div class="">
-                <app-tabla-resultado-by-campo-formativo-aciertos [data]="resultadosPreguntasAlumnoMateria"></app-tabla-resultado-by-campo-formativo-aciertos>
-            </div>
-        </div>
-    </div>
-</div>
+
+        </section>
 
 
-<div class="mx-2 border py-2 px-2 shadow-md rounded-lg">
-<div class="flex justify-center">
-        <app-subtitle [subtitle]="'Resultados de '+ resultadosPreguntasAlumnoMateria.nombre"></app-subtitle>
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs text-slate-400">
+                        Preguntas
+                    </p>
+
+                    <p class="mt-1 text-lg font-bold text-slate-900">
+
+                        {{ resultadoMateria.totalPreguntas }}
+
+                    </p>
+
+                </div>
+
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs text-slate-400">
+                        Respuestas
+                    </p>
+
+                    <p class="mt-1 text-lg font-bold text-slate-900">
+
+                        {{ resultadoMateria.respuestasRegistradas }}
+
+                    </p>
+
+                </div>
+
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs text-slate-400">
+
+                        @if (esRespuestaCorrecta) {
+                        Aciertos
+                        } @else {
+                        Puntaje
+                        }
+
+                    </p>
+
+                    <p class="mt-1 text-lg font-bold text-slate-900">
+
+                        @if (esRespuestaCorrecta) {
+
+                        {{ resultadoMateria.aciertos }}
+
+                        } @else {
+
+                        {{ resultadoMateria.puntajeObtenido }}
+
+                        }
+
+                    </p>
+
+                </div>
+
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs text-slate-400">
+                        Puntaje
+                    </p>
+
+                    <p class="mt-1 text-lg font-bold text-slate-900">
+
+                        {{ resultadoMateria.puntajeObtenido }}
+
+                        <span class="font-normal text-slate-400">
+
+                            /
+                            {{ resultadoMateria.puntajeMaximo }}
+
+                        </span>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        @if (unidades.length > 0) {
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+
+                    Unidades de análisis
+
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+
+                    Resultado obtenido en cada unidad evaluada.
+
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+                @for (unidad of unidades; track unidad.unidadId) {
+
+                <div
+                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+
+                    <div class="flex items-start justify-between gap-3">
+
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Unidad de análisis
+                            </p>
+
+                            <h3 class="mt-1 font-bold text-slate-900">
+                                {{ unidad.unidad }}
+                            </h3>
+                        </div>
+
+                        <span class="rounded-full border px-3 py-1 text-xs font-bold"
+                            [ngClass]="getClaseResultado(unidad.porcentaje)">
+                            {{ unidad.porcentaje | number:'1.0-2' }}%
+                        </span>
+
+                    </div>
+
+                    <div class="mt-5 space-y-2">
+
+                        <div class="flex items-center justify-between rounded-xl bg-blue-50/70 px-3 py-2.5">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                                    <i class="pi pi-list text-xs"></i>
+                                </div>
+                                <span class="text-xs font-medium text-slate-600">
+                                    Preguntas
+                                </span>
+                            </div>
+
+                            <span class="font-bold text-blue-700">
+                                {{ unidad.totalPreguntas }}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center justify-between rounded-xl bg-violet-50/70 px-3 py-2.5">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-violet-600">
+                                    <i class="pi pi-pencil text-xs"></i>
+                                </div>
+                                <span class="text-xs font-medium text-slate-600">
+                                    Respondidas
+                                </span>
+                            </div>
+
+                            <span class="font-bold text-violet-700">
+                                {{ unidad.respondidas }}
+                            </span>
+                        </div>
+
+                        @if (esRespuestaCorrecta) {
+                        <div class="flex items-center justify-between rounded-xl bg-emerald-50/70 px-3 py-2.5">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                                    <i class="pi pi-check text-xs"></i>
+                                </div>
+                                <span class="text-xs font-medium text-slate-600">
+                                    Aciertos
+                                </span>
+                            </div>
+
+                            <span class="font-bold text-emerald-700">
+                                {{ unidad.aciertos }}
+                            </span>
+                        </div>
+                        }
+
+                        <div class="flex items-center justify-between rounded-xl bg-amber-50/70 px-3 py-2.5">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                                    <i class="pi pi-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-medium text-slate-600">
+                                    Puntaje
+                                </span>
+                            </div>
+
+                            <span class="font-bold text-amber-700">
+                                {{ unidad.puntajeObtenido }}
+                                <small class="font-medium opacity-60">
+                                    / {{ unidad.puntajeMaximo }}
+                                </small>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+        </section>
+
+        }
+
+
+        @if (preguntas.length > 0) {
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+                    Mis resultados
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+
+                    Detalle de las respuestas registradas en la evaluación.
+
+                </p>
+
+            </div>
+
+
+            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+                <div class="overflow-x-auto">
+
+                    <table class="w-full min-w-[850px] text-sm">
+
+                        <thead>
+
+                            <tr
+                                class="border-b border-slate-200 bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+
+                                <th class="px-4 py-3">
+                                    #
+                                </th>
+
+                                <th class="px-4 py-3">
+                                    Unidad
+                                </th>
+
+                                <th class="px-4 py-3">
+                                    Pregunta
+                                </th>
+
+                                <th class="px-4 py-3 text-center">
+                                    Respuesta
+                                </th>
+
+                                @if (esRespuestaCorrecta) {
+
+                                <th class="px-4 py-3 text-center">
+                                    Resultado
+                                </th>
+
+                                }
+
+                                <th class="px-4 py-3 text-center">
+                                    Puntaje
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @for (
+                            pregunta of preguntas;
+                            track pregunta.preguntaId
+                            ) {
+
+                            <tr class="border-b border-slate-100 hover:bg-slate-50/70">
+
+                                <td class="px-4 py-4 font-semibold text-slate-600">
+
+                                    {{ pregunta.numeroPregunta }}
+
+                                </td>
+
+
+                                <td class="px-4 py-4 text-slate-600">
+
+                                    {{ pregunta.unidad }}
+
+                                </td>
+
+
+                                <td class="max-w-[380px] px-4 py-4 text-slate-800">
+
+                                    {{ pregunta.contenido }}
+
+                                </td>
+
+
+                                <td class="px-4 py-4 text-center">
+
+                                    @if (pregunta.respondida) {
+
+                                    <span
+                                        class="inline-flex rounded-lg bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+
+                                        {{
+                                        pregunta.respuestaAlumno
+                                        }}
+
+                                    </span>
+
+                                    } @else {
+
+                                    <span class="text-xs text-slate-400">
+                                        Sin respuesta
+                                    </span>
+
+                                    }
+
+                                </td>
+
+
+                                @if (esRespuestaCorrecta) {
+
+                                <td class="px-4 py-4 text-center">
+
+                                    @if (pregunta.esCorrecta) {
+
+                                    <span
+                                        class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+
+                                        <i class="pi pi-check"></i>
+
+                                        Correcta
+
+                                    </span>
+
+                                    } @else {
+
+                                    <span
+                                        class="inline-flex items-center gap-1 rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">
+
+                                        <i class="pi pi-times"></i>
+
+                                        Incorrecta
+
+                                    </span>
+
+                                    }
+
+                                </td>
+
+                                }
+
+
+                                <td class="px-4 py-4 text-center text-slate-700">
+
+                                    <span class="font-semibold">
+
+                                        {{ pregunta.puntajeObtenido }}
+
+                                    </span>
+
+                                    <span class="text-slate-400">
+
+                                        /
+                                        {{ pregunta.puntajeMaximo }}
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        }
+
+
+        @if (
+        dataGrafica.firstLeyend
+        ) {
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+
+                    Resultados por unidad
+
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+
+                    Comparación gráfica de los resultados obtenidos por unidad.
+
+                </p>
+
+            </div>
+
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+                <app-chart-barra [dataChart]="dataGrafica">
+                </app-chart-barra>
+
+            </div>
+
+        </section>
+
+        }
+
+    </main>
+
+    }
+
+
+    @if (!resultadoMateria) {
+
+    <section class="mt-6 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+
+        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
+
+            <i class="pi pi-book text-xl">
+            </i>
+
+        </div>
+
+        <h3 class="mt-4 text-base font-semibold text-slate-800">
+
+            Sin resultados disponibles
+
+        </h3>
+
+        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+
+            No se encontraron resultados para la materia seleccionada.
+
+        </p>
+
+    </section>
+
+    }
+
 </div>
-    <div class="item-container">
-        <app-item-chart-resltado-area [dataSet]="dataGrafica" [aciertos]="porcentajeAciertos.toFixed(1)" [desaciertos]="porcentajeDesaciertos.toFixed(1)"
-            [unidadAnalisis]="''" [isAlumno]="true"></app-item-chart-resltado-area>
-    </div>
-</div>
+
 }

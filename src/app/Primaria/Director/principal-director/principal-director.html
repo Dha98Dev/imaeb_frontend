@@ -1,110 +1,843 @@
 @if (loader) {
-    <app-loader-page></app-loader-page>
+<app-loader-page></app-loader-page>
 }
 
 @if (!loader) {
 
-    <!-- Navegación por grupo -->
-    <div class="mb-6 flex justify-end px-4">
-        <div class="flex flex-wrap gap-2">
-            @for (item of gruposCct; track $index) {
-                <p-button icon="pi pi-home" [label]="item" [raised]="true" [rounded]="true" variant="text"
-                    [pTooltip]="'Resultados del grupo ' + item" tooltipPosition="bottom"
-                    (onClick)="grupoSelected = item; redireccioarResultadosGrupo(item)" />
+<div class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+
+    <!-- ====================================================== -->
+    <!-- NAVEGACIÓN POR GRUPOS -->
+    <!-- ====================================================== -->
+
+    @if (gruposCct.length > 0) {
+
+    <div class="mb-6 mt-5 flex justify-end">
+
+        <div class="inline-flex flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
+
+            @for (item of gruposCct; track item) {
+
+            <button type="button" (click)="redireccioarResultadosGrupo(item)"
+                [pTooltip]="'Resultados del grupo ' + item" tooltipPosition="bottom"
+                class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200"
+                [ngClass]="grupoSelected === item
+                            ? 'bg-c1 text-white shadow-sm'
+                            : 'text-slate-500 hover:bg-white hover:text-slate-800'">
+
+                <i class="pi pi-users text-xs"></i>
+
+                <span>
+                    Grupo {{ item }}
+                </span>
+
+            </button>
+
             }
+
         </div>
+
     </div>
 
-    <main class="space-y-10 px-4 sm:px-6 lg:px-8">
+    }
 
-        <!-- Promedios principales -->
-        @if (promediosCct && promediosCct.length > 0) {
-            <section class="">
-                <div class="mb-4">
-                    <h2 class="text-xl font-bold text-gray-800">Promedios generales</h2>
-                    <p class="mt-1 text-sm text-gray-500">Comparación del promedio de la escuela con el promedio estatal.</p>
-                </div>
 
-                @for (item of promediosCct; track $index) {
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <app-single-promedio [title]="'Promedio de la escuela ' + item.cct + ' - ' + item.turno" [content]="item.promedio + ''"></app-single-promedio>
-                        <app-single-promedio [isEstatal]="true" [content]="PromedioEstatal + ''"></app-single-promedio>
+    <main class="space-y-6">
+
+
+        <!-- ====================================================== -->
+        <!-- INFORMACIÓN DEL EXAMEN -->
+        <!-- ====================================================== -->
+
+        @if (examenActual) {
+
+        <section class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                <div class="flex items-center gap-4">
+
+                    <div
+                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+                        <i class="pi pi-file-edit text-xl"></i>
+
                     </div>
-                }
-            </section>
-        }
 
-        <!-- Exámenes utilizados + género -->
-        <section class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                    <div>
 
-            <!-- Exámenes -->
-            <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <div class="mb-5">
-                    <app-subtitle [subtitle]="'Exámenes utilizados'"></app-subtitle>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                            Evaluación seleccionada
+                        </p>
+
+                        <h1 class="mt-0.5 text-lg font-bold text-slate-900">
+
+                            {{ examenActual.descripcion }}
+
+                        </h1>
+
+                    </div>
+
                 </div>
 
-                <div class="space-y-4">
-                    @for (item of resConteoExamenesUtilizados; track $index) {
-                        <app-item-porcentaje-area-evaluada [title]="''"
-                            [firstLeyendPercent]="'Utilizados grupo ' + item.grupo"
-                            [secondLeyendPercent]="'No utilizados grupo ' + item.grupo"
-                            [firstPercent]="item.utilizadas"
-                            [secondPercent]="item.noUtilizadas">
-                        </app-item-porcentaje-area-evaluada>
-                    }
+
+                <div class="flex flex-wrap items-center gap-2">
+
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+
+                        <i class="pi pi-calendar text-[10px]"></i>
+
+                        Ciclo {{ examenActual.ciclo }}
+
+                    </span>
+
+
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+
+                        <i class="pi pi-building text-[10px]"></i>
+
+                        {{ examenActual.nivel }}
+
+                    </span>
+
+
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+
+                        <i class="pi pi-list-check text-[10px]"></i>
+
+                        {{ examenActual.tipoEvaluacion }}
+
+                    </span>
+
                 </div>
+
             </div>
 
-            <!-- Género -->
-            @if (totalHombres > 0 && totalMujeres > 0) {
-                <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                    <div class="mb-5">
-                        <app-subtitle [subtitle]="'Distribución por género'"></app-subtitle>
-                    </div>
+        </section>
 
-                    <div class="flex flex-wrap items-center justify-center gap-8">
-                        <div class="w-[180px] sm:w-[200px]">
-                            <app-chart-figure-gir-boy [relleno]="(totalMujeres / totalAlumnos) * 100"></app-chart-figure-gir-boy>
+        }
+
+
+        <!-- ====================================================== -->
+        <!-- RESUMEN GENERAL -->
+        <!-- ====================================================== -->
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+                    Resumen general
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Información general de los alumnos participantes y resultados de la evaluación.
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+
+
+                <!-- PARTICIPANTES -->
+
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+                    <div class="flex items-center gap-4">
+
+                        <div
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+                            <i class="pi pi-users text-lg"></i>
+
                         </div>
 
-                        <div class="w-[180px] sm:w-[200px]">
-                            <app-chart-figure-gir-boy [relleno]="(totalHombres / totalAlumnos) * 100" [isBoy]="true"></app-chart-figure-gir-boy>
+                        <div>
+
+                            <p class="text-xs font-medium text-slate-500">
+                                Participantes
+                            </p>
+
+                            <p class="mt-1 text-2xl font-bold text-slate-900">
+
+                                {{ totalAlumnos }}
+
+                            </p>
+
                         </div>
+
                     </div>
+
                 </div>
+
+
+                <!-- MUJERES -->
+
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+                    <div class="flex items-center gap-4">
+
+                        <div
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-fuchsia-50 text-fuchsia-600">
+
+                            <i class="pi pi-user text-lg"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs font-medium text-slate-500">
+                                Mujeres
+                            </p>
+
+                            <div class="mt-1 flex items-end gap-2">
+
+                                <p class="text-2xl font-bold text-slate-900">
+
+                                    {{ totalMujeres }}
+
+                                </p>
+
+                                <span class="mb-1 text-xs font-semibold text-slate-400">
+
+                                    {{ getPorcentajeMujeres() | number:'1.0-1' }}%
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HOMBRES -->
+
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+                    <div class="flex items-center gap-4">
+
+                        <div
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+
+                            <i class="pi pi-user text-lg"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs font-medium text-slate-500">
+                                Hombres
+                            </p>
+
+                            <div class="mt-1 flex items-end gap-2">
+
+                                <p class="text-2xl font-bold text-slate-900">
+
+                                    {{ totalHombres }}
+
+                                </p>
+
+                                <span class="mb-1 text-xs font-semibold text-slate-400">
+
+                                    {{ getPorcentajeHombres() | number:'1.0-1' }}%
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESULTADO GENERAL -->
+
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+                    <div class="flex items-center gap-4">
+
+                        <div
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+
+                            <i class="pi pi-chart-bar text-lg"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs font-medium text-slate-500">
+                                Resultado general
+                            </p>
+
+                            <p class="mt-1 text-2xl font-bold text-slate-900">
+
+                                {{ promedioGeneralCct | number:'1.0-2' }}%
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================== -->
+        <!-- DISTRIBUCIÓN POR SEXO -->
+        <!-- ====================================================== -->
+
+        @if (totalAlumnos > 0) {
+
+        <section class="grid grid-cols-1 gap-5 xl:grid-cols-2">
+
+
+            <!-- GRÁFICAS -->
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+                <div class="mb-5">
+
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Distribución por género
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Distribución de participantes registrados en la evaluación.
+                    </p>
+
+                </div>
+
+
+                <div class="flex flex-wrap items-center justify-center gap-8">
+
+                    @if (totalMujeres > 0) {
+
+                    <div class="w-[180px] sm:w-[200px]">
+
+                        <app-chart-figure-gir-boy [relleno]="getPorcentajeMujeres()">
+                        </app-chart-figure-gir-boy>
+
+                    </div>
+
+                    }
+
+
+                    @if (totalHombres > 0) {
+
+                    <div class="w-[180px] sm:w-[200px]">
+
+                        <app-chart-figure-gir-boy [relleno]="getPorcentajeHombres()" [isBoy]="true">
+                        </app-chart-figure-gir-boy>
+
+                    </div>
+
+                    }
+
+                </div>
+
+
+                @if (totalSinEspecificar > 0) {
+
+                <div
+                    class="mt-5 flex items-center justify-center gap-2 border-t border-slate-100 pt-4 text-sm text-slate-500">
+
+                    <i class="pi pi-info-circle"></i>
+
+                    <span>
+                        Sin especificar:
+                        <strong class="text-slate-700">
+                            {{ totalSinEspecificar }}
+                        </strong>
+
+                        ({{ getPorcentajeSinEspecificar() | number:'1.0-1' }}%)
+                    </span>
+
+                </div>
+
+                }
+
+            </div>
+
+
+            <!-- CONTEO POR GRUPO -->
+
+            @if (conteoSexo.length > 0) {
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+                <div class="mb-5">
+
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Participantes por grupo
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Distribución de alumnos participantes en cada grupo.
+                    </p>
+
+                </div>
+
+
+                <div class="space-y-3">
+
+                    @for (item of conteoSexo; track item.grupoId) {
+
+                    <div class="rounded-xl border border-slate-100 bg-slate-50/70 p-4">
+
+                        <div class="mb-3 flex items-center justify-between">
+
+                            <div class="flex items-center gap-2">
+
+                                <span
+                                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-xs font-bold text-slate-700 shadow-sm">
+
+                                    {{ item.grupo }}
+
+                                </span>
+
+                                <span class="text-sm font-semibold text-slate-800">
+
+                                    Grupo {{ item.grupo }}
+
+                                </span>
+
+                            </div>
+
+
+                            <span class="text-xs font-semibold text-slate-500">
+
+                                {{ item.totalParticipantes }}
+                                participantes
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+
+                            <div class="rounded-lg bg-white px-3 py-2 text-center">
+
+                                <p class="text-[11px] text-slate-400">
+                                    Mujeres
+                                </p>
+
+                                <p class="text-sm font-bold text-fuchsia-600">
+                                    {{ item.mujeres }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="rounded-lg bg-white px-3 py-2 text-center">
+
+                                <p class="text-[11px] text-slate-400">
+                                    Hombres
+                                </p>
+
+                                <p class="text-sm font-bold text-sky-600">
+                                    {{ item.hombres }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="rounded-lg bg-white px-3 py-2 text-center">
+
+                                <p class="text-[11px] text-slate-400">
+                                    Sin especificar
+                                </p>
+
+                                <p class="text-sm font-bold text-slate-600">
+                                    {{ item.sinEspecificar }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                </div>
+
+            </div>
+
             }
 
         </section>
 
-        <!-- Resultados por materia -->
-        @if (conteNivelDesempenio && conteNivelDesempenio.length > 0) {
-            <section class="bg-white p-3 rounded-lg ">
-                <div class="mb-5">
-                    <h2 class="text-xl font-bold text-gray-800">Resultados por materia</h2>
-                    <p class="mt-1 text-sm text-gray-500">Nivel de desempeño obtenido en cada una de las áreas evaluadas.</p>
-                </div>
-
-                <div class="grid grid-cols-1 gap-5 xl:grid-cols-2">
-                    @for (item of conteNivelDesempenio; track $index) {
-                        <app-tabla-resultados-evidencia [title]="item.materia" [bgColorTitle]="'bg-sky-500'" [data]="item.filas"></app-tabla-resultados-evidencia>
-                    }
-                </div>
-            </section>
         }
 
-        <!-- Gráfica de desempeño -->
-        @if (dataChartPromedioGrupos.firstLeyend && dataChartPromedioGrupos.firstLeyend != '') {
-            <section class="bg-white p-3 rounded-lg">
-                <div class="mb-5">
-                    <h2 class="text-xl font-bold text-gray-800">Nivel de desempeño por grupo</h2>
-                    <p class="mt-1 text-sm text-gray-500">Comparación visual de los resultados obtenidos entre los grupos evaluados.</p>
+
+        <!-- ====================================================== -->
+        <!-- RESULTADOS POR GRUPO -->
+        <!-- ====================================================== -->
+
+        @if (promediosGrupos.length > 0) {
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+            <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Resultados por grupo
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Resumen del desempeño obtenido por cada grupo evaluado.
+                    </p>
+
                 </div>
 
-                <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                    <app-chart-barra [dataChart]="dataChartPromedioGrupos"></app-chart-barra>
+
+                <div
+                    class="inline-flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-xs font-medium text-slate-500">
+
+                    <i class="pi pi-chart-line"></i>
+
+                    {{ promediosGrupos.length }}
+                    grupos evaluados
+
                 </div>
-            </section>
+
+            </div>
+
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full min-w-[850px] text-sm">
+
+                    <thead>
+
+                        <tr
+                            class="border-b border-slate-200 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+
+                            <th class="px-3 py-3">
+                                Grupo
+                            </th>
+
+                            <th class="px-3 py-3 text-center">
+                                Participantes
+                            </th>
+
+                            <th class="px-3 py-3 text-center">
+                                Respuestas
+                            </th>
+
+                            <th class="px-3 py-3 text-center">
+                                Aciertos
+                            </th>
+
+                            <th class="px-3 py-3 text-center">
+                                Puntaje
+                            </th>
+
+                            <th class="px-3 py-3 text-center">
+                                Resultado
+                            </th>
+
+                            <th class="px-3 py-3"></th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @for (item of promediosGrupos; track item.grupoId) {
+
+                        <tr class="border-b border-slate-100 transition-colors hover:bg-slate-50/80">
+
+                            <td class="px-3 py-4">
+
+                                <div class="flex items-center gap-3">
+
+                                    <span
+                                        class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 font-bold text-slate-700">
+
+                                        {{ item.grupo }}
+
+                                    </span>
+
+                                    <div>
+
+                                        <p class="font-semibold text-slate-800">
+
+                                            Grupo {{ item.grupo }}
+
+                                        </p>
+
+                                        <p class="text-xs text-slate-400">
+
+                                            {{ item.examen }}
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td class="px-3 py-4 text-center font-medium text-slate-600">
+
+                                {{ item.totalParticipantes }}
+
+                            </td>
+
+
+                            <td class="px-3 py-4 text-center text-slate-600">
+
+                                {{ item.respuestasRegistradas }}
+
+                            </td>
+
+
+                            <td class="px-3 py-4 text-center text-slate-600">
+
+                                {{ item.aciertos }}
+
+                            </td>
+
+
+                            <td class="px-3 py-4 text-center text-slate-600">
+
+                                <span class="font-semibold">
+                                    {{ item.puntajeObtenido }}
+                                </span>
+
+                                <span class="text-slate-400">
+                                    /
+                                    {{ item.puntajeMaximo }}
+                                </span>
+
+                            </td>
+
+
+                            <td class="px-3 py-4 text-center">
+
+                                <span
+                                    class="inline-flex min-w-[65px] justify-center rounded-full px-3 py-1.5 text-xs font-bold"
+                                    [ngClass]="{
+                                                'bg-emerald-50 text-emerald-700':
+                                                    item.porcentaje >= 80,
+
+                                                'bg-blue-50 text-blue-700':
+                                                    item.porcentaje >= 60 &&
+                                                    item.porcentaje < 80,
+
+                                                'bg-amber-50 text-amber-700':
+                                                    item.porcentaje >= 40 &&
+                                                    item.porcentaje < 60,
+
+                                                'bg-rose-50 text-rose-700':
+                                                    item.porcentaje < 40
+                                            }">
+
+                                    {{ item.porcentaje | number:'1.0-2' }}%
+
+                                </span>
+
+                            </td>
+
+
+                            <td class="px-3 py-4 text-right">
+
+                                <button type="button" (click)="redireccioarResultadosGrupo(item.grupo)"
+                                    pTooltip="Ver resultados del grupo" tooltipPosition="bottom"
+                                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-800">
+
+                                    <i class="pi pi-arrow-right"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        }
+
+
+        <!-- ====================================================== -->
+        <!-- GRÁFICA RESULTADOS -->
+        <!-- ====================================================== -->
+
+        @if (
+        dataChartPromedioGrupos.firstLeyend &&
+        dataChartPromedioGrupos.firstLeyend !== ''
+        ) {
+
+        <section>
+
+            <div class="mb-4">
+
+                <h2 class="text-lg font-bold text-slate-900">
+                    Comparación entre grupos
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Comparación visual del porcentaje obtenido por cada grupo.
+                </p>
+
+            </div>
+
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+
+                <app-chart-barra [dataChart]="dataChartPromedioGrupos">
+                </app-chart-barra>
+
+            </div>
+
+        </section>
+
+        }
+
+
+        <!-- ====================================================== -->
+        <!-- PARTICIPACIÓN -->
+        <!-- ====================================================== -->
+
+        @if (participacionCct.length > 0) {
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+            <div class="mb-5">
+
+                <h2 class="text-lg font-bold text-slate-900">
+                    Participación por grupo
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Número de participantes registrados en la evaluación por grupo.
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+                @for (item of participacionCct; track item.grupoId) {
+
+                <button type="button" (click)="redireccioarResultadosGrupo(item.grupo)"
+                    class="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
+
+                    <div class="flex items-center gap-3">
+
+                        <div
+                            class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-700 transition-colors group-hover:bg-blue-100">
+
+                            {{ item.grupo }}
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-xs text-slate-400">
+                                Grupo
+                            </p>
+
+                            <p class="text-sm font-semibold text-slate-800">
+                                {{ item.grupo }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="text-right">
+
+                        <p class="text-xl font-bold text-slate-900">
+
+                            {{ item.totalParticipantes }}
+
+                        </p>
+
+                        <p class="text-[11px] text-slate-400">
+                            participantes
+                        </p>
+
+                    </div>
+
+                </button>
+
+                }
+
+            </div>
+
+        </section>
+
+        }
+
+
+        <!-- ====================================================== -->
+        <!-- SIN RESULTADOS -->
+        <!-- ====================================================== -->
+
+        @if (
+        promediosGrupos.length === 0 &&
+        conteoSexo.length === 0 &&
+        participacionCct.length === 0
+        ) {
+
+        <section class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+
+            <div
+                class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
+
+                <i class="pi pi-chart-bar text-xl"></i>
+
+            </div>
+
+
+            <h3 class="mt-4 text-base font-semibold text-slate-800">
+                Sin resultados disponibles
+            </h3>
+
+            <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+
+                No se encontraron resultados registrados para la evaluación,
+                nivel y ciclo seleccionados.
+
+            </p>
+
+        </section>
+
         }
 
     </main>
+
+</div>
+
 }

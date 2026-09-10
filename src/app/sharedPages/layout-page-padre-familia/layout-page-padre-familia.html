@@ -1,18 +1,50 @@
-<app-header></app-header>
-@if (datosCct && datosCct.cct) {
-    <app-datos-ct></app-datos-ct>
+<app-header>
+</app-header>
 
-}
 
-<div class=" mx-2 mt-4 mb-4">
-    <div class="d-flex justify-content-end ">
-        <p-speeddial [model]="items" direction="left"
-            [buttonProps]="{ label:'Menu', severity: 'contrast', rounded: true }"
-            [tooltipOptions]="{ tooltipPosition: 'bottom' }" [showIcon]="'pi pi-bars'" [rotateAnimation]="false" />
+<!-- ====================================================== -->
+<!-- MENÚ -->
+<!-- ====================================================== -->
+
+<div class="mx-2 mb-4 mt-4">
+
+    <div class="flex justify-end">
+
+        @if (items.length >0) {
+        <p-speeddial [model]="items" direction="left" [buttonProps]="{
+                label: 'Menú',
+                severity: 'contrast',
+                rounded: true
+            }" [tooltipOptions]="{
+                tooltipPosition: 'bottom'
+            }" [showIcon]="'pi pi-bars'" [rotateAnimation]="false">
+        </p-speeddial>
+        }
+
     </div>
+
 </div>
 
 
-<div class="mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 pb-5">
-    <router-outlet></router-outlet>
+<!-- ====================================================== -->
+<!-- CONTENIDO -->
+<!-- ====================================================== -->
+
+<div class="mx-auto w-full max-w-screen-xl px-4 pb-5 sm:px-6 lg:px-8">
+
+
+    @if (
+    datosCct &&
+    datosCct.cct
+    ) {
+
+    <app-datos-ct>
+    </app-datos-ct>
+
+    }
+
+
+    <router-outlet>
+    </router-outlet>
+
 </div>

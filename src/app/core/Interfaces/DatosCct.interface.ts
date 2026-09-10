@@ -5,6 +5,7 @@ export interface DatosCct {
     turnos:      Turno[];
     nivel:       string;
     idNivel:     number
+    nivelId:     number
     localidad:   string;
     municipio:   string;
     sector:      string;
