@@ -56,6 +56,7 @@ export class PrincipalSector {
   public examenActual?: CatalogoExamen;
   public estructuraExamen?: EstructuraExamen;
   public materiasExamen: MateriaEstructuraExamen[] = [];
+  
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {

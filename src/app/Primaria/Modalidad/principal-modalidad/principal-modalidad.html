@@ -1,5 +1,5 @@
 @if (loader) {
-    <app-loader-page></app-loader-page>
+<app-loader-page></app-loader-page>
 }
 
 @if (!loader) {
@@ -10,8 +10,7 @@
 
         <section class="pt-4">
 
-            <app-title
-                [title]="
+            <app-title [title]="
                     'Resultados de modalidad ' +
                     modalidad +
                     ' de nivel ' +
@@ -24,64 +23,58 @@
 
         @if (examenActual) {
 
-            <section
-                class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+        <section class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
 
-                <div
-                    class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-                    <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3">
 
-                        <div
-                            class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
 
-                            <i class="pi pi-file-edit"></i>
-
-                        </div>
-
-                        <div>
-
-                            <p class="text-xs font-medium text-slate-400">
-                                Evaluación
-                            </p>
-
-                            <p class="font-semibold text-slate-900">
-                                {{ examenActual.descripcion }}
-                            </p>
-
-                        </div>
+                        <i class="pi pi-file-edit"></i>
 
                     </div>
 
+                    <div>
 
-                    <div class="flex flex-wrap gap-2">
+                        <p class="text-xs font-medium text-slate-400">
+                            Evaluación
+                        </p>
 
-                        <span
-                            class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
-
-                            Ciclo {{ examenActual.ciclo }}
-
-                        </span>
-
-                        <span
-                            class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
-
-                            {{ getnivelDescription() }}
-
-                        </span>
-
-                        <span
-                            class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
-
-                            {{ modalidad }}
-
-                        </span>
+                        <p class="font-semibold text-slate-900">
+                            {{ examenActual.descripcion }}
+                        </p>
 
                     </div>
 
                 </div>
 
-            </section>
+
+                <div class="flex flex-wrap gap-2">
+
+                    <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+
+                        Ciclo {{ examenActual.ciclo }}
+
+                    </span>
+
+                    <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+
+                        {{ getnivelDescription() }}
+
+                    </span>
+
+                    <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+
+                        {{ modalidad }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
 
         }
 
@@ -108,8 +101,7 @@
 
                     <div class="flex items-center gap-4">
 
-                        <div
-                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
 
                             <i class="pi pi-chart-line text-lg"></i>
 
@@ -175,86 +167,97 @@
 
         @if (promediosMaterias.length > 0) {
 
-            <section>
+        <section>
 
-                <div class="mb-4">
+            <div class="mb-4">
 
-                    <h2 class="text-lg font-bold text-slate-900">
-                        Resultados por área
-                    </h2>
+                <h2 class="text-lg font-bold text-slate-900">
+                    Resultados por área
+                </h2>
 
-                    <p class="mt-1 text-sm text-slate-500">
-                        Resultado obtenido en cada materia para la modalidad seleccionada.
-                    </p>
+                <p class="mt-1 text-sm text-slate-500">
+                    Resultado obtenido en cada materia para la modalidad seleccionada.
+                </p>
 
-                </div>
+            </div>
 
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+                @for (item of promediosMaterias; track item.materiaId) {
 
                 <div
-                    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    class="group flex min-h-[205px] flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-200 hover:shadow-md">
 
-                    @for (
-                        item of promediosMaterias;
-                        track item.materiaId
-                    ) {
+                    <div class="flex items-start gap-3">
 
                         <div
-                            class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
 
-                            <div
-                                class="flex items-center justify-between gap-3">
+                            <i class="pi pi-book text-sm"></i>
 
-                                <div class="flex items-center gap-3">
+                        </div>
 
-                                    <div
-                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <div class="min-w-0 flex-1">
 
-                                        <i class="pi pi-book"></i>
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                                Área evaluada
+                            </p>
 
-                                    </div>
+                            <h3 class="mt-1 text-base font-bold leading-snug text-slate-900">
 
-                                    <div>
+                                {{ item.materia }}
 
-                                        <p class="text-xs text-slate-400">
-                                            Área evaluada
-                                        </p>
+                            </h3>
 
-                                        <h3 class="font-semibold text-slate-900">
-                                            {{ item.materia }}
-                                        </h3>
+                        </div>
 
-                                    </div>
+                    </div>
 
-                                </div>
+                    <div class="mt-6">
 
+                        <div class="mb-3 flex items-end justify-between gap-3">
 
-                                <span
-                                    class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+                            <div>
+
+                                <p class="text-[11px] font-medium text-slate-400">
+                                    Resultado de la modalidad
+                                </p>
+
+                                <p class="mt-0.5 text-2xl font-bold text-purple-700">
 
                                     {{ item.porcentaje | number:'1.0-2' }}%
 
-                                </span>
+                                </p>
 
                             </div>
 
-
                             <div
-                                class="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-500">
 
-                                <div
-                                    class="h-full rounded-full bg-blue-500 transition-all duration-500"
-                                    [style.width.%]="item.porcentaje">
-                                </div>
+                                <i class="pi pi-chart-line text-sm"></i>
 
                             </div>
 
                         </div>
 
-                    }
+                        <div class="h-2 overflow-hidden rounded-full bg-slate-100">
+
+                            <div class="h-full rounded-full bg-purple-500 transition-all duration-500"
+                                [style.width.%]="item.porcentaje">
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-            </section>
+                }
+
+            </div>
+
+        </section>
 
         }
 
@@ -275,9 +278,9 @@
                 <p class="mt-1 text-sm text-slate-500">
 
                     @if (nivelId === 3) {
-                        Resultados por zona y centro de trabajo.
+                    Resultados por zona y centro de trabajo.
                     } @else {
-                        Resultados por sector, zona y centro de trabajo.
+                    Resultados por sector, zona y centro de trabajo.
                     }
 
                 </p>
@@ -286,52 +289,46 @@
 
 
             @if (
-                tableDinamica.columns &&
-                tableDinamica.columns.length > 0 &&
-                resultados.length > 0
+            tableDinamica.columns &&
+            tableDinamica.columns.length > 0 &&
+            resultados.length > 0
             ) {
 
-                <div
-                    class="overflow-hidden">
+            <div class="overflow-hidden">
 
-                    <app-tabla-dinamica
-                        [columns]="tableDinamica.columns"
-                        [data]="tableDinamica.data"
-                        [globalSearchKeys]="tableDinamica.globalSearchKeys">
-                    </app-tabla-dinamica>
+                <app-tabla-dinamica [columns]="tableDinamica.columns" [data]="tableDinamica.data"
+                    [globalSearchKeys]="tableDinamica.globalSearchKeys">
+                </app-tabla-dinamica>
 
-                </div>
+            </div>
 
             }
 
 
             @if (resultados.length === 0) {
 
+            <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+
                 <div
-                    class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+                    class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
 
-                    <div
-                        class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
-
-                        <i class="pi pi-chart-bar text-xl"></i>
-
-                    </div>
-
-                    <h3
-                        class="mt-4 text-base font-semibold text-slate-800">
-
-                        Sin resultados disponibles
-
-                    </h3>
-
-                    <p
-                        class="mx-auto mt-1 max-w-md text-sm text-slate-500">
-
-                        No se encontraron resultados para esta modalidad y evaluación.
-
-                    </p>
+                    <i class="pi pi-chart-bar text-xl"></i>
 
                 </div>
+
+                <h3 class="mt-4 text-base font-semibold text-slate-800">
+
+                    Sin resultados disponibles
+
+                </h3>
+
+                <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+
+                    No se encontraron resultados para esta modalidad y evaluación.
+
+                </p>
+
+            </div>
 
             }
 

@@ -12,6 +12,8 @@ import {
   CatalogoCiclos,
   CatalogoExamen,
   CentrosTrabajo,
+  EstructuraExamen,
+  MateriaEstructuraExamen,
   responseCatalogo,
   Sectores,
   Zona,
@@ -73,6 +75,8 @@ export class PrincipalModalidad {
   private promedioSectorCache = new Map<number, number>();
   private promedioZonaCache = new Map<number, number>();
   private promedioCctCache = new Map<number, number>();
+  protected estructuraExamen?: EstructuraExamen;
+  protected materiasExamen: MateriaEstructuraExamen[] = [];
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -114,7 +118,6 @@ export class PrincipalModalidad {
 
     forkJoin({
       ciclos: this.catalogoService.getCiclos(),
-
       examenes: this.catalogoService.getExamenes(),
     })
       .pipe(
@@ -143,7 +146,7 @@ export class PrincipalModalidad {
             return;
           }
 
-          this.cargarPromediosIniciales();
+          this.cargarEstructuraExamen();
         },
 
         error: (error) => {
@@ -155,22 +158,18 @@ export class PrincipalModalidad {
         },
       });
   }
-
   limpiarDatos(): void {
     this.promedioNivel = 0;
     this.promedioModalidad = 0;
-
     this.promediosMaterias = [];
-
     this.resultados = [];
-
     this.dataModalidad = {} as dataModalidad;
-
     this.tableDinamica = {} as DinamicTableData;
-
     this.promedioSectorCache.clear();
     this.promedioZonaCache.clear();
     this.promedioCctCache.clear();
+    this.estructuraExamen = undefined;
+    this.materiasExamen = [];
   }
 
   seleccionarCicloActual(): void {
@@ -206,6 +205,7 @@ export class PrincipalModalidad {
       promedioNivel: this.estadisticaService
         .getPromedioEstatalByNivel({
           examenId: this.examenSelected,
+
           nivelId: this.nivelId,
         })
         .pipe(
@@ -221,7 +221,9 @@ export class PrincipalModalidad {
       promedioModalidad: this.estadisticaService
         .getPromedioEstatalByNivel({
           examenId: this.examenSelected,
+
           nivelId: this.nivelId,
+
           modalidadId: this.modalidadId,
         })
         .pipe(
@@ -253,56 +255,44 @@ export class PrincipalModalidad {
   }
 
   cargarPromediosMaterias(): void {
-    const materias =
-      this.nivelId === 1
-        ? [
-            {
-              materiaId: 1,
-              materia: this.catalogoService.getNombreMateria(1),
-            },
-            {
-              materiaId: 2,
-              materia: this.catalogoService.getNombreMateria(2),
-            },
-          ]
-        : [
-            {
-              materiaId: 1,
-              materia: this.catalogoService.getNombreMateria(1),
-            },
-            {
-              materiaId: 3,
-              materia: this.catalogoService.getNombreMateria(3),
-            },
-            {
-              materiaId: 4,
-              materia: this.catalogoService.getNombreMateria(4),
-            },
-          ];
+    if (!this.materiasExamen.length) {
+      this.promediosMaterias = [];
 
-    const requests = materias.map((materia) =>
+      this.cd.markForCheck();
+
+      return;
+    }
+
+    const requests = this.materiasExamen.map((materia) =>
       this.estadisticaService
         .getPromedioEstatalByNivel({
           examenId: this.examenSelected,
+
           nivelId: this.nivelId,
+
           modalidadId: this.modalidadId,
+
           materiaId: materia.materiaId,
         })
         .pipe(
           map(
             (resp): PromedioMateriaModalidad => ({
               materiaId: materia.materiaId,
-              materia: materia.materia,
+
+              materia: materia.descripcion,
+
               porcentaje: resp?.[0]?.porcentaje ?? 0,
             }),
           ),
 
           catchError((error) => {
-            console.error(`Error obteniendo ${materia.materia}`, error);
+            console.error(`Error obteniendo resultado de ${materia.descripcion}`, error);
 
             return of({
               materiaId: materia.materiaId,
-              materia: materia.materia,
+
+              materia: materia.descripcion,
+
               porcentaje: 0,
             });
           }),
@@ -315,7 +305,39 @@ export class PrincipalModalidad {
 
         this.cd.markForCheck();
       },
+
+      error: (error) => {
+        console.error('Error obteniendo promedios por materia', error);
+
+        this.promediosMaterias = [];
+      },
     });
+  }
+  cargarEstructuraExamen(): void {
+    this.catalogoService
+      .getEstructuraExamen(this.examenSelected)
+      .pipe(
+        catchError((error) => {
+          console.error('Error obteniendo estructura del examen', error);
+
+          return of(undefined);
+        }),
+      )
+      .subscribe({
+        next: (resp) => {
+          if (!resp) {
+            this.loader = false;
+
+            return;
+          }
+
+          this.estructuraExamen = resp;
+
+          this.materiasExamen = resp.materias ?? [];
+
+          this.cargarPromediosIniciales();
+        },
+      });
   }
 
   cargarEstructura(): void {

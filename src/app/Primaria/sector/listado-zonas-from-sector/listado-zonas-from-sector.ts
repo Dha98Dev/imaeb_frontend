@@ -295,7 +295,7 @@ export class ListadoZonasFromSector {
     this.router.navigate([
       '/sz/resultados-zona',
       btoa(this.nivel),
-      btoa(this.zonaSelected.zonaId),
+      btoa(this.zonaSelected.zona),
       btoa(this.modalidad),
     ]);
   }
