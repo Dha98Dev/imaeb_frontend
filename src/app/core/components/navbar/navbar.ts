@@ -17,35 +17,40 @@ export class Navbar {
     private authService: AuthService,
     private cd: ChangeDetectorRef,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) {}
   public items: MenuItem[] | undefined;
   public visible: boolean = false;
-  private jwtParams:paramsFilters={} as paramsFilters
+  private jwtParams: paramsFilters = {} as paramsFilters;
 
   // variables de autenticacion
   public isAutenticated: boolean = false;
   public isNivel: boolean = false;
-  public scope: string|undefined = '';
+  public scope: string | undefined = '';
+  protected user: string = '';
 
- ngOnInit() {
-  this.authService.isLoggedIn$.subscribe((state) => {
-    this.isAutenticated = state;
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe((state) => {
+      this.isAutenticated = state;
+      this.authService.usuario$.subscribe((user) => {
+        if (user?.username) {
+      this.user=user?.username
+        }
+      });
 
-    if (state) {
-      const params = this.authService.getObjectParams();
-      this.jwtParams=params
-      this.scope = params.scope;
-    } else {
-      this.scope = undefined; // o null, como manejes
-    }
-  });
-}
+      if (state) {
+        const params = this.authService.getObjectParams();
+        this.jwtParams = params;
+        this.scope = params.scope;
+      } else {
+        this.scope = undefined; // o null, como manejes
+      }
+    });
+  }
 
-get getUser():string{
-  return this.jwtParams.sub
-}
-
+  get getUser(): string {
+    return this.jwtParams.sub;
+  }
 
   cerrarSesion() {
     this.authService.logout();

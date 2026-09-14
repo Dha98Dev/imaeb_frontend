@@ -31,8 +31,8 @@ export class LoginPage {
       home: '',
     });
     this.loginForm = this.fb.group({
-      username: ['AlanZamorano', [Validators.required]],
-      password: ['Motionless12$', Validators.required],
+      username: ['', [Validators.required]],
+      password: ['', Validators.required],
     });
   }
   iniciarSesion() {

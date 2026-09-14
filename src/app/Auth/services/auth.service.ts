@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, map, of, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  finalize,
+  of,
+  shareReplay,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 import { Router } from '@angular/router';
 
 import { Enviroments } from '../../enviroments/env';
@@ -26,6 +36,8 @@ export class AuthService {
 
   private usuarioSubject = new BehaviorSubject<AuthMeResponse | null>(null);
 
+  private meRequest$: Observable<AuthMeResponse | null> | null = null;
+
   public isLoggedIn$ = this.authState.asObservable();
 
   public usuario$ = this.usuarioSubject.asObservable();
@@ -39,14 +51,20 @@ export class AuthService {
     return this.http.post<LoginResponse>(this.url + 'auth/login', data).pipe(
       tap((resp) => {
         this.setTokens(resp.token);
-
-        this.authState.next(true);
       }),
 
       switchMap(() => this.getMe()),
 
       tap(() => {
-        this.router.navigate([this.generateUrlBase()]);
+        this.authState.next(true);
+
+        void this.router.navigateByUrl(this.generateUrlBase());
+      }),
+
+      catchError((error) => {
+        this.clearTokens();
+
+        return throwError(() => error);
       }),
     );
   }
@@ -55,26 +73,57 @@ export class AuthService {
     return this.http.get<AuthMeResponse>(this.url + 'auth/me').pipe(
       tap((resp) => {
         this.usuarioSubject.next(resp);
+
+        this.authState.next(true);
       }),
     );
   }
 
-  cargarUsuario(): Observable<AuthMeResponse | null> {
-    if (!this.getAccessToken()) {
-      this.usuarioSubject.next(null);
+  ensureUsuario(): Observable<AuthMeResponse | null> {
+    const token = this.getAccessToken();
+
+    if (!token) {
+      this.clearTokens();
 
       return of(null);
     }
 
-    return this.getMe().pipe(
-      catchError((error) => {
-        console.error('Error obteniendo usuario autenticado', error);
+    const usuarioActual = this.getUsuario();
 
-        this.usuarioSubject.next(null);
+    if (usuarioActual) {
+      this.authState.next(true);
+
+      return of(usuarioActual);
+    }
+
+    if (this.meRequest$) {
+      return this.meRequest$;
+    }
+
+    this.meRequest$ = this.getMe().pipe(
+      catchError((error) => {
+        console.error('No se pudo recuperar /auth/me', error);
+
+        this.clearTokens();
 
         return of(null);
       }),
+
+      finalize(() => {
+        this.meRequest$ = null;
+      }),
+
+      shareReplay({
+        bufferSize: 1,
+        refCount: false,
+      }),
     );
+
+    return this.meRequest$;
+  }
+
+  cargarUsuario(): Observable<AuthMeResponse | null> {
+    return this.ensureUsuario();
   }
 
   private setTokens(token: string): void {
@@ -89,6 +138,10 @@ export class AuthService {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
 
     this.usuarioSubject.next(null);
+
+    this.authState.next(false);
+
+    this.meRequest$ = null;
   }
 
   private hasToken(): boolean {
@@ -96,7 +149,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.authState.value;
+    return this.authState.value && !!this.getAccessToken();
   }
 
   getUsuario(): AuthMeResponse | null {
@@ -159,34 +212,6 @@ export class AuthService {
     return this.getAlcances().some((item) => item.accesoGlobal);
   }
 
-  getObjectParams(): paramsFilters {
-    const alcance = this.getPrimerAlcance();
-
-    if (!alcance) {
-      return {} as paramsFilters;
-    }
-
-    return {
-      nivelId: alcance.nivelId ?? undefined,
-
-      modalidadId: alcance.modalidadId ?? undefined,
-
-      sectorId: alcance.sectorId ?? undefined,
-
-      zonaId: alcance.zonaId ?? undefined,
-
-      escuelaId: alcance.escuelaId ?? undefined,
-
-      scope: this.getScope(),
-
-      sub: this.usuarioSubject.value?.id?.toString(),
-
-      nivelIds: this.getNivelIds(),
-
-      modalidadIds: this.getModalidadIds(),
-    } as paramsFilters;
-  }
-
   getNivelIds(): number[] {
     return [
       ...new Set(
@@ -237,12 +262,54 @@ export class AuthService {
     ];
   }
 
+  getDependenciaIds(): number[] {
+    return [
+      ...new Set(
+        this.getAlcances()
+          .map((item) => item.dependenciaId)
+          .filter((item): item is number => item != null),
+      ),
+    ];
+  }
+
+  getObjectParams(): paramsFilters {
+    const alcance = this.getPrimerAlcance();
+
+    return {
+      nivelId: alcance?.nivelId ?? undefined,
+
+      modalidadId: alcance?.modalidadId ?? undefined,
+
+      sectorId: alcance?.sectorId ?? undefined,
+
+      zonaId: alcance?.zonaId ?? undefined,
+
+      escuelaId: alcance?.escuelaId ?? undefined,
+
+      dependenciaId: alcance?.dependenciaId ?? undefined,
+
+      scope: this.getScope(),
+
+      sub: this.usuarioSubject.value?.id?.toString(),
+
+      nivelIds: this.getNivelIds(),
+
+      modalidadIds: this.getModalidadIds(),
+
+      sectorIds: this.getSectorIds(),
+
+      zonaIds: this.getZonaIds(),
+
+      escuelaIds: this.getEscuelaIds(),
+
+      dependenciaIds: this.getDependenciaIds(),
+    } as paramsFilters;
+  }
+
   logout(): void {
     this.clearTokens();
 
-    this.authState.next(false);
-
-    this.router.navigate(['/Auth/login']);
+    void this.router.navigateByUrl('/Auth/login');
   }
 
   getAuthorizationHeader() {
@@ -258,10 +325,21 @@ export class AuthService {
   generateUrlBase(): string {
     const scope = this.getScope();
 
-    if (scope === 'NIVEL') {
-      return '/e/estadistica-general';
-    }
+    switch (scope) {
+      case 'NIVEL':
+        return '/e/estadistica-general';
 
-    return '/Auth/main-filter';
+      case 'MODALIDAD':
+      case 'SECTOR':
+      case 'ZONA':
+      case 'ESCUELA':
+      case 'PERSONALIZADO':
+      case 'EJECUTIVO':
+      case 'ADMIN':
+        return '/Auth/main-filter';
+
+      default:
+        return '/Auth/main-filter';
+    }
   }
 }

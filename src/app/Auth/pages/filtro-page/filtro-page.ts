@@ -47,21 +47,16 @@ export class FiltroPage {
   private breadCrumb = inject(BreadCrumService);
   params: paramsFilters = {} as paramsFilters;
 
-  ngOnInit() {
-    this.params = this.authService.getObjectParams();
-    setTimeout(() => {
-      this.setValues();
-    }, 200);
-
-    this.getNiveles();
+  async ngOnInit(): Promise<void> {
     this.filtros = this.fb.group({
-      nivelSelected: ['', []],
-      modalidad: ['', []],
-      sector: ['', []],
-      zona: ['', []],
-      cct: ['', []],
-      curpAlumno: ['', []],
+      nivelSelected: [''],
+      modalidad: [''],
+      sector: [''],
+      zona: [''],
+      cct: [''],
+      curpAlumno: [''],
     });
+
     this.breadCrumb.addItem({
       jerarquia: 1,
       icon: '',
@@ -69,6 +64,16 @@ export class FiltroPage {
       urlLink: '/Auth/main-filter',
       home: '',
     });
+
+    const usuario = await firstValueFrom(this.authService.ensureUsuario());
+
+    if (!usuario) {
+      return;
+    }
+
+    this.params = this.authService.getObjectParams();
+
+    await this.inicializarFiltros();
   }
 
   async realizarPeticionCatalogoService(params: catalogo): Promise<responseCatalogo> {
@@ -80,86 +85,246 @@ export class FiltroPage {
     }
   }
 
-  async getNiveles() {
+  async getNiveles(): Promise<void> {
     try {
       const resp = await this.realizarPeticionCatalogoService({});
-      this.niveles = resp.niveles!;
-      this.cd.markForCheck(); // solo si usas OnPush y necesitas forzar CD
-    } catch (err) {
+
+      const niveles = resp.niveles ?? [];
+
+      this.niveles = niveles.filter((nivel) =>
+        this.esPermitidoPorAlcance({
+          nivelId: nivel.id,
+        }),
+      );
+
+      this.cd.markForCheck();
+    } catch (error) {
       this.niveles = [];
+
+      this.cd.markForCheck();
     }
   }
-  async getModalidades() {
+  async getModalidades(): Promise<void> {
+    this.limpiarPropiedades(1);
+
+    this.limpiarCampos(['modalidad', 'sector', 'zona', 'cct']);
+
+    const nivelId = this.valorNumero('nivelSelected');
+
+    if (!nivelId) {
+      return;
+    }
+
     try {
       const resp = await this.realizarPeticionCatalogoService({
-        nivelId: this.filtros.get('nivelSelected')?.value,
+        nivelId,
       });
-      this.modalidades = resp.modalidades!;
-      // this.setValues()
-    } catch (err) {
+
+      const modalidades = resp.modalidades ?? [];
+
+      this.modalidades = modalidades.filter((modalidad) =>
+        this.esPermitidoPorAlcance({
+          nivelId,
+          modalidadId: modalidad.id,
+        }),
+      );
+
+      if (this.modalidades.length === 1) {
+        this.filtros.patchValue({
+          modalidad: this.modalidades[0].id,
+        });
+
+        await this.getSectores();
+      }
+
+      this.cd.markForCheck();
+    } catch (error) {
       this.modalidades = [];
+
+      this.cd.markForCheck();
     }
   }
 
-  async getSectores() {
-    // if (this.filtros.get('nivelSelected')?.value == 3) {
-    // this.limpiarPropiedades(3);
-    // this.limpiarCampos(['zona', 'cct', 'sector']);
+  async getSectores(): Promise<void> {
+    this.limpiarPropiedades(2);
 
-    // this.getZonas();
-    // this.sectores = [];
-    // } else {
+    this.limpiarCampos(['sector', 'zona', 'cct']);
+
+    const nivelId = this.valorNumero('nivelSelected');
+
+    const modalidadId = this.valorNumero('modalidad');
+
+    if (!nivelId || !modalidadId) {
+      return;
+    }
+
     try {
-      this.limpiarPropiedades(2);
-      this.limpiarCampos(['sector', 'zona', 'cct']);
       const resp = await this.realizarPeticionCatalogoService({
-        nivelId: this.filtros.get('nivelSelected')?.value,
-        modalidadId: this.filtros.get('modalidad')?.value,
+        nivelId,
+        modalidadId,
       });
-      // Ordenar alfabéticamente por la propiedad 'sector'
-      // Ordenar por ID numérico (si la propiedad existe)
-     if (resp.sectores) {
-       this.sectores = resp.sectores.sort((a, b) => (a.numero || 0) - (b.numero || 0));
-     }
+
+      const sectores = resp.sectores ?? [];
+
+      this.sectores = sectores
+        .filter((sector) =>
+          this.esPermitidoPorAlcance({
+            nivelId,
+            modalidadId,
+            sectorId: sector.numero,
+          }),
+        )
+        .sort((a, b) => (a.numero || 0) - (b.numero || 0));
+
+      if (this.sectores.length === 1) {
+        this.filtros.patchValue({
+          sector: this.sectores[0].numero,
+        });
+
+        await this.getZonas();
+      }
+
       this.cd.markForCheck();
     } catch (error) {
       this.sectores = [];
+
+      this.cd.markForCheck();
     }
-    // }
   }
 
-  async getZonas() {
+  async getZonas(): Promise<void> {
+    this.limpiarPropiedades(3);
+
+    this.limpiarCampos(['zona', 'cct']);
+
+    const nivelId = this.valorNumero('nivelSelected');
+
+    const modalidadId = this.valorNumero('modalidad');
+
+    const sectorId = this.valorNumero('sector');
+
+    if (nivelId === undefined || modalidadId === undefined || sectorId === undefined) {
+      return;
+    }
+
     try {
-      this.limpiarPropiedades(4);
       const resp = await this.realizarPeticionCatalogoService({
-        nivelId: this.filtros.get('nivelSelected')?.value,
-        modalidadId: this.filtros.get('modalidad')?.value,
-        sector: this.filtros.get('sector')?.value,
+        nivelId,
+        modalidadId,
+        sector: sectorId,
       });
-      if (resp.zonas) {
-        this.zonas = resp.zonas.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+
+      const zonas = resp.zonas ?? [];
+
+      console.log('Zonas recibidas:', zonas);
+
+      console.log('Zona permitida por auth:', this.authService.getZonaIds());
+
+      this.zonas = zonas
+        .filter((zona) =>
+          this.esPermitidoPorAlcance({
+            nivelId,
+            modalidadId,
+            sectorId,
+            zonaId: zona.id,
+          }),
+        )
+        .sort((a, b) => (a.numero || 0) - (b.numero || 0));
+
+      console.log('Zonas permitidas:', this.zonas);
+
+      if (this.zonas.length === 1) {
+        this.filtros.patchValue({
+          zona: this.zonas[0].id,
+        });
+
+        await this.getCentrosTrabajo();
       }
+
       this.cd.markForCheck();
     } catch (error) {
+      console.error('Error obteniendo zonas', error);
+
       this.zonas = [];
+
+      this.cd.markForCheck();
     }
   }
+  async getCentrosTrabajo(): Promise<void> {
+    this.centrosTrabajo = [];
 
-  async getCentrosTrabajo() {
+    this.filtros.patchValue({
+      cct: '',
+    });
+
+    const nivelId = this.valorNumero('nivelSelected');
+
+    const modalidadId = this.valorNumero('modalidad');
+
+    const sectorId = this.valorNumero('sector');
+
+    const zonaId = this.valorNumero('zona');
+
+    if (
+      nivelId === undefined ||
+      modalidadId === undefined ||
+      sectorId === undefined ||
+      zonaId === undefined
+    ) {
+      return;
+    }
+
+    const zonaSeleccionada = this.zonas.find((zona) => zona.id === zonaId);
+
+    if (!zonaSeleccionada) {
+      console.error('No se encontró la zona seleccionada', zonaId);
+
+      return;
+    }
+
+    console.log('Zona seleccionada:', zonaSeleccionada);
+
+    console.log('Parámetros centros:', {
+      nivelId,
+      modalidadId,
+      sectorId,
+      zonaId,
+      zonaNumero: zonaSeleccionada.numero,
+    });
+
     try {
       const resp = await this.realizarPeticionCatalogoService({
-        nivelId: this.filtros.get('nivelSelected')?.value,
-        modalidadId: this.filtros.get('modalidad')?.value,
-        sector: this.filtros.get('sector')?.value,
-        zonaEscolar: this.filtros.get('zona')?.value,
+        nivelId,
+        modalidadId,
+        sector: sectorId,
+        zonaEscolar: zonaSeleccionada.numero,
       });
-      this.centrosTrabajo = resp.centrosTrabajo!;
+
+      const centros = resp.centrosTrabajo ?? [];
+
+      this.centrosTrabajo = centros.filter(
+        (centro) =>
+          centro.nivelId === nivelId &&
+          centro.modalidadId === modalidadId &&
+          centro.sector === sectorId &&
+          centro.zonaEscolar === zonaSeleccionada.numero,
+      );
+
+      if (this.centrosTrabajo.length === 1) {
+        this.filtros.patchValue({
+          cct: this.centrosTrabajo[0].id,
+        });
+      }
+
       this.cd.markForCheck();
     } catch (error) {
+      console.error('Error obteniendo centros', error);
+
       this.centrosTrabajo = [];
+
+      this.cd.markForCheck();
     }
   }
-
   limpiarCampos(campos: string[]) {
     const patch: any = {};
     campos.forEach((campo) => {
@@ -199,131 +364,283 @@ export class FiltroPage {
     }
   }
 
-  generarUrl() {
-    let url = '';
-    let sector = this.filtros.get('sector')?.value ?? '';
-    let zona = this.filtros.get('zona')?.value ?? '';
-    let modalidad = this.filtros.get('modalidad')?.value ?? '';
-    let nivel = this.filtros.get('nivelSelected')?.value ?? '';
-    let rutaSector =
-      '/ss/resultados-sector/' + btoa(nivel) + '/' + btoa(sector) + '/' + btoa(modalidad);
-    let rutaZona = '/sz/resultados-zona/' + btoa(nivel) + '/' + btoa(zona);
+  async generarUrl(): Promise<void> {
+    const sector = this.filtros.get('sector')?.value ?? '';
 
-    // variables encriptadas
+    const zonaId = this.filtros.get('zona')?.value ?? '';
+
+    const zonaSeleccionada = this.zonas.find((zona) => zona.id == zonaId);
+
+    const zona = zonaSeleccionada?.numero ?? '';
+
+    const modalidad = this.filtros.get('modalidad')?.value ?? '';
+
+    const nivel = this.filtros.get('nivelSelected')?.value ?? '';
+
+    const nivelBase64 = btoa(String(nivel));
+
+    const modalidadBase64 = btoa(String(modalidad));
+
+    const sectorBase64 = btoa(String(sector));
+
+    const zonaBase64 = btoa(String(zona));
+
+    const rutaSector = `/ss/resultados-sector/${nivelBase64}/${sectorBase64}/${modalidadBase64}`;
+
+    const rutaZona = `/sz/resultados-zona/${nivelBase64}/${zonaBase64}/${modalidadBase64}`;
 
     if (this.filtros.get('cct')?.value) {
-      let cctSelected: CentrosTrabajo = this.centrosTrabajo.filter(
-        (cct) => cct.id == this.filtros.get('cct')?.value,
-      )[0];
-      url = '/prim_3/resultados-ct/';
-      this.router.navigate([url, this.crypto.Encriptar(cctSelected.cct)]);
+      const cctId = this.filtros.get('cct')?.value;
+
+      const cctSelected = this.centrosTrabajo.find((cct) => cct.id == cctId);
+
+      if (!cctSelected) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Centro de trabajo',
+          detail: 'No se encontró el centro de trabajo seleccionado.',
+        });
+
+        return;
+      }
+
+      const cctCript = this.crypto.Encriptar(cctSelected.cct);
+
+      const navego = await this.router.navigate(['/prim_3/resultados-ct', cctCript]);
+
+      if (!navego) {
+        return;
+      }
+
       this.addBread(1, 'filtros', '/Auth/main-filter', '');
-      if (nivel != '3') {
+
+      if (String(nivel) !== '3') {
         this.addBread(2, 'sector ' + sector, rutaSector, '');
       }
+
       this.addBread(3, 'zona ' + zona, rutaZona, '');
-      this.addBread(
-        4,
-        'Resultados ' + cctSelected.cct,
-        '/prim_3/resultados-ct/' + this.crypto.Encriptar(cctSelected.cct),
-        '',
-      );
-      // this.addBread(3,cctSelected.cct,'/prim_3/resultados-ct/'+cctSelected.cct, '')
-    } else if (this.filtros.get('zona')?.value) {
-      this.addBread(3, 'zona ' + zona, rutaZona, '');
-      this.router.navigate(['/sz/resultados-zona', btoa(nivel), btoa(zona), btoa(modalidad)]);
-    } else if (this.filtros.get('sector')?.value) {
-      this.addBread(2, 'sector ' + sector, rutaSector, '');
-      url = '/ss/resultados-sector';
-      this.router.navigate([url, btoa(nivel), btoa(sector), btoa(modalidad)]);
-    } else if (this.filtros.get('modalidad')?.value) {
-      url = '/m/resultadosModalidad';
-      let modalidadSelected = this.modalidades.filter((mod) => mod.id == modalidad);
-      let modalidadCripto = this.crypto.toBase64Url(
-        this.crypto.Encriptar(modalidadSelected[0].descripcion),
-      );
-      this.router.navigate([url, btoa(nivel), btoa(modalidad), modalidadCripto]);
-      console.log('navegando...');
-      
-    } else {
-      this.messageService.add({
-        severity: 'secondary',
-        summary: 'Filtro de la informacion',
-        detail: 'Debe de seleccionar un nivel y una modalidad al menos',
-      });
+
+      this.addBread(4, 'Resultados ' + cctSelected.cct, `/prim_3/resultados-ct/${cctCript}`, '');
+
+      return;
     }
+
+    if (zona) {
+      const navego = await this.router.navigate([
+        '/sz/resultados-zona',
+        nivelBase64,
+        zonaBase64,
+        modalidadBase64,
+      ]);
+
+      if (!navego) {
+        return;
+      }
+
+      this.addBread(3, 'zona ' + zona, rutaZona, '');
+
+      return;
+    }
+
+    if (sector) {
+      const navego = await this.router.navigate([
+        '/ss/resultados-sector',
+        nivelBase64,
+        sectorBase64,
+        modalidadBase64,
+      ]);
+
+      if (!navego) {
+        return;
+      }
+
+      this.addBread(2, 'sector ' + sector, rutaSector, '');
+
+      return;
+    }
+
+    if (modalidad) {
+      const modalidadSelected = this.modalidades.find((item) => item.id == modalidad);
+
+      if (!modalidadSelected) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Modalidad',
+          detail: 'No se encontró la modalidad seleccionada.',
+        });
+
+        return;
+      }
+
+      const modalidadCripto = this.crypto.toBase64Url(
+        this.crypto.Encriptar(modalidadSelected.descripcion),
+      );
+
+      await this.router.navigate([
+        '/m/resultadosModalidad',
+        nivelBase64,
+        modalidadBase64,
+        modalidadCripto,
+      ]);
+
+      return;
+    }
+
+    this.messageService.add({
+      severity: 'secondary',
+      summary: 'Filtro de la información',
+      detail: 'Debe seleccionar un nivel y una modalidad al menos',
+    });
   }
   addBread(jerarquia: number, label: string, urlLink: string, icon: string) {
     this.breadCrumb.addItem({ jerarquia, label, urlLink, icon, home: '' });
   }
 
-  setValues() {
-    console.log(this.params);
+  // setValues() {
+  //   console.log(this.params);
 
-    const { nivelId, modalidadId, sectorId, zonaId, escuelaId, nivelIds, modalidadIds } =
-      this.params || {};
+  //   const { nivelId, modalidadId, sectorId, zonaId, escuelaId, nivelIds, modalidadIds } =
+  //     this.params || {};
 
-    // Si no hay nivel, no hacemos nada
-    if (nivelId == null) {
-      return;
-    }
+  //   // Si no hay nivel, no hacemos nada
+  //   if (nivelId == null) {
+  //     return;
+  //   }
 
-    // 1) Nivel
-    this.niveles = this.niveles.filter((n) => nivelIds.includes(n.id));
-    // this.filtros.patchValue({ nivelSelected: nivelIds[0] });
-    this.getModalidades();
+  //   // 1) Nivel
+  //   this.niveles = this.niveles.filter((n) => nivelIds.includes(n.id));
+  //   // this.filtros.patchValue({ nivelSelected: nivelIds[0] });
+  //   this.getModalidades();
 
-    // Esperamos a que se carguen las modalidades
-    setTimeout(() => {
-      // 2) Modalidad
-      if (modalidadId == null) {
-        return;
-      }
+  //   // Esperamos a que se carguen las modalidades
+  //   setTimeout(() => {
+  //     // 2) Modalidad
+  //     if (modalidadId == null) {
+  //       return;
+  //     }
 
-      this.modalidades = this.modalidades.filter((m) => modalidadIds.includes(m.id));
-      this.cd.markForCheck();
-      this.filtros.patchValue({ modalidad: modalidadIds[0] });
-      this.getSectores();
+  //     this.modalidades = this.modalidades.filter((m) => modalidadIds.includes(m.id));
+  //     this.cd.markForCheck();
+  //     this.filtros.patchValue({ modalidad: modalidadIds[0] });
+  //     this.getSectores();
 
-      // Esperamos a que se carguen los sectores
-      setTimeout(() => {
-        // 3) Sector (opcional)
-        if (sectorId != null) {
-          this.sectores = this.sectores.filter((s) => s.numero === sectorId);
-          this.cd.markForCheck();
-          this.filtros.patchValue({ sector: sectorId });
-        }
+  //     // Esperamos a que se carguen los sectores
+  //     setTimeout(() => {
+  //       // 3) Sector (opcional)
+  //       if (sectorId != null) {
+  //         this.sectores = this.sectores.filter((s) => s.numero === sectorId);
+  //         this.cd.markForCheck();
+  //         this.filtros.patchValue({ sector: sectorId });
+  //       }
 
-        // En cualquier caso, cargamos zonas
-        this.getZonas();
+  //       // En cualquier caso, cargamos zonas
+  //       this.getZonas();
 
-        // Esperamos a que se carguen las zonas y luego aplicamos zona/escuela
-        setTimeout(() => {
-          this.aplicarZonaYEscuela(zonaId, escuelaId);
-        }, 200);
-      }, 200);
-    }, 200);
+  //       // Esperamos a que se carguen las zonas y luego aplicamos zona/escuela
+  //       setTimeout(() => {
+  //         this.aplicarZonaYEscuela(zonaId, escuelaId);
+  //       }, 200);
+  //     }, 200);
+  //   }, 200);
+  // }
+
+  // private aplicarZonaYEscuela(zonaId?: number, escuelaId?: number) {
+  //   // 4) Zona (opcional)
+  //   if (zonaId == null) {
+  //     return;
+  //   }
+
+  //   this.zonas = this.zonas.filter((z) => z.numero === zonaId);
+  //   this.filtros.patchValue({ zona: zonaId });
+  //   this.getCentrosTrabajo();
+
+  //   // Esperamos a que se carguen los CT
+  //   setTimeout(() => {
+  //     // 5) Escuela / CCT (opcional)
+  //     if (escuelaId == null) {
+  //       return;
+  //     }
+
+  //     this.centrosTrabajo = this.centrosTrabajo.filter((ct) => ct.id === escuelaId);
+  //     this.filtros.patchValue({ cct: escuelaId });
+  //   }, 200);
+  // }
+
+  private esAccesoSinRestriccion(): boolean {
+    const scope = this.authService.getScope();
+
+    return this.authService.tieneAccesoGlobal() || ['ADMIN', 'EJECUTIVO'].includes(scope);
   }
 
-  private aplicarZonaYEscuela(zonaId?: number, escuelaId?: number) {
-    // 4) Zona (opcional)
-    if (zonaId == null) {
-      return;
+  private valorNumero(control: string): number | undefined {
+    const value = this.filtros.get(control)?.value;
+
+    if (value === null || value === undefined || value === '') {
+      return undefined;
     }
 
-    this.zonas = this.zonas.filter((z) => z.numero === zonaId);
-    this.filtros.patchValue({ zona: zonaId });
-    this.getCentrosTrabajo();
+    const numero = Number(value);
 
-    // Esperamos a que se carguen los CT
-    setTimeout(() => {
-      // 5) Escuela / CCT (opcional)
-      if (escuelaId == null) {
-        return;
+    return Number.isNaN(numero) ? undefined : numero;
+  }
+
+  private esPermitidoPorAlcance(valores: {
+    nivelId?: number;
+    modalidadId?: number;
+    sectorId?: number;
+    zonaId?: number;
+    escuelaId?: number;
+  }): boolean {
+    if (this.esAccesoSinRestriccion()) {
+      return true;
+    }
+
+    const alcances = this.authService.getAlcances();
+
+    if (!alcances.length) {
+      return false;
+    }
+
+    return alcances.some((alcance) => {
+      if (alcance.accesoGlobal) {
+        return true;
       }
 
-      this.centrosTrabajo = this.centrosTrabajo.filter((ct) => ct.id === escuelaId);
-      this.filtros.patchValue({ cct: escuelaId });
-    }, 200);
+      const nivelValido =
+        valores.nivelId == null || alcance.nivelId == null || alcance.nivelId === valores.nivelId;
+
+      const modalidadValida =
+        valores.modalidadId == null ||
+        alcance.modalidadId == null ||
+        alcance.modalidadId === valores.modalidadId;
+
+      const sectorValido =
+        valores.sectorId == null ||
+        alcance.sectorId == null ||
+        alcance.sectorId === valores.sectorId;
+
+      const zonaValida =
+        valores.zonaId == null || alcance.zonaId == null || alcance.zonaId === valores.zonaId;
+
+      const escuelaValida =
+        valores.escuelaId == null ||
+        alcance.escuelaId == null ||
+        alcance.escuelaId === valores.escuelaId;
+
+      return nivelValido && modalidadValida && sectorValido && zonaValida && escuelaValida;
+    });
+  }
+  private async inicializarFiltros(): Promise<void> {
+    await this.getNiveles();
+
+    if (this.niveles.length === 1) {
+      this.filtros.patchValue({
+        nivelSelected: this.niveles[0].id,
+      });
+
+      await this.getModalidades();
+    }
+
+    this.cd.markForCheck();
   }
 }

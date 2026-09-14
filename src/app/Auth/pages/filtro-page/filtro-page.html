@@ -37,7 +37,7 @@
                         <label class="mb-2 block text-sm font-semibold text-gray-700">Nivel educativo</label>
 
                         <p-select [options]="niveles" optionValue="id" optionLabel="descripcion"
-                            formControlName="nivelSelected" (onChange)="getModalidades(); setValues()"
+                            formControlName="nivelSelected" (onChange)="getModalidades();"
                             placeholder="Seleccione el nivel" class="w-full" />
                     </div>
 
@@ -90,7 +90,7 @@
                         <label class="mb-2 block text-sm font-semibold text-gray-700">Zona escolar</label>
 
                         <div class="flex items-center gap-2">
-                            <p-select [options]="zonas" optionValue="numero" optionLabel="numero" formControlName="zona"
+                            <p-select [options]="zonas" optionValue="id" optionLabel="numero" formControlName="zona"
                                 (onChange)="getCentrosTrabajo()" filter="true" filterBy="numero"
                                 placeholder="Seleccione la zona" class="flex-1" />
 
