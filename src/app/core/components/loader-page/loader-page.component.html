@@ -1,19 +1,71 @@
-<div class="loader">
-  <!-- Logo IMAEB -->
-  <div class="item-loader">
-    <div class="imaeb d-flex flex-column align-items-center my-2 ">
-      <h1 class="imaeb-title text-5xl px-2 py-1 rounded-lg text-white fw-bold">
+<div
+  class="loader-pantalla"
+  [attr.data-variante]="variante"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true">
+
+  <span class="loader-sr-only">
+    Cargando información. Los resultados se mostrarán al finalizar.
+  </span>
+
+  <div
+    class="loader-decoracion"
+    aria-hidden="true">
+  </div>
+
+  <div
+    class="loader-contenido"
+    aria-hidden="true">
+
+    <div class="loader-identidad">
+
+      <div class="loader-marca">
         IMAEB
-        <i class="pi pi-check check fw-bold text-emerald-400"></i>
-      </h1>
-      <p class="text-center text-2xl fw-bold imaeb-subtitle">Alumnos y Alumnas</p>
+      </div>
+
+      <p class="loader-submarca">
+        Alumnos y Alumnas
+      </p>
+
     </div>
 
-    <div class="loading text-capitalize fw-semibold text-lg">
-      Cargando Informacion ...
-      <div class="card">
-        <p-progressbar mode="indeterminate" [style]="{'height': '6px'}" [color]="'#D3C0AF'" />
+    <div class="loader-divisor"></div>
+
+    <div class="loader-estado">
+
+      <div
+        class="loader-puntos"
+        aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
+
+      <div class="loader-mensajes">
+
+        @for (mensaje of mensajes; track $index) {
+
+          <span
+            class="loader-mensaje"
+            [class.loader-mensaje-final]="$last"
+            [style.animationDelay]="($index * duracionMensaje) + 's'"
+            [style.animationDuration]="duracionMensaje + 's'">
+
+            {{ mensaje }}
+
+          </span>
+
+        }
+
+      </div>
+
     </div>
+
+    <div class="loader-progreso">
+      <span class="loader-avance"></span>
+    </div>
+
   </div>
+
 </div>

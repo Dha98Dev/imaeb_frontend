@@ -243,6 +243,8 @@ export class FiltroPage {
         this.crypto.Encriptar(modalidadSelected[0].descripcion),
       );
       this.router.navigate([url, btoa(nivel), btoa(modalidad), modalidadCripto]);
+      console.log('navegando...');
+      
     } else {
       this.messageService.add({
         severity: 'secondary',
