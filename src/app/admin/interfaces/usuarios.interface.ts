@@ -1,23 +1,61 @@
-export interface Usuario {
-  idUsuario: number;
-  nombre: string;
-  apellido1: string;
-  apellido2: string;
-  estado: string;
+export interface UsuarioAdmin {
+  id: number;
   username: string;
+  personaId: number | null;
+  nombreCompleto: string;
+  tipoPersonaId: number | null;
+  tipoPersona: string;
   scope: string;
-  sector: string | null;
-  zona: string | null;
-  nivel: string;
-  modalidad: string;
-  nombre_completo:string,
-  centro_trabajo:string | null
+  activo: boolean;
+  fechaCreacion: string;
 }
 
+export interface UsuariosAdminResponse {
+  content: UsuarioAdmin[];
+  page: UsuariosAdminPage;
+}
+
+export interface UsuariosAdminPage {
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface UsuariosAdminFiltros {
+  username?: string;
+  scope?: string;
+  activo?: boolean;
+
+  nivelId?: number[];
+  modalidadId?: number[];
+
+  sectorId?: number;
+  zonaId?: number;
+
+  page?: number;
+  size?: number;
+
+  sort?: string[];
+}
+
+export interface CambiarPasswordUsuarioRequest {
+  nuevaPassword: string;
+}
+
+export interface CambiarEstadoUsuarioRequest {
+  activo: boolean;
+}
 
 export interface TipoUsuario {
   id: string;
   descripcion: string;
   estado: string;
   scope: string;
+}
+
+export interface UsuarioAdminVista extends UsuarioAdmin {
+  estadoTexto: string;
+
+  fechaCreacionTexto: string;
 }

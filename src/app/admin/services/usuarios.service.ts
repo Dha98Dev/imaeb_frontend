@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Enviroments } from '../../enviroments/env';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TipoUsuario, Usuario } from '../interfaces/usuarios.interface';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { CambiarEstadoUsuarioRequest, CambiarPasswordUsuarioRequest, TipoUsuario, UsuariosAdminFiltros, UsuariosAdminResponse } from '../interfaces/usuarios.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -10,9 +10,6 @@ export class UsuariosService {
   private url: string = Enviroments.UrlServiceBackend;
   private urlPhp: string = 'http://localhost/imaeb/getListadoUsuarios.php';
 
-  getListadoUsuarios(): Observable<any> {
-    return this.http.get<any>(this.url+'admin/usuarios', {});
-  }
   getListadoTipoUsuarios(): Observable<TipoUsuario[]> {
     return this.http.get<TipoUsuario[]>(this.url + 'api/tipos-personas', {});
   }
@@ -23,22 +20,63 @@ export class UsuariosService {
 
     return this.http.post<any>(this.url + 'api/usuarios', JSON.stringify(data), { headers });
   }
-  actualizarEstadoUsuario(id: number, activo: boolean): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+  getListadoUsuarios(filtros: UsuariosAdminFiltros = {}): Observable<UsuariosAdminResponse> {
+    let params = new HttpParams();
+
+    if (filtros.username?.trim()) {
+      params = params.set('username', filtros.username.trim());
+    }
+
+    if (filtros.scope) {
+      params = params.set('scope', filtros.scope);
+    }
+
+    if (filtros.activo !== undefined && filtros.activo !== null) {
+      params = params.set('activo', filtros.activo.toString());
+    }
+
+    filtros.nivelId?.forEach((nivelId) => {
+      params = params.append('nivelId', nivelId.toString());
     });
 
-    return this.http.patch<any>(`${this.url}admin/usuarios/${id}/estado`, { activo }, { headers });
+    filtros.modalidadId?.forEach((modalidadId) => {
+      params = params.append('modalidadId', modalidadId.toString());
+    });
+
+    if (filtros.sectorId !== undefined) {
+      params = params.set('sectorId', filtros.sectorId.toString());
+    }
+
+    if (filtros.zonaId !== undefined) {
+      params = params.set('zonaId', filtros.zonaId.toString());
+    }
+
+    params = params.set('page', (filtros.page ?? 0).toString());
+
+    params = params.set('size', (filtros.size ?? 20).toString());
+
+    filtros.sort?.forEach((sort) => {
+      params = params.append('sort', sort);
+    });
+
+    return this.http.get<UsuariosAdminResponse>(this.url + 'admin/usuarios', {
+      params,
+    });
   }
-  actualizarPassword(id: number, nuevaPassword: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
 
-    return this.http.patch<any>(
-      `${this.url}admin/usuarios/${id}/password`,
-      { nuevaPassword },
-      { headers }
-    );
-  } 
+  actualizarPassword(usuarioId: number, nuevaPassword: string): Observable<void> {
+    const body: CambiarPasswordUsuarioRequest = {
+      nuevaPassword,
+    };
+
+    return this.http.patch<void>(`${this.url}admin/usuarios/${usuarioId}/password`, body);
+  }
+
+  actualizarEstadoUsuario(usuarioId: number, activo: boolean): Observable<void> {
+    const body: CambiarEstadoUsuarioRequest = {
+      activo,
+    };
+
+    return this.http.patch<void>(`${this.url}admin/usuarios/${usuarioId}/estado`, body);
+  }
 }

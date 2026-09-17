@@ -1,113 +1,484 @@
-<h2 class="text-xl font-medium text-stone-600 text-center ">Listado de usuarios</h2>
+<div class="mx-auto w-full max-w-7xl px-3 pb-8 sm:px-5 lg:px-6">
 
-@if(dataTable.data && dataTable.data.length > 0){
-<div class="mx-3">
-  <app-tabla-dinamica [columns]="dataTable.columns" [data]="dataTable.data"
-    [globalSearchKeys]="dataTable.globalSearchKeys" (rowClick)="onRow($event)">
-    ></app-tabla-dinamica>
+  <section class="mb-5 pt-4">
+
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+
+      <div>
+
+        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+          Administración
+        </p>
+
+        <h1 class="mt-1 text-xl font-bold text-slate-900">
+          Usuarios
+        </h1>
+
+        <p class="mt-1 text-sm text-slate-500">
+          Consulta y administra las cuentas con acceso al sistema.
+        </p>
+
+      </div>
+
+      <div class="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+
+        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+          <i class="pi pi-users"></i>
+        </div>
+
+        <div>
+          <p class="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+            Usuarios encontrados
+          </p>
+
+          <p class="text-sm font-bold text-slate-800">
+            {{ totalElementos }}
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+
+    <form [formGroup]="filtrosForm" (ngSubmit)="buscar()" class="flex flex-col gap-3 lg:flex-row lg:items-end">
+
+      <div class="min-w-0 flex-1">
+
+        <label class="mb-1.5 block text-xs font-semibold text-slate-600">
+          Usuario
+        </label>
+
+        <div class="relative">
+
+          <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+          </i>
+
+          <input pInputText formControlName="username" placeholder="Buscar por usuario" class="w-full !pl-9">
+
+        </div>
+
+      </div>
+
+
+      <div class="w-full lg:w-[220px]">
+
+        <label class="mb-1.5 block text-xs font-semibold text-slate-600">
+          Scope
+        </label>
+
+        <p-select formControlName="scope" [options]="scopes" optionLabel="label" optionValue="value" placeholder="Todos"
+          [showClear]="true" appendTo="body" styleClass="w-full">
+        </p-select>
+
+      </div>
+
+
+      <div class="w-full lg:w-[190px]">
+
+        <label class="mb-1.5 block text-xs font-semibold text-slate-600">
+          Estado
+        </label>
+
+        <p-select formControlName="activo" [options]="estados" optionLabel="label" optionValue="value"
+          placeholder="Todos" [showClear]="true" appendTo="body" styleClass="w-full">
+        </p-select>
+
+      </div>
+
+
+      <div class="flex gap-2">
+
+        <button type="submit"
+          class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+
+          <i class="pi pi-search text-xs"></i>
+
+          Buscar
+
+        </button>
+
+
+        <button type="button" (click)="limpiarFiltros()"
+          class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
+
+          <i class="pi pi-filter-slash text-xs"></i>
+
+          Limpiar
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  @if (cargando) {
+
+  <div class="rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
+
+    <i class="pi pi-spin pi-spinner text-2xl text-slate-400">
+    </i>
+
+    <p class="mt-3 text-sm font-medium text-slate-500">
+      Consultando usuarios...
+    </p>
+
+  </div>
+
+  } @else {
+
+  @if (
+  dataTable.data &&
+  dataTable.data.length > 0
+  ) {
+
+  <section class="overflow-hidden ">
+
+    <div class="">
+
+      <app-tabla-dinamica [columns]="dataTable.columns" [data]="dataTable.data"
+        [globalSearchKeys]="dataTable.globalSearchKeys" (rowClick)="onRow($event)">
+      </app-tabla-dinamica>
+
+    </div>
+
+
+    <div class="border-t border-slate-100 px-3 py-2">
+
+      <!-- <p-paginator [first]="paginaActual * tamanoPagina" [rows]="tamanoPagina" [totalRecords]="totalElementos"
+        [rowsPerPageOptions]="[10, 20, 50, 100]" (onPageChange)="cambiarPagina($event)">
+      </p-paginator> -->
+
+    </div>
+
+  </section>
+
+  } @else {
+
+  <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+
+    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white text-slate-400 shadow-sm">
+
+      <i class="pi pi-users"></i>
+
+    </div>
+
+    <h3 class="mt-3 text-sm font-bold text-slate-800">
+      No se encontraron usuarios
+    </h3>
+
+    <p class="mt-1 text-xs text-slate-500">
+      Intenta cambiar los filtros de búsqueda.
+    </p>
+
+  </div>
+
+  }
+
+  }
+
 </div>
-}
 
-<p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false" (onHide)="reestablecerPasswordForm.reset()">
-  <div class="card">
+
+<p-dialog header="Administrar usuario" [modal]="true" [(visible)]="visible" [style]="{ width: '48rem' }" [breakpoints]="{
+        '1199px': '75vw',
+        '575px': '94vw'
+    }" [maximizable]="false" (onHide)="cerrarDialog()">
+
+  @if (usuarioSeleccionado) {
+
+  <div>
+
+    <div class="mb-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+        <div>
+
+          <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+            Usuario seleccionado
+          </p>
+
+          <h3 class="mt-1 text-base font-bold text-slate-900">
+            {{ usuarioSeleccionado.nombreCompleto }}
+          </h3>
+
+          <p class="mt-0.5 text-sm text-slate-500">
+            {{ usuarioSeleccionado.username }}
+          </p>
+
+        </div>
+
+
+        <div class="flex flex-wrap gap-2">
+
+          <span class="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-600">
+            {{ usuarioSeleccionado.scope }}
+          </span>
+
+          <span class="rounded-full px-3 py-1 text-xs font-semibold" [ngClass]="
+                                usuarioSeleccionado.activo
+                                    ? 'bg-emerald-50 text-emerald-700'
+                                    : 'bg-rose-50 text-rose-700'
+                            ">
+
+            {{
+            usuarioSeleccionado.activo
+            ? 'Activo'
+            : 'Inactivo'
+            }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
     <p-tabs value="0">
+
       <p-tablist>
-        <p-tab value="0">Inhabilitar / Habilitar usuario</p-tab>
-        <p-tab value="1">Reestablecer contraseña</p-tab>
+
+        <p-tab value="0">
+          Estado del usuario
+        </p-tab>
+
+        <p-tab value="1">
+          Restablecer contraseña
+        </p-tab>
+
       </p-tablist>
+
+
       <p-tabpanels>
+
+
         <p-tabpanel value="0">
-          @if (usuarioSeleccionado.estado == 'ACTIVO') {
-          <p-message severity="error">Si inhabilita el usuario ya no podra acceder al sistema</p-message>
-          <div class="mt-4">
-            <p-button label="Inhabilitar usuario" severity="danger" (onClick)="desactivarUsuario(false); visible=false;" />
-          </div>
-          }@else {
-          <p-message severity="info">si habilita el usuario podra acceder de nuevo al sistema</p-message>
-          <div class="mt-4">
-            <p-button label="Habilitar usuario" severity="info" (onClick)="desactivarUsuario(true); visible=false;" />
-          </div>
-          }
 
-        </p-tabpanel>
-        <p-tabpanel value="1">
-          <p-message severity="secondary">
-            <small>
-              La nueva contraseña debe contener al menos una letra mayúscula, un número y un carácter especial, además
-              de
-              tener una longitud mínima de 8 caracteres.
-            </small>
-          </p-message>
+          @if (
+          usuarioSeleccionado.activo
+          ) {
 
-          <form action="" class="w-full px-2 mt-4" [formGroup]="reestablecerPasswordForm">
-            <div class="flex w-full gap-4">
+          <div class="rounded-2xl border border-rose-100 bg-rose-50/70 p-5">
 
-              <!-- Contraseña -->
-              <div class="flex-1">
-                <div class="relative">
-                  <!-- Input -->
-                  <div>
-                    <label for="password" class="text-sm text-gray-500 font-medium px-2">Contraseña</label>
-                    <input [type]="showPass ? 'text' : 'password'" id="password" [invalid]="isInvalid(reestablecerPasswordForm,'password')" pInputText formControlName="password"
-                      placeholder=" " class="peer w-full rounded-lg  px-3 py-2
-               text-sm text-slate-900
-               focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400" />
-                  </div>
+            <div class="flex gap-3">
 
-                  <!-- Botón ojito -->
-                  <button type="button" (click)="showPass = !showPass"
-                    class="absolute right-3 top-2/3 -translate-y-1/2 text-slate-500 hover:text-slate-700">
-                    @if (!showConfirm) {
-                    <i class="pi pi-eye"></i>
-                    }@else {
-                    <i class="pi pi-eye-slash"></i>
-                    }
-                  </button>
-                </div>
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-rose-500">
+                <i class="pi pi-ban"></i>
               </div>
 
-              <!-- Confirmar contraseña -->
-              <div class="flex-1">
-                <div class="relative">
-                  <div>
-                    <label for="password" class="text-sm text-gray-500 font-medium px-2">Confirmar contraseña</label>
-                    <!-- Input -->
-                    <input [type]="showConfirm ? 'text' : 'password'" id="confirmPassword"
-                      [invalid]="isInvalid(reestablecerPasswordForm,'confirmPassword')" pInputText formControlName="confirmPassword" placeholder=" " class="peer w-full rounded-lg  px-3 py-2
-               text-sm text-slate-900
-               focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400" />
-                  </div>
+              <div>
 
+                <h4 class="text-sm font-bold text-rose-800">
+                  Inhabilitar usuario
+                </h4>
 
+                <p class="mt-1 text-sm leading-relaxed text-rose-600">
+                  El usuario dejará de tener acceso al sistema hasta que vuelva a ser habilitado.
+                </p>
 
-                  <!-- Botón ojito -->
-                  <button type="button" (click)="showConfirm = !showConfirm"
-                    class="absolute right-3 top-2/3  -translate-y-1/2 text-slate-500 hover:text-slate-700">
-                    @if (!showConfirm) {
-                    <i class="pi pi-eye"></i>
-                    }@else {
-                    <i class="pi pi-eye-slash"></i>
-                    }
-                  </button>
-                </div>
               </div>
 
             </div>
-            <!-- Botón Iniciar Sesión -->
-            <div class="flex justify-center mt-[35px]">
-              <p-button label="Reestablecer contraseña" icon="pi pi-save"
-                class="w-full md:w-auto px-6 py-2 rounded-lg text-white hover:bg-c2/90" size="small" severity="contrast"
-                (onClick)="reestablecerPassword()" />
+
+            <div class="mt-5 flex justify-end">
+
+              <button type="button" [disabled]="actualizandoEstado" (click)="cambiarEstadoUsuario(false)"
+                class="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-60">
+
+                @if (actualizandoEstado) {
+                <i class="pi pi-spin pi-spinner"></i>
+                } @else {
+                <i class="pi pi-ban"></i>
+                }
+
+                Inhabilitar usuario
+
+              </button>
+
+            </div>
+
+          </div>
+
+          } @else {
+
+          <div class="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-5">
+
+            <div class="flex gap-3">
+
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-600">
+                <i class="pi pi-check-circle"></i>
+              </div>
+
+              <div>
+
+                <h4 class="text-sm font-bold text-emerald-800">
+                  Habilitar usuario
+                </h4>
+
+                <p class="mt-1 text-sm leading-relaxed text-emerald-600">
+                  El usuario podrá volver a iniciar sesión y acceder al sistema.
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="mt-5 flex justify-end">
+
+              <button type="button" [disabled]="actualizandoEstado" (click)="cambiarEstadoUsuario(true)"
+                class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60">
+
+                @if (actualizandoEstado) {
+                <i class="pi pi-spin pi-spinner"></i>
+                } @else {
+                <i class="pi pi-check"></i>
+                }
+
+                Habilitar usuario
+
+              </button>
+
+            </div>
+
+          </div>
+
+          }
+
+        </p-tabpanel>
+
+
+        <p-tabpanel value="1">
+
+          <div class="mb-5 rounded-xl border border-amber-100 bg-amber-50 px-4 py-3">
+
+            <div class="flex gap-2">
+
+              <i class="pi pi-info-circle mt-0.5 text-amber-600">
+              </i>
+
+              <p class="text-xs leading-relaxed text-amber-700">
+                La nueva contraseña debe contener al menos una letra mayúscula, un número y un carácter especial, además
+                de tener una longitud mínima de 8 caracteres.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <form [formGroup]="reestablecerPasswordForm" class="space-y-4">
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+              <div>
+
+                <label for="password" class="mb-1.5 block text-xs font-semibold text-slate-600">
+                  Nueva contraseña
+                </label>
+
+                <div class="relative">
+
+                  <input id="password" pInputText formControlName="password" [type]="showPass ? 'text' : 'password'"
+                    class="w-full !pr-11">
+
+                  <button type="button" (click)="showPass = !showPass"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700">
+
+                    @if (showPass) {
+                    <i class="pi pi-eye-slash"></i>
+                    } @else {
+                    <i class="pi pi-eye"></i>
+                    }
+
+                  </button>
+
+                </div>
+
+                @if (
+                isInvalid(
+                reestablecerPasswordForm,
+                'password'
+                )
+                ) {
+
+                <p class="mt-1 text-xs text-rose-500">
+                  La contraseña no cumple con los requisitos.
+                </p>
+
+                }
+
+              </div>
+
+
+              <div>
+
+                <label for="confirmPassword" class="mb-1.5 block text-xs font-semibold text-slate-600">
+                  Confirmar contraseña
+                </label>
+
+                <div class="relative">
+
+                  <input id="confirmPassword" pInputText formControlName="confirmPassword"
+                    [type]="showConfirm ? 'text' : 'password'" class="w-full !pr-11">
+
+                  <button type="button" (click)="showConfirm = !showConfirm"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700">
+
+                    @if (showConfirm) {
+                    <i class="pi pi-eye-slash"></i>
+                    } @else {
+                    <i class="pi pi-eye"></i>
+                    }
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="flex justify-end pt-2">
+
+              <button type="button" [disabled]="actualizandoPassword" (click)="reestablecerPassword()"
+                class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60">
+
+                @if (actualizandoPassword) {
+                <i class="pi pi-spin pi-spinner"></i>
+                } @else {
+                <i class="pi pi-key"></i>
+                }
+
+                Restablecer contraseña
+
+              </button>
+
             </div>
 
           </form>
 
         </p-tabpanel>
-      </p-tabpanels>
-    </p-tabs>
-  </div>
-</p-dialog>
 
+
+      </p-tabpanels>
+
+    </p-tabs>
+
+  </div>
+
+  }
+
+</p-dialog>
 
 <p-toast />
