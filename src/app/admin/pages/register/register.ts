@@ -10,16 +10,16 @@ import {
   catalogo,
   responseCatalogo,
 } from '../../../core/Interfaces/catalogo.interface';
-import { firstValueFrom } from 'rxjs';
+import { finalize, firstValueFrom, Observable, of, switchMap, throwError } from 'rxjs';
 import { CatalogoService } from '../../../core/services/Catalogos/catalogo.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { TipoUsuario } from '../../interfaces/usuarios.interface';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
 import {
   modalidadesNivel,
   modalidadesSelectedByNivel,
 } from '../../interfaces/dataNewRegister.interface';
+import { Persona, CrearPersonaRequest } from '../../interfaces/persona.interface';
 
 @Component({
   selector: 'app-register',
@@ -35,14 +35,13 @@ export class Register {
     private cd: ChangeDetectorRef,
     private usuarioService: UsuariosService,
     private messageService: MessageService,
-    private router: Router
   ) {}
-  showPassword = false;
+
   activeStep: number = 1;
-  public niveles: Nivele[] | null = [];
-  public modalidades: singleModalidad[]= [];
-  public sectores: Sectores[] |null = [];
-  public zonas: Zona[] | null= [];
+  public niveles: Nivele[] = [];
+  public modalidades: singleModalidad[] = [];
+  public sectores: Sectores[] = [];
+  public zonas: Zona[] = [];
   public centrosTrabajo: CentrosTrabajo[] = [];
   public nivelId: string = '';
   public alcancePermisoConsulta: FormGroup = {} as FormGroup;
@@ -50,36 +49,44 @@ export class Register {
   public auth: FormGroup = {} as FormGroup;
   public nivelFiltroSeleccionado: number = 0;
   public listadoTipoPersonas: TipoUsuario[] = [];
-  showPass: boolean = false;
-  showConfirm: boolean = false;
-  usuarioGuardado: boolean = false;
+  public showPass: boolean = false;
+  public showConfirm: boolean = false;
+  public usuarioGuardado: boolean = false;
+  public guardandoUsuario: boolean = false;
   public scope: string = '';
   public modalidadesPersonalizado: modalidadesNivel[] = [];
   public modalidadesSelectedByNivel: modalidadesSelectedByNivel[] = [];
-  ngOnInit() {
-    this.getNiveles();
-    this.getTipoPersonas();
+  public personaSeleccionada: Persona | null = null;
+
+  public sexoOptions = [
+    { label: 'Hombre', value: 'H' },
+    { label: 'Mujer', value: 'M' },
+  ];
+
+  ngOnInit(): void {
     this.alcancePermisoConsulta = this.fb.group({
-      nivelId: ['', []],
-      modalidadId: ['', []],
-      sectorId: ['', []],
-      zonaId: ['', []],
-      escuelaId: ['', []],
+      nivelId: [null],
+      modalidadId: [null],
+      sectorId: [null],
+      zonaId: [null],
+      escuelaId: [null],
       nivelIds: this.fb.control([]),
       modalidadIds: this.fb.control([]),
     });
+
     this.datosPersonales = this.fb.group({
-      nombre: ['', [Validators.required]],
+      nombre: ['', Validators.required],
       apellidoPaterno: ['', Validators.required],
-      apellidoMaterno: ['', Validators.required],
+      apellidoMaterno: [''],
+      sexo: ['', Validators.required],
       curp: [
         '',
         Validators.pattern(
-          /^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/
+          /^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/,
         ),
       ],
       scope: ['', Validators.required],
-      tipoPersonaId: ['', [Validators.required]],
+      tipoPersonaId: [null, Validators.required],
     });
 
     this.auth = this.fb.group({
@@ -89,11 +96,15 @@ export class Register {
         [
           Validators.required,
           Validators.pattern(
-            /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]).{8,}$/
+            /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]).{8,}$/,
           ),
         ],
       ],
-      confirmPassword: ['', [Validators.required]],
+      confirmPassword: ['', Validators.required],
+    });
+
+    this.datosPersonales.valueChanges.subscribe(() => {
+      this.personaSeleccionada = null;
     });
 
     this.breadCrumb.addItem({
@@ -103,220 +114,261 @@ export class Register {
       urlLink: '/admin/register',
       home: '',
     });
+
+    this.getNiveles();
+    this.getTipoPersonas();
   }
 
-  async getNiveles() {
+  async getNiveles(): Promise<void> {
     try {
       const resp = await this.realizarPeticionCatalogoService({});
-      this.niveles = resp.niveles;
-      this.cd.markForCheck(); // solo si usas OnPush y necesitas forzar CD
-    } catch (err) {
+      this.niveles = resp.niveles ?? [];
+      this.cd.markForCheck();
+    } catch (error) {
+      console.error('Error obteniendo niveles', error);
       this.niveles = [];
-    }
-  }
-  async getSectores() {
-    if (this.alcancePermisoConsulta.get('nivelId')?.value == 3) {
-      this.limpiarPropiedades(3);
-      this.limpiarCampos(['zonaId', 'escuelaId', 'sectorId']);
-
-      this.getZonas();
-      this.sectores = [];
-    } else {
-      try {
-        this.limpiarPropiedades(2);
-        this.limpiarCampos(['sectorId', 'zonaId', 'escuelaId']);
-        const resp = await this.realizarPeticionCatalogoService({
-          nivelId: this.alcancePermisoConsulta.get('nivelId')?.value,
-          modalidadId: this.alcancePermisoConsulta.get('modalidadId')?.value,
-        });
-        // Ordenar alfabéticamente por la propiedad 'sector'
-        // Ordenar por ID numérico (si la propiedad existe)
-        // .sort((a, b) => (a.sector || 0) - (b.sector || 0)); ordenamiento
-        this.sectores = resp.sectores
-        this.cd.markForCheck();
-      } catch (error) {
-        this.sectores = [];
-      }
-    }
-  }
-  async getModalidades() {
-    try {
-      const resp = await this.realizarPeticionCatalogoService({
-        nivelId: this.alcancePermisoConsulta.get('nivelId')?.value,
-      });
-      this.modalidades = resp.modalidades!;
       this.cd.markForCheck();
-    } catch (err) {
+    }
+  }
+
+  async getModalidades(): Promise<void> {
+    this.limpiarPropiedades(1);
+    this.limpiarCampos(['modalidadId', 'sectorId', 'zonaId', 'escuelaId']);
+
+    const nivelId = this.valorNumero(this.alcancePermisoConsulta.get('nivelId')?.value);
+    if (nivelId === undefined) return;
+
+    try {
+      const resp = await this.realizarPeticionCatalogoService({ nivelId });
+      this.modalidades = resp.modalidades ?? [];
+      this.cd.markForCheck();
+    } catch (error) {
+      console.error('Error obteniendo modalidades', error);
       this.modalidades = [];
+      this.cd.markForCheck();
     }
   }
 
-  async getsectorIdes() {
-    if (this.alcancePermisoConsulta.get('nivelId')?.value == 3) {
-      this.limpiarPropiedades(3);
-      this.limpiarCampos(['zonaId', 'escuelaId', 'sectorId']);
+  async getSectores(): Promise<void> {
+    this.limpiarPropiedades(2);
+    this.limpiarCampos(['sectorId', 'zonaId', 'escuelaId']);
 
-      this.getZonas();
+    const nivelId = this.valorNumero(this.alcancePermisoConsulta.get('nivelId')?.value);
+    const modalidadId = this.valorNumero(this.alcancePermisoConsulta.get('modalidadId')?.value);
+    if (nivelId === undefined || modalidadId === undefined) return;
+
+    if (nivelId === 3) {
       this.sectores = [];
-    } else {
-      try {
-        this.limpiarPropiedades(2);
-        this.limpiarCampos(['sectorId', 'zonaId', 'escuelaId']);
-        const resp = await this.realizarPeticionCatalogoService({
-          nivelId: this.alcancePermisoConsulta.get('nivelId')?.value,
-          modalidadId: this.alcancePermisoConsulta.get('modalidadId')?.value,
-        });
-        // Ordenar alfabéticamente por la propiedad 'sector'
-        // Ordenar por ID numérico (si la propiedad existe)
-        // ordenamiento : .sort((a, b) => (a.sector || 0) - (b.sector || 0));
-        this.sectores = resp.sectores
-        this.cd.markForCheck();
-      } catch (error) {
-        this.sectores = [];
-      }
+      this.alcancePermisoConsulta.patchValue({ sectorId: 0 });
+      await this.getZonas();
+      return;
+    }
+
+    try {
+      const resp = await this.realizarPeticionCatalogoService({ nivelId, modalidadId });
+      const sectores: Sectores[] = resp.sectores ?? [];
+      this.sectores = sectores.sort(
+        (a: Sectores, b: Sectores) => (a.numero || 0) - (b.numero || 0),
+      );
+      this.cd.markForCheck();
+    } catch (error) {
+      console.error('Error obteniendo sectores', error);
+      this.sectores = [];
+      this.cd.markForCheck();
     }
   }
 
-  async getZonas() {
+  async getsectorIdes(): Promise<void> {
+    await this.getSectores();
+  }
+
+  async getZonas(): Promise<void> {
+    this.limpiarPropiedades(3);
+    this.limpiarCampos(['zonaId', 'escuelaId']);
+
+    const nivelId = this.valorNumero(this.alcancePermisoConsulta.get('nivelId')?.value);
+    const modalidadId = this.valorNumero(this.alcancePermisoConsulta.get('modalidadId')?.value);
+    const sectorId = this.valorNumero(this.alcancePermisoConsulta.get('sectorId')?.value);
+
+    if (nivelId === undefined || modalidadId === undefined || sectorId === undefined) return;
+
+    let sector = sectorId;
+
+    if (nivelId !== 3) {
+      const sectorSeleccionado = this.sectores.find((item) => item.id === sectorId);
+      if (!sectorSeleccionado) return;
+      sector = sectorSeleccionado.id;
+    }
+
     try {
-      this.limpiarPropiedades(4);
-      const resp = await this.realizarPeticionCatalogoService({
-        nivelId: this.alcancePermisoConsulta.get('nivelId')?.value,
-        modalidadId: this.alcancePermisoConsulta.get('modalidadId')?.value,
-        sector: this.alcancePermisoConsulta.get('sectorId')?.value,
-      });
-      if (resp.zonas) {
-      this.zonas = resp.zonas.sort((a, b) => (a.numero || 0) - (b.numero || 0));
-        
-      }
+      const resp = await this.realizarPeticionCatalogoService({ nivelId, modalidadId, sector });
+      const zonas: Zona[] = resp.zonas ?? [];
+      this.zonas = zonas.sort((a: Zona, b: Zona) => (a.numero || 0) - (b.numero || 0));
       this.cd.markForCheck();
     } catch (error) {
+      console.error('Error obteniendo zonas', error);
       this.zonas = [];
+      this.cd.markForCheck();
     }
   }
 
-  async getCentrosTrabajo() {
+  async getCentrosTrabajo(): Promise<void> {
+    this.centrosTrabajo = [];
+    this.alcancePermisoConsulta.patchValue({ escuelaId: null });
+
+    const nivelId = this.valorNumero(this.alcancePermisoConsulta.get('nivelId')?.value);
+    const modalidadId = this.valorNumero(this.alcancePermisoConsulta.get('modalidadId')?.value);
+    const sectorId = this.valorNumero(this.alcancePermisoConsulta.get('sectorId')?.value);
+    const zonaId = this.valorNumero(this.alcancePermisoConsulta.get('zonaId')?.value);
+
+    if (
+      nivelId === undefined ||
+      modalidadId === undefined ||
+      sectorId === undefined ||
+      zonaId === undefined
+    )
+      return;
+
+    const zonaSeleccionada = this.zonas.find((zona) => zona.id === zonaId);
+    if (!zonaSeleccionada) return;
+
+    let sector = sectorId;
+
+    if (nivelId !== 3) {
+      const sectorSeleccionado = this.sectores.find((item) => item.id === sectorId);
+      if (!sectorSeleccionado) return;
+      sector = sectorSeleccionado.id;
+    }
+
     try {
       const resp = await this.realizarPeticionCatalogoService({
-        nivelId: this.alcancePermisoConsulta.get('nivelId')?.value,
-        modalidadId: this.alcancePermisoConsulta.get('modalidadId')?.value,
-        sector: this.alcancePermisoConsulta.get('sectorId')?.value,
-        zonaEscolar: this.alcancePermisoConsulta.get('zonaId')?.value,
+        nivelId,
+        modalidadId,
+        sector,
+        zonaEscolar: zonaSeleccionada.numero,
       });
-      this.centrosTrabajo = resp.centrosTrabajo!;
+
+      this.centrosTrabajo = resp.centrosTrabajo ?? [];
       this.cd.markForCheck();
     } catch (error) {
+      console.error('Error obteniendo centros de trabajo', error);
       this.centrosTrabajo = [];
+      this.cd.markForCheck();
     }
   }
 
-  limpiarCampos(campos: string[]) {
-    const patch: any = {};
-    campos.forEach((campo) => {
-      patch[campo] = '';
-    });
+  limpiarCampos(campos: string[]): void {
+    const patch: Record<string, null> = {};
+    campos.forEach((campo) => (patch[campo] = null));
     this.alcancePermisoConsulta.patchValue(patch);
     this.cd.markForCheck();
   }
 
-  limpiarPropiedades(nivelLimpieza: number) {
+  limpiarPropiedades(nivelLimpieza: number): void {
     switch (nivelLimpieza) {
       case 1:
         this.modalidades = [];
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
         break;
       case 2:
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
         break;
       case 3:
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
         break;
       case 4:
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
-        break;
-
-      default:
         break;
     }
+
+    this.cd.markForCheck();
   }
+
   async realizarPeticionCatalogoService(params: catalogo): Promise<responseCatalogo> {
-    try {
-      const resp = await firstValueFrom(this.cataloService.getCatalogo(params));
-      return resp;
-    } catch (error) {
-      throw error; // o devuelve un objeto vacío si prefieres
-    }
+    return await firstValueFrom(this.cataloService.getCatalogo(params));
   }
 
-  getTipoPersonas() {
+  getTipoPersonas(): void {
     this.usuarioService.getListadoTipoUsuarios().subscribe({
       next: (resp) => {
         this.listadoTipoPersonas = resp;
         this.cd.markForCheck();
       },
+      error: (error) => {
+        console.error('Error obteniendo tipos de usuario', error);
+        this.listadoTipoPersonas = [];
+        this.cd.markForCheck();
+      },
     });
   }
-  onSelectTipoPersona() {
+
+  onSelectTipoPersona(): void {
     const tipoPersonaId = this.datosPersonales.get('tipoPersonaId')?.value;
+    const tipoPersona = this.listadoTipoPersonas.find((tp) => tp.id == tipoPersonaId);
+    const scope = tipoPersona?.scope ?? '';
 
-    const tipoPersona = this.listadoTipoPersonas.find((tp) => tp.id === tipoPersonaId);
+    this.scope = scope;
+    this.personaSeleccionada = null;
+    this.datosPersonales.patchValue({ scope }, { emitEvent: false });
+    this.reiniciarAlcance();
+    this.limpiarValidacionesAlcance();
 
-    const scope = tipoPersona?.scope || null;
-
-    this.datosPersonales.patchValue({ scope });
-    this.scope = scope!;
-
-    if (scope) {
-      this.addOrRemoveValidations(scope);
-    }
+    if (scope) this.addOrRemoveValidations(scope);
+    this.cd.markForCheck();
   }
 
-  addOrRemoveValidations(scope: string) {
+  private reiniciarAlcance(): void {
+    this.alcancePermisoConsulta.patchValue({
+      nivelId: null,
+      modalidadId: null,
+      sectorId: null,
+      zonaId: null,
+      escuelaId: null,
+      nivelIds: [],
+      modalidadIds: [],
+    });
+
+    this.modalidades = [];
+    this.sectores = [];
+    this.zonas = [];
+    this.centrosTrabajo = [];
+    this.modalidadesPersonalizado = [];
+    this.modalidadesSelectedByNivel = [];
+  }
+
+  addOrRemoveValidations(scope: string): void {
+    this.limpiarValidacionesAlcance();
+
     const rules: Record<string, string[]> = {
-      ESCUELA: ['escuelaId', 'zonaId', 'modalidadId', 'nivelId'],
-      ZONA: ['zonaId', 'modalidadId', 'nivelId'],
+      ESCUELA: ['escuelaId', 'zonaId', 'sectorId', 'modalidadId', 'nivelId'],
+      ZONA: ['zonaId', 'sectorId', 'modalidadId', 'nivelId'],
       SECTOR: ['sectorId', 'modalidadId', 'nivelId'],
       MODALIDAD: ['modalidadId', 'nivelId'],
       NIVEL: ['nivelId'],
       EJECUTIVO: [],
-      PERSONALIZADO: ['nivelIds', 'modalidadesIds'],
+      ADMIN: [],
+      PERSONALIZADO: ['nivelIds', 'modalidadIds'],
     };
 
-    const fields = rules[scope] || [];
+    const fields = rules[scope] ?? [];
 
     fields.forEach((field) => {
-      this.alcancePermisoConsulta.get(field)?.addValidators(Validators.required);
-      this.alcancePermisoConsulta.get(field)?.updateValueAndValidity();
+      const control = this.alcancePermisoConsulta.get(field);
+      control?.setValidators(Validators.required);
+      control?.updateValueAndValidity();
     });
   }
 
-  clearValuesByScope(scope: string) {
-    const clearRules: Record<string, string[]> = {
-      ZONA: ['escuelaId'],
-      SECTOR: ['escuelaId', 'zonaId'],
-      MODALIDAD: ['escuelaId', 'zonaId', 'sectorId'],
-      NIVEL: ['escuelaId', 'zonaId', 'modalidadId', 'sectorId'],
-      EJECUTIVO: ['escuelaId', 'zonaId', 'modalidadId', 'nivelId', 'sectorId'],
-      PERSONALIZADO: ['escuelaId', 'zonaId', 'modalidadId', 'nivelId', 'sectorId'],
-    };
-
-    const fieldsToClear = clearRules[scope] || [];
-
-    fieldsToClear.forEach((field) => {
-      const control = this.alcancePermisoConsulta.get(field);
-      if (control) {
-        control.setValue(null);
-        control.updateValueAndValidity();
-      }
+  limpiarValidacionesAlcance(): void {
+    Object.keys(this.alcancePermisoConsulta.controls).forEach((key) => {
+      const control = this.alcancePermisoConsulta.get(key);
+      control?.clearValidators();
+      control?.updateValueAndValidity();
     });
   }
 
@@ -325,113 +377,308 @@ export class Register {
     return !!(control && control.invalid && (control.touched || control.dirty));
   }
 
-  guardarUsuario() {
-    // this.usuarioGuardado=true
-    // this.activeStep=4
-    if (this.auth.valid && this.datosPersonales.valid && this.alcancePermisoConsulta.valid) {
-      let scope = this.datosPersonales.get('scope')?.value;
-      this.clearValuesByScope(scope);
+  private construirPayloadPersona(): CrearPersonaRequest {
+    const form = this.datosPersonales.getRawValue();
 
-      // validamos que el scope sea personalizado y haya al menos una modalidad seleccionada
-      if (
-        scope == 'PERSONALIZADO' &&
-        this.alcancePermisoConsulta.get('modalidadIds')?.value.length == 0
-      ) {
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Nota',
-          detail:
-            'Para el tipo de usuario PERSONALIZADO debe de seleccionar al menos una modalidad',
-          life: 3000,
-        });
-        return;
-      }
+    return {
+      nombre: this.normalizarTexto(form.nombre),
+      apellidoPaterno: this.normalizarTexto(form.apellidoPaterno),
+      apellidoMaterno: this.normalizarTexto(form.apellidoMaterno),
+      sexo: form.sexo,
+      curp: form.curp?.trim() ? this.normalizarTexto(form.curp) : null,
+      tipoPersonaId: Number(form.tipoPersonaId),
+    };
+  }
 
-      if (this.auth.get('password')?.value != this.auth.get('confirmPassword')?.value) {
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Nota',
-          detail: 'Verifique que las contraseñas sean identicas',
-          life: 3000,
-        });
-      } else {
-        let dataCompleta = {
-          ...this.auth.value,
-          ...this.datosPersonales.value,
-          ...this.alcancePermisoConsulta.value,
-        };
-        dataCompleta.nivelId = [dataCompleta.nivelId];
-        dataCompleta.modalidadId = [dataCompleta.modalidadId];
-        dataCompleta.modalidadIds =
-          dataCompleta.modalidadIds.length > 0
-            ? dataCompleta.modalidadIds
-            : dataCompleta.modalidadId;
-        dataCompleta.nivelIds =
-          dataCompleta.nivelIds.length > 0 ? dataCompleta.nivelIds : dataCompleta.nivelId;
-        delete dataCompleta.confirmPassword;
+  private obtenerOCrearPersona(): Observable<Persona> {
+    if (this.personaSeleccionada) return of(this.personaSeleccionada);
 
-        this.usuarioService.saveUsuario(dataCompleta).subscribe({
-          next: (resp) => {
-            this.usuarioGuardado = true;
-            this.activeStep = 4;
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Registro exitoso',
-              detail: 'Usuario registrado correctamente',
-              life: 3000,
-            });
-            setTimeout(() => {
-              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.router.navigate(['/admin/register']);
-              });
-            }, 1500);
+    const payload = this.construirPayloadPersona();
+
+    if (!payload.curp) return this.usuarioService.crearPersona(payload);
+
+    return this.usuarioService.buscarPersonaPorCurp(payload.curp).pipe(
+      switchMap((resp) => {
+        const personaExistente = (resp.content ?? []).find(
+          (persona: Persona) => persona.curp?.toUpperCase() === payload.curp?.toUpperCase(),
+        );
+
+        if (!personaExistente) return this.usuarioService.crearPersona(payload);
+
+        if (personaExistente.tipoPersonaId !== payload.tipoPersonaId) {
+          return throwError(
+            () =>
+              new Error(
+                `La persona con CURP ${payload.curp} ya existe con el tipo de persona ${personaExistente.tipoPersona}.`,
+              ),
+          );
+        }
+
+        return of(personaExistente);
+      }),
+    );
+  }
+
+  private construirAlcances(): any[] {
+    const form = this.alcancePermisoConsulta.getRawValue();
+
+    switch (this.scope) {
+      case 'NIVEL':
+        return [
+          {
+            scope: 'NIVEL',
+            accesoGlobal: false,
+            nivelId: Number(form.nivelId),
           },
-          error: (err) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: err.error.detail,
-              life: 3000,
-            });
+        ];
+
+      case 'MODALIDAD':
+        return [
+          {
+            scope: 'MODALIDAD',
+            accesoGlobal: false,
+            modalidadId: Number(form.modalidadId),
           },
+        ];
+
+      case 'SECTOR':
+        return [
+          {
+            scope: 'SECTOR',
+            accesoGlobal: false,
+            sectorId: Number(form.sectorId),
+          },
+        ];
+
+      case 'ZONA':
+        return [
+          {
+            scope: 'ZONA',
+            accesoGlobal: false,
+            zonaId: Number(form.zonaId),
+          },
+        ];
+
+      case 'ESCUELA':
+        return [
+          {
+            scope: 'ESCUELA',
+            accesoGlobal: false,
+            escuelaId: Number(form.escuelaId),
+          },
+        ];
+
+      case 'PERSONALIZADO':
+        return this.construirAlcancesPersonalizados();
+
+      case 'EJECUTIVO':
+      case 'ADMIN':
+        return [
+          {
+            scope: this.scope,
+            accesoGlobal: true,
+          },
+        ];
+
+      default:
+        return [];
+    }
+  }
+
+  private construirAlcancesPersonalizados(): any[] {
+    const alcances: any[] = [];
+
+    this.modalidadesSelectedByNivel.forEach((registro) => {
+      registro.modalidadesSelected.forEach((modalidadId) => {
+        alcances.push({
+          scope: 'PERSONALIZADO',
+          accesoGlobal: false,
+          nivelId: registro.idNivel,
+          modalidadId,
         });
-      }
-    } else {
+      });
+    });
+
+    return alcances;
+  }
+
+  guardarUsuario(): void {
+    if (this.guardandoUsuario) return;
+
+    if (!this.auth.valid || !this.datosPersonales.valid || !this.alcancePermisoConsulta.valid) {
       this.auth.markAllAsTouched();
       this.datosPersonales.markAllAsTouched();
       this.alcancePermisoConsulta.markAllAsTouched();
+
       this.messageService.add({
         severity: 'warn',
-        summary: 'Nota',
+        summary: 'Información incompleta',
         detail:
-          'Verifique que la información sea correcta y que no falten campos obligatorios por llenar. ',
+          'Verifique que la información sea correcta y que no falten campos obligatorios por llenar.',
         life: 3000,
       });
+      return;
     }
-  }
-  limpiarValidacionesAlcance() {
-    Object.keys(this.alcancePermisoConsulta.controls).forEach((key) => {
-      const control = this.alcancePermisoConsulta.get(key);
-      control?.clearValidators();
-      control?.updateValueAndValidity();
-    });
-  }
 
-  async getListadoModCompletas(nivelId: number) {
-    try {
-      const resp = await this.realizarPeticionCatalogoService({
-        nivelId,
+    if (this.auth.get('password')?.value !== this.auth.get('confirmPassword')?.value) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Contraseñas',
+        detail: 'Verifique que las contraseñas sean idénticas.',
+        life: 3000,
       });
-      this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: resp.modalidades! };
+      return;
+    }
+
+    const alcances = this.construirAlcances();
+
+    if (!alcances.length) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Alcance requerido',
+        detail: 'Debe definir al menos un alcance para el usuario.',
+        life: 3000,
+      });
+      return;
+    }
+
+    this.guardandoUsuario = true;
+
+    this.obtenerOCrearPersona()
+      .pipe(
+        switchMap((persona) => {
+          this.personaSeleccionada = persona;
+
+          const payload = {
+            username: this.auth.get('username')?.value?.trim(),
+            password: this.auth.get('password')?.value,
+            personaId: persona.id,
+            tipoPersonaId: Number(this.datosPersonales.get('tipoPersonaId')?.value),
+            alcances,
+          };
+
+          console.log('Payload nuevo usuario:', payload);
+
+          return this.usuarioService.saveUsuario(payload);
+        }),
+        finalize(() => {
+          this.guardandoUsuario = false;
+          this.cd.markForCheck();
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.usuarioGuardado = true;
+          this.activeStep = 4;
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Registro exitoso',
+            detail: 'Usuario registrado correctamente.',
+            life: 3000,
+          });
+
+          this.resetFormularios();
+          this.cd.markForCheck();
+        },
+        error: (err) => {
+          console.error('Error registrando usuario', err);
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              err?.error?.detail ??
+              err?.error?.message ??
+              err?.message ??
+              'No fue posible registrar el usuario.',
+            life: 4000,
+          });
+
+          this.cd.markForCheck();
+        },
+      });
+  }
+  private resetFormularios(): void {
+    this.datosPersonales.reset({
+      nombre: '',
+      apellidoPaterno: '',
+      apellidoMaterno: '',
+      sexo: '',
+      curp: '',
+      scope: '',
+      tipoPersonaId: null,
+    });
+
+    this.alcancePermisoConsulta.reset({
+      nivelId: null,
+      modalidadId: null,
+      sectorId: null,
+      zonaId: null,
+      escuelaId: null,
+      nivelIds: [],
+      modalidadIds: [],
+    });
+
+    this.auth.reset({
+      username: '',
+      password: '',
+      confirmPassword: '',
+    });
+
+    this.scope = '';
+    this.personaSeleccionada = null;
+    this.modalidades = [];
+    this.sectores = [];
+    this.zonas = [];
+    this.centrosTrabajo = [];
+    this.modalidadesPersonalizado = [];
+    this.modalidadesSelectedByNivel = [];
+    this.showPass = false;
+    this.showConfirm = false;
+
+    this.datosPersonales.markAsPristine();
+    this.datosPersonales.markAsUntouched();
+    this.alcancePermisoConsulta.markAsPristine();
+    this.alcancePermisoConsulta.markAsUntouched();
+    this.auth.markAsPristine();
+    this.auth.markAsUntouched();
+
+    this.cd.markForCheck();
+  }
+  async getListadoModCompletas(nivelId: number): Promise<void> {
+    const nivelesSeleccionados: number[] = this.alcancePermisoConsulta.get('nivelIds')?.value ?? [];
+
+    if (!nivelesSeleccionados.includes(nivelId)) {
+      this.modalidadesSelectedByNivel = this.modalidadesSelectedByNivel.filter(
+        (item) => item.idNivel !== nivelId,
+      );
+
+      if (this.modalidadesPersonalizado[nivelId]) {
+        this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: [] };
+      }
+
+      this.obtenerNivelesYModalidadesUnicos();
       this.cd.markForCheck();
-    } catch (err) {
-      console.error(err);
-      this.modalidadesPersonalizado = [];
+      return;
+    }
+
+    try {
+      const resp = await this.realizarPeticionCatalogoService({ nivelId });
+      this.modalidadesPersonalizado[nivelId] = {
+        idNivel: nivelId,
+        modalidades: resp.modalidades ?? [],
+      };
+      this.cd.markForCheck();
+    } catch (error) {
+      console.error('Error obteniendo modalidades', error);
+      this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: [] };
+      this.cd.markForCheck();
     }
   }
 
   private getRegistroNivel(idNivel: number): modalidadesSelectedByNivel {
-    let registro = this.modalidadesSelectedByNivel.find((x) => x.idNivel === idNivel);
+    let registro = this.modalidadesSelectedByNivel.find((item) => item.idNivel === idNivel);
 
     if (!registro) {
       registro = { idNivel, modalidadesSelected: [] };
@@ -440,7 +687,8 @@ export class Register {
 
     return registro;
   }
-  public agregarModalidad(idNivel: number, idModalidad: number) {
+
+  public agregarModalidad(idNivel: number, idModalidad: number): void {
     const registro = this.getRegistroNivel(idNivel);
 
     if (!registro.modalidadesSelected.includes(idModalidad)) {
@@ -448,41 +696,47 @@ export class Register {
     }
   }
 
-  public eliminarModalidad(idNivel: number, idModalidad: number) {
-    const registro = this.modalidadesSelectedByNivel.find((x) => x.idNivel === idNivel);
+  public eliminarModalidad(idNivel: number, idModalidad: number): void {
+    const registro = this.modalidadesSelectedByNivel.find((item) => item.idNivel === idNivel);
     if (!registro) return;
 
-    registro.modalidadesSelected = registro.modalidadesSelected.filter((m) => m !== idModalidad);
+    registro.modalidadesSelected = registro.modalidadesSelected.filter(
+      (modalidad) => modalidad !== idModalidad,
+    );
 
-    // Si el nivel ya no tiene modalidades, eliminar el registro completo
     if (registro.modalidadesSelected.length === 0) {
       this.modalidadesSelectedByNivel = this.modalidadesSelectedByNivel.filter(
-        (x) => x.idNivel !== idNivel
+        (item) => item.idNivel !== idNivel,
       );
     }
   }
-  public onChangeModalidad(idNivel: number, idModalidad: number, checked: boolean) {
-    if (checked) {
-      this.agregarModalidad(idNivel, idModalidad);
-    } else {
-      this.eliminarModalidad(idNivel, idModalidad);
-    }
 
-    this.obtenerNivelesYModalidadesUnicos(); // si la quieres seguir llamando aquí
+  public onChangeModalidad(idNivel: number, idModalidad: number, checked: boolean): void {
+    if (checked) this.agregarModalidad(idNivel, idModalidad);
+    else this.eliminarModalidad(idNivel, idModalidad);
+
+    this.obtenerNivelesYModalidadesUnicos();
   }
-  public obtenerNivelesYModalidadesUnicos() {
-    // 1. Niveles únicos
-    const nivelesUnicos = Array.from(
-      new Set(this.modalidadesSelectedByNivel.map((x) => x.idNivel))
-    );
-    // 2. Modalidades únicas de todos los niveles
+
+  public obtenerNivelesYModalidadesUnicos(): void {
     const modalidadesUnicas = Array.from(
-      new Set(this.modalidadesSelectedByNivel.flatMap((x) => x.modalidadesSelected))
+      new Set(this.modalidadesSelectedByNivel.flatMap((item) => item.modalidadesSelected)),
     );
     this.alcancePermisoConsulta.patchValue({ modalidadIds: modalidadesUnicas });
   }
+
   public estaSeleccionada(idNivel: number, idModalidad: number): boolean {
-    const registro = this.modalidadesSelectedByNivel.find((r) => r.idNivel === idNivel);
+    const registro = this.modalidadesSelectedByNivel.find((item) => item.idNivel === idNivel);
     return !!registro && registro.modalidadesSelected.includes(idModalidad);
+  }
+
+  private valorNumero(valor: any): number | undefined {
+    if (valor === null || valor === undefined || valor === '') return undefined;
+    const numero = Number(valor);
+    return Number.isNaN(numero) ? undefined : numero;
+  }
+
+  private normalizarTexto(valor: string): string {
+    return (valor ?? '').trim().toUpperCase();
   }
 }

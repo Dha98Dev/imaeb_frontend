@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Enviroments } from '../../enviroments/env';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { CambiarEstadoUsuarioRequest, CambiarPasswordUsuarioRequest, TipoUsuario, UsuariosAdminFiltros, UsuariosAdminResponse } from '../interfaces/usuarios.interface';
+import {
+  CambiarEstadoUsuarioRequest,
+  CambiarPasswordUsuarioRequest,
+  TipoUsuario,
+  UsuariosAdminFiltros,
+  UsuariosAdminResponse,
+} from '../interfaces/usuarios.interface';
 import { Observable } from 'rxjs';
+import { PersonaPage, Persona, CrearPersonaRequest } from '../interfaces/persona.interface';
 
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {
   constructor(private http: HttpClient) {}
   private url: string = Enviroments.UrlServiceBackend;
-  private urlPhp: string = 'http://localhost/imaeb/getListadoUsuarios.php';
-
   getListadoTipoUsuarios(): Observable<TipoUsuario[]> {
     return this.http.get<TipoUsuario[]>(this.url + 'api/tipos-personas', {});
   }
@@ -78,5 +83,23 @@ export class UsuariosService {
     };
 
     return this.http.patch<void>(`${this.url}admin/usuarios/${usuarioId}/estado`, body);
+  }
+
+  buscarPersonaPorCurp(curp: string): Observable<PersonaPage> {
+    const params = new HttpParams()
+      .set('curp', curp.trim().toUpperCase())
+      .set('activo', true)
+      .set('page', 0)
+      .set('size', 20);
+
+    return this.http.get<PersonaPage>(`${this.url}api/personas`, { params });
+  }
+
+  getPersona(id: number): Observable<Persona> {
+    return this.http.get<Persona>(`${this.url}api/personas/${id}`);
+  }
+
+  crearPersona(payload: CrearPersonaRequest): Observable<Persona> {
+    return this.http.post<Persona>(`${this.url}api/personas`, payload);
   }
 }

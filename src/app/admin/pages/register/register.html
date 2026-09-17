@@ -1,29 +1,29 @@
-<div class=" flex justify-center mx-2">
+<div class="mx-2 flex justify-center">
     <p-stepper [(value)]="activeStep" class="basis-[40rem]">
         <p-step-list>
-            <p-step [value]="1" class="flex flex-row flex-auto gap-2">
+            <p-step [value]="1" class="flex flex-auto flex-row gap-2">
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button class="bg-transparent border-0 inline-flex flex-col gap-2"
-                        (click)="activateCallback(); usuarioGuardado=false;">
-                        <span class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center" [ngClass]="{
-                                'bg-[var(--principal-cafe)] text-white': value <= activeStep,
-                                'border-surface': value > activeStep
-                            }">
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                        (click)="activateCallback(); usuarioGuardado=false">
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
+                            'bg-[var(--principal-cafe)] text-white': value <= activeStep,
+                            'border-surface': value > activeStep
+                        }">
                             <i class="pi pi-user"></i>
                         </span>
                     </button>
                 </ng-template>
             </p-step>
 
-            @if (scope !='EJECUTIVO') {
-            <p-step [value]="2" class="flex flex-row flex-auto gap-2">
+            @if (['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO'].includes(scope)) {
+            <p-step [value]="2" class="flex flex-auto flex-row gap-2">
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button class="bg-transparent border-0 inline-flex flex-col gap-2"
-                        (click)="activateCallback(); usuarioGuardado=false;">
-                        <span class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center" [ngClass]="{
-                                'bg-[var(--principal-cafe)] text-white': value <= activeStep,
-                                'border-surface': value > activeStep
-                            }">
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                        (click)="activateCallback(); usuarioGuardado=false">
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
+                            'bg-[var(--principal-cafe)] text-white': value <= activeStep,
+                            'border-surface': value > activeStep
+                        }">
                             <i class="pi pi-shield"></i>
                         </span>
                     </button>
@@ -31,28 +31,29 @@
             </p-step>
             }
 
-            <p-step [value]="3" class="flex flex-row flex-auto gap-2">
+            <p-step [value]="3" class="flex flex-auto flex-row gap-2">
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button class="bg-transparent border-0 inline-flex flex-col gap-2"
-                        (click)="activateCallback(); usuarioGuardado=false;">
-                        <span class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center" [ngClass]="{
-                                'bg-[var(--principal-cafe)] text-white': value <= activeStep,
-                                'border-surface': value > activeStep
-                            }">
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                        (click)="activateCallback(); usuarioGuardado=false">
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
+                            'bg-[var(--principal-cafe)] text-white': value <= activeStep,
+                            'border-surface': value > activeStep
+                        }">
                             <i class="pi pi-id-card"></i>
                         </span>
                     </button>
                 </ng-template>
             </p-step>
+
             @if (usuarioGuardado) {
-            <p-step [value]="4" class="flex flex-row flex-auto gap-2">
+            <p-step [value]="4" class="flex flex-auto flex-row gap-2">
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button class="bg-transparent border-0 inline-flex flex-col gap-2"
-                        (click)="activateCallback(); usuarioGuardado=false;">
-                        <span class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center" [ngClass]="{
-                                'bg-[var(--green)] text-white': value <= activeStep,
-                                'border-surface': value > activeStep
-                            }">
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                        (click)="activateCallback()">
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
+                            'bg-emerald-500 text-white': value <= activeStep,
+                            'border-surface': value > activeStep
+                        }">
                             <i class="pi pi-check"></i>
                         </span>
                     </button>
@@ -64,418 +65,348 @@
         <p-step-panels>
             <p-step-panel [value]="1">
                 <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 50vh; max-width: 40rem">
-                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Datos personales</div>
-                        <!-- cuerpo del form de datos de la persona -->
-                        <form action="" [formGroup]="datosPersonales">
+                    <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col gap-2">
+                        <div class="mb-5 mt-4 text-center">
+                            <h2 class="text-xl font-semibold text-slate-800">Datos personales</h2>
+                            <p class="mt-1 text-sm text-slate-400">Información de la persona asociada a la cuenta</p>
+                        </div>
+
+                        <form [formGroup]="datosPersonales" class="space-y-7">
                             <p-floatlabel>
-                                <input pInputText id="nombre" #nombre (input)="nombre.value=nombre.value.toUpperCase()"
-                                    class="w-full" autocomplete="off" formControlName="nombre"
-                                    [invalid]="isInvalid(datosPersonales,'nombre' )" />
-                                <label for="nombre">Nombre (s)</label>
+                                <input pInputText id="nombre" #nombre class="w-full" autocomplete="off"
+                                    formControlName="nombre" [invalid]="isInvalid(datosPersonales,'nombre')"
+                                    (input)="nombre.value=nombre.value.toUpperCase()" />
+                                <label for="nombre">Nombre(s)</label>
                             </p-floatlabel>
-                            <div class="flex gap-2 mt-[30px]">
+
+                            <div class="flex flex-col gap-7 sm:flex-row sm:gap-3">
                                 <div class="flex-1">
                                     <p-floatlabel>
-                                        <input pInputText id="apellidoPaterno" class="w-full" autocomplete="off"
+                                        <input pInputText id="apellidoPaterno" #ap1 class="w-full" autocomplete="off"
                                             formControlName="apellidoPaterno"
-                                            [invalid]="isInvalid(datosPersonales,'apellidoPaterno' )" #ap1
+                                            [invalid]="isInvalid(datosPersonales,'apellidoPaterno')"
                                             (input)="ap1.value=ap1.value.toUpperCase()" />
                                         <label for="apellidoPaterno">Apellido paterno</label>
                                     </p-floatlabel>
                                 </div>
+
                                 <div class="flex-1">
                                     <p-floatlabel>
-                                        <input pInputText id="apellidoMaterno" class="w-full" autocomplete="off"
+                                        <input pInputText id="apellidoMaterno" #ap2 class="w-full" autocomplete="off"
                                             formControlName="apellidoMaterno"
-                                            [invalid]="isInvalid(datosPersonales,'apellidoMaterno')" #ap2
+                                            [invalid]="isInvalid(datosPersonales,'apellidoMaterno')"
                                             (input)="ap2.value=ap2.value.toUpperCase()" />
                                         <label for="apellidoMaterno">Apellido materno</label>
                                     </p-floatlabel>
                                 </div>
                             </div>
-                            <div class="mt-[30px]">
-                                <p-floatlabel>
-                                    <input pInputText id="value1" class="w-full" autocomplete="off"
-                                        formControlName="curp" [invalid]="isInvalid(datosPersonales,'curp' )" #curp
-                                        (input)="datosPersonales.patchValue({curp: curp.value.toLocaleUpperCase()})" />
-                                    <label for="value1">Curp (opcional)</label>
-                                </p-floatlabel>
+
+                            <p-floatlabel>
+                                <input pInputText id="curp" #curp class="w-full" autocomplete="off"
+                                    formControlName="curp" [invalid]="isInvalid(datosPersonales,'curp')"
+                                    (input)="datosPersonales.patchValue({curp: curp.value.toUpperCase()})" />
+                                <label for="curp">CURP (opcional)</label>
+                            </p-floatlabel>
+
+                            <div class="flex flex-col gap-7 sm:flex-row sm:gap-3">
+                                <div class="flex-1">
+                                    <p-floatlabel>
+                                        <p-select inputId="sexo" [options]="sexoOptions" optionLabel="label"
+                                            optionValue="value" class="w-full" formControlName="sexo"
+                                            [invalid]="isInvalid(datosPersonales,'sexo')" />
+                                        <label for="sexo">Sexo</label>
+                                    </p-floatlabel>
+                                </div>
+
+                                <div class="flex-1">
+                                    <p-floatlabel>
+                                        <p-select inputId="tipoPersona" [options]="listadoTipoPersonas"
+                                            optionLabel="descripcion" optionValue="id" class="w-full"
+                                            formControlName="tipoPersonaId"
+                                            [invalid]="isInvalid(datosPersonales,'tipoPersonaId')"
+                                            (onChange)="onSelectTipoPersona()" />
+                                        <label for="tipoPersona">Tipo de usuario</label>
+                                    </p-floatlabel>
+                                </div>
                             </div>
-
-                            <div class="mt-[30px] flex gap-2">
-                                <!-- <p-select optionLabel="label" optionValue="value" placeholder="Sexo"
-                                    [options]="cat_sexo" class="w-full flex-1" formControlName="sexo" /> -->
-
-                                <p-select optionLabel="descripcion" optionValue="id" placeholder="Tipo usuario"
-                                    class="w-full flex-1" formControlName="tipoPersonaId"
-                                    [invalid]="isInvalid(datosPersonales,'tipoPersonaId' )"
-                                    [options]="listadoTipoPersonas" (onChange)="onSelectTipoPersona()" />
-
-                            </div>
-
-
                         </form>
-
-
                     </div>
-                    <div class="flex pt-6 justify-end ">
-                        @if(scope != 'EJECUTIVO'){
-                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" label=""
+
+                    <div class="flex justify-end pt-6">
+                        <p-button
+                            (onClick)="['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO'].includes(scope) ? activateCallback(2) : activateCallback(3); usuarioGuardado=false"
                             icon="pi pi-arrow-right" iconPos="right" />
-                        }@else {
-                        <p-button (onClick)="activateCallback(3); usuarioGuardado=false" label=""
-                            icon="pi pi-arrow-right" iconPos="right" />
-                        }
                     </div>
                 </ng-template>
             </p-step-panel>
-
-
-
-
-
-
-
 
             @if (['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL'].includes(scope)) {
             <p-step-panel [value]="2">
                 <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 50vh; max-width: 40rem">
-                        <div class="text-center mt-4 mb-2 text-xl font-semibold">Alcance de consulta de usuario</div>
+                    <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col gap-2">
+                        <div class="mb-2 mt-4 text-center">
+                            <h2 class="text-xl font-semibold text-slate-800">Alcance de consulta</h2>
+                            <p class="mt-1 text-sm text-slate-400">Define la información que podrá consultar el usuario
+                            </p>
+                        </div>
+
                         <p-message severity="secondary">
                             <div class="flex items-center gap-3">
                                 <i class="pi pi-lightbulb"></i>
-                                <div class="mensaje">
-                                    <b class="font-semibold text-sm">Nota:</b>
-                                    <small class="!text-xs">
-                                        El alcance de consulta que se otorgará al usuario será determinado con base en
-                                        los datos
-                                        proporcionados en el formulario.
-                                    </small>
+                                <div>
+                                    <b class="text-sm font-semibold">Nota:</b>
+                                    <small class="!text-xs">El alcance será determinado con base en los datos
+                                        seleccionados.</small>
                                 </div>
                             </div>
                         </p-message>
 
-                        <form class="flex gap-2 flex-col w-100 p-3  rounded" [formGroup]="alcancePermisoConsulta">
-                            <!-- Usuario -->
-                            <div class="first-inputs flex-wrap  mb-4 mt-2 flex align-items-center gap-2">
-                                @if (niveles) {
-                                <p-floatlabel class="mt-3 w-100 w-md-50 select-nivel ">
-                                    <p-select inputId="over_label" [options]="niveles" optionValue="id"
-                                        optionLabel="descripcion" class="w-100 " (onChange)="getModalidades()"
-                                        [invalid]="isInvalid(alcancePermisoConsulta, 'nivelId')"
-                                        formControlName="nivelId" />
-                                    <label for="over_label" class="">Seleccione el nivel</label>
-                                </p-floatlabel>
-                                }
+                        <form class="mt-4 flex w-full flex-col gap-7 rounded-xl border border-slate-100 bg-white p-4"
+                            [formGroup]="alcancePermisoConsulta">
+                            <p-floatlabel class="w-full">
+                                <p-select inputId="nivel" [options]="niveles" optionValue="id" optionLabel="descripcion"
+                                    class="w-full" formControlName="nivelId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'nivelId')"
+                                    (onChange)="getModalidades()" />
+                                <label for="nivel">Seleccione el nivel</label>
+                            </p-floatlabel>
 
-                                @if (alcancePermisoConsulta.get('nivelId')?.value) {
-                                <div
-                                    class="mt-[30px] item-input d-flex align-items-center justify-content-center gap-2 w-100 w-md-50 ">
-                                    <p-floatlabel class="flex-grow-1 w-100 ">
-                                        <p-select inputId="over_label" [options]="modalidades" optionValue="id"
-                                            optionLabel="descripcion" class="w-100 " (onChange)="getSectores()"
-                                            [invalid]="isInvalid(alcancePermisoConsulta, 'modalidadId')"
-                                            formControlName="modalidadId" filter="true" filterBy="modalidad" />
-                                        <label for="over_label" class="">Seleccione la modalidad</label>
-                                    </p-floatlabel>
+                            @if (alcancePermisoConsulta.get('nivelId')?.value !== null &&
+                            alcancePermisoConsulta.get('nivelId')?.value !== undefined) {
+                            <p-floatlabel class="w-full">
+                                <p-select inputId="modalidad" [options]="modalidades" optionValue="id"
+                                    optionLabel="descripcion" class="w-full" formControlName="modalidadId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'modalidadId')" [filter]="true"
+                                    filterBy="descripcion" (onChange)="getSectores()" />
+                                <label for="modalidad">Seleccione la modalidad</label>
+                            </p-floatlabel>
+                            }
 
-                                </div>
-                                }
+                            @if (alcancePermisoConsulta.get('modalidadId')?.value !== null &&
+                            alcancePermisoConsulta.get('modalidadId')?.value !== undefined &&
+                            alcancePermisoConsulta.get('nivelId')?.value != 3) {
+                            <p-floatlabel class="w-full">
+                                <p-select inputId="sector" [options]="sectores" optionValue="id" optionLabel="sector"
+                                    class="w-full" formControlName="sectorId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'sectorId')" [filter]="true"
+                                    filterBy="sector" (onChange)="getZonas()" />
+                                <label for="sector">Seleccione el sector</label>
+                            </p-floatlabel>
+                            }
 
-                                <div class=" w-full  input-container">
+                            @if (
+                            alcancePermisoConsulta.get('modalidadId')?.value !== null &&
+                            alcancePermisoConsulta.get('modalidadId')?.value !== undefined &&
+                            alcancePermisoConsulta.get('sectorId')?.value !== null &&
+                            alcancePermisoConsulta.get('sectorId')?.value !== undefined
+                            ) {
+                            <p-floatlabel class="w-full">
+                                <p-select inputId="zona" [options]="zonas" optionValue="id" optionLabel="numero"
+                                    class="w-full" formControlName="zonaId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'zonaId')" [filter]="true"
+                                    filterBy="numero" (onChange)="getCentrosTrabajo()" />
+                                <label for="zona">Seleccione la zona</label>
+                            </p-floatlabel>
+                            }
 
-                                    @if (alcancePermisoConsulta.get('modalidadId')?.value &&
-                                    alcancePermisoConsulta.get('nivelId')?.value !=3) {
-                                    <div
-                                        class="item-input mt-[30px] flex flex-col md:flex-row items-center justify-center gap-2 w-full ">
-                                        @if (sectores) {
-                                        <p-floatlabel class="flex-1 w-full">
-                                            <p-select inputId="over_label" [options]="sectores" optionValue="sector"
-                                                optionLabel="sector" class="w-full " (onChange)="getZonas()"
-                                                [invalid]="isInvalid(alcancePermisoConsulta, 'sectorId')"
-                                                formControlName="sectorId" filter="true" filterBy="sector" />
-                                            <label for="over_label" class="">Seleccione el sector</label>
-                                        </p-floatlabel>
-                                        }
-
-
-                                    </div>
-                                    }
-
-                                    @if ((alcancePermisoConsulta.get('sectorId')?.value ||
-                                    (alcancePermisoConsulta.get('nivelId')?.value == 3) &&
-                                    alcancePermisoConsulta.get('modalidadId')?.value) || (zonas && zonas.length > 0)) {
-                                    <div
-                                        class="item-input mt-[30px] flex flex-col md:flex-row items-center justify-center gap-2 w-full ">
-                                        @if (zonas) {
-                                        <p-floatlabel class="flex-1 w-full">
-                                            <p-select inputId="over_label" [options]="zonas" optionValue="zonaEscolar"
-                                                optionLabel="zonaEscolar" class="w-full "
-                                                (onChange)="getCentrosTrabajo()"
-                                                [invalid]="isInvalid(alcancePermisoConsulta, 'zonaId')"
-                                                formControlName="zonaId" filter="true" filterBy="zonaEscolar" />
-                                            <label for="over_label" class="">Seleccione la zona</label>
-                                        </p-floatlabel>
-                                        }
-
-                                    </div>
-                                    }
-
-                                </div>
-                            </div>
-
-
-                            <div class="">
-
-                                @if (alcancePermisoConsulta.get('zonaId')?.value && centrosTrabajo.length > 0) {
-                                <p-floatlabel class="cct-select w-full">
-                                    <p-select inputId="over_label" [options]="centrosTrabajo" optionValue="id"
-                                        optionLabel="cct" class="w-full"
-                                        [invalid]="isInvalid(alcancePermisoConsulta, 'escuelaId')"
-                                        formControlName="escuelaId" filter="true" filterBy="cct" />
-                                    <label for="over_label">Seleccione CCT</label>
-                                </p-floatlabel>
-                                }
-
-                            </div>
+                            @if (alcancePermisoConsulta.get('zonaId')?.value !== null &&
+                            alcancePermisoConsulta.get('zonaId')?.value !== undefined && centrosTrabajo.length > 0) {
+                            <p-floatlabel class="w-full">
+                                <p-select inputId="cct" [options]="centrosTrabajo" optionValue="id" optionLabel="cct"
+                                    class="w-full" formControlName="escuelaId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'escuelaId')" [filter]="true"
+                                    filterBy="cct,nombre" />
+                                <label for="cct">Seleccione CCT</label>
+                            </p-floatlabel>
+                            }
                         </form>
-
                     </div>
-                    <div class="flex pt-6 justify-between">
-                        <p-button (onClick)="activateCallback(1)" label="" severity="secondary"
-                            icon="pi pi-arrow-left" />
-                        <p-button (onClick)="activateCallback(3)" label="" icon="pi pi-arrow-right" iconPos="right" />
+
+                    <div class="flex justify-between pt-6">
+                        <p-button (onClick)="activateCallback(1)" severity="secondary" icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(3)" icon="pi pi-arrow-right" iconPos="right" />
                     </div>
                 </ng-template>
             </p-step-panel>
             }
 
-            @if (['PERSONALIZADO'].includes(scope)) {
+            @if (scope === 'PERSONALIZADO') {
             <p-step-panel [value]="2">
                 <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 50vh; max-width: 40rem">
-                        <div class="text-center mt-4 mb-2 text-xl font-semibold">Alcance de consulta de usuario</div>
+                    <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col gap-2">
+                        <div class="mb-2 mt-4 text-center">
+                            <h2 class="text-xl font-semibold text-slate-800">Alcance personalizado</h2>
+                            <p class="mt-1 text-sm text-slate-400">Selecciona los niveles y modalidades que podrá
+                                consultar</p>
+                        </div>
+
                         <p-message severity="secondary">
                             <div class="flex items-center gap-3">
                                 <i class="pi pi-lightbulb"></i>
-                                <div class="mensaje">
-                                    <b class="font-semibold text-sm">Nota:</b>
-                                    <small class="!text-xs">
-                                        El alcance de consulta que se otorgará al usuario será determinado con base en
-                                        los datos
-                                        proporcionados en el formulario.
-                                    </small>
+                                <div>
+                                    <b class="text-sm font-semibold">Nota:</b>
+                                    <small class="!text-xs">Debe seleccionar al menos un nivel y una modalidad.</small>
                                 </div>
                             </div>
                         </p-message>
 
-                        <form class="flex gap-2 flex-col w-100 p-3  rounded" [formGroup]="alcancePermisoConsulta">
-                            <!-- seleccion  de los niveles que puede consultar un usuario personalizado -->
-                            <div class="shadow-md px-2 py-2 rounded-lg">
-                                <span class="font-medium">Seleccione los niveles que podra consultar</span>
+                        <form class="mt-4 w-full" [formGroup]="alcancePermisoConsulta">
+                            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                                <p class="mb-4 text-sm font-semibold text-slate-700">Niveles disponibles</p>
 
-                                <div class="flex flex-col px-3 py-3 gap-3">
-                                    @for (nivel of niveles; track $index) {
-                                    <div class="flex flex-col gap-2">
-
-                                        <!-- Checkbox de nivel -->
+                                <div class="flex flex-col gap-3">
+                                    @for (nivel of niveles; track nivel.id) {
+                                    <div class="rounded-xl border border-slate-100 bg-slate-50/50 p-3">
                                         <div class="flex items-center">
                                             <p-checkbox [inputId]="'nivel'+nivel.id" formControlName="nivelIds"
-                                                [value]="nivel.id"
-                                                (onChange)="getListadoModCompletas(nivel.id)"></p-checkbox>
-
-                                            <label [for]="'nivel'+nivel.id" class="ml-2">
-                                                {{ nivel.descripcion }}
-                                            </label>
+                                                [value]="nivel.id" (onChange)="getListadoModCompletas(nivel.id)" />
+                                            <label [for]="'nivel'+nivel.id"
+                                                class="ml-2 text-sm font-medium text-slate-700">{{ nivel.descripcion
+                                                }}</label>
                                         </div>
 
-                                        <!-- Modalidades de ese nivel (solo si existen y tienen length) -->
                                         @if (modalidadesPersonalizado[nivel.id]?.modalidades?.length) {
-                                        <div class="shadow-md px-2 py-2 rounded-lg mt-2">
-                                            <span class="font-medium">
-                                                Seleccione las modalidades que podra consultar
-                                            </span>
+                                        <div class="mt-3 rounded-xl border border-slate-200 bg-white p-3">
+                                            <p class="mb-3 text-xs font-semibold text-slate-500">Modalidades permitidas
+                                            </p>
 
-                                            <div class="flex justify-between flex-wrap gap-3 px-3 py-3">
+                                            <div class="flex flex-wrap gap-x-5 gap-y-3">
                                                 @for (mod of modalidadesPersonalizado[nivel.id].modalidades; track
-                                                $index) {
+                                                mod.id) {
                                                 <div class="flex items-center">
                                                     <p-checkbox [inputId]="'mod'+nivel.id+'-'+mod.id" [binary]="true"
-                                                        [ngModel]="estaSeleccionada(nivel.id, mod.id)"
-                                                        (ngModelChange)="onChangeModalidad(nivel.id, mod.id, $event)"
-                                                        [ngModelOptions]="{ standalone: true }"></p-checkbox>
-
-                                                    <label [for]="'mod'+nivel.id+'-'+mod.id" class="ml-2">
-                                                        {{ mod.descripcion }}
-                                                    </label>
+                                                        [ngModel]="estaSeleccionada(nivel.id,mod.id)"
+                                                        (ngModelChange)="onChangeModalidad(nivel.id,mod.id,$event)"
+                                                        [ngModelOptions]="{standalone:true}" />
+                                                    <label [for]="'mod'+nivel.id+'-'+mod.id"
+                                                        class="ml-2 text-sm text-slate-600">{{ mod.descripcion
+                                                        }}</label>
                                                 </div>
                                                 }
-
                                             </div>
                                         </div>
                                         }
-
                                     </div>
                                     }
                                 </div>
                             </div>
-
-
-
                         </form>
-
                     </div>
-                    <div class="flex pt-6 justify-between">
-                        <p-button (onClick)="activateCallback(1)" label="" severity="secondary"
-                            icon="pi pi-arrow-left" />
-                        <p-button (onClick)="activateCallback(3)" label="" icon="pi pi-arrow-right" iconPos="right" />
+
+                    <div class="flex justify-between pt-6">
+                        <p-button (onClick)="activateCallback(1)" severity="secondary" icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(3)" icon="pi pi-arrow-right" iconPos="right" />
                     </div>
                 </ng-template>
             </p-step-panel>
             }
 
-
-
-
-
-
-
-
             <p-step-panel [value]="3">
                 <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex flex-col items-center gap-2 mx-auto" style="min-height: 50vh; max-width: 40rem">
-                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Credenciales de acceso</div>
-                        <p-message severity="secondary">
+                    <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col items-center gap-2">
+                        <div class="mb-4 mt-4 text-center">
+                            <h2 class="text-xl font-semibold text-slate-800">Credenciales de acceso</h2>
+                            <p class="mt-1 text-sm text-slate-400">Define el usuario y contraseña de la nueva cuenta</p>
+                        </div>
+
+                        <p-message severity="secondary" class="w-full">
                             <div class="flex items-center gap-3">
                                 <i class="pi pi-lightbulb"></i>
-                                <div class="mensaje">
-                                    <b class="font-semibold text-sm">Nota:</b>
-                                    <small class="!text-xs">
-                                        La contraseña debe incluir al menos una letra mayúscula, un número, un carácter
-                                        especial y tener una longitud mínima de 8 caracteres.
-                                    </small>
+                                <div>
+                                    <b class="text-sm font-semibold">Contraseña segura:</b>
+                                    <small class="!text-xs">Debe incluir al menos una mayúscula, un número, un carácter
+                                        especial y 8 caracteres.</small>
                                 </div>
                             </div>
                         </p-message>
 
-                        <form action="" class="w-full px-2 mt-3" [formGroup]="auth">
-                            <div class="mb-4 w-full">
-                                <div class="">
-                                    <label for="username" class=" text-gray-500 text-sm">
-                                        Usuario
-                                    </label>
-
-                                    <input id="username" type="text" autocomplete="off" pInputText
-                                        [invalid]="isInvalid(auth,'username')" formControlName="username"
-                                        placeholder=" " class="peer w-full  rounded-lg px-4 py-2
-             text-slate-900 focus:outline-none focus:ring-2 focus:ring-c2
-             focus:border-c2" />
-
-
-                                </div>
+                        <form class="mt-3 w-full px-2" [formGroup]="auth">
+                            <div class="mb-5">
+                                <label for="username" class="mb-1 block text-sm text-slate-500">Usuario</label>
+                                <input id="username" type="text" autocomplete="off" pInputText
+                                    formControlName="username" [invalid]="isInvalid(auth,'username')"
+                                    class="w-full rounded-lg px-4 py-2 text-slate-900" />
                             </div>
 
-                            <div class="flex w-full gap-4">
-
-                                <!-- Contraseña -->
+                            <div class="flex flex-col gap-5 md:flex-row">
                                 <div class="flex-1">
+                                    <label for="password" class="mb-1 block text-sm text-slate-500">Contraseña</label>
+
                                     <div class="relative">
-                                        <label for="password" class=" text-gray-500 text-sm">
-                                            Contraseña
-                                        </label>
-                                        <!-- Input -->
                                         <input [type]="showPass ? 'text' : 'password'" id="password" pInputText
-                                            [invalid]="isInvalid(auth,'password')" formControlName="password"
-                                            placeholder=""
-                                            [ngClass]="isInvalid(auth,'password') ? '!border-1 !border-red-500' : ''"
-                                            class="peer w-full  rounded-lg px-4 py-2 text-slate-900 " />
+                                            formControlName="password" [invalid]="isInvalid(auth,'password')"
+                                            class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900" />
 
-                                        <!-- Label flotante -->
-
-
-                                        <!-- Botón ojito -->
-                                        <button type="button" (click)="showPass = !showPass"
-                                            class="absolute right-3 top-2/3 -translate-y-1/2 text-slate-500 hover:text-slate-700">
-                                            @if (!showConfirm) {
+                                        <button type="button" (click)="showPass=!showPass"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-700">
+                                            @if (!showPass) {
                                             <i class="pi pi-eye"></i>
-                                            }@else {
+                                            } @else {
                                             <i class="pi pi-eye-slash"></i>
                                             }
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- Confirmar contraseña -->
                                 <div class="flex-1">
+                                    <label for="confirmPassword" class="mb-1 block text-sm text-slate-500">Confirmar
+                                        contraseña</label>
+
                                     <div class="relative">
-                                        <label for="confirmPassword" class=" text-gray-500 text-sm">
-                                            Confirmar contraseña
-                                        </label>
-                                        <!-- Input -->
                                         <input [type]="showConfirm ? 'text' : 'password'" id="confirmPassword"
-                                            pInputText [invalid]="isInvalid(auth,'confirmPassword')"
-                                            formControlName="confirmPassword" placeholder=" "
-                                            class="peer w-full  rounded-lg px-4 py-2 text-slate-900" />
+                                            pInputText formControlName="confirmPassword"
+                                            [invalid]="isInvalid(auth,'confirmPassword')"
+                                            class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900" />
 
-                                        <!-- Label flotante -->
-
-
-                                        <!-- Botón ojito -->
-                                        <button type="button" (click)="showConfirm = !showConfirm"
-                                            class="absolute right-3 top-2/3 -translate-y-1/2 text-slate-500 hover:text-slate-700">
+                                        <button type="button" (click)="showConfirm=!showConfirm"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-700">
                                             @if (!showConfirm) {
                                             <i class="pi pi-eye"></i>
-                                            }@else {
+                                            } @else {
                                             <i class="pi pi-eye-slash"></i>
                                             }
                                         </button>
                                     </div>
                                 </div>
-
-                            </div>
-                            <!-- Botón Iniciar Sesión -->
-                            <div class="flex justify-center mt-[35px]">
-                                <p-button label="Crear usuario" icon="pi pi-save"
-                                    class="w-full md:w-auto px-6 py-2 rounded-lg text-white hover:bg-c2/90" size="small"
-                                    severity="contrast" (onClick)="guardarUsuario()" />
                             </div>
 
+                            <div class="mt-8 flex justify-center">
+                                <p-button label="Crear usuario" icon="pi pi-save" severity="contrast" size="small"
+                                    [loading]="guardandoUsuario" [disabled]="guardandoUsuario"
+                                    (onClick)="guardarUsuario()" />
+                            </div>
                         </form>
-
-
                     </div>
-                    <div class="flex pt-6 justify-between">
-                        @if (scope !='EJECUTIVO') {
-                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" label="" severity="secondary"
+
+                    <div class="flex justify-between pt-6">
+                        @if (['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO'].includes(scope)) {
+                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" severity="secondary"
                             icon="pi pi-arrow-left" />
-                        }@else{
-                        <p-button (onClick)="activateCallback(1); usuarioGuardado=false" label="" severity="secondary"
+                        } @else {
+                        <p-button (onClick)="activateCallback(1); usuarioGuardado=false" severity="secondary"
                             icon="pi pi-arrow-left" />
                         }
-                        <!-- <p-button (onClick)="activateCallback(4); usuarioGuardado=false" label="" icon="pi pi-arrow-right"
-                            iconPos="right" /> -->
                     </div>
                 </ng-template>
             </p-step-panel>
 
-
-
-
-
-
-
-
             <p-step-panel [value]="4">
                 <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex flex-col items-center gap-2 mx-auto" style="min-height: 50vh; max-width: 40rem">
-                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Cuenta creada correctamente</div>
-                        <div class="text-center">
-                            <img alt="logo" src="https://primefaces.org/cdn/primeng/images/stepper/content.svg" />
+                    <div
+                        class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col items-center justify-center gap-4 text-center">
+                        <div
+                            class="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                            <i class="pi pi-check text-3xl"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-xl font-semibold text-slate-800">Cuenta creada correctamente</h2>
+                            <p class="mt-1 text-sm text-slate-400">La persona y las credenciales fueron registradas
+                                correctamente.</p>
                         </div>
                     </div>
-                    <div class="flex pt-6 justify-start">
+
+                    <div class="flex justify-start pt-6">
                         <p-button (onClick)="activateCallback(1); usuarioGuardado=false" label="Crear nuevo usuario"
                             severity="secondary" icon="pi pi-plus" />
                     </div>
