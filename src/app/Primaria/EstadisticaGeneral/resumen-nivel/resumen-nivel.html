@@ -1,0 +1,505 @@
+@if (loader) {
+<app-loader-page></app-loader-page>
+}
+
+@if (!loader && resumenNivel) {
+<div class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+
+  <!-- SELECTOR NIVEL -->
+  <div class="flex flex-col items-end justify-end">
+    @if (niveles.length > 0) {
+    <div class="inline-flex flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 shadow-sm">
+      @for (nivel of niveles; track nivel.id) {
+      <button type="button" (click)="getEstadistica(nivel.id)"
+        class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 sm:px-4"
+        [ngClass]="nivelSeleccionado === nivel.id ? 'bg-slate-800 text-white shadow-md' : 'text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm'">
+        <i [class]="getIconNivel(nivel.descripcion)"
+          [ngClass]="nivelSeleccionado === nivel.id ? 'text-white' : 'text-slate-400'"></i>
+        <span>{{ formatearNivel(nivel.descripcion) }}</span>
+      </button>
+      }
+    </div>
+    }
+
+    <small class="mt-2 text-xs font-medium text-slate-400">
+      Seleccione para filtrar por nivel
+    </small>
+  </div>
+
+  <!-- INFORMACIÓN EXAMEN -->
+  <section class="mt-5 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-3">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+          <i class="pi pi-file-edit"></i>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium text-slate-400">Evaluación</p>
+          <p class="font-semibold text-slate-900">{{ resumenNivel.examen }}</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+          Ciclo {{ resumenNivel.ciclo }}
+        </span>
+
+        <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+          {{ resumenNivel.nivel }}
+        </span>
+
+        <span class="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700">
+          Generación {{ resumenNivel.generacion }}
+        </span>
+
+        <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+          {{ resumenNivel.materias?.length || 0 }} áreas evaluadas
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADO GENERAL -->
+  @if (resumenNivel.resumenGeneral) {
+  <section class="mt-7">
+    <div class="mb-4">
+      <h2 class="text-lg font-bold text-slate-900">Resultado estatal</h2>
+      <p class="mt-1 text-sm text-slate-500">
+        Resultado general del nivel {{ resumenNivel.nivel }}.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <app-single-promedio
+        [isEstatal]="false"
+        [content]="resumenNivel.resumenGeneral.porcentaje.toString()"
+        [title]="resumenNivel.resumenGeneral.descripcion">
+      </app-single-promedio>
+
+      <div class="grid grid-cols-2 gap-3 lg:col-span-2 sm:grid-cols-4">
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <i class="pi pi-users text-sm"></i>
+          </div>
+          <p class="text-xs font-medium text-slate-400">Asistieron</p>
+          <p class="mt-1 text-xl font-bold text-slate-900">
+            {{ resumenNivel.resumenGeneral.totalAsistieron | number }}
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <i class="pi pi-check-circle text-sm"></i>
+          </div>
+          <p class="text-xs font-medium text-slate-400">Participantes</p>
+          <p class="mt-1 text-xl font-bold text-slate-900">
+            {{ resumenNivel.resumenGeneral.totalParticipantes | number }}
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+            <i class="pi pi-chart-line text-sm"></i>
+          </div>
+          <p class="text-xs font-medium text-slate-400">Puntaje obtenido</p>
+          <p class="mt-1 text-xl font-bold text-slate-900">
+            {{ resumenNivel.resumenGeneral.puntajeObtenido | number }}
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+            <i class="pi pi-chart-bar text-sm"></i>
+          </div>
+          <p class="text-xs font-medium text-slate-400">Puntaje máximo</p>
+          <p class="mt-1 text-xl font-bold text-slate-900">
+            {{ resumenNivel.resumenGeneral.puntajeMaximo | number }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  }
+
+  <!-- MODALIDADES -->
+  @if (resumenNivel.modalidades?.length > 0) {
+  <section class="mt-8">
+    <div class="mb-4">
+      <h2 class="text-lg font-bold text-slate-900">Resultados por modalidad</h2>
+      <p class="mt-1 text-sm text-slate-500">
+        Comparación de los resultados de las modalidades correspondientes al nivel {{ resumenNivel.nivel }}.
+      </p>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <app-char-barra-single-data-set
+        [dataChart]="dataChartModalidades">
+      </app-char-barra-single-data-set>
+    </div>
+  </section>
+  }
+
+  <!-- MATERIAS -->
+  @if (resumenNivel.materias?.length > 0) {
+  <section class="mt-8">
+    <div class="mb-4">
+      <h2 class="text-lg font-bold text-slate-900">Resultados por área evaluada</h2>
+      <p class="mt-1 text-sm text-slate-500">
+        Resultado estatal obtenido en cada una de las áreas de la evaluación.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      @for (item of resumenNivel.materias; track item.id) {
+      <div
+        class="group flex min-h-[210px] flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-200 hover:shadow-md">
+
+        <div class="flex items-start gap-3">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+            <i class="pi pi-book text-sm"></i>
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+              Área evaluada
+            </p>
+
+            <h3 class="mt-1 text-base font-bold leading-snug text-slate-900">
+              {{ item.descripcion }}
+            </h3>
+
+            <p class="mt-1 text-xs text-slate-400">
+              {{ item.totalParticipantes | number }} participantes
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <div class="mb-2 flex items-end justify-between gap-3">
+            <div>
+              <p class="text-[11px] font-medium text-slate-400">Resultado estatal</p>
+              <p class="mt-0.5 text-2xl font-bold text-purple-700">
+                {{ item.porcentaje | number:'1.0-2' }}%
+              </p>
+            </div>
+
+            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-500">
+              <i class="pi pi-chart-line text-sm"></i>
+            </div>
+          </div>
+
+          <div class="h-2 overflow-hidden rounded-full bg-slate-100">
+            <div class="h-full rounded-full bg-purple-500 transition-all duration-500"
+              [style.width.%]="item.porcentaje">
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+  }
+
+  <!-- UNIDADES -->
+  @if (resumenNivel.materias?.length > 0 && resumenNivel.unidades?.length > 0) {
+  <section class="mt-8">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2 class="text-lg font-bold text-slate-900">Resultados por unidad de análisis</h2>
+        <p class="mt-1 text-sm text-slate-500">
+          Seleccione un área y la forma en que desea visualizar sus unidades.
+        </p>
+      </div>
+
+      <!-- CAMBIO DE VISTA -->
+      <div>
+        <p class="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Visualización
+        </p>
+
+        <div class="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-1 shadow-sm">
+          <button type="button" (click)="cambiarVistaUnidades('grafica')"
+            class="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-all"
+            [ngClass]="vistaUnidades === 'grafica'
+              ? 'bg-slate-800 text-white shadow-sm'
+              : 'text-slate-500 hover:bg-white hover:text-slate-800'">
+            <i class="pi pi-chart-bar"></i>
+            Gráfica
+          </button>
+
+          <button type="button" (click)="cambiarVistaUnidades('tarjetas')"
+            class="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-all"
+            [ngClass]="vistaUnidades === 'tarjetas'
+              ? 'bg-slate-800 text-white shadow-sm'
+              : 'text-slate-500 hover:bg-white hover:text-slate-800'">
+            <i class="pi pi-th-large"></i>
+            Tarjetas
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS MATERIA -->
+    <div class="mb-5 mt-5 overflow-x-auto">
+      <div class="inline-flex min-w-max items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 shadow-sm">
+
+        @for (materia of resumenNivel.materias; track materia.id) {
+        <button type="button" (click)="seleccionarMateriaUnidades(materia.id)"
+          class="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-200"
+          [ngClass]="materiaUnidadSeleccionada === materia.id
+            ? 'bg-slate-800 text-white shadow-md'
+            : 'text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm'">
+
+          <i class="pi pi-book"
+            [ngClass]="materiaUnidadSeleccionada === materia.id ? 'text-white' : 'text-slate-400'">
+          </i>
+
+          {{ materia.descripcion }}
+        </button>
+        }
+
+      </div>
+    </div>
+
+    @if (unidadesFiltradas.length > 0) {
+
+    @if (vistaUnidades === 'grafica') {
+    <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <app-char-barra-single-data-set
+        [dataChart]="dataChartUnidades"
+        colorBarras="#10B981">
+      </app-char-barra-single-data-set>
+    </div>
+    }
+
+    @if (vistaUnidades === 'tarjetas') {
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+
+      @for (unidad of unidadesFiltradas; track unidad.unidadId) {
+      <div
+        class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <p class="text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-600">
+              {{ unidad.materia }}
+            </p>
+
+            <h3 class="mt-1 text-sm font-bold leading-snug text-slate-900">
+              {{ unidad.unidad }}
+            </h3>
+          </div>
+
+          <div class="shrink-0 rounded-xl bg-emerald-50 px-3 py-2">
+            <p class="text-lg font-bold leading-none text-emerald-700">
+              {{ unidad.porcentaje | number:'1.0-2' }}%
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+          <div class="h-full rounded-full bg-emerald-500 transition-all duration-500"
+            [style.width.%]="unidad.porcentaje">
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
+          <div>
+            <p class="text-[10px] text-slate-400">Participantes</p>
+            <p class="text-sm font-semibold text-slate-700">
+              {{ unidad.totalParticipantes | number }}
+            </p>
+          </div>
+
+          <div class="text-right">
+            <p class="text-[10px] text-slate-400">Puntaje</p>
+            <p class="text-sm font-semibold text-slate-700">
+              {{ unidad.puntajeObtenido | number }} / {{ unidad.puntajeMaximo | number }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+      }
+
+    </div>
+    }
+
+    }
+
+  </section>
+  }
+
+  <!-- MUNICIPIOS -->
+  @if (resumenNivel.municipios?.length > 0) {
+  <section class="mt-8">
+
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2 class="text-lg font-bold text-slate-900">Resultados por municipio</h2>
+        <p class="mt-1 text-sm text-slate-500">
+          Consulte todos los municipios o seleccione uno para ver su detalle.
+        </p>
+      </div>
+
+      <div class="w-full sm:w-[280px]">
+        <label class="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Municipio
+        </label>
+
+        <p-select
+          [options]="municipiosOpciones"
+          optionLabel="municipio"
+          optionValue="municipioId"
+          [(ngModel)]="municipioSeleccionado"
+          (onChange)="cambiarMunicipio()"
+          [filter]="true"
+          filterBy="municipio"
+          placeholder="Seleccione municipio"
+          class="w-full">
+        </p-select>
+      </div>
+    </div>
+
+    <!-- GRÁFICA -->
+    <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div class="mb-4 flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold text-slate-800">
+            @if (municipioSeleccionado === 0) {
+            Comparativo estatal por municipio
+            } @else {
+            Resultado por área del municipio seleccionado
+            }
+          </p>
+
+          <p class="mt-0.5 text-xs text-slate-400">
+            @if (municipioSeleccionado === 0) {
+            Porcentaje general obtenido por cada municipio.
+            } @else {
+            Comparación de las áreas evaluadas dentro del municipio.
+            }
+          </p>
+        </div>
+      </div>
+
+      <app-char-barra-single-data-set
+        [randomColors]="municipioSeleccionado === 0"
+        [dataChart]="dataChartMunicipios"
+        colorBarras="#8B5CF6">
+      </app-char-barra-single-data-set>
+    </div>
+
+  </section>
+
+  <!-- DETALLE MUNICIPIOS -->
+  <section class="mt-8">
+    <div class="mb-4">
+      <h2 class="text-lg font-bold text-slate-900">
+        @if (municipioSeleccionado === 0) {
+        Resultados por municipio y área
+        } @else {
+        Detalle del municipio
+        }
+      </h2>
+
+      <p class="mt-1 text-sm text-slate-500">
+        @if (municipioSeleccionado === 0) {
+        Detalle del desempeño de cada área evaluada dentro de cada municipio.
+        } @else {
+        Resultado general y desempeño por área del municipio seleccionado.
+        }
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-5"
+      [ngClass]="municipioSeleccionado === 0 ? 'lg:grid-cols-2' : 'max-w-3xl'">
+
+      @for (municipio of municipiosFiltrados; track municipio.municipioId) {
+      <section
+        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+
+        <div
+          class="flex items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-violet-50/80 via-white to-white px-5 py-4">
+
+          <div class="flex min-w-0 items-center gap-3">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+              <i class="pi pi-map-marker text-lg"></i>
+            </div>
+
+            <div class="min-w-0">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-violet-500">
+                Municipio
+              </p>
+
+              <h3 class="mt-0.5 truncate text-base font-bold text-slate-900">
+                {{ formatearTexto(municipio.municipio) }}
+              </h3>
+            </div>
+          </div>
+
+          <div class="shrink-0 rounded-xl bg-violet-100 px-3 py-2 text-center">
+            <p class="text-lg font-bold leading-none text-violet-700">
+              {{ municipio.porcentaje | number:'1.0-2' }}%
+            </p>
+
+            <p class="mt-1 text-[9px] font-semibold uppercase tracking-wide text-violet-500">
+              Resultado
+            </p>
+          </div>
+        </div>
+
+        <div class="p-5">
+          <!-- <div class="mb-5 grid grid-cols-2 gap-3">
+
+            <div class="rounded-xl bg-slate-50 p-3">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                Participantes
+              </p>
+
+              <p class="mt-1 text-base font-bold text-slate-800">
+                {{ municipio.totalParticipantes | number }}
+              </p>
+            </div>
+
+            <div class="rounded-xl bg-slate-50 p-3">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                Puntaje obtenido
+              </p>
+
+              <p class="mt-1 text-base font-bold text-slate-800">
+                {{ municipio.puntajeObtenido | number }}
+              </p>
+            </div>
+
+          </div> -->
+
+          <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            Resultados por área
+          </p>
+
+          <div class="grid grid-cols-1 gap-3">
+
+            @for (materia of municipio.materias; track materia.id) {
+            <app-ejercicio-resultado
+              [title]="materia.descripcion"
+              [contenido]="materia.porcentaje.toString()"
+              [small]="true"
+              [bgColorTitle]="getColorMateria(materia.descripcion)">
+            </app-ejercicio-resultado>
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+      }
+
+    </div>
+  </section>
+  }
+
+</div>
+}

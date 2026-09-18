@@ -4,21 +4,28 @@ import { EstadisticaGeneralLayoutPage } from './estadistica-general-layout-page/
 import { PrincipalEstadisticaGeneral } from './principal-estadistica-general/principal-estadistica-general';
 import { nivelGuard } from '../../core/guards/nivel.guard';
 import { authGuard } from '../../core/guards/auth.guard';
+import { ResumenNivel } from './resumen-nivel/resumen-nivel';
 
 const routes: Routes = [
   {
-    path: '', 
+    path: '',
     component: EstadisticaGeneralLayoutPage,
     children: [
-      { path: 'estadistica-general', component: PrincipalEstadisticaGeneral, canActivate:[authGuard,nivelGuard] },
+      {
+        path: 'estadistica-general',
+        component: PrincipalEstadisticaGeneral,
+        canActivate: [authGuard, nivelGuard],
+      },
+      { path: 'resumen-nivel', component: ResumenNivel, canActivate: [authGuard, nivelGuard] },
 
-      { path: '', redirectTo: 'estadistica-general', pathMatch: 'full' },
-      { path: '**', redirectTo: 'estadistica-general' }
-    ]
-  }
-]
+      { path: '', redirectTo: 'resumen-nivel', pathMatch: 'full' },
+      { path: '**', redirectTo: 'resumen-nivel' },
+    ],
+  },
+];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class EstadisticaGeneralRoutingModule { }
+export class EstadisticaGeneralRoutingModule {}
+// bbertha He]WW!\f4m
