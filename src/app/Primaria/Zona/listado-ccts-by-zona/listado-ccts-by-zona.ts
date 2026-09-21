@@ -108,10 +108,6 @@ export class ListadoCctsByZona {
         this.seleccionarExamen();
 
         if (!this.examenSelected) {
-          console.error('No existe examen para el nivel seleccionado', {
-            nivelId: this.nivelId,
-            cicloId: this.cicloSelected,
-          });
 
           this.loader = false;
           this.cd.markForCheck();
@@ -121,7 +117,6 @@ export class ListadoCctsByZona {
         this.resolverZona();
       },
       error: (error) => {
-        console.error('Error inicializando listado de CCT', error);
         this.loader = false;
         this.cd.markForCheck();
       },

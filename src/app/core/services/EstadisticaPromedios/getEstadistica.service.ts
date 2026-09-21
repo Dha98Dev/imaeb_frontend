@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Enviroments } from '../../../enviroments/env';
 import { ParamsPromediosEstatales } from '../../Interfaces/promediosEstatales.interface';
+import { EscuelasModalidadResponse, ParamsEscuelasModalidad } from '../../Interfaces/resumenModalidad.interface';
 
 @Injectable({ providedIn: 'root' })
 export class GetEstadisticaService {
@@ -29,6 +30,36 @@ export class GetEstadisticaService {
     let params = new HttpParams();
     if (data.nivelId) params = params.set('nivelId', data.nivelId.toString());
     if (data.examenId) params = params.set('examenId', data.examenId.toString());
+    if (data.modalidadId) params = params.set('modalidadId', data.modalidadId.toString());
     return this.http.get<any>(this.url + 'estadisticas/resumen-nivel', { params });
+  }
+  getEscuelasModalidad(data: ParamsEscuelasModalidad) {
+    let params = new HttpParams();
+
+    params = params.set('modalidadId', data.modalidadId.toString());
+
+    if (data.examenId !== undefined && data.examenId !== null) {
+      params = params.set('examenId', data.examenId.toString());
+    }
+
+    if (data.nivelId !== undefined && data.nivelId !== null) {
+      params = params.set('nivelId', data.nivelId.toString());
+    }
+
+    if (data.cicloId !== undefined && data.cicloId !== null) {
+      params = params.set('cicloId', data.cicloId.toString());
+    }
+
+    if (data.pagina !== undefined && data.pagina !== null) {
+      params = params.set('pagina', data.pagina.toString());
+    }
+
+    if (data.tamano !== undefined && data.tamano !== null) {
+      params = params.set('tamano', data.tamano.toString());
+    }
+
+    return this.http.get<EscuelasModalidadResponse>(this.url + 'estadisticas/escuelas-modalidad', {
+      params,
+    });
   }
 }

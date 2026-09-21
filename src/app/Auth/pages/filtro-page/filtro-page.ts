@@ -216,9 +216,7 @@ export class FiltroPage {
 
       const zonas = resp.zonas ?? [];
 
-      console.log('Zonas recibidas:', zonas);
 
-      console.log('Zona permitida por auth:', this.authService.getZonaIds());
 
       this.zonas = zonas
         .filter((zona) =>
@@ -231,7 +229,6 @@ export class FiltroPage {
         )
         .sort((a, b) => (a.numero || 0) - (b.numero || 0));
 
-      console.log('Zonas permitidas:', this.zonas);
 
       if (this.zonas.length === 1) {
         this.filtros.patchValue({
@@ -243,7 +240,6 @@ export class FiltroPage {
 
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo zonas', error);
 
       this.zonas = [];
 
@@ -277,20 +273,9 @@ export class FiltroPage {
     const zonaSeleccionada = this.zonas.find((zona) => zona.id === zonaId);
 
     if (!zonaSeleccionada) {
-      console.error('No se encontró la zona seleccionada', zonaId);
 
       return;
     }
-
-    console.log('Zona seleccionada:', zonaSeleccionada);
-
-    console.log('Parámetros centros:', {
-      nivelId,
-      modalidadId,
-      sectorId,
-      zonaId,
-      zonaNumero: zonaSeleccionada.numero,
-    });
 
     try {
       const resp = await this.realizarPeticionCatalogoService({
@@ -318,7 +303,6 @@ export class FiltroPage {
 
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo centros', error);
 
       this.centrosTrabajo = [];
 
@@ -477,7 +461,7 @@ export class FiltroPage {
       );
 
       await this.router.navigate([
-        '/m/resultadosModalidad',
+        '/m/resumen-modalidad',
         nivelBase64,
         modalidadBase64,
         modalidadCripto,
@@ -497,7 +481,6 @@ export class FiltroPage {
   }
 
   // setValues() {
-  //   console.log(this.params);
 
   //   const { nivelId, modalidadId, sectorId, zonaId, escuelaId, nivelIds, modalidadIds } =
   //     this.params || {};

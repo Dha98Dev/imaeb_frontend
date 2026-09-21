@@ -245,7 +245,6 @@ export class ListadoUsuarios {
         },
 
         error: (error) => {
-          console.error('Error obteniendo usuarios', error);
 
           this.listadoUsuarios = [];
 
@@ -366,7 +365,6 @@ export class ListadoUsuarios {
         },
 
         error: (error) => {
-          console.error('Error actualizando contraseña', error);
 
           this.messageService.add({
             severity: 'error',
@@ -419,7 +417,6 @@ export class ListadoUsuarios {
         },
 
         error: (error) => {
-          console.error('Error actualizando usuario', error);
 
           this.messageService.add({
             severity: 'error',

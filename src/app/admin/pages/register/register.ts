@@ -125,7 +125,6 @@ export class Register {
       this.niveles = resp.niveles ?? [];
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo niveles', error);
       this.niveles = [];
       this.cd.markForCheck();
     }
@@ -143,7 +142,6 @@ export class Register {
       this.modalidades = resp.modalidades ?? [];
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo modalidades', error);
       this.modalidades = [];
       this.cd.markForCheck();
     }
@@ -172,7 +170,6 @@ export class Register {
       );
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo sectores', error);
       this.sectores = [];
       this.cd.markForCheck();
     }
@@ -206,7 +203,6 @@ export class Register {
       this.zonas = zonas.sort((a: Zona, b: Zona) => (a.numero || 0) - (b.numero || 0));
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo zonas', error);
       this.zonas = [];
       this.cd.markForCheck();
     }
@@ -251,7 +247,6 @@ export class Register {
       this.centrosTrabajo = resp.centrosTrabajo ?? [];
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo centros de trabajo', error);
       this.centrosTrabajo = [];
       this.cd.markForCheck();
     }
@@ -300,7 +295,6 @@ export class Register {
         this.cd.markForCheck();
       },
       error: (error) => {
-        console.error('Error obteniendo tipos de usuario', error);
         this.listadoTipoPersonas = [];
         this.cd.markForCheck();
       },
@@ -557,8 +551,6 @@ export class Register {
             alcances,
           };
 
-          console.log('Payload nuevo usuario:', payload);
-
           return this.usuarioService.saveUsuario(payload);
         }),
         finalize(() => {
@@ -582,7 +574,6 @@ export class Register {
           this.cd.markForCheck();
         },
         error: (err) => {
-          console.error('Error registrando usuario', err);
 
           this.messageService.add({
             severity: 'error',
@@ -671,7 +662,6 @@ export class Register {
       };
       this.cd.markForCheck();
     } catch (error) {
-      console.error('Error obteniendo modalidades', error);
       this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: [] };
       this.cd.markForCheck();
     }

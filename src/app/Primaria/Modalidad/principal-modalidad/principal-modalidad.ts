@@ -106,7 +106,6 @@ export class PrincipalModalidad {
 
         this.inicializar();
       } catch (error) {
-        console.error('Error obteniendo parámetros de modalidad', error);
       }
     });
   }
@@ -150,7 +149,6 @@ export class PrincipalModalidad {
         },
 
         error: (error) => {
-          console.error('Error inicializando modalidad', error);
 
           this.loader = false;
 
@@ -212,7 +210,6 @@ export class PrincipalModalidad {
           map((resp) => resp?.[0]?.porcentaje ?? 0),
 
           catchError((error) => {
-            console.error('Error obteniendo resultado del nivel', error);
 
             return of(0);
           }),
@@ -230,7 +227,6 @@ export class PrincipalModalidad {
           map((resp) => resp?.[0]?.porcentaje ?? 0),
 
           catchError((error) => {
-            console.error('Error obteniendo resultado de modalidad', error);
 
             return of(0);
           }),
@@ -247,7 +243,6 @@ export class PrincipalModalidad {
       },
 
       error: (error) => {
-        console.error('Error obteniendo promedios iniciales', error);
 
         this.loader = false;
       },
@@ -286,7 +281,6 @@ export class PrincipalModalidad {
           ),
 
           catchError((error) => {
-            console.error(`Error obteniendo resultado de ${materia.descripcion}`, error);
 
             return of({
               materiaId: materia.materiaId,
@@ -307,7 +301,6 @@ export class PrincipalModalidad {
       },
 
       error: (error) => {
-        console.error('Error obteniendo promedios por materia', error);
 
         this.promediosMaterias = [];
       },
@@ -315,10 +308,10 @@ export class PrincipalModalidad {
   }
   cargarEstructuraExamen(): void {
     this.catalogoService
+    
       .getEstructuraExamen(this.examenSelected)
       .pipe(
         catchError((error) => {
-          console.error('Error obteniendo estructura del examen', error);
 
           return of(undefined);
         }),
@@ -362,7 +355,6 @@ export class PrincipalModalidad {
         }),
 
         catchError((error) => {
-          console.error('Error obteniendo sectores', error);
 
           return of<SectoresModalidad[]>([]);
         }),
@@ -379,7 +371,6 @@ export class PrincipalModalidad {
         },
 
         error: (error) => {
-          console.error('Error procesando estructura', error);
 
           this.loader = false;
         },
@@ -423,7 +414,6 @@ export class PrincipalModalidad {
         }),
 
         catchError((error) => {
-          console.error(`Error obteniendo sector ${sector.numero}`, error);
 
           return of({
             sectorId: sector.id,
@@ -457,7 +447,6 @@ export class PrincipalModalidad {
         ),
 
         catchError((error) => {
-          console.error(`Error obteniendo zona ${zona.numero}`, error);
 
           return of({
             zonaId: zona.id,
@@ -535,7 +524,6 @@ export class PrincipalModalidad {
         },
 
         error: (error) => {
-          console.error('Error obteniendo promedios', error);
 
           this.resultados = [];
 
@@ -571,7 +559,6 @@ export class PrincipalModalidad {
         }),
 
         catchError((error) => {
-          console.error(`Error obteniendo resultado del sector ${sector.sector}`, error);
 
           this.promedioSectorCache.set(sector.sectorId, 0);
 
@@ -607,7 +594,6 @@ export class PrincipalModalidad {
         }),
 
         catchError((error) => {
-          console.error(`Error obteniendo resultado de zona ${zona.zona}`, error);
 
           this.promedioZonaCache.set(zona.zonaId, 0);
 
@@ -643,7 +629,6 @@ export class PrincipalModalidad {
         }),
 
         catchError((error) => {
-          console.error(`Error obteniendo resultado del CCT ${centro.cct}`, error);
 
           this.promedioCctCache.set(centro.id, 0);
 

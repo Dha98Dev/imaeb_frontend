@@ -81,7 +81,6 @@ export class ListadoZonasFromSector {
 
         this.inicializar();
       } catch (error) {
-        console.error('Error obteniendo parámetros de zonas', error);
       }
     });
   }
@@ -104,10 +103,6 @@ export class ListadoZonasFromSector {
           this.seleccionarExamen();
 
           if (!this.examenSelected) {
-            console.error('No existe examen para el nivel seleccionado', {
-              nivelId: this.nivelId,
-              cicloId: this.cicloSelected,
-            });
 
             this.loader = false;
             return;
@@ -116,7 +111,6 @@ export class ListadoZonasFromSector {
           this.obtenerSector();
         },
         error: (error) => {
-          console.error('Error inicializando listado de zonas', error);
           this.loader = false;
         },
       });
@@ -167,7 +161,6 @@ export class ListadoZonasFromSector {
         }),
         switchMap((sector: Sectores | undefined) => {
           if (!sector) {
-            console.error('No se encontró el sector');
             return of([]);
           }
 
@@ -182,7 +175,6 @@ export class ListadoZonasFromSector {
             .pipe(map((resp: responseCatalogo) => resp.zonas ?? []));
         }),
         catchError((error) => {
-          console.error('Error obteniendo zonas del sector', error);
           return of<Zona[]>([]);
         }),
       )
@@ -192,7 +184,6 @@ export class ListadoZonasFromSector {
           this.getPromediosZonaFromSector();
         },
         error: (error) => {
-          console.error('Error procesando zonas', error);
           this.loader = false;
         },
       });

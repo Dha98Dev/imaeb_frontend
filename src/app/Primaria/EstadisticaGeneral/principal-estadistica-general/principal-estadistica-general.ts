@@ -108,7 +108,6 @@ export class PrincipalEstadisticaGeneral {
           this.getEstadistica(this.nivelUser);
         },
         error: (error) => {
-          console.error('Error inicializando estadísticas generales', error);
           this.loader = false;
         },
       });
@@ -151,11 +150,6 @@ export class PrincipalEstadisticaGeneral {
     this.limpiarResultadosNivel();
 
     if (!this.seleccionarExamen(nivel)) {
-      console.error('No existe examen para el nivel y ciclo seleccionados', {
-        nivelId: nivel,
-        cicloId: this.cicloSelected,
-      });
-
       this.loader = false;
       return;
     }
@@ -163,7 +157,7 @@ export class PrincipalEstadisticaGeneral {
     forkJoin({
       estructura: this.catalogoService.getEstructuraExamen(this.examenSelected).pipe(
         catchError((error) => {
-          console.error('Error obteniendo estructura del examen', error);
+         
           return of(undefined);
         }),
       ),
@@ -174,7 +168,6 @@ export class PrincipalEstadisticaGeneral {
         })
         .pipe(
           catchError((error) => {
-            console.error('Error obteniendo modalidades', error);
             return of(undefined);
           }),
         ),
@@ -192,7 +185,6 @@ export class PrincipalEstadisticaGeneral {
         this.cargarEstadisticasNivel();
       },
       error: (error) => {
-        console.error('Error preparando estadísticas del nivel', error);
         this.loader = false;
       },
     });
@@ -232,7 +224,6 @@ export class PrincipalEstadisticaGeneral {
           this.PromedioByNivelAndMunicipioAndMateria = municipiosMaterias;
         },
         error: (error) => {
-          console.error('Error cargando estadísticas del nivel', error);
         },
       });
   }
@@ -252,7 +243,6 @@ export class PrincipalEstadisticaGeneral {
           },
         ]),
         catchError((error) => {
-          console.error('Error obteniendo resultado estatal', error);
           return of([]);
         }),
       );
@@ -276,11 +266,6 @@ export class PrincipalEstadisticaGeneral {
             porcentaje: resp?.[0]?.porcentaje ?? 0,
           })),
           catchError((error) => {
-            console.error(
-              'Error obteniendo resultado de modalidad ' + modalidad.descripcion,
-              error,
-            );
-
             return of({
               modalidad: modalidad.descripcion,
               porcentaje: 0,
@@ -339,7 +324,6 @@ export class PrincipalEstadisticaGeneral {
             }),
           ),
           catchError((error) => {
-            console.error('Error obteniendo resultado de materia ' + materia.descripcion, error);
 
             return of<ResultadoGeneral>({
               nivel: nivelDescripcion,
@@ -381,7 +365,6 @@ export class PrincipalEstadisticaGeneral {
             porcentaje: resp?.[0]?.porcentaje ?? 0,
           })),
           catchError((error) => {
-            console.error('Error obteniendo resultado del municipio ' + municipio.nombre, error);
 
             return of({
               municipio: municipio.nombre,
@@ -433,8 +416,6 @@ export class PrincipalEstadisticaGeneral {
               }),
             ),
             catchError((error) => {
-              console.error(`Error en ${municipio.nombre} - ${materia.descripcion}`, error);
-
               return of<ResultadoGeneral>({
                 nivel: nivelDescripcion,
                 nivelId: this.nivelSeleccionado,
@@ -469,8 +450,6 @@ export class PrincipalEstadisticaGeneral {
       },
 
       error: (error) => {
-        console.error('Error obteniendo niveles', error);
-
         this.niveles = [];
         this.cd.markForCheck();
       },

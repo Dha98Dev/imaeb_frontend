@@ -82,9 +82,7 @@ export class ResultadosMateria {
         }
 
         this.getResultadoMateria();
-      } catch (error) {
-        console.error('Error leyendo parámetros', error);
-      }
+      } catch (error) {}
     });
   }
 
@@ -95,8 +93,6 @@ export class ResultadosMateria {
       .obtenerPreguntasAlumnoMateria(this.alumnoExamenId, this.materiaId)
       .pipe(
         catchError((error) => {
-          console.error('Error obteniendo resultados de materia', error);
-
           return of(undefined);
         }),
 

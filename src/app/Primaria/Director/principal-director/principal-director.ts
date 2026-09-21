@@ -222,7 +222,6 @@ export class PrincipalDirector {
         },
 
         error: (error) => {
-          console.error('Error cargando información inicial del director', error);
 
           this.loader = false;
 
@@ -295,7 +294,6 @@ export class PrincipalDirector {
 
       conteoSexo: this.resultadosDirectorService.getConteoSexo(this.cct, this.examenSelected).pipe(
         catchError((error) => {
-          console.error('Error obteniendo conteo por sexo', error);
 
           return of([]);
         }),
@@ -309,7 +307,6 @@ export class PrincipalDirector {
         .getPromediosGrupos(this.cct, this.examenSelected)
         .pipe(
           catchError((error) => {
-            console.error('Error obteniendo promedios', error);
 
             return of([]);
           }),
@@ -323,7 +320,6 @@ export class PrincipalDirector {
         .getParticipacionCct(this.cct, this.examenSelected)
         .pipe(
           catchError((error) => {
-            console.error('Error obteniendo participación', error);
 
             return of([]);
           }),
@@ -548,6 +544,7 @@ export class PrincipalDirector {
 
   redireccioarResultadosGrupo(grupo: string): void {
     this.grupoSelected = grupo;
+    
 
     this.router.navigate(['/prim_2/resultados-grupo', this.crypto.Encriptar(this.cct), grupo]);
   }

@@ -130,6 +130,8 @@ export class PrincipalDocente {
       this.cct = this.crypto.Desencriptar(cctEncrypted) || '';
 
       this.grupo = (params.get('grupo') || '').toUpperCase();
+   
+      
 
       if (!this.cct || !this.grupo) {
         return;
@@ -259,7 +261,6 @@ export class PrincipalDocente {
         },
 
         error: (error) => {
-          console.error('Error inicializando la vista del docente', error);
 
           this.loader = false;
 
@@ -340,7 +341,6 @@ export class PrincipalDocente {
 
       conteoSexo: this.resultadosService.getConteoSexo(this.cct, this.examenSelected).pipe(
         catchError((error) => {
-          console.error('Error obteniendo conteo por sexo', error);
 
           return of([]);
         }),
@@ -354,7 +354,6 @@ export class PrincipalDocente {
 
       promedios: this.resultadosService.getPromediosGrupos(this.cct, this.examenSelected).pipe(
         catchError((error) => {
-          console.error('Error obteniendo promedio del grupo', error);
 
           return of([]);
         }),
@@ -368,7 +367,6 @@ export class PrincipalDocente {
         .getParticipacionGrupo(this.cct, this.grupo, this.examenSelected)
         .pipe(
           catchError((error) => {
-            console.error('Error obteniendo participación del grupo', error);
 
             return of(undefined);
           }),
@@ -382,7 +380,6 @@ export class PrincipalDocente {
         .getDesempenioGrupo(this.cct, this.grupo, this.examenSelected)
         .pipe(
           catchError((error) => {
-            console.error('Error obteniendo desempeño por materia', error);
 
             return of([]);
           }),
@@ -402,10 +399,6 @@ promedioEstatal:
     })
     .pipe(
       catchError((error) => {
-        console.error(
-          'Error obteniendo promedio estatal',
-          error,
-        );
 
         return of([]);
       }),
@@ -578,7 +571,6 @@ promedioEstatal:
      * Podemos utilizar estos datos en la siguiente pantalla.
      */
 
-    console.log('Materia seleccionada:', materia);
 
     /*
      * Más adelante podemos navegar a:

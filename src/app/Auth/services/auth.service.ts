@@ -102,7 +102,6 @@ export class AuthService {
 
     this.meRequest$ = this.getMe().pipe(
       catchError((error) => {
-        console.error('No se pudo recuperar /auth/me', error);
 
         this.clearTokens();
 

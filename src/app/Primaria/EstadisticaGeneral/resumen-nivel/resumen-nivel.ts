@@ -116,7 +116,6 @@ export class ResumenNivel implements OnInit {
       },
 
       error: (error) => {
-        console.error('Error cargando catálogos', error);
 
         this.loader = false;
 
@@ -238,7 +237,6 @@ export class ResumenNivel implements OnInit {
           this.cd.markForCheck();
         },
         error: (error) => {
-          console.error('Error obteniendo resumen de nivel', error);
           this.resumenNivel = null;
           this.limpiarGraficas();
           this.cd.markForCheck();

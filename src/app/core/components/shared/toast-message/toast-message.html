@@ -1,0 +1,93 @@
+@if (toast$ | async; as toasts) {
+
+<div
+    class="toast-wrapper pointer-events-none fixed right-4 top-4 z-[99999] flex w-[calc(100%-2rem)] max-w-[440px] flex-col gap-3 sm:right-6 sm:top-6">
+
+    @for (
+    toast of toasts;
+    track toast.id
+    ) {
+
+    <div class="toast-card pointer-events-auto" [ngClass]="getContainerClass(toast.type)">
+
+        <div class="flex items-start gap-3">
+
+            <!-- Indicador -->
+
+            <div class="toast-indicator">
+
+                <i [class]="getIcon(toast.type)">
+                </i>
+
+            </div>
+
+
+            <!-- Contenido -->
+
+            <div class="min-w-0 flex-1">
+
+                <p class="toast-title">
+
+                    {{ toast.title }}
+
+                </p>
+
+                @if (toast.message) {
+
+                <p class="toast-description">
+
+                    {{ toast.message }}
+
+                </p>
+
+                }
+
+            </div>
+
+
+            <!-- Acción -->
+
+            @if (toast.actionLabel) {
+
+            <button type="button" class="toast-action" (click)="ejecutarAccion(toast)">
+
+                {{ toast.actionLabel }}
+
+            </button>
+
+            }
+
+
+            <!-- Cerrar -->
+
+            @if (toast.closable) {
+
+            <button type="button" class="toast-close" (click)="cerrar(toast.id)">
+
+                <i class="pi pi-times"></i>
+
+            </button>
+
+            }
+
+        </div>
+
+
+        @if (toast.duration > 0) {
+
+        <div class="toast-progress-track">
+
+            <div class="toast-progress" [style.animation-duration.ms]="toast.duration">
+            </div>
+
+        </div>
+
+        }
+
+    </div>
+
+    }
+
+</div>
+
+}

@@ -142,7 +142,6 @@ export class PrincipalPadreFamilia {
 
         this.loadData();
       } catch (error) {
-        console.error('Error obteniendo parámetros del alumno', error);
       }
     });
   }
@@ -167,7 +166,6 @@ export class PrincipalPadreFamilia {
     forkJoin({
       datosCct: this.cctInfo.getInfoCct(this.cct).pipe(
         catchError((error) => {
-          console.error('Error obteniendo CCT', error);
 
           return of([]);
         }),
@@ -177,7 +175,6 @@ export class PrincipalPadreFamilia {
         .obtenerAlumnosPorGrupo(this.cct, this.grupo, this.examenId, 0, 100)
         .pipe(
           catchError((error) => {
-            console.error('Error obteniendo alumnos', error);
 
             return of({
               content: [],
@@ -195,7 +192,6 @@ export class PrincipalPadreFamilia {
         .obtenerResultadoAlumno(this.alumnoID, this.examenId)
         .pipe(
           catchError((error) => {
-            console.error('Error obteniendo resultado del alumno', error);
 
             return of(undefined);
           }),
@@ -275,7 +271,6 @@ export class PrincipalPadreFamilia {
             })
             .pipe(
               catchError((error) => {
-                console.error('Error obteniendo promedio estatal', error);
 
                 return of([]);
               }),
@@ -327,7 +322,6 @@ export class PrincipalPadreFamilia {
                 }),
 
                 catchError((error) => {
-                  console.error(`Error obteniendo promedio estatal de ${materia.materia}`, error);
 
                   return of({
                     ...materia,
@@ -372,7 +366,6 @@ export class PrincipalPadreFamilia {
         },
 
         error: (error) => {
-          console.error('Error cargando información del alumno', error);
         },
       });
   }

@@ -86,7 +86,6 @@ export class PrincipalSector {
 
         this.inicializar();
       } catch (error) {
-        console.error('Error obteniendo parámetros del sector', error);
       }
     });
   }
@@ -108,10 +107,7 @@ export class PrincipalSector {
           this.seleccionarExamen();
 
           if (!this.examenSelected) {
-            console.error('No existe examen para el nivel seleccionado', {
-              nivelId: this.nivelId,
-              cicloId: this.cicloSelected,
-            });
+           
             this.loader = false;
             return;
           }
@@ -119,7 +115,8 @@ export class PrincipalSector {
           this.cargarEstructuraExamen();
         },
         error: (error) => {
-          console.error('Error inicializando sector', error);
+         
+          
           this.loader = false;
         },
       });
@@ -166,7 +163,6 @@ export class PrincipalSector {
       .getEstructuraExamen(this.examenSelected)
       .pipe(
         catchError((error) => {
-          console.error('Error obteniendo estructura del examen', error);
           return of(undefined);
         }),
       )
@@ -197,11 +193,6 @@ export class PrincipalSector {
         }),
         switchMap((sector: Sectores | undefined) => {
           if (!sector) {
-            console.error('No se encontró el sector', {
-              nivelId: this.nivelId,
-              modalidadId: this.modalidadId,
-              sector: this.sectorNumero,
-            });
             return of(undefined);
           }
 
@@ -209,7 +200,6 @@ export class PrincipalSector {
           return this.cargarDatosSector(sector);
         }),
         catchError((error) => {
-          console.error('Error obteniendo información del sector', error);
           return of(undefined);
         }),
         finalize(() => {
@@ -253,7 +243,6 @@ export class PrincipalSector {
       .pipe(
         map((resp) => resp?.[0]?.porcentaje ?? 0),
         catchError((error) => {
-          console.error('Error obteniendo resultado del sector', error);
           return of(0);
         }),
       );
@@ -268,7 +257,6 @@ export class PrincipalSector {
       .pipe(
         map((resp) => resp?.[0]?.porcentaje ?? 0),
         catchError((error) => {
-          console.error('Error obteniendo resultado estatal', error);
           return of(0);
         }),
       );
@@ -332,7 +320,6 @@ export class PrincipalSector {
       .pipe(
         map((resp: responseCatalogo) => resp.zonas ?? []),
         catchError((error) => {
-          console.error('Error obteniendo zonas del sector', error);
           return of([]);
         }),
       );
@@ -366,7 +353,6 @@ export class PrincipalSector {
             porcentaje: resp?.[0]?.porcentaje ?? 0,
           })),
           catchError((error) => {
-            console.error(`Error obteniendo resultado zona ${zona.numero}`, error);
 
             return of({
               zona: zona.numero,

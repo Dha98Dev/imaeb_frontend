@@ -243,7 +243,6 @@ export class ResultadosAreas {
         },
 
         error: (error) => {
-          console.error('Error inicializando resultados por área', error);
 
           this.loader = false;
 
@@ -313,7 +312,6 @@ export class ResultadosAreas {
       .getDesempenioGrupo(this.cct, this.grupo, this.examenSelected)
       .pipe(
         catchError((error) => {
-          console.error('Error obteniendo materias', error);
 
           return of([]);
         }),
@@ -411,7 +409,6 @@ export class ResultadosAreas {
       .getPreguntasMateria(this.cct, this.grupo, this.materiaSelected, this.examenSelected)
       .pipe(
         catchError((error) => {
-          console.error('Error obteniendo preguntas de la materia', error);
 
           return of([]);
         }),

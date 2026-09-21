@@ -129,7 +129,6 @@ export class ListadoGrupo {
           this.seleccionarExamen();
 
           if (!this.examenSelected) {
-            console.warn('No existe examen para el ciclo y nivel seleccionados');
 
             this.loader = false;
 
@@ -140,7 +139,6 @@ export class ListadoGrupo {
         },
 
         error: (error) => {
-          console.error('Error inicializando listado de grupo', error);
 
           this.loader = false;
 
@@ -186,7 +184,6 @@ export class ListadoGrupo {
       .obtenerAlumnosPorGrupo(this.cct, this.grupo, this.examenSelected, 0, 100)
       .pipe(
         catchError((error) => {
-          console.error('Error obteniendo alumnos del grupo', error);
 
           return of({
             content: [],
@@ -222,7 +219,6 @@ export class ListadoGrupo {
     const requests = alumnos.map((alumno) =>
       this.listadoAlumnosService.obtenerResultadoAlumno(alumno.alumnoId, this.examenSelected).pipe(
         catchError((error) => {
-          console.error(`Error obteniendo resultado del alumno ${alumno.alumnoId}`, error);
 
           return of(undefined);
         }),

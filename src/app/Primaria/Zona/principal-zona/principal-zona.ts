@@ -99,7 +99,6 @@ export class PrincipalZona {
 
         this.inicializar();
       } catch (error) {
-        console.error('Error obteniendo parámetros de zona', error);
       }
     });
   }

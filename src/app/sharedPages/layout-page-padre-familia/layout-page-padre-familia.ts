@@ -78,11 +78,6 @@ export class LayoutPagePadreFamilia implements OnInit {
     });
 
     if (!this.alumnoId || !this.examenId) {
-      console.error('No se pudo cargar el menú de materias', {
-        alumnoId: this.alumnoId,
-        examenId: this.examenId,
-      });
-
       this.construirMenuMaterias([]);
 
       this.cargandoMaterias = false;
@@ -102,7 +97,6 @@ export class LayoutPagePadreFamilia implements OnInit {
       .obtenerResultadoAlumno(this.alumnoId, this.examenId)
       .pipe(
         catchError((error) => {
-          console.error('Error obteniendo resultados del alumno', error);
 
           return of(undefined);
         }),
@@ -131,7 +125,6 @@ export class LayoutPagePadreFamilia implements OnInit {
 
           this.materias = resp.resultadosPorMateria ? [...resp.resultadosPorMateria] : [];
 
-          console.log('Materias recibidas:', this.materias);
 
           this.construirMenuMaterias(this.materias);
         },
@@ -164,7 +157,6 @@ export class LayoutPagePadreFamilia implements OnInit {
 
     this.items = [inicio, ...materiasMenu];
 
-    console.log('Items del SpeedDial:', this.items);
 
     this.cd.markForCheck();
   }
@@ -173,17 +165,9 @@ export class LayoutPagePadreFamilia implements OnInit {
     const alumnoExamenId = this.storage.getAlumnoExamenId();
 
     if (!alumnoExamenId) {
-      console.error('No existe alumnoExamenId en sessionStorage');
 
       return;
     }
-
-    console.log('Datos para navegación:', {
-      materiaId: materia.materiaId,
-      alumnoId: this.storage.getAlSeleccionado(),
-      alumnoExamenId,
-      examenId: this.storage.getExamen(),
-    });
 
     this.router.navigate([
       '/s/resultados_area',
