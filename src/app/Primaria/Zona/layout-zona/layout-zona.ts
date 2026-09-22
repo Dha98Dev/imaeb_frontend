@@ -1,56 +1,113 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+
 import { Router } from '@angular/router';
+
 import { MenuItem } from 'primeng/api';
+
+import { combineLatest, distinctUntilChanged, filter } from 'rxjs';
+
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service';
 
 @Component({
   selector: 'app-layout-zona',
   standalone: false,
   templateUrl: './layout-zona.html',
-  styleUrl: './layout-zona.scss'
+  styleUrl: './layout-zona.scss',
 })
 export class LayoutZona {
-  constructor(private router:Router, private cctService:GetCctInfoSErvice, private cd:ChangeDetectorRef){}
-  items: MenuItem[] | null = [];
-  private nivel:string=''
-  private zona:string=''
-  private modalidad:string=''
+  public nivel: string = '';
+  public zona: string = '';
+  public modalidad: string = '';
 
-  ngOnInit(){
-  
-    this.cctService.zona$.subscribe(data =>{
-      this.zona=data
-      this.cd.markForCheck()
-    })
-    this.cctService.nivel$.subscribe(data =>{
-      this.nivel=data
-      this.cd.markForCheck()
-    })    
-    this.cctService.modalidad$.subscribe(data =>{
-      this.modalidad=data
-      this.cd.markForCheck()
-    })
+  public items: MenuItem[] = [];
 
-        this.items = [
+  public tabActivo: string = 'Resultados de zona';
+
+  private destroyRef = inject(DestroyRef);
+
+  constructor(
+    private router: Router,
+    private cctService: GetCctInfoSErvice,
+  ) {}
+
+  ngOnInit(): void {
+    combineLatest([this.cctService.nivel$, this.cctService.zona$, this.cctService.modalidad$])
+      .pipe(
+        filter(
+          ([nivel, zona, modalidad]) =>
+            nivel !== undefined &&
+            nivel !== null &&
+            nivel !== '' &&
+            zona !== undefined &&
+            zona !== null &&
+            zona !== '' &&
+            modalidad !== undefined &&
+            modalidad !== null &&
+            modalidad !== '',
+        ),
+
+        distinctUntilChanged(
+          (anterior, actual) =>
+            anterior[0] === actual[0] && anterior[1] === actual[1] && anterior[2] === actual[2],
+        ),
+
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([nivel, zona, modalidad]) => {
+        queueMicrotask(() => {
+          this.nivel = String(nivel);
+
+          this.zona = String(zona);
+
+          this.modalidad = String(modalidad);
+
+          this.construirTabs();
+        });
+      });
+  }
+
+  private construirTabs(): void {
+    this.items = [
       {
-        label: 'Resutados de zona',
-        icon: 'pi pi-home',
-        // url: '/prim_2/resultados-grupo',
+        label: 'Resultados de zona',
+
+        icon: 'pi pi-chart-bar',
+
         command: () => {
-          this.router.navigate(['/sz/resultados-zona', btoa(this.nivel) , btoa(this.zona), btoa(this.modalidad)])
+          this.router.navigate([
+            '/sz/resultados-zona',
+            btoa(this.nivel),
+            btoa(this.zona),
+            btoa(this.modalidad),
+          ]);
         },
       },
+
       {
-        label: 'CCT de zona ' +this.zona,
-        icon: 'pi pi-list',
-        // url: '/prim_2/listado-grupo',
+        label: `CCT de zona ${this.zona}`,
+
+        icon: 'pi pi-building',
+
         command: () => {
-          this.router.navigate(['/sz/cctstByZona',btoa(this.nivel), btoa(this.zona), btoa(this.modalidad)])
+          this.router.navigate([
+            '/sz/cctstByZona',
+            btoa(this.nivel),
+            btoa(this.zona),
+            btoa(this.modalidad),
+          ]);
         },
-
       },
-
     ];
   }
 
+  seleccionarTab(item: MenuItem, event: Event): void {
+    this.tabActivo = item.label ?? '';
+
+    item.command?.({
+      originalEvent: event,
+      item,
+    });
+  }
 }

@@ -308,7 +308,7 @@ export class AuthService {
   logout(): void {
     this.clearTokens();
 
-    void this.router.navigateByUrl('/Auth/login');
+    void this.router.navigateByUrl('/inicio');
   }
 
   getAuthorizationHeader() {

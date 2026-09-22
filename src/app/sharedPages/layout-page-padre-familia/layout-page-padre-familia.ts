@@ -1,12 +1,21 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+
 import { Router } from '@angular/router';
+
 import { MenuItem } from 'primeng/api';
+
 import { catchError, finalize, of } from 'rxjs';
 
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { StorageService } from '../../core/services/storage/sesionStorage.service';
+
 import { DatosCct } from '../../core/Interfaces/DatosCct.interface';
+
 import { GetCctInfoSErvice } from '../../core/services/Cct/GetCctInfo.service';
+
 import { CryptoJsService } from '../../core/services/CriptoJs/cryptojs.service';
+
 import { listadoAlumnosService } from '../../core/services/listadoAlumnos.service';
 
 import {
@@ -20,17 +29,10 @@ import {
   templateUrl: './layout-page-padre-familia.html',
   styleUrl: './layout-page-padre-familia.scss',
 })
-export class LayoutPagePadreFamilia implements OnInit {
-  constructor(
-    private router: Router,
-    private storage: StorageService,
-    private cctService: GetCctInfoSErvice,
-    private cd: ChangeDetectorRef,
-    private cripto: CryptoJsService,
-    private listadoAlumnosService: listadoAlumnosService,
-  ) {}
-
+export class LayoutPagePadreFamilia {
   public items: MenuItem[] = [];
+
+  public tabActivo: string = 'Inicio';
 
   public datosCct: DatosCct = {} as DatosCct;
 
@@ -48,7 +50,39 @@ export class LayoutPagePadreFamilia implements OnInit {
 
   private alumnoSeleccionadoCript: string = '';
 
+  private destroyRef = inject(DestroyRef);
+
+  constructor(
+    private router: Router,
+    private storage: StorageService,
+    private cctService: GetCctInfoSErvice,
+    private cripto: CryptoJsService,
+    private listadoAlumnosService: listadoAlumnosService,
+  ) {}
+
   ngOnInit(): void {
+    this.obtenerAlumnoSeleccionado();
+
+    this.escucharCentroTrabajo();
+
+    /*
+     * Aunque no tengamos alumno o examen,
+     * mostramos el tab de Inicio.
+     */
+    if (!this.alumnoId || !this.examenId) {
+      this.construirMenuMaterias([]);
+
+      this.cargandoMaterias = false;
+
+      this.menuCargado = true;
+
+      return;
+    }
+
+    this.getMateriasAlumno();
+  }
+
+  private obtenerAlumnoSeleccionado(): void {
     const alumnoCript = this.storage.getCriptAlSeleccionado();
 
     const alumno = this.storage.getAlSeleccionado();
@@ -64,28 +98,25 @@ export class LayoutPagePadreFamilia implements OnInit {
     }
 
     if (examen) {
-      this.examenId = examen;
+      this.examenId = Number(examen);
     }
+  }
 
-    this.cctService.centroTrabajo$.subscribe((data) => {
+  private escucharCentroTrabajo(): void {
+    this.cctService.centroTrabajo$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data) => {
       if (!data?.cct) {
         return;
       }
 
-      this.datosCct = data;
-
-      this.cd.markForCheck();
+      /*
+       * Evita cambios durante el mismo
+       * ciclo de detección provocado
+       * por app-header.
+       */
+      queueMicrotask(() => {
+        this.datosCct = data;
+      });
     });
-
-    if (!this.alumnoId || !this.examenId) {
-      this.construirMenuMaterias([]);
-
-      this.cargandoMaterias = false;
-
-      return;
-    }
-
-    this.getMateriasAlumno();
   }
 
   getMateriasAlumno(): void {
@@ -96,7 +127,10 @@ export class LayoutPagePadreFamilia implements OnInit {
     this.listadoAlumnosService
       .obtenerResultadoAlumno(this.alumnoId, this.examenId)
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
+
         catchError((error) => {
+          console.error('Error obteniendo resultados del alumno', error);
 
           return of(undefined);
         }),
@@ -105,8 +139,6 @@ export class LayoutPagePadreFamilia implements OnInit {
           this.cargandoMaterias = false;
 
           this.menuCargado = true;
-
-          this.cd.markForCheck();
         }),
       )
       .subscribe({
@@ -125,16 +157,17 @@ export class LayoutPagePadreFamilia implements OnInit {
 
           this.materias = resp.resultadosPorMateria ? [...resp.resultadosPorMateria] : [];
 
-
           this.construirMenuMaterias(this.materias);
         },
       });
   }
 
-  construirMenuMaterias(materias: ResultadoMateriaAlumnoV2[]): void {
+  private construirMenuMaterias(materias: ResultadoMateriaAlumnoV2[]): void {
     const inicio: MenuItem = {
       label: 'Inicio',
+
       icon: 'pi pi-home',
+
       command: () => {
         this.router.navigate(['/s/principal_alumno', this.alumnoSeleccionadoCript]);
       },
@@ -145,34 +178,43 @@ export class LayoutPagePadreFamilia implements OnInit {
 
       icon: this.getIconMateria(materia.materia),
 
-      tooltipOptions: {
-        tooltipLabel: materia.materia,
-        tooltipPosition: 'bottom',
-      },
-
       command: () => {
         this.irResultadoMateria(materia);
       },
     }));
 
+    /*
+     * Reemplazamos siempre el arreglo.
+     *
+     * No utilizamos push() sobre this.items,
+     * así evitamos tabs duplicados.
+     */
     this.items = [inicio, ...materiasMenu];
+  }
 
+  seleccionarTab(item: MenuItem, event: Event): void {
+    this.tabActivo = item.label ?? '';
 
-    this.cd.markForCheck();
+    item.command?.({
+      originalEvent: event,
+      item,
+    });
   }
 
   irResultadoMateria(materia: ResultadoMateriaAlumnoV2): void {
     const alumnoExamenId = this.storage.getAlumnoExamenId();
 
     if (!alumnoExamenId) {
-
       return;
     }
 
     this.router.navigate([
       '/s/resultados_area',
+
       this.cripto.Encriptar(materia.materiaId.toString()),
+
       this.alumnoSeleccionadoCript,
+
       this.cripto.Encriptar(alumnoExamenId.toString()),
     ]);
   }
@@ -184,11 +226,11 @@ export class LayoutPagePadreFamilia implements OnInit {
       .replace(/[\u0300-\u036f]/g, '');
 
     if (nombre.includes('matemat')) {
-      return 'pi pi-chart-pie';
+      return 'pi pi-calculator';
     }
 
     if (nombre.includes('ciencia')) {
-      return 'pi pi-building';
+      return 'pi pi-atom';
     }
 
     if (nombre.includes('saberes')) {

@@ -112,8 +112,6 @@ export class ListadoUsuarios {
   ngOnInit(): void {
     this.crearFormularios();
 
-    this.configurarTabla();
-
     this.breadCrumService.addItem({
       jerarquia: 1,
       label: 'Administración de usuarios',
@@ -146,47 +144,47 @@ export class ListadoUsuarios {
     });
   }
 
-  private configurarTabla(): void {
-    const columns: TableColumn[] = [
-      {
-        key: 'nombreCompleto',
-        label: 'Nombre completo',
-        filterable: true,
-      },
-      {
-        key: 'username',
-        label: 'Usuario',
-        filterable: true,
-      },
-      {
-        key: 'tipoPersona',
-        label: 'Tipo de persona',
-        filterable: false,
-      },
-      {
-        key: 'scope',
-        label: 'Scope',
-        filterable: false,
-      },
-      {
-        key: 'estadoTexto',
-        label: 'Estado',
-        filterable: false,
-        icon: 'pi pi-check-circle',
-      },
-      {
-        key: 'fechaCreacionTexto',
-        label: 'Fecha de creación',
-        filterable: false,
-      },
-    ];
+  // private configurarTabla(): void {
+  //   const columns: TableColumn[] = [
+  //     {
+  //       key: 'nombreCompleto',
+  //       label: 'Nombre completo',
+  //       filterable: true,
+  //     },
+  //     {
+  //       key: 'username',
+  //       label: 'Usuario',
+  //       filterable: true,
+  //     },
+  //     {
+  //       key: 'tipoPersona',
+  //       label: 'Tipo de persona',
+  //       filterable: false,
+  //     },
+  //     {
+  //       key: 'scope',
+  //       label: 'Scope',
+  //       filterable: false,
+  //     },
+  //     {
+  //       key: 'estadoTexto',
+  //       label: 'Estado',
+  //       filterable: false,
+  //       icon: 'pi pi-check-circle',
+  //     },
+  //     {
+  //       key: 'fechaCreacionTexto',
+  //       label: 'Fecha de creación',
+  //       filterable: false,
+  //     },
+  //   ];
 
-    this.dataTable = {
-      columns,
-      data: [],
-      globalSearchKeys: ['nombreCompleto', 'username', 'tipoPersona', 'scope', 'estadoTexto'],
-    };
-  }
+  //   this.dataTable = {
+  //     columns,
+  //     data: [],
+  //     globalSearchKeys: ['nombreCompleto', 'username', 'tipoPersona', 'scope', 'estadoTexto'],
+  //   };
+  // }
 
   getListadoUsuarios(): void {
     this.cargando = true;
@@ -202,7 +200,7 @@ export class ListadoUsuarios {
 
       page: this.paginaActual,
 
-      size: 100,
+      size: this.tamanoPagina,
 
       sort: ['fechaCreacion,desc'],
     };
@@ -235,23 +233,16 @@ export class ListadoUsuarios {
 
           this.tamanoPagina = resp.page?.size ?? 20;
 
-          this.dataTable = {
-            ...this.dataTable,
-
-            data: [...this.listadoUsuarios],
-          };
+          console.log(this.listadoUsuarios);
+          
 
           this.cd.markForCheck();
         },
 
         error: (error) => {
+          console.error('Error obteniendo usuarios', error);
 
           this.listadoUsuarios = [];
-
-          this.dataTable = {
-            ...this.dataTable,
-            data: [],
-          };
 
           this.messageService.add({
             severity: 'error',
@@ -262,7 +253,6 @@ export class ListadoUsuarios {
         },
       });
   }
-
   buscar(): void {
     this.paginaActual = 0;
 
@@ -289,7 +279,7 @@ export class ListadoUsuarios {
     this.getListadoUsuarios();
   }
 
-  onRow(usuario: any): void {
+  onRow(usuario: UsuarioAdminVista): void {
     this.usuarioSeleccionado = usuario;
 
     this.reestablecerPasswordForm.reset();
@@ -365,7 +355,6 @@ export class ListadoUsuarios {
         },
 
         error: (error) => {
-
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -417,7 +406,6 @@ export class ListadoUsuarios {
         },
 
         error: (error) => {
-
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

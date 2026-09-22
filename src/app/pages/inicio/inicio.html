@@ -4,7 +4,7 @@
 
     <!-- Acceso -->
     <header class="mx-auto flex w-full max-w-7xl justify-end px-4 py-4 sm:px-8 sm:py-5 lg:px-10">
-        @if (!isAutenticated) {
+        <!-- @if (!isAutenticated) {
         <button type="button" routerLink="/Auth/login"
             class="inline-flex items-center gap-2 rounded-xl bg-[#7B1E2B] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#671924] hover:shadow-md sm:px-4">
             <i class="pi pi-user"></i>
@@ -16,7 +16,7 @@
             <i class="pi pi-chart-bar"></i>
             <span class="hidden sm:inline">Ver resultados</span>
         </button>
-        }
+        } -->
     </header>
 
     <!-- Hero -->
@@ -46,22 +46,55 @@
                 fortalecer la toma de decisiones y mejorar la calidad educativa.
             </p>
 
-            <div class="mt-7 flex justify-center lg:justify-start">
-                @if (!isAutenticated) {
-                <button type="button" routerLink="/Auth/login"
-                    class="group inline-flex w-full items-center justify-center gap-3 rounded-xl bg-[#7B1E2B] px-5 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#671924] hover:shadow-lg sm:w-auto">
-                    <i class="pi pi-chart-bar"></i>
-                    Iniciar sesión para ver resultados
-                    <i class="pi pi-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
-                </button>
-                } @else {
-                <button type="button" routerLink="/Auth/main-filter"
-                    class="group inline-flex w-full items-center justify-center gap-3 rounded-xl bg-[#0F766E] px-5 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5  hover:shadow-lg sm:w-auto">
-                    <i class="pi pi-chart-line"></i>
-                    Consultar resultados
-                    <i class="pi pi-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
-                </button>
-                }
+            <div class="mt-7 flex flex-col items-center gap-3 lg:items-start">
+
+                <div class="w-full max-w-[390px]">
+
+                    @if (!isAutenticated) {
+
+                    <button type="button" routerLink="/Auth/login"
+                        class="group inline-flex w-full items-center justify-center gap-3 rounded-xl bg-[#7B1E2B] px-5 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#671924] hover:shadow-lg">
+
+                        <i class="pi pi-chart-bar"></i>
+
+                        Iniciar sesión para ver resultados
+
+                        <i class="pi pi-arrow-right text-xs transition-transform group-hover:translate-x-1">
+                        </i>
+
+                    </button>
+
+                    } @else {
+
+                    <button type="button" routerLink="/Auth/main-filter"
+                        class="group inline-flex w-full items-center justify-center gap-3 rounded-xl bg-[#0F766E] px-5 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg">
+
+                        <i class="pi pi-chart-line"></i>
+
+                        Consultar resultados
+
+                        <i class="pi pi-arrow-right text-xs transition-transform group-hover:translate-x-1">
+                        </i>
+
+                    </button>
+
+                    }
+
+                    <a href="./assets/files/Manual_IMAEB.pdf" target="_blank" rel="noopener noreferrer"
+                        class="group mt-3 inline-flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-600 no-underline shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#7B1E2B]/30 hover:bg-[#7B1E2B]/5 hover:text-[#7B1E2B] hover:shadow-md">
+
+                        <i class="pi pi-file-pdf text-base text-rose-500"></i>
+
+                        Manual de uso
+
+                        <i
+                            class="pi pi-external-link text-[10px] text-slate-400 transition-colors group-hover:text-[#7B1E2B]">
+                        </i>
+
+                    </a>
+
+                </div>
+
             </div>
 
             <div class="mt-4 flex items-center justify-center gap-2 text-xs text-gray-400 sm:text-sm lg:justify-start">

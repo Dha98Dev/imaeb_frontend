@@ -124,7 +124,41 @@
         <!-- ====================================================== -->
         <!-- RESUMEN GENERAL -->
         <!-- ====================================================== -->
+        @if (sinParticipacion) {
 
+        <section
+            class="overflow-hidden rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 shadow-sm">
+
+            <div class="flex flex-col items-center px-6 py-10 text-center sm:py-12">
+
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
+
+                    <i class="pi pi-info-circle text-xl"></i>
+
+                </div>
+
+                <h2 class="mt-4 text-lg font-bold text-slate-900">
+                    Sin participación registrada
+                </h2>
+
+                <p class="mt-2 max-w-xl text-sm leading-6 text-slate-500">
+                    No se registraron participantes para esta evaluación en el centro de trabajo seleccionado.
+                </p>
+
+                <div
+                    class="mt-5 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-4 py-2 text-xs font-semibold text-amber-700">
+
+                    <i class="pi pi-users"></i>
+
+                    No hay resultados que mostrar
+
+                </div>
+
+            </div>
+
+        </section>
+
+        }@else {
         <section>
 
             <div class="mb-4">
@@ -293,6 +327,7 @@
             </div>
 
         </section>
+        }
 
 
         <!-- ====================================================== -->
@@ -607,19 +642,41 @@
 
                             <td class="px-3 py-4 text-center text-slate-600">
 
+                                @if (item.totalParticipantes > 0) {
+
                                 {{ item.respuestasRegistradas }}
+
+                                } @else {
+
+                                <span class="text-slate-300">
+                                    —
+                                </span>
+
+                                }
 
                             </td>
 
 
                             <td class="px-3 py-4 text-center text-slate-600">
+
+                                @if (item.totalParticipantes > 0) {
 
                                 {{ item.aciertos }}
 
+                                } @else {
+
+                                <span class="text-slate-300">
+                                    —
+                                </span>
+
+                                }
+
                             </td>
 
 
                             <td class="px-3 py-4 text-center text-slate-600">
+
+                                @if (item.totalParticipantes > 0) {
 
                                 <span class="font-semibold">
                                     {{ item.puntajeObtenido }}
@@ -630,37 +687,67 @@
                                     {{ item.puntajeMaximo }}
                                 </span>
 
+                                } @else {
+
+                                <span class="text-slate-300">
+                                    —
+                                </span>
+
+                                }
+
                             </td>
 
 
                             <td class="px-3 py-4 text-center">
 
+                                @if (
+                                item.totalParticipantes > 0 &&
+                                item.puntajeMaximo > 0
+                                ) {
+
                                 <span
                                     class="inline-flex min-w-[65px] justify-center rounded-full px-3 py-1.5 text-xs font-bold"
                                     [ngClass]="{
-                                                'bg-emerald-50 text-emerald-700':
-                                                    item.porcentaje >= 80,
+                'bg-emerald-50 text-emerald-700':
+                    item.porcentaje >= 80,
 
-                                                'bg-blue-50 text-blue-700':
-                                                    item.porcentaje >= 60 &&
-                                                    item.porcentaje < 80,
+                'bg-blue-50 text-blue-700':
+                    item.porcentaje >= 60 &&
+                    item.porcentaje < 80,
 
-                                                'bg-amber-50 text-amber-700':
-                                                    item.porcentaje >= 40 &&
-                                                    item.porcentaje < 60,
+                'bg-amber-50 text-amber-700':
+                    item.porcentaje >= 40 &&
+                    item.porcentaje < 60,
 
-                                                'bg-rose-50 text-rose-700':
-                                                    item.porcentaje < 40
-                                            }">
+                'bg-rose-50 text-rose-700':
+                    item.porcentaje < 40
+            }">
 
                                     {{ item.porcentaje | number:'1.0-2' }}%
 
                                 </span>
 
+                                } @else {
+
+                                <span
+                                    class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-500">
+
+                                    <i class="pi pi-minus-circle text-[10px]"></i>
+
+                                    Sin participación
+
+                                </span>
+
+                                }
+
                             </td>
 
-
                             <td class="px-3 py-4 text-right">
+
+                                @if (
+                                item.totalParticipantes > 0 &&
+                                item.puntajeMaximo > 0
+                                ) {
 
                                 <button type="button" (click)="redireccioarResultadosGrupo(item.grupo)"
                                     pTooltip="Ver resultados del grupo" tooltipPosition="bottom"
@@ -669,6 +756,17 @@
                                     <i class="pi pi-arrow-right"></i>
 
                                 </button>
+
+                                } @else {
+
+                                <span pTooltip="Este grupo no tiene participación registrada" tooltipPosition="bottom"
+                                    class="inline-flex h-9 w-9 items-center justify-center text-slate-300">
+
+                                    <i class="pi pi-minus"></i>
+
+                                </span>
+
+                                }
 
                             </td>
 
@@ -715,7 +813,6 @@
 
                 <app-chart-barra [dataChart]="dataChartPromedioGrupos">
                 </app-chart-barra>
-
             </div>
 
         </section>
@@ -727,7 +824,7 @@
         <!-- PARTICIPACIÓN -->
         <!-- ====================================================== -->
 
-        @if (participacionCct.length > 0) {
+        <!-- @if (participacionCct.length > 0) {
 
         <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
@@ -798,7 +895,7 @@
 
         </section>
 
-        }
+        } -->
 
 
         <!-- ====================================================== -->

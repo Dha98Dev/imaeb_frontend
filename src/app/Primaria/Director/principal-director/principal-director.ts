@@ -8,15 +8,18 @@ import { GetCctInfoSErvice } from '../../../core/services/Cct/GetCctInfo.service
 import { CatalogoService } from '../../../core/services/Catalogos/catalogo.service';
 import { CryptoJsService } from '../../../core/services/CriptoJs/cryptojs.service';
 
-
 import { DatosCct } from '../../../core/Interfaces/DatosCct.interface';
 
 import { CatalogoCiclos, CatalogoExamen } from '../../../core/Interfaces/catalogo.interface';
 
-
 import { DataGraficaBarra } from '../../../core/Interfaces/grafica.interface';
 import { ResultadosDirectorService } from '../../../core/services/resultados-director.service';
-import { ConteoSexoGrupo, PromedioGrupo, ParticipacionGrupo } from '../../../core/Interfaces/resultados-director.interface';
+import {
+  ConteoSexoGrupo,
+  PromedioGrupo,
+  ParticipacionGrupo,
+} from '../../../core/Interfaces/resultados-director.interface';
+import { ToastMessageService } from '../../../core/components/shared/toast-message/toast-message.service';
 
 @Component({
   selector: 'app-principal-director',
@@ -33,6 +36,7 @@ export class PrincipalDirector {
     private catalogoService: CatalogoService,
     private crypto: CryptoJsService,
     private resultadosDirectorService: ResultadosDirectorService,
+    private toast: ToastMessageService,
   ) {}
 
   /*
@@ -94,6 +98,10 @@ export class PrincipalDirector {
   public totalAlumnos: number = 0;
 
   public promedioGeneralCct: number = 0;
+
+  public sinParticipacion: boolean = false;
+
+  public totalParticipantesEvaluacion: number = 0;
 
   /*
    * ============================================================
@@ -222,7 +230,6 @@ export class PrincipalDirector {
         },
 
         error: (error) => {
-
           this.loader = false;
 
           this.cd.markForCheck();
@@ -294,7 +301,6 @@ export class PrincipalDirector {
 
       conteoSexo: this.resultadosDirectorService.getConteoSexo(this.cct, this.examenSelected).pipe(
         catchError((error) => {
-
           return of([]);
         }),
       ),
@@ -307,7 +313,6 @@ export class PrincipalDirector {
         .getPromediosGrupos(this.cct, this.examenSelected)
         .pipe(
           catchError((error) => {
-
             return of([]);
           }),
         ),
@@ -320,7 +325,6 @@ export class PrincipalDirector {
         .getParticipacionCct(this.cct, this.examenSelected)
         .pipe(
           catchError((error) => {
-
             return of([]);
           }),
         ),
@@ -350,22 +354,17 @@ export class PrincipalDirector {
 
           this.calcularTotalesSexo();
 
-          /*
-           * Resultado general
-           */
+          this.evaluarParticipacion();
 
-          this.calcularPromedioGeneral();
+          if (!this.sinParticipacion) {
+            this.calcularPromedioGeneral();
 
-          /*
-           * Gráfica
-           */
+            this.dataChartPromedioGrupos = this.buildDataChart(this.promediosGrupos);
+          } else {
+            this.promedioGeneralCct = 0;
 
-          this.dataChartPromedioGrupos = this.buildDataChart(this.promediosGrupos);
-
-          /*
-           * Si el endpoint trae grupos que no estaban
-           * en los datos de CCT, los agregamos.
-           */
+            this.dataChartPromedioGrupos = {} as DataGraficaBarra;
+          }
 
           this.actualizarGruposResultados();
         },
@@ -396,6 +395,9 @@ export class PrincipalDirector {
     this.promedioGeneralCct = 0;
 
     this.dataChartPromedioGrupos = {} as DataGraficaBarra;
+    this.sinParticipacion = false;
+
+    this.totalParticipantesEvaluacion = 0;
   }
 
   /*
@@ -459,16 +461,20 @@ export class PrincipalDirector {
    */
 
   buildDataChart(respuesta: PromedioGrupo[]): DataGraficaBarra {
-    if (!respuesta.length) {
+    const gruposConParticipacion = respuesta.filter(
+      (item) => (item.totalParticipantes ?? 0) > 0 && (item.puntajeMaximo ?? 0) > 0,
+    );
+
+    if (!gruposConParticipacion.length) {
       return {} as DataGraficaBarra;
     }
 
     return {
-      categorias: respuesta.map((item) => `Grupo ${item.grupo}`),
+      categorias: gruposConParticipacion.map((item) => `Grupo ${item.grupo}`),
 
       firstLeyend: 'Resultado',
 
-      firstDataSet: respuesta.map((item) => item.porcentaje),
+      firstDataSet: gruposConParticipacion.map((item) => item.porcentaje ?? 0),
 
       secondDataSet: [],
 
@@ -544,8 +550,62 @@ export class PrincipalDirector {
 
   redireccioarResultadosGrupo(grupo: string): void {
     this.grupoSelected = grupo;
-    
+
+    const data = this.promediosGrupos.find((item) => item.grupo === grupo);
+
+    if (!data) {
+      this.toast.error(
+        'Información no disponible',
+        'No fue posible encontrar la información del grupo seleccionado.',
+        {
+          duration: 5000,
+        },
+      );
+
+      return;
+    }
+
+    const tieneParticipacion = (data.totalParticipantes ?? 0) > 0;
+
+    const tieneEvaluacion = (data.puntajeMaximo ?? 0) > 0;
+
+    if (!tieneParticipacion || !tieneEvaluacion) {
+      this.toast.warning(
+        'Sin participación',
+        `El grupo ${grupo} no cuenta con participación registrada para esta evaluación.`,
+        {
+          duration: 5000,
+        },
+      );
+
+      return;
+    }
 
     this.router.navigate(['/prim_2/resultados-grupo', this.crypto.Encriptar(this.cct), grupo]);
+  }
+
+  evaluarParticipacion(): void {
+    const participantesConteoSexo = this.conteoSexo.reduce(
+      (total, item) => total + (item.totalParticipantes ?? 0),
+      0,
+    );
+
+    const participantesPromedios = this.promediosGrupos.reduce(
+      (total, item) => total + (item.totalParticipantes ?? 0),
+      0,
+    );
+
+    const participantesParticipacion = this.participacionCct.reduce(
+      (total, item) => total + (item.totalParticipantes ?? 0),
+      0,
+    );
+
+    this.totalParticipantesEvaluacion = Math.max(
+      participantesConteoSexo,
+      participantesPromedios,
+      participantesParticipacion,
+    );
+
+    this.sinParticipacion = this.totalParticipantesEvaluacion === 0;
   }
 }

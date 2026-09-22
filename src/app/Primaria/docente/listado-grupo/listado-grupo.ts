@@ -17,6 +17,7 @@ import { CatalogoService } from '../../../core/services/Catalogos/catalogo.servi
 import { CatalogoCiclos, CatalogoExamen } from '../../../core/Interfaces/catalogo.interface';
 import { AlumnoGrupoV2 } from '../../../core/Interfaces/listadoAlumnoV2.interface';
 import { StorageService } from '../../../core/services/storage/sesionStorage.service';
+import { ToastMessageService } from '../../../core/components/shared/toast-message/toast-message.service';
 
 @Component({
   selector: 'app-listado-grupo',
@@ -34,7 +35,8 @@ export class ListadoGrupo {
     private crypto: CryptoJsService,
     private catalogoService: CatalogoService,
     private router: Router,
-    private storage:StorageService
+    private storage: StorageService,
+    private toast: ToastMessageService,
   ) {}
 
   public cct: string = '';
@@ -129,7 +131,6 @@ export class ListadoGrupo {
           this.seleccionarExamen();
 
           if (!this.examenSelected) {
-
             this.loader = false;
 
             return;
@@ -139,7 +140,6 @@ export class ListadoGrupo {
         },
 
         error: (error) => {
-
           this.loader = false;
 
           this.cd.markForCheck();
@@ -184,7 +184,6 @@ export class ListadoGrupo {
       .obtenerAlumnosPorGrupo(this.cct, this.grupo, this.examenSelected, 0, 100)
       .pipe(
         catchError((error) => {
-
           return of({
             content: [],
             page: {
@@ -219,7 +218,6 @@ export class ListadoGrupo {
     const requests = alumnos.map((alumno) =>
       this.listadoAlumnosService.obtenerResultadoAlumno(alumno.alumnoId, this.examenSelected).pipe(
         catchError((error) => {
-
           return of(undefined);
         }),
       ),
@@ -311,33 +309,41 @@ export class ListadoGrupo {
     if (promedio >= 80) {
       return 'bg-emerald-50 text-emerald-700';
     }
-
-    if (promedio >= 60) {
-      return 'bg-blue-50 text-blue-700';
-    }
-
-    if (promedio >= 40) {
+    if (promedio >= 50  && promedio < 80 ) {
       return 'bg-amber-50 text-amber-700';
     }
 
     return 'bg-rose-50 text-rose-700';
   }
 
- verResultadoAlumno(alumno: AlumnoListadoVista): void {
-  this.storage.saveAlumnoSeleccionado(
-    alumno.alumnoId,
-    alumno.examenId,
-    alumno.alumnoExamenId,
-  );
+  verResultadoAlumno(alumno: AlumnoListadoVista): void {
+    if (
+      alumno.promedio &&
+      alumno.puntajeObtenido !== null &&
+      alumno.puntajeObtenido !== undefined &&
+      alumno.puntajeObtenido > 0
+    ) {
+      this.storage.saveAlumnoSeleccionado(alumno.alumnoId, alumno.examenId, alumno.alumnoExamenId);
 
-  this.router.navigate([
-    '/s/principal_alumno',
-    this.crypto.Encriptar(alumno.cct),
-    alumno.grupo,
-    this.crypto.Encriptar(alumno.alumnoId.toString()),
-    this.crypto.Encriptar(alumno.examenId.toString()),
-  ]);
-}
+      this.router.navigate([
+        '/s/principal_alumno',
+        this.crypto.Encriptar(alumno.cct),
+        alumno.grupo,
+        this.crypto.Encriptar(alumno.alumnoId.toString()),
+        this.crypto.Encriptar(alumno.examenId.toString()),
+      ]);
+
+      return;
+    }
+
+    this.toast.warning(
+      'Resultado no disponible',
+      `${alumno.nombreCompleto} no cuenta con resultados disponibles para consultar.`,
+      {
+        duration: 7000,
+      },
+    );
+  }
 }
 
 export interface AlumnoListadoVista {
