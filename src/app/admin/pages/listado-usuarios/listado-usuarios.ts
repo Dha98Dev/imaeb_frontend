@@ -1,22 +1,18 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { finalize } from 'rxjs';
 
-import { MessageService } from 'primeng/api';
-
 import { BreadCrumService } from '../../../core/services/breadCrumbs/bread-crumb-service';
+
+import { ToastMessageService } from '../../../core/components/shared/toast-message/toast-message.service';
 
 import { UsuariosService } from '../../services/usuarios.service';
 
-import {
-  UsuarioAdmin,
-  UsuarioAdminVista,
-  UsuariosAdminFiltros,
-} from '../../interfaces/usuarios.interface';
-
-import { DinamicTableData, TableColumn } from '../../../core/Interfaces/TablaDinamica.interface';
+import { UsuarioAdminVista, UsuariosAdminFiltros } from '../../interfaces/usuarios.interface';
 
 @Component({
   selector: 'app-listado-usuarios',
@@ -25,35 +21,17 @@ import { DinamicTableData, TableColumn } from '../../../core/Interfaces/TablaDin
   styleUrl: './listado-usuarios.scss',
 })
 export class ListadoUsuarios {
-  constructor(
-    private breadCrumService: BreadCrumService,
-    private usuariosService: UsuariosService,
-    private cd: ChangeDetectorRef,
-    private fb: FormBuilder,
-    private messageService: MessageService,
-  ) {}
-
-  public visible: boolean = false;
-
   public cargando: boolean = false;
 
-  public actualizandoEstado: boolean = false;
-
-  public actualizandoPassword: boolean = false;
+  public errorListado: string | null = null;
 
   public listadoUsuarios: UsuarioAdminVista[] = [];
 
   public usuarioSeleccionado: UsuarioAdminVista | null = null;
 
-  public dataTable: DinamicTableData = {} as DinamicTableData;
+  public editorVisible: boolean = false;
 
   public filtrosForm: FormGroup = {} as FormGroup;
-
-  public reestablecerPasswordForm: FormGroup = {} as FormGroup;
-
-  public showPass: boolean = false;
-
-  public showConfirm: boolean = false;
 
   public paginaActual: number = 0;
 
@@ -63,7 +41,11 @@ export class ListadoUsuarios {
 
   public totalPaginas: number = 0;
 
-  public scopes = [
+  private paginaConfirmada: number = 0;
+
+  private tamanoPaginaConfirmado: number = 20;
+
+  public readonly scopes = [
     {
       label: 'Nivel',
       value: 'NIVEL',
@@ -98,7 +80,7 @@ export class ListadoUsuarios {
     },
   ];
 
-  public estados = [
+  public readonly estados = [
     {
       label: 'Activos',
       value: true,
@@ -109,8 +91,16 @@ export class ListadoUsuarios {
     },
   ];
 
+  constructor(
+    private breadCrumService: BreadCrumService,
+    private usuariosService: UsuariosService,
+    private cd: ChangeDetectorRef,
+    private fb: FormBuilder,
+    private toast: ToastMessageService,
+  ) {}
+
   ngOnInit(): void {
-    this.crearFormularios();
+    this.crearFormulario();
 
     this.breadCrumService.addItem({
       jerarquia: 1,
@@ -122,72 +112,22 @@ export class ListadoUsuarios {
     this.getListadoUsuarios();
   }
 
-  private crearFormularios(): void {
+  private crearFormulario(): void {
     this.filtrosForm = this.fb.group({
       username: [''],
       scope: [null],
       activo: [null],
     });
-
-    this.reestablecerPasswordForm = this.fb.group({
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]).{8,}$/,
-          ),
-        ],
-      ],
-
-      confirmPassword: ['', Validators.required],
-    });
   }
 
-  // private configurarTabla(): void {
-  //   const columns: TableColumn[] = [
-  //     {
-  //       key: 'nombreCompleto',
-  //       label: 'Nombre completo',
-  //       filterable: true,
-  //     },
-  //     {
-  //       key: 'username',
-  //       label: 'Usuario',
-  //       filterable: true,
-  //     },
-  //     {
-  //       key: 'tipoPersona',
-  //       label: 'Tipo de persona',
-  //       filterable: false,
-  //     },
-  //     {
-  //       key: 'scope',
-  //       label: 'Scope',
-  //       filterable: false,
-  //     },
-  //     {
-  //       key: 'estadoTexto',
-  //       label: 'Estado',
-  //       filterable: false,
-  //       icon: 'pi pi-check-circle',
-  //     },
-  //     {
-  //       key: 'fechaCreacionTexto',
-  //       label: 'Fecha de creación',
-  //       filterable: false,
-  //     },
-  //   ];
-
-  //   this.dataTable = {
-  //     columns,
-  //     data: [],
-  //     globalSearchKeys: ['nombreCompleto', 'username', 'tipoPersona', 'scope', 'estadoTexto'],
-  //   };
-  // }
-
   getListadoUsuarios(): void {
+    if (this.cargando) {
+      return;
+    }
+
     this.cargando = true;
+
+    this.errorListado = null;
 
     const form = this.filtrosForm.getRawValue();
 
@@ -210,6 +150,7 @@ export class ListadoUsuarios {
       .pipe(
         finalize(() => {
           this.cargando = false;
+
           this.cd.markForCheck();
         }),
       )
@@ -233,28 +174,27 @@ export class ListadoUsuarios {
 
           this.tamanoPagina = resp.page?.size ?? 20;
 
-          console.log(this.listadoUsuarios);
-          
+          this.paginaConfirmada = this.paginaActual;
 
-          this.cd.markForCheck();
+          this.tamanoPaginaConfirmado = this.tamanoPagina;
         },
 
-        error: (error) => {
-          console.error('Error obteniendo usuarios', error);
+        error: (error: unknown) => {
+          this.paginaActual = this.paginaConfirmada;
 
-          this.listadoUsuarios = [];
+          this.tamanoPagina = this.tamanoPaginaConfirmado;
 
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No fue posible obtener el listado de usuarios.',
-            life: 3500,
-          });
+          this.errorListado = this.getErrorMessage(error);
+
+          this.toast.error('No fue posible consultar usuarios', this.errorListado);
         },
       });
   }
+
   buscar(): void {
     this.paginaActual = 0;
+
+    this.listadoUsuarios = [];
 
     this.getListadoUsuarios();
   }
@@ -268,158 +208,43 @@ export class ListadoUsuarios {
 
     this.paginaActual = 0;
 
+    this.listadoUsuarios = [];
+
     this.getListadoUsuarios();
   }
 
-  cambiarPagina(event: any): void {
+  cambiarPagina(event: { page?: number; rows?: number }): void {
+    if (this.cargando) {
+      return;
+    }
+
     this.paginaActual = event.page ?? 0;
 
-    this.tamanoPagina = event.rows ?? 20;
+    this.tamanoPagina = event.rows ?? this.tamanoPagina;
 
     this.getListadoUsuarios();
   }
 
-  onRow(usuario: UsuarioAdminVista): void {
+  abrirEditor(usuario: UsuarioAdminVista): void {
     this.usuarioSeleccionado = usuario;
 
-    this.reestablecerPasswordForm.reset();
-
-    this.showPass = false;
-
-    this.showConfirm = false;
-
-    this.visible = true;
+    this.editorVisible = true;
   }
 
-  cerrarDialog(): void {
-    this.visible = false;
+  onEditorVisibleChange(visible: boolean): void {
+    this.editorVisible = visible;
 
-    this.usuarioSeleccionado = null;
-
-    this.reestablecerPasswordForm.reset();
-
-    this.showPass = false;
-
-    this.showConfirm = false;
+    if (!visible) {
+      this.usuarioSeleccionado = null;
+    }
   }
 
-  reestablecerPassword(): void {
-    if (!this.usuarioSeleccionado) {
-      return;
-    }
-
-    const password = this.reestablecerPasswordForm.get('password')?.value;
-
-    const confirmPassword = this.reestablecerPasswordForm.get('confirmPassword')?.value;
-
-    if (password !== confirmPassword) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Contraseña',
-        detail: 'Las contraseñas deben ser iguales.',
-        life: 3000,
-      });
-
-      return;
-    }
-
-    if (this.reestablecerPasswordForm.invalid) {
-      this.reestablecerPasswordForm.markAllAsTouched();
-
-      return;
-    }
-
-    this.actualizandoPassword = true;
-
-    this.usuariosService
-      .actualizarPassword(this.usuarioSeleccionado.id, password)
-      .pipe(
-        finalize(() => {
-          this.actualizandoPassword = false;
-
-          this.cd.markForCheck();
-        }),
-      )
-      .subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Contraseña actualizada',
-            detail: 'La contraseña del usuario se actualizó correctamente.',
-            life: 3500,
-          });
-
-          this.reestablecerPasswordForm.reset();
-
-          this.visible = false;
-        },
-
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No fue posible actualizar la contraseña del usuario.',
-            life: 3500,
-          });
-        },
-      });
+  onUsuarioActualizado(): void {
+    this.getListadoUsuarios();
   }
 
-  cambiarEstadoUsuario(activo: boolean): void {
-    if (!this.usuarioSeleccionado) {
-      return;
-    }
-
-    this.actualizandoEstado = true;
-
-    this.usuariosService
-      .actualizarEstadoUsuario(this.usuarioSeleccionado.id, activo)
-      .pipe(
-        finalize(() => {
-          this.actualizandoEstado = false;
-
-          this.cd.markForCheck();
-        }),
-      )
-      .subscribe({
-        next: () => {
-          this.usuarioSeleccionado = {
-            ...this.usuarioSeleccionado!,
-            activo,
-          };
-
-          this.messageService.add({
-            severity: 'success',
-
-            summary: activo ? 'Usuario habilitado' : 'Usuario inhabilitado',
-
-            detail: activo
-              ? 'El usuario puede acceder nuevamente al sistema.'
-              : 'El usuario fue inhabilitado correctamente.',
-
-            life: 3500,
-          });
-
-          this.visible = false;
-
-          this.getListadoUsuarios();
-        },
-
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No fue posible cambiar el estado del usuario.',
-            life: 3500,
-          });
-        },
-      });
-  }
-
-  isInvalid(formGroup: FormGroup, controlName: string): boolean {
-    const control = formGroup.get(controlName);
-
-    return !!(control && control.invalid && (control.touched || control.dirty));
+  reintentar(): void {
+    this.getListadoUsuarios();
   }
 
   private formatearFecha(fecha: string): string {
@@ -438,5 +263,27 @@ export class ListadoUsuarios {
       month: '2-digit',
       year: 'numeric',
     });
+  }
+
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 403) {
+        return 'No tienes permisos para consultar la administración de usuarios.';
+      }
+
+      if (typeof error.error === 'string' && error.error.length > 0) {
+        return error.error;
+      }
+
+      if (error.error && typeof error.error === 'object' && 'message' in error.error) {
+        const message = error.error.message;
+
+        if (typeof message === 'string' && message.length > 0) {
+          return message;
+        }
+      }
+    }
+
+    return 'Ocurrió un problema al consultar el listado de usuarios.';
   }
 }

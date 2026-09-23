@@ -1,0 +1,26 @@
+.editor-content {
+  animation: editorEntrada 180ms ease-out both;
+}
+
+@keyframes editorEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-content {
+    animation: none;
+  }
+
+  :host * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

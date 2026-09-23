@@ -26,16 +26,12 @@ export interface UsuariosAdminFiltros {
   username?: string;
   scope?: string;
   activo?: boolean;
-
   nivelId?: number[];
   modalidadId?: number[];
-
   sectorId?: number;
   zonaId?: number;
-
   page?: number;
   size?: number;
-
   sort?: string[];
 }
 
@@ -47,6 +43,23 @@ export interface CambiarEstadoUsuarioRequest {
   activo: boolean;
 }
 
+export interface ActualizarUsuarioRequest {
+  username?: string;
+  nombre?: string;
+  apellidoPaterno?: string;
+  apellidoMaterno?: string | null;
+  sexo?: string | null;
+}
+
+export interface UsuarioActualizadoResponse {
+  id: number;
+  username: string;
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string | null;
+  sexo: string | null;
+}
+
 export interface TipoUsuario {
   id: string;
   descripcion: string;
@@ -56,6 +69,13 @@ export interface TipoUsuario {
 
 export interface UsuarioAdminVista extends UsuarioAdmin {
   estadoTexto: string;
-
   fechaCreacionTexto: string;
+}
+
+export interface DatosCuentaFormValue {
+  username: string;
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  sexo: string;
 }

@@ -1,0 +1,877 @@
+<p-dialog
+    header="Administrar usuario"
+    [modal]="true"
+    [visible]="visible"
+    (visibleChange)="onDialogVisibleChange($event)"
+    [style]="{ width: '52rem' }"
+    [breakpoints]="{
+        '1199px': '78vw',
+        '575px': '95vw'
+    }"
+    [closable]="!hayCambiosPendientes"
+    [closeOnEscape]="!hayCambiosPendientes"
+    [dismissableMask]="false"
+    [maximizable]="false"
+    appendTo="body">
+
+    @if (usuario) {
+
+        <div class="editor-content">
+
+            <section class="mb-5 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+                    <div class="min-w-0">
+
+                        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                            Usuario seleccionado
+                        </p>
+
+                        <h3 class="mt-1 text-base font-bold text-slate-900">
+                            {{ usuario.nombreCompleto || 'Sin nombre disponible' }}
+                        </h3>
+
+                        <p class="mt-0.5 break-all text-sm text-slate-500">
+                            {{ usuario.username }}
+                        </p>
+
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+
+                        <span
+                            class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+
+                            <i class="pi pi-shield text-[10px]"></i>
+
+                            {{ usuario.scope }}
+
+                        </span>
+
+                        @if (usuario.activo) {
+
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+
+                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+
+                                Activo
+
+                            </span>
+
+                        } @else {
+
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">
+
+                                <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+
+                                Inactivo
+
+                            </span>
+
+                        }
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <p-tabs value="datos">
+
+                <p-tablist>
+
+                    <p-tab value="datos">
+
+                        <span class="inline-flex items-center gap-2">
+                            <i class="pi pi-user-edit text-xs"></i>
+                            Datos de la cuenta
+                        </span>
+
+                    </p-tab>
+
+                    <p-tab value="seguridad">
+
+                        <span class="inline-flex items-center gap-2">
+                            <i class="pi pi-shield text-xs"></i>
+                            Seguridad
+                        </span>
+
+                    </p-tab>
+
+                </p-tablist>
+
+                <p-tabpanels>
+
+                    <p-tabpanel value="datos">
+
+                        <div class="pt-2">
+
+                            @if (sinPermisoDatos) {
+
+                                <div
+                                    role="alert"
+                                    class="mb-4 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                                    <i class="pi pi-lock mt-0.5 text-amber-600"></i>
+
+                                    <div>
+
+                                        <p class="text-sm font-semibold text-amber-800">
+                                            Sin permisos para editar
+                                        </p>
+
+                                        <p class="mt-1 text-xs leading-5 text-amber-700">
+                                            Tu cuenta no tiene permisos para modificar los datos de este usuario.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            }
+
+                            @if (cargandoDetalle) {
+
+                                <div class="mb-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+
+                                    <i class="pi pi-spin pi-spinner text-slate-500"></i>
+
+                                    <span class="text-sm text-slate-600">
+                                        Consultando datos personales...
+                                    </span>
+
+                                </div>
+
+                            }
+
+                            @if (errorDetalle) {
+
+                                <div
+                                    role="alert"
+                                    class="mb-4 flex flex-col gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+
+                                    <div class="flex gap-3">
+
+                                        <i class="pi pi-exclamation-circle mt-0.5 text-rose-600"></i>
+
+                                        <div>
+
+                                            <p class="text-sm font-semibold text-rose-800">
+                                                No fue posible cargar los datos personales
+                                            </p>
+
+                                            <p class="mt-1 text-xs leading-5 text-rose-700">
+                                                {{ errorDetalle }}
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    @if (usuario.personaId !== null) {
+
+                                        <button
+                                            type="button"
+                                            (click)="cargarDetallePersona()"
+                                            class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
+
+                                            <i class="pi pi-refresh text-[10px]"></i>
+
+                                            Reintentar
+
+                                        </button>
+
+                                    }
+
+                                </div>
+
+                            }
+
+                            @if (usuario.personaId === null) {
+
+                                <div
+                                    class="mb-4 flex gap-3 rounded-xl border border-blue-100 bg-blue-50/70 p-4">
+
+                                    <i class="pi pi-info-circle mt-0.5 text-blue-600"></i>
+
+                                    <p class="text-xs leading-5 text-blue-700">
+                                        El listado no tiene una persona asociada para esta cuenta, por lo que no es posible precargar de forma segura nombre, apellidos y sexo. El nombre de usuario sí puede modificarse.
+                                    </p>
+
+                                </div>
+
+                            }
+
+                            <form
+                                [formGroup]="datosForm"
+                                class="space-y-5">
+
+                                <div>
+
+                                    <label
+                                        for="editor-username"
+                                        class="mb-1.5 block text-xs font-semibold text-slate-600">
+
+                                        Nombre de usuario
+                                        <span class="text-rose-500">*</span>
+
+                                    </label>
+
+                                    <input
+                                        id="editor-username"
+                                        type="text"
+                                        pInputText
+                                        autocomplete="username"
+                                        formControlName="username"
+                                        class="w-full"
+                                        [attr.aria-invalid]="isInvalid(datosForm, 'username')" />
+
+                                    @if (isInvalid(datosForm, 'username')) {
+
+                                        <p class="mt-1 text-xs text-rose-600">
+                                            Ingresa un nombre de usuario válido. No puede quedar vacío ni contener únicamente espacios.
+                                        </p>
+
+                                    }
+
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+                                    <div>
+
+                                        <label
+                                            for="editor-nombre"
+                                            class="mb-1.5 block text-xs font-semibold text-slate-600">
+
+                                            Nombre
+                                            <span class="text-rose-500">*</span>
+
+                                        </label>
+
+                                        <input
+                                            id="editor-nombre"
+                                            type="text"
+                                            pInputText
+                                            autocomplete="given-name"
+                                            formControlName="nombre"
+                                            class="w-full"
+                                            [attr.aria-invalid]="isInvalid(datosForm, 'nombre')" />
+
+                                        @if (isInvalid(datosForm, 'nombre')) {
+
+                                            <p class="mt-1 text-xs text-rose-600">
+                                                El nombre es obligatorio y no puede contener únicamente espacios.
+                                            </p>
+
+                                        }
+
+                                    </div>
+
+                                    <div>
+
+                                        <label
+                                            for="editor-apellidoPaterno"
+                                            class="mb-1.5 block text-xs font-semibold text-slate-600">
+
+                                            Apellido paterno
+                                            <span class="text-rose-500">*</span>
+
+                                        </label>
+
+                                        <input
+                                            id="editor-apellidoPaterno"
+                                            type="text"
+                                            pInputText
+                                            autocomplete="family-name"
+                                            formControlName="apellidoPaterno"
+                                            class="w-full"
+                                            [attr.aria-invalid]="isInvalid(datosForm, 'apellidoPaterno')" />
+
+                                        @if (isInvalid(datosForm, 'apellidoPaterno')) {
+
+                                            <p class="mt-1 text-xs text-rose-600">
+                                                El apellido paterno es obligatorio y no puede contener únicamente espacios.
+                                            </p>
+
+                                        }
+
+                                    </div>
+
+                                    <div>
+
+                                        <label
+                                            for="editor-apellidoMaterno"
+                                            class="mb-1.5 block text-xs font-semibold text-slate-600">
+
+                                            Apellido materno
+
+                                        </label>
+
+                                        <input
+                                            id="editor-apellidoMaterno"
+                                            type="text"
+                                            pInputText
+                                            formControlName="apellidoMaterno"
+                                            class="w-full" />
+
+                                        <p class="mt-1 text-[11px] text-slate-400">
+                                            Déjalo vacío únicamente si deseas eliminar el valor registrado.
+                                        </p>
+
+                                    </div>
+
+                                    <div>
+
+                                        <label
+                                            for="editor-sexo"
+                                            class="mb-1.5 block text-xs font-semibold text-slate-600">
+
+                                            Sexo
+
+                                        </label>
+
+                                        <input
+                                            id="editor-sexo"
+                                            type="text"
+                                            pInputText
+                                            formControlName="sexo"
+                                            class="w-full" />
+
+                                        <p class="mt-1 text-[11px] text-slate-400">
+                                            Se enviará el valor conforme al contrato actual del backend.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                @if (confirmandoUsername) {
+
+                                    <div
+                                        role="alert"
+                                        class="rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                                        <div class="flex gap-3">
+
+                                            <div
+                                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-amber-600">
+
+                                                <i class="pi pi-exclamation-triangle"></i>
+
+                                            </div>
+
+                                            <div class="min-w-0 flex-1">
+
+                                                <p class="text-sm font-semibold text-amber-800">
+                                                    Cambiar nombre de usuario
+                                                </p>
+
+                                                <p class="mt-1 text-xs leading-5 text-amber-700">
+                                                    El cambio de
+                                                    <strong>{{ usernameOriginal }}</strong>
+                                                    a
+                                                    <strong>{{ usernameNuevo }}</strong>
+                                                    revocará los JWT y sesiones anteriores de esta cuenta. El usuario deberá iniciar sesión con el nuevo nombre de usuario.
+                                                </p>
+
+                                                <div class="mt-4 flex flex-wrap justify-end gap-2">
+
+                                                    <button
+                                                        type="button"
+                                                        (click)="cancelarConfirmacionUsername()"
+                                                        class="rounded-lg border border-amber-200 bg-white px-3 py-2 text-xs font-semibold text-amber-700 transition hover:bg-amber-100">
+
+                                                        Cancelar
+
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        [disabled]="guardandoDatos"
+                                                        (click)="confirmarCambioUsername()"
+                                                        class="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-60">
+
+                                                        @if (guardandoDatos) {
+                                                            <i class="pi pi-spin pi-spinner"></i>
+                                                        } @else {
+                                                            <i class="pi pi-check"></i>
+                                                        }
+
+                                                        Confirmar cambio
+
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                                <div class="flex justify-end border-t border-slate-100 pt-4">
+
+                                    <button
+                                        type="button"
+                                        [disabled]="guardandoDatos || sinPermisoDatos"
+                                        (click)="guardarDatos()"
+                                        class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50">
+
+                                        @if (guardandoDatos) {
+                                            <i class="pi pi-spin pi-spinner"></i>
+                                        } @else {
+                                            <i class="pi pi-save"></i>
+                                        }
+
+                                        Guardar cambios
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </p-tabpanel>
+
+                    <p-tabpanel value="seguridad">
+
+                        <div class="space-y-5 pt-2">
+
+                            @if (sinPermisoSeguridad) {
+
+                                <div
+                                    role="alert"
+                                    class="flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                                    <i class="pi pi-lock mt-0.5 text-amber-600"></i>
+
+                                    <div>
+
+                                        <p class="text-sm font-semibold text-amber-800">
+                                            Operación no permitida
+                                        </p>
+
+                                        <p class="mt-1 text-xs leading-5 text-amber-700">
+                                            El servidor indicó que tu cuenta no tiene permisos para realizar esta operación sobre el usuario seleccionado.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            }
+
+                            <section class="rounded-2xl border border-slate-200 bg-white p-5">
+
+                                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                                    <div class="flex items-start gap-3">
+
+                                        <div
+                                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+
+                                            <i class="pi pi-power-off"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="flex flex-wrap items-center gap-2">
+
+                                                <h4 class="text-sm font-bold text-slate-800">
+                                                    Estado de la cuenta
+                                                </h4>
+
+                                                @if (usuario.activo) {
+
+                                                    <span
+                                                        class="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+
+                                                        Activo
+
+                                                    </span>
+
+                                                } @else {
+
+                                                    <span
+                                                        class="rounded-full bg-rose-50 px-2.5 py-1 text-[11px] font-semibold text-rose-700">
+
+                                                        Inactivo
+
+                                                    </span>
+
+                                                }
+
+                                            </div>
+
+                                            <p class="mt-1 text-xs leading-5 text-slate-500">
+                                                Controla si el usuario puede acceder actualmente al sistema.
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        [disabled]="actualizandoEstado"
+                                        (click)="solicitarCambioEstado(!usuario.activo)"
+                                        [ngClass]="usuario.activo
+                                            ? 'border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100'
+                                            : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'"
+                                        class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50">
+
+                                        <i [class]="usuario.activo ? 'pi pi-ban' : 'pi pi-check'"></i>
+
+                                        {{ usuario.activo ? 'Inhabilitar' : 'Habilitar' }}
+
+                                    </button>
+
+                                </div>
+
+                                @if (confirmandoEstado && estadoObjetivo !== null) {
+
+                                    <div
+                                        role="alert"
+                                        class="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                                        <p class="text-sm font-semibold text-amber-800">
+                                            {{ estadoObjetivo ? '¿Habilitar este usuario?' : '¿Inhabilitar este usuario?' }}
+                                        </p>
+
+                                        <p class="mt-1 text-xs leading-5 text-amber-700">
+                                            @if (estadoObjetivo) {
+                                                El usuario podrá volver a iniciar sesión y acceder al sistema.
+                                            } @else {
+                                                El usuario dejará de tener acceso hasta que vuelva a ser habilitado.
+                                            }
+                                        </p>
+
+                                        <div class="mt-3 flex justify-end gap-2">
+
+                                            <button
+                                                type="button"
+                                                (click)="cancelarCambioEstado()"
+                                                class="rounded-lg border border-amber-200 bg-white px-3 py-2 text-xs font-semibold text-amber-700">
+
+                                                Cancelar
+
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                [disabled]="actualizandoEstado"
+                                                (click)="confirmarCambioEstado()"
+                                                class="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-3 py-2 text-xs font-semibold text-white disabled:opacity-50">
+
+                                                @if (actualizandoEstado) {
+                                                    <i class="pi pi-spin pi-spinner"></i>
+                                                } @else {
+                                                    <i class="pi pi-check"></i>
+                                                }
+
+                                                Confirmar
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </section>
+
+                            <section class="rounded-2xl border border-slate-200 bg-white p-5">
+
+                                <div class="mb-4 flex items-start gap-3">
+
+                                    <div
+                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+
+                                        <i class="pi pi-key"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <h4 class="text-sm font-bold text-slate-800">
+                                            Restablecer contraseña
+                                        </h4>
+
+                                        <p class="mt-1 text-xs leading-5 text-slate-500">
+                                            Define una nueva contraseña para la cuenta seleccionada.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <form
+                                    [formGroup]="passwordForm"
+                                    class="space-y-4">
+
+                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+                                        <div>
+
+                                            <label
+                                                for="editor-password"
+                                                class="mb-1.5 block text-xs font-semibold text-slate-600">
+
+                                                Nueva contraseña
+
+                                            </label>
+
+                                            <div class="relative">
+
+                                                <input
+                                                    id="editor-password"
+                                                    pInputText
+                                                    autocomplete="new-password"
+                                                    formControlName="password"
+                                                    [type]="showPass ? 'text' : 'password'"
+                                                    class="w-full !pr-11"
+                                                    [attr.aria-invalid]="isInvalid(passwordForm, 'password')" />
+
+                                                <button
+                                                    type="button"
+                                                    [attr.aria-label]="showPass ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                                                    (click)="showPass = !showPass"
+                                                    class="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+
+                                                    <i [class]="showPass ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div>
+
+                                            <label
+                                                for="editor-confirm-password"
+                                                class="mb-1.5 block text-xs font-semibold text-slate-600">
+
+                                                Confirmar contraseña
+
+                                            </label>
+
+                                            <div class="relative">
+
+                                                <input
+                                                    id="editor-confirm-password"
+                                                    pInputText
+                                                    autocomplete="new-password"
+                                                    formControlName="confirmPassword"
+                                                    [type]="showConfirm ? 'text' : 'password'"
+                                                    class="w-full !pr-11" />
+
+                                                <button
+                                                    type="button"
+                                                    [attr.aria-label]="showConfirm ? 'Ocultar confirmación' : 'Mostrar confirmación'"
+                                                    (click)="showConfirm = !showConfirm"
+                                                    class="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+
+                                                    <i [class]="showConfirm ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+
+                                                </button>
+
+                                            </div>
+
+                                            @if (
+                                                passwordForm.hasError('passwordsNoCoinciden') &&
+                                                passwordForm.get('confirmPassword')?.touched
+                                            ) {
+
+                                                <p class="mt-1 text-xs text-rose-600">
+                                                    Las contraseñas no coinciden.
+                                                </p>
+
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+
+                                        @for (
+                                            requisito of [
+                                                { texto: 'Mínimo 8 caracteres', cumple: requisitosPassword.longitud },
+                                                { texto: 'Una letra mayúscula', cumple: requisitosPassword.mayuscula },
+                                                { texto: 'Al menos un número', cumple: requisitosPassword.numero },
+                                                { texto: 'Un carácter especial', cumple: requisitosPassword.especial }
+                                            ];
+                                            track requisito.texto
+                                        ) {
+
+                                            <div
+                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition"
+                                                [ngClass]="requisito.cumple
+                                                    ? 'border-emerald-100 bg-emerald-50 text-emerald-700'
+                                                    : 'border-rose-100 bg-rose-50 text-rose-600'">
+
+                                                <div
+                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                    [ngClass]="requisito.cumple
+                                                        ? 'bg-emerald-100 text-emerald-600'
+                                                        : 'bg-rose-100 text-rose-500'">
+
+                                                    <i
+                                                        class="pi text-[9px]"
+                                                        [ngClass]="requisito.cumple ? 'pi-check' : 'pi-times'">
+                                                    </i>
+
+                                                </div>
+
+                                                {{ requisito.texto }}
+
+                                            </div>
+
+                                        }
+
+                                    </div>
+
+                                    @if (confirmandoPassword) {
+
+                                        <div
+                                            role="alert"
+                                            class="rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                                            <p class="text-sm font-semibold text-amber-800">
+                                                ¿Restablecer la contraseña?
+                                            </p>
+
+                                            <p class="mt-1 text-xs leading-5 text-amber-700">
+                                                La contraseña actual de esta cuenta será reemplazada por la nueva contraseña ingresada.
+                                            </p>
+
+                                            <div class="mt-3 flex justify-end gap-2">
+
+                                                <button
+                                                    type="button"
+                                                    (click)="cancelarRestablecerPassword()"
+                                                    class="rounded-lg border border-amber-200 bg-white px-3 py-2 text-xs font-semibold text-amber-700">
+
+                                                    Cancelar
+
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    [disabled]="actualizandoPassword"
+                                                    (click)="confirmarRestablecerPassword()"
+                                                    class="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-3 py-2 text-xs font-semibold text-white disabled:opacity-50">
+
+                                                    @if (actualizandoPassword) {
+                                                        <i class="pi pi-spin pi-spinner"></i>
+                                                    } @else {
+                                                        <i class="pi pi-key"></i>
+                                                    }
+
+                                                    Restablecer
+
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    }
+
+                                    <div class="flex justify-end">
+
+                                        <button
+                                            type="button"
+                                            [disabled]="actualizandoPassword || sinPermisoSeguridad"
+                                            (click)="solicitarRestablecerPassword()"
+                                            class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50">
+
+                                            <i class="pi pi-key"></i>
+
+                                            Restablecer contraseña
+
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </section>
+
+                        </div>
+
+                    </p-tabpanel>
+
+                </p-tabpanels>
+
+            </p-tabs>
+
+            @if (confirmandoCierre) {
+
+                <div
+                    role="alert"
+                    class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                    <p class="text-sm font-semibold text-amber-800">
+                        Hay cambios sin guardar
+                    </p>
+
+                    <p class="mt-1 text-xs text-amber-700">
+                        Si cierras ahora, los cambios capturados se perderán.
+                    </p>
+
+                    <div class="mt-3 flex justify-end gap-2">
+
+                        <button
+                            type="button"
+                            (click)="cancelarCierre()"
+                            class="rounded-lg border border-amber-200 bg-white px-3 py-2 text-xs font-semibold text-amber-700">
+
+                            Continuar editando
+
+                        </button>
+
+                        <button
+                            type="button"
+                            (click)="descartarYCerrar()"
+                            class="rounded-lg bg-rose-600 px-3 py-2 text-xs font-semibold text-white">
+
+                            Descartar y cerrar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            }
+
+            <div class="mt-5 flex justify-end border-t border-slate-100 pt-4">
+
+                <button
+                    type="button"
+                    (click)="solicitarCierre()"
+                    class="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
+
+                    Cerrar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    }
+
+</p-dialog>

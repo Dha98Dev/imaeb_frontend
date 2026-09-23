@@ -1,30 +1,46 @@
 import { Injectable } from '@angular/core';
-import { Enviroments } from '../../enviroments/env';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { Enviroments } from '../../enviroments/env';
+
 import {
+  ActualizarUsuarioRequest,
   CambiarEstadoUsuarioRequest,
   CambiarPasswordUsuarioRequest,
   TipoUsuario,
+  UsuarioActualizadoResponse,
   UsuariosAdminFiltros,
   UsuariosAdminResponse,
 } from '../interfaces/usuarios.interface';
-import { Observable } from 'rxjs';
-import { PersonaPage, Persona, CrearPersonaRequest } from '../interfaces/persona.interface';
 
-@Injectable({ providedIn: 'root' })
+import { CrearPersonaRequest, Persona, PersonaPage } from '../interfaces/persona.interface';
+
+@Injectable({
+  providedIn: 'root',
+})
 export class UsuariosService {
-  constructor(private http: HttpClient) {}
   private url: string = Enviroments.UrlServiceBackend;
+
+  constructor(private http: HttpClient) {}
+
   getListadoTipoUsuarios(): Observable<TipoUsuario[]> {
-    return this.http.get<TipoUsuario[]>(this.url + 'api/tipos-personas', {});
+    return this.http.get<TipoUsuario[]>(`${this.url}api/tipos-personas`);
   }
+
+  /*
+   * Se conserva any únicamente porque todavía no tenemos
+   * el contrato completo del endpoint de creación.
+   * No modificamos esa operación para no romper register.
+   */
   saveUsuario(data: any) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
 
-    return this.http.post<any>(this.url + 'api/usuarios', JSON.stringify(data), { headers });
+    return this.http.post<any>(`${this.url}api/usuarios`, JSON.stringify(data), { headers });
   }
+
   getListadoUsuarios(filtros: UsuariosAdminFiltros = {}): Observable<UsuariosAdminResponse> {
     let params = new HttpParams();
 
@@ -64,9 +80,17 @@ export class UsuariosService {
       params = params.append('sort', sort);
     });
 
-    return this.http.get<UsuariosAdminResponse>(this.url + 'admin/usuarios', {
-      params,
-    });
+    return this.http.get<UsuariosAdminResponse>(`${this.url}admin/usuarios`, { params });
+  }
+
+  actualizarUsuario(
+    usuarioId: number,
+    payload: ActualizarUsuarioRequest,
+  ): Observable<UsuarioActualizadoResponse> {
+    return this.http.patch<UsuarioActualizadoResponse>(
+      `${this.url}api/usuarios/${usuarioId}`,
+      payload,
+    );
   }
 
   actualizarPassword(usuarioId: number, nuevaPassword: string): Observable<void> {

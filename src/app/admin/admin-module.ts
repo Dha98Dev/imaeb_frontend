@@ -8,13 +8,15 @@ import { PrimeNgModule } from '../core/shared/PrimeNg.module';
 import { ComponetsModule } from '../core/components/Components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListadoUsuarios } from './pages/listado-usuarios/listado-usuarios';
+import { UsuarioEditor } from './pages/listado-usuarios/components/usuario-editor/usuario-editor';
 
 
 @NgModule({
   declarations: [
     Register,
     LayoutAdminPage,
-    ListadoUsuarios
+    ListadoUsuarios,
+    UsuarioEditor
   ],  
   imports: [
     CommonModule,
