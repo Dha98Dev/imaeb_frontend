@@ -63,6 +63,13 @@ export class Register {
     { label: 'Mujer', value: 'M' },
   ];
 
+  public requisitosPassword = {
+    longitud: false,
+    mayuscula: false,
+    numero: false,
+    especial: false,
+  };
+
   ngOnInit(): void {
     this.alcancePermisoConsulta = this.fb.group({
       nivelId: [null],
@@ -101,6 +108,9 @@ export class Register {
         ],
       ],
       confirmPassword: ['', Validators.required],
+    });
+    this.auth.get('password')?.valueChanges.subscribe((password: string) => {
+      this.evaluarPassword(password ?? '');
     });
 
     this.datosPersonales.valueChanges.subscribe(() => {
@@ -574,7 +584,6 @@ export class Register {
           this.cd.markForCheck();
         },
         error: (err) => {
-
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -728,5 +737,24 @@ export class Register {
 
   private normalizarTexto(valor: string): string {
     return (valor ?? '').trim().toUpperCase();
+  }
+
+  evaluarPassword(password: string): void {
+    const valor = password ?? '';
+
+    this.requisitosPassword = {
+      longitud: valor.length >= 8,
+      mayuscula: /[A-Z]/.test(valor),
+      numero: /\d/.test(valor),
+      especial: /[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]/.test(valor),
+    };
+  }
+  get passwordValido(): boolean {
+    return (
+      this.requisitosPassword.longitud &&
+      this.requisitosPassword.mayuscula &&
+      this.requisitosPassword.numero &&
+      this.requisitosPassword.especial
+    );
   }
 }

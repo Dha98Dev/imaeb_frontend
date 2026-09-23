@@ -302,92 +302,393 @@
             }
 
             <p-step-panel [value]="3">
+
                 <ng-template #content let-activateCallback="activateCallback">
+
                     <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col items-center gap-2">
+
+                        <!-- ENCABEZADO -->
+
                         <div class="mb-4 mt-4 text-center">
-                            <h2 class="text-xl font-semibold text-slate-800">Credenciales de acceso</h2>
-                            <p class="mt-1 text-sm text-slate-400">Define el usuario y contraseña de la nueva cuenta</p>
+
+                            <h2 class="text-xl font-semibold text-slate-800">
+                                Credenciales de acceso
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-400">
+                                Define el usuario y contraseña de la nueva cuenta
+                            </p>
+
                         </div>
 
-                        <p-message severity="secondary" class="w-full">
-                            <div class="flex items-center gap-3">
-                                <i class="pi pi-lightbulb"></i>
-                                <div>
-                                    <b class="text-sm font-semibold">Contraseña segura:</b>
-                                    <small class="!text-xs">Debe incluir al menos una mayúscula, un número, un carácter
-                                        especial y 8 caracteres.</small>
-                                </div>
-                            </div>
-                        </p-message>
 
-                        <form class="mt-3 w-full px-2" [formGroup]="auth">
+                        <!-- FORMULARIO -->
+
+                        <form class="w-full px-2" [formGroup]="auth">
+
+                            <!-- USUARIO -->
+
                             <div class="mb-5">
-                                <label for="username" class="mb-1 block text-sm text-slate-500">Usuario</label>
+
+                                <label for="username" class="mb-1.5 block text-sm font-medium text-slate-600">
+
+                                    Usuario
+
+                                </label>
+
                                 <input id="username" type="text" autocomplete="off" pInputText
                                     formControlName="username" [invalid]="isInvalid(auth,'username')"
                                     class="w-full rounded-lg px-4 py-2 text-slate-900" />
+
                             </div>
 
+
+
+
+
+                            <!-- CONTRASEÑAS -->
+
                             <div class="flex flex-col gap-5 md:flex-row">
+
+                                <!-- CONTRASEÑA -->
+
                                 <div class="flex-1">
-                                    <label for="password" class="mb-1 block text-sm text-slate-500">Contraseña</label>
+
+                                    <label for="password" class="mb-1.5 block text-sm font-medium text-slate-600">
+
+                                        Contraseña
+
+                                    </label>
 
                                     <div class="relative">
+
                                         <input [type]="showPass ? 'text' : 'password'" id="password" pInputText
                                             formControlName="password" [invalid]="isInvalid(auth,'password')"
                                             class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900" />
 
-                                        <button type="button" (click)="showPass=!showPass"
-                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-700">
+                                        <button type="button" (click)="showPass = !showPass"
+                                            class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+
                                             @if (!showPass) {
-                                            <i class="pi pi-eye"></i>
+
+                                            <i class="pi pi-eye text-sm"></i>
+
                                             } @else {
-                                            <i class="pi pi-eye-slash"></i>
+
+                                            <i class="pi pi-eye-slash text-sm"></i>
+
                                             }
+
                                         </button>
+
                                     </div>
+
                                 </div>
 
+
+                                <!-- CONFIRMAR CONTRASEÑA -->
+
                                 <div class="flex-1">
-                                    <label for="confirmPassword" class="mb-1 block text-sm text-slate-500">Confirmar
-                                        contraseña</label>
+
+                                    <label for="confirmPassword"
+                                        class="mb-1.5 block text-sm font-medium text-slate-600">
+
+                                        Confirmar contraseña
+
+                                    </label>
 
                                     <div class="relative">
+
                                         <input [type]="showConfirm ? 'text' : 'password'" id="confirmPassword"
                                             pInputText formControlName="confirmPassword"
                                             [invalid]="isInvalid(auth,'confirmPassword')"
                                             class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900" />
 
-                                        <button type="button" (click)="showConfirm=!showConfirm"
-                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-700">
+                                        <button type="button" (click)="showConfirm = !showConfirm"
+                                            class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+
                                             @if (!showConfirm) {
-                                            <i class="pi pi-eye"></i>
+
+                                            <i class="pi pi-eye text-sm"></i>
+
                                             } @else {
-                                            <i class="pi pi-eye-slash"></i>
+
+                                            <i class="pi pi-eye-slash text-sm"></i>
+
                                             }
+
                                         </button>
+
                                     </div>
+
                                 </div>
+
                             </div>
 
+                            <!-- REQUISITOS DE CONTRASEÑA -->
+                            <!-- REQUISITOS DE CONTRASEÑA -->
+
+                            <div class="mt-4 mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70">
+
+                                <div class="flex items-start gap-3 p-4">
+
+                                    <!-- ICONO -->
+
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm transition-colors"
+                                        [ngClass]="{
+                'text-emerald-600': passwordValido,
+                'text-slate-500': !passwordValido
+            }">
+
+                                        <i class="pi text-base" [ngClass]="passwordValido
+                    ? 'pi-shield text-emerald-600'
+                    : 'pi-shield text-slate-500'">
+                                        </i>
+
+                                    </div>
+
+
+                                    <!-- INFORMACIÓN -->
+
+                                    <div class="min-w-0 flex-1">
+
+                                        <div class="flex flex-wrap items-center gap-2">
+
+                                            <h3 class="text-sm font-semibold text-slate-800">
+                                                Requisitos de la contraseña
+                                            </h3>
+
+                                            @if (passwordValido) {
+
+                                            <span
+                                                class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-600">
+
+                                                <i class="pi pi-check text-[9px]"></i>
+
+                                                Cumple requisitos
+
+                                            </span>
+
+                                            } @else {
+
+                                            <span
+                                                class="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+
+                                                Seguridad
+
+                                            </span>
+
+                                            }
+
+                                        </div>
+
+
+                                        <p class="mt-1 text-xs leading-5 text-slate-500">
+                                            La contraseña debe cumplir con todos los siguientes requisitos:
+                                        </p>
+
+
+                                        <!-- REQUISITOS -->
+
+                                        <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+
+
+                                            <!-- 8 CARACTERES -->
+
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                                [ngClass]="requisitosPassword.longitud
+                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
+                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                    [ngClass]="requisitosPassword.longitud
+                            ? 'bg-emerald-100 text-emerald-600'
+                            : 'bg-rose-100 text-rose-500'">
+
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.longitud
+                                ? 'pi-check'
+                                : 'pi-times'">
+                                                    </i>
+
+                                                </div>
+
+                                                <span>
+                                                    Mínimo
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.longitud
+                                ? 'text-emerald-700'
+                                : 'text-rose-600'">
+
+                                                        8 caracteres
+
+                                                    </strong>
+                                                </span>
+
+                                            </div>
+
+
+                                            <!-- MAYÚSCULA -->
+
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                                [ngClass]="requisitosPassword.mayuscula
+                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
+                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                    [ngClass]="requisitosPassword.mayuscula
+                            ? 'bg-emerald-100 text-emerald-600'
+                            : 'bg-rose-100 text-rose-500'">
+
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.mayuscula
+                                ? 'pi-check'
+                                : 'pi-times'">
+                                                    </i>
+
+                                                </div>
+
+                                                <span>
+                                                    Una
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.mayuscula
+                                ? 'text-emerald-700'
+                                : 'text-rose-600'">
+
+                                                        letra mayúscula
+
+                                                    </strong>
+                                                </span>
+
+                                            </div>
+
+
+                                            <!-- NÚMERO -->
+
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                                [ngClass]="requisitosPassword.numero
+                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
+                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                    [ngClass]="requisitosPassword.numero
+                            ? 'bg-emerald-100 text-emerald-600'
+                            : 'bg-rose-100 text-rose-500'">
+
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.numero
+                                ? 'pi-check'
+                                : 'pi-times'">
+                                                    </i>
+
+                                                </div>
+
+                                                <span>
+                                                    Al menos
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.numero
+                                ? 'text-emerald-700'
+                                : 'text-rose-600'">
+
+                                                        un número
+
+                                                    </strong>
+                                                </span>
+
+                                            </div>
+
+
+                                            <!-- CARÁCTER ESPECIAL -->
+
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                                [ngClass]="requisitosPassword.especial
+                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
+                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                    [ngClass]="requisitosPassword.especial
+                            ? 'bg-emerald-100 text-emerald-600'
+                            : 'bg-rose-100 text-rose-500'">
+
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.especial
+                                ? 'pi-check'
+                                : 'pi-times'">
+                                                    </i>
+
+                                                </div>
+
+                                                <span>
+                                                    Un
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.especial
+                                ? 'text-emerald-700'
+                                : 'text-rose-600'">
+
+                                                        carácter especial
+
+                                                    </strong>
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- EJEMPLO -->
+
+                                        <div
+                                            class="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-3">
+
+                                            <span class="text-xs font-medium text-slate-400">
+                                                Ejemplo:
+                                            </span>
+
+                                            <code
+                                                class="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold tracking-wide text-slate-700 shadow-sm">
+
+                    Escuela2026!
+
+                </code>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- CREAR USUARIO -->
+
                             <div class="mt-8 flex justify-center">
+
                                 <p-button label="Crear usuario" icon="pi pi-save" severity="contrast" size="small"
                                     [loading]="guardandoUsuario" [disabled]="guardandoUsuario"
                                     (onClick)="guardarUsuario()" />
+
                             </div>
+
                         </form>
+
                     </div>
 
+
+                    <!-- REGRESAR -->
+
                     <div class="flex justify-between pt-6">
-                        @if (['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO'].includes(scope)) {
-                        <p-button (onClick)="activateCallback(2); usuarioGuardado=false" severity="secondary"
+
+                        @if (
+                        ['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO']
+                        .includes(scope)
+                        ) {
+
+                        <p-button (onClick)="activateCallback(2); usuarioGuardado = false" severity="secondary"
                             icon="pi pi-arrow-left" />
+
                         } @else {
-                        <p-button (onClick)="activateCallback(1); usuarioGuardado=false" severity="secondary"
+
+                        <p-button (onClick)="activateCallback(1); usuarioGuardado = false" severity="secondary"
                             icon="pi pi-arrow-left" />
+
                         }
+
                     </div>
+
                 </ng-template>
+
             </p-step-panel>
 
             <p-step-panel [value]="4">
