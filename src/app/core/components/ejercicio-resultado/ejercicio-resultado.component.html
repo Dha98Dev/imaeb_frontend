@@ -3,9 +3,8 @@
 
     @if (title != '') {
 
-        <div
-            class="absolute left-0 top-0 h-full w-1 bg-teal-500">
-        </div>
+    <div class="absolute left-0 top-0 h-full w-1 bg-teal-500">
+    </div>
 
     }
 
@@ -13,27 +12,25 @@
 
         @if (title != '') {
 
-            <div class="flex items-start justify-between gap-3">
+        <div class="flex items-start justify-between gap-3">
 
-                <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2">
 
-                    <div
-                        class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-600">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-600">
 
-                        <i class="pi pi-book text-xs"></i>
-
-                    </div>
-
-                    <p
-                        class="text-xs font-semibold uppercase tracking-wide text-teal-700">
-
-                        {{ title }}
-
-                    </p>
+                    <i class="pi pi-book text-xs"></i>
 
                 </div>
 
+                <p class="text-xs font-semibold uppercase tracking-wide text-teal-700">
+
+                    {{ title }}
+
+                </p>
+
             </div>
+
+        </div>
 
         }
 
@@ -41,13 +38,11 @@
 
             <div>
 
-                <p
-                    class="text-[11px] font-medium text-slate-400">
+                <p class="text-[11px] font-medium text-slate-400">
                     Resultado
                 </p>
 
-                <p
-                    class="mt-0.5 text-2xl font-bold text-slate-900">
+                <p class="mt-0.5 text-2xl font-bold text-slate-900">
 
                     {{ contenido }}%
 
@@ -55,8 +50,11 @@
 
             </div>
 
-            <div
-                class="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-teal-500 transition-colors group-hover:bg-teal-100">
+            <div class="flex h-9 w-9 items-center justify-center rounded-xl  transition-colors " [ngClass]="{
+                    'bg-rose-400/15 text-rose-600': getPromedio(contenido) < 50,
+                    'bg-amber-400/15 text-amber-600': getPromedio(contenido) >= 50 && getPromedio(contenido) < 80,
+                    'bg-emerald-500/15 text-emerald-600': getPromedio(contenido) >= 80
+                }">
 
                 <i class="pi pi-chart-line text-sm"></i>
 
@@ -66,12 +64,17 @@
 
         <div class="mt-3">
 
-            <div
-                class="h-1.5 overflow-hidden rounded-full bg-teal-100">
+            <div class="h-1.5 overflow-hidden rounded-full" [ngClass]="{
+                    'bg-rose-400/15': getPromedio(contenido) < 50,
+                    'bg-amber-400/15': getPromedio(contenido) >= 50 && getPromedio(contenido) < 80,
+                    'bg-emerald-500/15': getPromedio(contenido) >= 80
+                }">
 
-                <div
-                    class="h-full rounded-full bg-teal-500 transition-all duration-500"
-                    [style.width.%]="+contenido">
+                <div class="barra-resultado h-full rounded-full" [style.width.%]="+contenido || 0" [ngClass]="{
+        'bg-rose-400': getPromedio(contenido) < 50,
+        'bg-amber-400': getPromedio(contenido) >= 50 && getPromedio(contenido) < 80,
+        'bg-emerald-500': getPromedio(contenido) >= 80
+    }">
                 </div>
 
             </div>

@@ -23,6 +23,9 @@ export class EjercicioResultadoComponent {
   activeIndexChange(index: string) {
     this.active = index
   }
+  getPromedio(promedio:string){
+    return parseFloat(promedio)
+  }
 
   // getBg(materia:string){
   //   return  this.getColor.getColorByCategoria(materia)

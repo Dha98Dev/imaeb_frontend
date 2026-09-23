@@ -1,3 +1,38 @@
 *{
     margin-bottom: 0px;
 }
+
+.barra-resultado {
+  transform-origin: left center;
+  animation: llenarBarra 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.porcentaje-resultado {
+  opacity: 0;
+  transform: translateY(4px);
+  animation: mostrarPorcentaje 350ms ease-out 550ms forwards;
+}
+
+@keyframes llenarBarra {
+  from {
+    transform: scaleX(0);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes mostrarPorcentaje {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
