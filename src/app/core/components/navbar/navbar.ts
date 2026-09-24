@@ -4,6 +4,7 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { AuthService } from '../../../Auth/services/auth.service';
 import { inArray } from 'highcharts';
 import { paramsFilters } from '../../Interfaces/paramsFilters.interface';
+import { ThemeService } from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ export class Navbar {
     private cd: ChangeDetectorRef,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private themeService: ThemeService,
   ) {}
   public items: MenuItem[] | undefined;
   public visible: boolean = false;
@@ -28,13 +30,14 @@ export class Navbar {
   public isNivel: boolean = false;
   public scope: string | undefined = '';
   protected user: string = '';
+  public darkMode: boolean = false;
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe((state) => {
       this.isAutenticated = state;
       this.authService.usuario$.subscribe((user) => {
         if (user?.username) {
-      this.user=user?.username
+          this.user = user?.username;
         }
       });
 
@@ -46,6 +49,12 @@ export class Navbar {
         this.scope = undefined; // o null, como manejes
       }
     });
+    this.themeService.darkMode$.subscribe((dark) => {
+      this.darkMode = dark;
+    });
+  }
+  cambiarTema(): void {
+    this.themeService.toggleTheme();
   }
 
   get getUser(): string {

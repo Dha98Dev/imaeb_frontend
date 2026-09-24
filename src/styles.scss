@@ -98,3 +98,149 @@ body {
 //   border: 1px solid orange;
 // }
 
+/* =========================================================
+   HIGHCHARTS - MODO CLARO
+   ========================================================= */
+
+.highcharts-background,
+.highcharts-plot-background {
+    fill: transparent !important;
+}
+
+/* Texto eje X y eje Y */
+.highcharts-axis-labels text {
+    fill: #475569 !important;
+    color: #475569 !important;
+}
+
+/* Título del eje */
+.highcharts-axis-title {
+    fill: #475569 !important;
+    color: #475569 !important;
+}
+
+/* Valores encima de las barras */
+.highcharts-data-label text {
+    fill: #334155 !important;
+    color: #334155 !important;
+    text-shadow: none !important;
+}
+
+/* Leyenda */
+.highcharts-legend-item text {
+    fill: #334155 !important;
+    color: #334155 !important;
+}
+
+.highcharts-legend-item:hover text {
+    fill: #0f172a !important;
+    color: #0f172a !important;
+}
+
+/* Líneas horizontales */
+.highcharts-grid-line {
+    stroke: #e2e8f0 !important;
+}
+
+/* Ejes */
+.highcharts-axis-line,
+.highcharts-tick {
+    stroke: #cbd5e1 !important;
+}
+
+/* Crosshair */
+.highcharts-crosshair {
+    stroke: #94a3b8 !important;
+}
+
+/* Tooltip */
+.highcharts-tooltip-box {
+    fill: #ffffff !important;
+    stroke: #cbd5e1 !important;
+}
+
+.highcharts-tooltip text {
+    fill: #334155 !important;
+    color: #334155 !important;
+}
+
+.highcharts-tooltip span,
+.highcharts-tooltip * {
+    color: #334155 !important;
+}
+
+/* =========================================================
+   HIGHCHARTS - MODO OSCURO
+   ========================================================= */
+
+.dark .highcharts-background,
+.dark .highcharts-plot-background {
+    fill: transparent !important;
+}
+
+/* Texto eje X y eje Y */
+.dark .highcharts-axis-labels text {
+    fill: #e4e4e7 !important;
+    color: #e4e4e7 !important;
+}
+
+/* Título del eje */
+.dark .highcharts-axis-title {
+    fill: #e4e4e7 !important;
+    color: #e4e4e7 !important;
+}
+
+/* Valores encima de las barras */
+.dark .highcharts-data-label text {
+    fill: #fafafa !important;
+    color: #fafafa !important;
+    text-shadow: none !important;
+}
+
+/* Leyenda */
+.dark .highcharts-legend-item text {
+    fill: #f4f4f5 !important;
+    color: #f4f4f5 !important;
+}
+
+.dark .highcharts-legend-item:hover text {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.dark .highcharts-legend-item-hidden text {
+    fill: #71717a !important;
+    color: #71717a !important;
+}
+
+/* Todas las líneas horizontales */
+.dark .highcharts-grid-line {
+    stroke: #52525b !important;
+}
+
+/* Ejes */
+.dark .highcharts-axis-line,
+.dark .highcharts-tick {
+    stroke: #52525b !important;
+}
+
+/* Crosshair */
+.dark .highcharts-crosshair {
+    stroke: #71717a !important;
+}
+
+/* Tooltip */
+.dark .highcharts-tooltip-box {
+    fill: #3f3f46 !important;
+    stroke: #71717a !important;
+}
+
+.dark .highcharts-tooltip text {
+    fill: #f4f4f5 !important;
+    color: #f4f4f5 !important;
+}
+
+.dark .highcharts-tooltip span,
+.dark .highcharts-tooltip * {
+    color: #f4f4f5 !important;
+}

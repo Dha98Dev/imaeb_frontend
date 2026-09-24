@@ -11,72 +11,87 @@
           [subtitle]="'Listado de resultados de los centros de trabajo de la zona ' + zona">
         </app-subtitle>
 
-        <p class="mt-1 text-sm text-slate-500">
+        <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
           Consulta los resultados obtenidos por cada centro de trabajo de la zona escolar seleccionada.
         </p>
       </div>
     </section>
 
     @if (examenActual) {
-      <section class="mb-5 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+      <section class="mb-5 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
+
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
           <div class="flex items-center gap-3">
-            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:!bg-indigo-950/60 dark:!text-indigo-300">
               <i class="pi pi-file-edit"></i>
             </div>
 
             <div>
-              <p class="text-xs font-medium text-slate-400">Evaluación</p>
-              <p class="font-semibold text-slate-900">
+              <p class="text-xs font-medium text-slate-400 dark:!text-zinc-400">
+                Evaluación
+              </p>
+
+              <p class="font-semibold text-slate-900 dark:!text-zinc-100">
                 {{ examenActual.descripcion }}
               </p>
             </div>
+
           </div>
 
           <div class="flex flex-wrap gap-2">
-            <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+
+            <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:!bg-blue-950/60 dark:!text-blue-300">
               Ciclo {{ examenActual.ciclo }}
             </span>
 
-            <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+            <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700 dark:!bg-violet-950/60 dark:!text-violet-300">
               {{ getNivelDescription() }}
             </span>
 
-            <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+            <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:!bg-emerald-950/60 dark:!text-emerald-300">
               Zona {{ zona }}
             </span>
+
           </div>
 
         </div>
+
       </section>
     }
 
     @if (dataTable.data && dataTable.data.length > 0) {
-      <section>
-        <app-tabla-dinamica
-          [columns]="dataTable.columns"
-          [data]="dataTable.data"
-          [globalSearchKeys]="dataTable.globalSearchKeys"
-          (rowClick)="onRow($event)">
-        </app-tabla-dinamica>
-      </section>
-    } @else {
-      <section class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
 
-        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
+      <section>
+        <div class="overflow-hidden rounded-2xl dark:!border-zinc-700 dark:!bg-zinc-800">
+          <app-tabla-dinamica
+            [columns]="dataTable.columns"
+            [data]="dataTable.data"
+            [globalSearchKeys]="dataTable.globalSearchKeys"
+            (rowClick)="onRow($event)">
+          </app-tabla-dinamica>
+        </div>
+      </section>
+
+    } @else {
+
+      <section class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:!border-zinc-700 dark:!bg-zinc-800">
+
+        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm dark:!bg-zinc-700 dark:!text-zinc-300 dark:!shadow-none">
           <i class="pi pi-building text-xl"></i>
         </div>
 
-        <h3 class="mt-4 text-base font-semibold text-slate-800">
+        <h3 class="mt-4 text-base font-semibold text-slate-800 dark:!text-zinc-100">
           No se encontraron centros de trabajo
         </h3>
 
-        <p class="mt-1 text-sm text-slate-500">
+        <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
           No existen centros de trabajo con resultados para la zona seleccionada.
         </p>
 
       </section>
+
     }
 
   </div>

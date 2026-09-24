@@ -1,198 +1,439 @@
 <div class="mx-2 flex justify-center">
+
     <p-stepper [(value)]="activeStep" class="basis-[40rem]">
+
         <p-step-list>
+
             <p-step [value]="1" class="flex flex-auto flex-row gap-2">
+
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+
+                    <button
+                        type="button"
+                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback(); usuarioGuardado=false">
-                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
-                            'bg-[var(--principal-cafe)] text-white': value <= activeStep,
-                            'border-surface': value > activeStep
-                        }">
+
+                        <span
+                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
+                            [ngClass]="{
+                                'bg-[var(--principal-cafe)] text-white border-[var(--principal-cafe)]': value <= activeStep,
+                                'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
+                            }">
+
                             <i class="pi pi-user"></i>
+
                         </span>
+
                     </button>
+
                 </ng-template>
+
             </p-step>
+
 
             @if (['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO'].includes(scope)) {
+
             <p-step [value]="2" class="flex flex-auto flex-row gap-2">
+
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+
+                    <button
+                        type="button"
+                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback(); usuarioGuardado=false">
-                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
-                            'bg-[var(--principal-cafe)] text-white': value <= activeStep,
-                            'border-surface': value > activeStep
-                        }">
+
+                        <span
+                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
+                            [ngClass]="{
+                                'bg-[var(--principal-cafe)] text-white border-[var(--principal-cafe)]': value <= activeStep,
+                                'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
+                            }">
+
                             <i class="pi pi-shield"></i>
+
                         </span>
+
                     </button>
+
                 </ng-template>
+
             </p-step>
+
             }
+
 
             <p-step [value]="3" class="flex flex-auto flex-row gap-2">
+
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+
+                    <button
+                        type="button"
+                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback(); usuarioGuardado=false">
-                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
-                            'bg-[var(--principal-cafe)] text-white': value <= activeStep,
-                            'border-surface': value > activeStep
-                        }">
+
+                        <span
+                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
+                            [ngClass]="{
+                                'bg-[var(--principal-cafe)] text-white border-[var(--principal-cafe)]': value <= activeStep,
+                                'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
+                            }">
+
                             <i class="pi pi-id-card"></i>
+
                         </span>
+
                     </button>
+
                 </ng-template>
+
             </p-step>
+
 
             @if (usuarioGuardado) {
+
             <p-step [value]="4" class="flex flex-auto flex-row gap-2">
+
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
-                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
+
+                    <button
+                        type="button"
+                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback()">
-                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
-                            'bg-emerald-500 text-white': value <= activeStep,
-                            'border-surface': value > activeStep
-                        }">
+
+                        <span
+                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
+                            [ngClass]="{
+                                'bg-emerald-500 text-white border-emerald-500 dark:!bg-emerald-500': value <= activeStep,
+                                'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
+                            }">
+
                             <i class="pi pi-check"></i>
+
                         </span>
+
                     </button>
+
                 </ng-template>
+
             </p-step>
+
             }
+
         </p-step-list>
 
+
         <p-step-panels>
+
+
+            <!-- ====================================================== -->
+            <!-- PASO 1 - DATOS PERSONALES -->
+            <!-- ====================================================== -->
+
             <p-step-panel [value]="1">
+
                 <ng-template #content let-activateCallback="activateCallback">
+
                     <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col gap-2">
+
                         <div class="mb-5 mt-4 text-center">
-                            <h2 class="text-xl font-semibold text-slate-800">Datos personales</h2>
-                            <p class="mt-1 text-sm text-slate-400">Información de la persona asociada a la cuenta</p>
+
+                            <h2 class="text-xl font-semibold text-slate-800 dark:!text-zinc-100">
+                                Datos personales
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-400 dark:!text-zinc-400">
+                                Información de la persona asociada a la cuenta
+                            </p>
+
                         </div>
 
+
                         <form [formGroup]="datosPersonales" class="space-y-7">
+
+
                             <p-floatlabel>
-                                <input pInputText id="nombre" #nombre class="w-full" autocomplete="off"
-                                    formControlName="nombre" [invalid]="isInvalid(datosPersonales,'nombre')"
+
+                                <input
+                                    pInputText
+                                    id="nombre"
+                                    #nombre
+                                    class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                    autocomplete="off"
+                                    formControlName="nombre"
+                                    [invalid]="isInvalid(datosPersonales,'nombre')"
                                     (input)="nombre.value=nombre.value.toUpperCase()" />
-                                <label for="nombre">Nombre(s)</label>
+
+                                <label for="nombre" class="dark:!text-zinc-400">
+                                    Nombre(s)
+                                </label>
+
                             </p-floatlabel>
 
+
                             <div class="flex flex-col gap-7 sm:flex-row sm:gap-3">
+
                                 <div class="flex-1">
+
                                     <p-floatlabel>
-                                        <input pInputText id="apellidoPaterno" #ap1 class="w-full" autocomplete="off"
+
+                                        <input
+                                            pInputText
+                                            id="apellidoPaterno"
+                                            #ap1
+                                            class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                            autocomplete="off"
                                             formControlName="apellidoPaterno"
                                             [invalid]="isInvalid(datosPersonales,'apellidoPaterno')"
                                             (input)="ap1.value=ap1.value.toUpperCase()" />
-                                        <label for="apellidoPaterno">Apellido paterno</label>
+
+                                        <label for="apellidoPaterno" class="dark:!text-zinc-400">
+                                            Apellido paterno
+                                        </label>
+
                                     </p-floatlabel>
+
                                 </div>
 
+
                                 <div class="flex-1">
+
                                     <p-floatlabel>
-                                        <input pInputText id="apellidoMaterno" #ap2 class="w-full" autocomplete="off"
+
+                                        <input
+                                            pInputText
+                                            id="apellidoMaterno"
+                                            #ap2
+                                            class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                            autocomplete="off"
                                             formControlName="apellidoMaterno"
                                             [invalid]="isInvalid(datosPersonales,'apellidoMaterno')"
                                             (input)="ap2.value=ap2.value.toUpperCase()" />
-                                        <label for="apellidoMaterno">Apellido materno</label>
+
+                                        <label for="apellidoMaterno" class="dark:!text-zinc-400">
+                                            Apellido materno
+                                        </label>
+
                                     </p-floatlabel>
+
                                 </div>
+
                             </div>
 
+
                             <p-floatlabel>
-                                <input pInputText id="curp" #curp class="w-full" autocomplete="off"
-                                    formControlName="curp" [invalid]="isInvalid(datosPersonales,'curp')"
+
+                                <input
+                                    pInputText
+                                    id="curp"
+                                    #curp
+                                    class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                    autocomplete="off"
+                                    formControlName="curp"
+                                    [invalid]="isInvalid(datosPersonales,'curp')"
                                     (input)="datosPersonales.patchValue({curp: curp.value.toUpperCase()})" />
-                                <label for="curp">CURP (opcional)</label>
+
+                                <label for="curp" class="dark:!text-zinc-400">
+                                    CURP (opcional)
+                                </label>
+
                             </p-floatlabel>
 
+
                             <div class="flex flex-col gap-7 sm:flex-row sm:gap-3">
-                                <div class="flex-1">
-                                    <p-floatlabel>
-                                        <p-select inputId="sexo" [options]="sexoOptions" optionLabel="label"
-                                            optionValue="value" class="w-full" formControlName="sexo"
-                                            [invalid]="isInvalid(datosPersonales,'sexo')" />
-                                        <label for="sexo">Sexo</label>
-                                    </p-floatlabel>
-                                </div>
 
                                 <div class="flex-1">
+
                                     <p-floatlabel>
-                                        <p-select inputId="tipoPersona" [options]="listadoTipoPersonas"
-                                            optionLabel="descripcion" optionValue="id" class="w-full"
+
+                                        <p-select
+                                            inputId="sexo"
+                                            [options]="sexoOptions"
+                                            optionLabel="label"
+                                            optionValue="value"
+                                            class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                            formControlName="sexo"
+                                            [invalid]="isInvalid(datosPersonales,'sexo')" />
+
+                                        <label for="sexo" class="dark:!text-zinc-400">
+                                            Sexo
+                                        </label>
+
+                                    </p-floatlabel>
+
+                                </div>
+
+
+                                <div class="flex-1">
+
+                                    <p-floatlabel>
+
+                                        <p-select
+                                            inputId="tipoPersona"
+                                            [options]="listadoTipoPersonas"
+                                            optionLabel="descripcion"
+                                            optionValue="id"
+                                            class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
                                             formControlName="tipoPersonaId"
                                             [invalid]="isInvalid(datosPersonales,'tipoPersonaId')"
                                             (onChange)="onSelectTipoPersona()" />
-                                        <label for="tipoPersona">Tipo de usuario</label>
+
+                                        <label for="tipoPersona" class="dark:!text-zinc-400">
+                                            Tipo de usuario
+                                        </label>
+
                                     </p-floatlabel>
+
                                 </div>
+
                             </div>
+
                         </form>
+
                     </div>
+
 
                     <div class="flex justify-end pt-6">
+
                         <p-button
                             (onClick)="['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO'].includes(scope) ? activateCallback(2) : activateCallback(3); usuarioGuardado=false"
-                            icon="pi pi-arrow-right" iconPos="right" />
+                            icon="pi pi-arrow-right"
+                            iconPos="right" />
+
                     </div>
+
                 </ng-template>
+
             </p-step-panel>
 
+
+            <!-- ====================================================== -->
+            <!-- PASO 2 - ALCANCE NORMAL -->
+            <!-- ====================================================== -->
+
             @if (['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL'].includes(scope)) {
+
             <p-step-panel [value]="2">
+
                 <ng-template #content let-activateCallback="activateCallback">
+
                     <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col gap-2">
+
                         <div class="mb-2 mt-4 text-center">
-                            <h2 class="text-xl font-semibold text-slate-800">Alcance de consulta</h2>
-                            <p class="mt-1 text-sm text-slate-400">Define la información que podrá consultar el usuario
+
+                            <h2 class="text-xl font-semibold text-slate-800 dark:!text-zinc-100">
+                                Alcance de consulta
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-400 dark:!text-zinc-400">
+                                Define la información que podrá consultar el usuario
                             </p>
+
                         </div>
 
+
                         <p-message severity="secondary">
+
                             <div class="flex items-center gap-3">
+
                                 <i class="pi pi-lightbulb"></i>
+
                                 <div>
-                                    <b class="text-sm font-semibold">Nota:</b>
-                                    <small class="!text-xs">El alcance será determinado con base en los datos
-                                        seleccionados.</small>
+
+                                    <b class="text-sm font-semibold">
+                                        Nota:
+                                    </b>
+
+                                    <small class="!text-xs">
+                                        El alcance será determinado con base en los datos seleccionados.
+                                    </small>
+
                                 </div>
+
                             </div>
+
                         </p-message>
 
-                        <form class="mt-4 flex w-full flex-col gap-7 rounded-xl border border-slate-100 bg-white p-4"
+
+                        <form
+                            class="mt-4 flex w-full flex-col gap-7 rounded-xl border border-slate-100 bg-white p-4 dark:!border-zinc-700 dark:!bg-zinc-800"
                             [formGroup]="alcancePermisoConsulta">
+
+
                             <p-floatlabel class="w-full">
-                                <p-select inputId="nivel" [options]="niveles" optionValue="id" optionLabel="descripcion"
-                                    class="w-full" formControlName="nivelId"
+
+                                <p-select
+                                    inputId="nivel"
+                                    [options]="niveles"
+                                    optionValue="id"
+                                    optionLabel="descripcion"
+                                    class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                    formControlName="nivelId"
                                     [invalid]="isInvalid(alcancePermisoConsulta,'nivelId')"
                                     (onChange)="getModalidades()" />
-                                <label for="nivel">Seleccione el nivel</label>
+
+                                <label for="nivel" class="dark:!text-zinc-400">
+                                    Seleccione el nivel
+                                </label>
+
                             </p-floatlabel>
 
-                            @if (alcancePermisoConsulta.get('nivelId')?.value !== null &&
-                            alcancePermisoConsulta.get('nivelId')?.value !== undefined) {
+
+                            @if (
+                            alcancePermisoConsulta.get('nivelId')?.value !== null &&
+                            alcancePermisoConsulta.get('nivelId')?.value !== undefined
+                            ) {
+
                             <p-floatlabel class="w-full">
-                                <p-select inputId="modalidad" [options]="modalidades" optionValue="id"
-                                    optionLabel="descripcion" class="w-full" formControlName="modalidadId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'modalidadId')" [filter]="true"
-                                    filterBy="descripcion" (onChange)="getSectores()" />
-                                <label for="modalidad">Seleccione la modalidad</label>
+
+                                <p-select
+                                    inputId="modalidad"
+                                    [options]="modalidades"
+                                    optionValue="id"
+                                    optionLabel="descripcion"
+                                    class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                    formControlName="modalidadId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'modalidadId')"
+                                    [filter]="true"
+                                    filterBy="descripcion"
+                                    (onChange)="getSectores()" />
+
+                                <label for="modalidad" class="dark:!text-zinc-400">
+                                    Seleccione la modalidad
+                                </label>
+
                             </p-floatlabel>
+
                             }
 
-                            @if (alcancePermisoConsulta.get('modalidadId')?.value !== null &&
+
+                            @if (
+                            alcancePermisoConsulta.get('modalidadId')?.value !== null &&
                             alcancePermisoConsulta.get('modalidadId')?.value !== undefined &&
-                            alcancePermisoConsulta.get('nivelId')?.value != 3) {
+                            alcancePermisoConsulta.get('nivelId')?.value != 3
+                            ) {
+
                             <p-floatlabel class="w-full">
-                                <p-select inputId="sector" [options]="sectores" optionValue="id" optionLabel="sector"
-                                    class="w-full" formControlName="sectorId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'sectorId')" [filter]="true"
-                                    filterBy="sector" (onChange)="getZonas()" />
-                                <label for="sector">Seleccione el sector</label>
+
+                                <p-select
+                                    inputId="sector"
+                                    [options]="sectores"
+                                    optionValue="id"
+                                    optionLabel="sector"
+                                    class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                    formControlName="sectorId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'sectorId')"
+                                    [filter]="true"
+                                    filterBy="sector"
+                                    (onChange)="getZonas()" />
+
+                                <label for="sector" class="dark:!text-zinc-400">
+                                    Seleccione el sector
+                                </label>
+
                             </p-floatlabel>
+
                             }
+
 
                             @if (
                             alcancePermisoConsulta.get('modalidadId')?.value !== null &&
@@ -200,106 +441,250 @@
                             alcancePermisoConsulta.get('sectorId')?.value !== null &&
                             alcancePermisoConsulta.get('sectorId')?.value !== undefined
                             ) {
+
                             <p-floatlabel class="w-full">
-                                <p-select inputId="zona" [options]="zonas" optionValue="id" optionLabel="numero"
-                                    class="w-full" formControlName="zonaId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'zonaId')" [filter]="true"
-                                    filterBy="numero" (onChange)="getCentrosTrabajo()" />
-                                <label for="zona">Seleccione la zona</label>
+
+                                <p-select
+                                    inputId="zona"
+                                    [options]="zonas"
+                                    optionValue="id"
+                                    optionLabel="numero"
+                                    class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                    formControlName="zonaId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'zonaId')"
+                                    [filter]="true"
+                                    filterBy="numero"
+                                    (onChange)="getCentrosTrabajo()" />
+
+                                <label for="zona" class="dark:!text-zinc-400">
+                                    Seleccione la zona
+                                </label>
+
                             </p-floatlabel>
+
                             }
 
-                            @if (alcancePermisoConsulta.get('zonaId')?.value !== null &&
-                            alcancePermisoConsulta.get('zonaId')?.value !== undefined && centrosTrabajo.length > 0) {
+
+                            @if (
+                            alcancePermisoConsulta.get('zonaId')?.value !== null &&
+                            alcancePermisoConsulta.get('zonaId')?.value !== undefined &&
+                            centrosTrabajo.length > 0
+                            ) {
+
                             <p-floatlabel class="w-full">
-                                <p-select inputId="cct" [options]="centrosTrabajo" optionValue="id" optionLabel="cct"
-                                    class="w-full" formControlName="escuelaId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'escuelaId')" [filter]="true"
+
+                                <p-select
+                                    inputId="cct"
+                                    [options]="centrosTrabajo"
+                                    optionValue="id"
+                                    optionLabel="cct"
+                                    class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
+                                    formControlName="escuelaId"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'escuelaId')"
+                                    [filter]="true"
                                     filterBy="cct,nombre" />
-                                <label for="cct">Seleccione CCT</label>
+
+                                <label for="cct" class="dark:!text-zinc-400">
+                                    Seleccione CCT
+                                </label>
+
                             </p-floatlabel>
+
                             }
+
                         </form>
+
                     </div>
+
 
                     <div class="flex justify-between pt-6">
-                        <p-button (onClick)="activateCallback(1)" severity="secondary" icon="pi pi-arrow-left" />
-                        <p-button (onClick)="activateCallback(3)" icon="pi pi-arrow-right" iconPos="right" />
+
+                        <p-button
+                            (onClick)="activateCallback(1)"
+                            severity="secondary"
+                            icon="pi pi-arrow-left" />
+
+                        <p-button
+                            (onClick)="activateCallback(3)"
+                            icon="pi pi-arrow-right"
+                            iconPos="right" />
+
                     </div>
+
                 </ng-template>
+
             </p-step-panel>
+
             }
 
+
+            <!-- ====================================================== -->
+            <!-- PASO 2 - ALCANCE PERSONALIZADO -->
+            <!-- ====================================================== -->
+
             @if (scope === 'PERSONALIZADO') {
+
             <p-step-panel [value]="2">
+
                 <ng-template #content let-activateCallback="activateCallback">
+
                     <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col gap-2">
+
                         <div class="mb-2 mt-4 text-center">
-                            <h2 class="text-xl font-semibold text-slate-800">Alcance personalizado</h2>
-                            <p class="mt-1 text-sm text-slate-400">Selecciona los niveles y modalidades que podrá
-                                consultar</p>
+
+                            <h2 class="text-xl font-semibold text-slate-800 dark:!text-zinc-100">
+                                Alcance personalizado
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-400 dark:!text-zinc-400">
+                                Selecciona los niveles y modalidades que podrá consultar
+                            </p>
+
                         </div>
 
+
                         <p-message severity="secondary">
+
                             <div class="flex items-center gap-3">
+
                                 <i class="pi pi-lightbulb"></i>
+
                                 <div>
-                                    <b class="text-sm font-semibold">Nota:</b>
-                                    <small class="!text-xs">Debe seleccionar al menos un nivel y una modalidad.</small>
+
+                                    <b class="text-sm font-semibold">
+                                        Nota:
+                                    </b>
+
+                                    <small class="!text-xs">
+                                        Debe seleccionar al menos un nivel y una modalidad.
+                                    </small>
+
                                 </div>
+
                             </div>
+
                         </p-message>
 
-                        <form class="mt-4 w-full" [formGroup]="alcancePermisoConsulta">
-                            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                                <p class="mb-4 text-sm font-semibold text-slate-700">Niveles disponibles</p>
+
+                        <form
+                            class="mt-4 w-full"
+                            [formGroup]="alcancePermisoConsulta">
+
+                            <div
+                                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
+
+                                <p class="mb-4 text-sm font-semibold text-slate-700 dark:!text-zinc-200">
+                                    Niveles disponibles
+                                </p>
+
 
                                 <div class="flex flex-col gap-3">
+
                                     @for (nivel of niveles; track nivel.id) {
-                                    <div class="rounded-xl border border-slate-100 bg-slate-50/50 p-3">
+
+                                    <div
+                                        class="rounded-xl border border-slate-100 bg-slate-50/50 p-3 dark:!border-zinc-700 dark:!bg-zinc-700/50">
+
                                         <div class="flex items-center">
-                                            <p-checkbox [inputId]="'nivel'+nivel.id" formControlName="nivelIds"
-                                                [value]="nivel.id" (onChange)="getListadoModCompletas(nivel.id)" />
-                                            <label [for]="'nivel'+nivel.id"
-                                                class="ml-2 text-sm font-medium text-slate-700">{{ nivel.descripcion
-                                                }}</label>
+
+                                            <p-checkbox
+                                                [inputId]="'nivel'+nivel.id"
+                                                formControlName="nivelIds"
+                                                [value]="nivel.id"
+                                                (onChange)="getListadoModCompletas(nivel.id)" />
+
+                                            <label
+                                                [for]="'nivel'+nivel.id"
+                                                class="ml-2 text-sm font-medium text-slate-700 dark:!text-zinc-200">
+
+                                                {{ nivel.descripcion }}
+
+                                            </label>
+
                                         </div>
 
+
                                         @if (modalidadesPersonalizado[nivel.id]?.modalidades?.length) {
-                                        <div class="mt-3 rounded-xl border border-slate-200 bg-white p-3">
-                                            <p class="mb-3 text-xs font-semibold text-slate-500">Modalidades permitidas
+
+                                        <div
+                                            class="mt-3 rounded-xl border border-slate-200 bg-white p-3 dark:!border-zinc-600 dark:!bg-zinc-800">
+
+                                            <p class="mb-3 text-xs font-semibold text-slate-500 dark:!text-zinc-400">
+                                                Modalidades permitidas
                                             </p>
 
+
                                             <div class="flex flex-wrap gap-x-5 gap-y-3">
-                                                @for (mod of modalidadesPersonalizado[nivel.id].modalidades; track
-                                                mod.id) {
+
+                                                @for (
+                                                mod of modalidadesPersonalizado[nivel.id].modalidades;
+                                                track mod.id
+                                                ) {
+
                                                 <div class="flex items-center">
-                                                    <p-checkbox [inputId]="'mod'+nivel.id+'-'+mod.id" [binary]="true"
+
+                                                    <p-checkbox
+                                                        [inputId]="'mod'+nivel.id+'-'+mod.id"
+                                                        [binary]="true"
                                                         [ngModel]="estaSeleccionada(nivel.id,mod.id)"
                                                         (ngModelChange)="onChangeModalidad(nivel.id,mod.id,$event)"
                                                         [ngModelOptions]="{standalone:true}" />
-                                                    <label [for]="'mod'+nivel.id+'-'+mod.id"
-                                                        class="ml-2 text-sm text-slate-600">{{ mod.descripcion
-                                                        }}</label>
+
+                                                    <label
+                                                        [for]="'mod'+nivel.id+'-'+mod.id"
+                                                        class="ml-2 text-sm text-slate-600 dark:!text-zinc-300">
+
+                                                        {{ mod.descripcion }}
+
+                                                    </label>
+
                                                 </div>
+
                                                 }
+
                                             </div>
+
                                         </div>
+
                                         }
+
                                     </div>
+
                                     }
+
                                 </div>
+
                             </div>
+
                         </form>
+
                     </div>
 
+
                     <div class="flex justify-between pt-6">
-                        <p-button (onClick)="activateCallback(1)" severity="secondary" icon="pi pi-arrow-left" />
-                        <p-button (onClick)="activateCallback(3)" icon="pi pi-arrow-right" iconPos="right" />
+
+                        <p-button
+                            (onClick)="activateCallback(1)"
+                            severity="secondary"
+                            icon="pi pi-arrow-left" />
+
+                        <p-button
+                            (onClick)="activateCallback(3)"
+                            icon="pi pi-arrow-right"
+                            iconPos="right" />
+
                     </div>
+
                 </ng-template>
+
             </p-step-panel>
+
             }
+
+
+            <!-- ====================================================== -->
+            <!-- PASO 3 - CREDENCIALES -->
+            <!-- ====================================================== -->
 
             <p-step-panel [value]="3">
 
@@ -307,15 +692,16 @@
 
                     <div class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col items-center gap-2">
 
+
                         <!-- ENCABEZADO -->
 
                         <div class="mb-4 mt-4 text-center">
 
-                            <h2 class="text-xl font-semibold text-slate-800">
+                            <h2 class="text-xl font-semibold text-slate-800 dark:!text-zinc-100">
                                 Credenciales de acceso
                             </h2>
 
-                            <p class="mt-1 text-sm text-slate-400">
+                            <p class="mt-1 text-sm text-slate-400 dark:!text-zinc-400">
                                 Define el usuario y contraseña de la nueva cuenta
                             </p>
 
@@ -324,37 +710,47 @@
 
                         <!-- FORMULARIO -->
 
-                        <form class="w-full px-2" [formGroup]="auth">
+                        <form
+                            class="w-full px-2"
+                            [formGroup]="auth">
+
 
                             <!-- USUARIO -->
 
                             <div class="mb-5">
 
-                                <label for="username" class="mb-1.5 block text-sm font-medium text-slate-600">
+                                <label
+                                    for="username"
+                                    class="mb-1.5 block text-sm font-medium text-slate-600 dark:!text-zinc-300">
 
                                     Usuario
 
                                 </label>
 
-                                <input id="username" type="text" autocomplete="off" pInputText
-                                    formControlName="username" [invalid]="isInvalid(auth,'username')"
-                                    class="w-full rounded-lg px-4 py-2 text-slate-900" />
+                                <input
+                                    id="username"
+                                    type="text"
+                                    autocomplete="off"
+                                    pInputText
+                                    formControlName="username"
+                                    [invalid]="isInvalid(auth,'username')"
+                                    class="w-full rounded-lg px-4 py-2 text-slate-900 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
                             </div>
-
-
-
 
 
                             <!-- CONTRASEÑAS -->
 
                             <div class="flex flex-col gap-5 md:flex-row">
 
+
                                 <!-- CONTRASEÑA -->
 
                                 <div class="flex-1">
 
-                                    <label for="password" class="mb-1.5 block text-sm font-medium text-slate-600">
+                                    <label
+                                        for="password"
+                                        class="mb-1.5 block text-sm font-medium text-slate-600 dark:!text-zinc-300">
 
                                         Contraseña
 
@@ -362,12 +758,19 @@
 
                                     <div class="relative">
 
-                                        <input [type]="showPass ? 'text' : 'password'" id="password" pInputText
-                                            formControlName="password" [invalid]="isInvalid(auth,'password')"
-                                            class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900" />
+                                        <input
+                                            [type]="showPass ? 'text' : 'password'"
+                                            id="password"
+                                            pInputText
+                                            formControlName="password"
+                                            [invalid]="isInvalid(auth,'password')"
+                                            class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
-                                        <button type="button" (click)="showPass = !showPass"
-                                            class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+
+                                        <button
+                                            type="button"
+                                            (click)="showPass = !showPass"
+                                            class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:!text-zinc-400 dark:hover:!bg-zinc-600 dark:hover:!text-zinc-100">
 
                                             @if (!showPass) {
 
@@ -390,8 +793,9 @@
 
                                 <div class="flex-1">
 
-                                    <label for="confirmPassword"
-                                        class="mb-1.5 block text-sm font-medium text-slate-600">
+                                    <label
+                                        for="confirmPassword"
+                                        class="mb-1.5 block text-sm font-medium text-slate-600 dark:!text-zinc-300">
 
                                         Confirmar contraseña
 
@@ -399,13 +803,19 @@
 
                                     <div class="relative">
 
-                                        <input [type]="showConfirm ? 'text' : 'password'" id="confirmPassword"
-                                            pInputText formControlName="confirmPassword"
+                                        <input
+                                            [type]="showConfirm ? 'text' : 'password'"
+                                            id="confirmPassword"
+                                            pInputText
+                                            formControlName="confirmPassword"
                                             [invalid]="isInvalid(auth,'confirmPassword')"
-                                            class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900" />
+                                            class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
-                                        <button type="button" (click)="showConfirm = !showConfirm"
-                                            class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+
+                                        <button
+                                            type="button"
+                                            (click)="showConfirm = !showConfirm"
+                                            class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:!text-zinc-400 dark:hover:!bg-zinc-600 dark:hover:!text-zinc-100">
 
                                             @if (!showConfirm) {
 
@@ -425,24 +835,31 @@
 
                             </div>
 
-                            <!-- REQUISITOS DE CONTRASEÑA -->
-                            <!-- REQUISITOS DE CONTRASEÑA -->
 
-                            <div class="mt-4 mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70">
+                            <!-- ====================================================== -->
+                            <!-- REQUISITOS DE CONTRASEÑA -->
+                            <!-- ====================================================== -->
+
+                            <div
+                                class="mb-5 mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70 dark:!border-zinc-700 dark:!bg-zinc-800">
 
                                 <div class="flex items-start gap-3 p-4">
 
+
                                     <!-- ICONO -->
 
-                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm transition-colors"
+                                    <div
+                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm transition-colors dark:!bg-zinc-700 dark:!shadow-none"
                                         [ngClass]="{
-                'text-emerald-600': passwordValido,
-                'text-slate-500': !passwordValido
-            }">
+                                            'text-emerald-600 dark:!text-emerald-300': passwordValido,
+                                            'text-slate-500 dark:!text-zinc-400': !passwordValido
+                                        }">
 
-                                        <i class="pi text-base" [ngClass]="passwordValido
-                    ? 'pi-shield text-emerald-600'
-                    : 'pi-shield text-slate-500'">
+                                        <i
+                                            class="pi text-base"
+                                            [ngClass]="passwordValido
+                                                ? 'pi-shield text-emerald-600 dark:!text-emerald-300'
+                                                : 'pi-shield text-slate-500 dark:!text-zinc-400'">
                                         </i>
 
                                     </div>
@@ -454,14 +871,15 @@
 
                                         <div class="flex flex-wrap items-center gap-2">
 
-                                            <h3 class="text-sm font-semibold text-slate-800">
+                                            <h3 class="text-sm font-semibold text-slate-800 dark:!text-zinc-100">
                                                 Requisitos de la contraseña
                                             </h3>
+
 
                                             @if (passwordValido) {
 
                                             <span
-                                                class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-600">
+                                                class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-600 dark:!bg-emerald-950/60 dark:!text-emerald-300">
 
                                                 <i class="pi pi-check text-[9px]"></i>
 
@@ -472,7 +890,7 @@
                                             } @else {
 
                                             <span
-                                                class="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                                                class="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:!bg-zinc-700 dark:!text-zinc-400">
 
                                                 Seguridad
 
@@ -483,7 +901,7 @@
                                         </div>
 
 
-                                        <p class="mt-1 text-xs leading-5 text-slate-500">
+                                        <p class="mt-1 text-xs leading-5 text-slate-500 dark:!text-zinc-400">
                                             La contraseña debe cumplir con todos los siguientes requisitos:
                                         </p>
 
@@ -495,32 +913,41 @@
 
                                             <!-- 8 CARACTERES -->
 
-                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div
+                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.longitud
-                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
-                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+                                                    ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
+                                                    : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div
+                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.longitud
-                            ? 'bg-emerald-100 text-emerald-600'
-                            : 'bg-rose-100 text-rose-500'">
+                                                        ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
+                                                        : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.longitud
-                                ? 'pi-check'
-                                : 'pi-times'">
+                                                    <i
+                                                        class="pi text-[9px]"
+                                                        [ngClass]="requisitosPassword.longitud
+                                                            ? 'pi-check'
+                                                            : 'pi-times'">
                                                     </i>
 
                                                 </div>
 
                                                 <span>
+
                                                     Mínimo
-                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.longitud
-                                ? 'text-emerald-700'
-                                : 'text-rose-600'">
+
+                                                    <strong
+                                                        class="font-semibold"
+                                                        [ngClass]="requisitosPassword.longitud
+                                                            ? 'text-emerald-700 dark:!text-emerald-300'
+                                                            : 'text-rose-600 dark:!text-rose-300'">
 
                                                         8 caracteres
 
                                                     </strong>
+
                                                 </span>
 
                                             </div>
@@ -528,32 +955,41 @@
 
                                             <!-- MAYÚSCULA -->
 
-                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div
+                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.mayuscula
-                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
-                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+                                                    ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
+                                                    : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div
+                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.mayuscula
-                            ? 'bg-emerald-100 text-emerald-600'
-                            : 'bg-rose-100 text-rose-500'">
+                                                        ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
+                                                        : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.mayuscula
-                                ? 'pi-check'
-                                : 'pi-times'">
+                                                    <i
+                                                        class="pi text-[9px]"
+                                                        [ngClass]="requisitosPassword.mayuscula
+                                                            ? 'pi-check'
+                                                            : 'pi-times'">
                                                     </i>
 
                                                 </div>
 
                                                 <span>
+
                                                     Una
-                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.mayuscula
-                                ? 'text-emerald-700'
-                                : 'text-rose-600'">
+
+                                                    <strong
+                                                        class="font-semibold"
+                                                        [ngClass]="requisitosPassword.mayuscula
+                                                            ? 'text-emerald-700 dark:!text-emerald-300'
+                                                            : 'text-rose-600 dark:!text-rose-300'">
 
                                                         letra mayúscula
 
                                                     </strong>
+
                                                 </span>
 
                                             </div>
@@ -561,32 +997,41 @@
 
                                             <!-- NÚMERO -->
 
-                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div
+                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.numero
-                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
-                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+                                                    ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
+                                                    : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div
+                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.numero
-                            ? 'bg-emerald-100 text-emerald-600'
-                            : 'bg-rose-100 text-rose-500'">
+                                                        ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
+                                                        : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.numero
-                                ? 'pi-check'
-                                : 'pi-times'">
+                                                    <i
+                                                        class="pi text-[9px]"
+                                                        [ngClass]="requisitosPassword.numero
+                                                            ? 'pi-check'
+                                                            : 'pi-times'">
                                                     </i>
 
                                                 </div>
 
                                                 <span>
+
                                                     Al menos
-                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.numero
-                                ? 'text-emerald-700'
-                                : 'text-rose-600'">
+
+                                                    <strong
+                                                        class="font-semibold"
+                                                        [ngClass]="requisitosPassword.numero
+                                                            ? 'text-emerald-700 dark:!text-emerald-300'
+                                                            : 'text-rose-600 dark:!text-rose-300'">
 
                                                         un número
 
                                                     </strong>
+
                                                 </span>
 
                                             </div>
@@ -594,32 +1039,41 @@
 
                                             <!-- CARÁCTER ESPECIAL -->
 
-                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div
+                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.especial
-                        ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700'
-                        : 'border-rose-100 bg-rose-50/70 text-rose-600'">
+                                                    ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
+                                                    : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div
+                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.especial
-                            ? 'bg-emerald-100 text-emerald-600'
-                            : 'bg-rose-100 text-rose-500'">
+                                                        ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
+                                                        : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.especial
-                                ? 'pi-check'
-                                : 'pi-times'">
+                                                    <i
+                                                        class="pi text-[9px]"
+                                                        [ngClass]="requisitosPassword.especial
+                                                            ? 'pi-check'
+                                                            : 'pi-times'">
                                                     </i>
 
                                                 </div>
 
                                                 <span>
+
                                                     Un
-                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.especial
-                                ? 'text-emerald-700'
-                                : 'text-rose-600'">
+
+                                                    <strong
+                                                        class="font-semibold"
+                                                        [ngClass]="requisitosPassword.especial
+                                                            ? 'text-emerald-700 dark:!text-emerald-300'
+                                                            : 'text-rose-600 dark:!text-rose-300'">
 
                                                         carácter especial
 
                                                     </strong>
+
                                                 </span>
 
                                             </div>
@@ -630,18 +1084,18 @@
                                         <!-- EJEMPLO -->
 
                                         <div
-                                            class="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-3">
+                                            class="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-3 dark:!border-zinc-700">
 
-                                            <span class="text-xs font-medium text-slate-400">
+                                            <span class="text-xs font-medium text-slate-400 dark:!text-zinc-400">
                                                 Ejemplo:
                                             </span>
 
                                             <code
-                                                class="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold tracking-wide text-slate-700 shadow-sm">
+                                                class="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold tracking-wide text-slate-700 shadow-sm dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-200 dark:!shadow-none">
 
-                    Escuela2026!
+                                                Escuela2026!
 
-                </code>
+                                            </code>
 
                                         </div>
 
@@ -651,12 +1105,18 @@
 
                             </div>
 
+
                             <!-- CREAR USUARIO -->
 
                             <div class="mt-8 flex justify-center">
 
-                                <p-button label="Crear usuario" icon="pi pi-save" severity="contrast" size="small"
-                                    [loading]="guardandoUsuario" [disabled]="guardandoUsuario"
+                                <p-button
+                                    label="Crear usuario"
+                                    icon="pi pi-save"
+                                    severity="contrast"
+                                    size="small"
+                                    [loading]="guardandoUsuario"
+                                    [disabled]="guardandoUsuario"
                                     (onClick)="guardarUsuario()" />
 
                             </div>
@@ -675,12 +1135,16 @@
                         .includes(scope)
                         ) {
 
-                        <p-button (onClick)="activateCallback(2); usuarioGuardado = false" severity="secondary"
+                        <p-button
+                            (onClick)="activateCallback(2); usuarioGuardado = false"
+                            severity="secondary"
                             icon="pi pi-arrow-left" />
 
                         } @else {
 
-                        <p-button (onClick)="activateCallback(1); usuarioGuardado = false" severity="secondary"
+                        <p-button
+                            (onClick)="activateCallback(1); usuarioGuardado = false"
+                            severity="secondary"
                             icon="pi pi-arrow-left" />
 
                         }
@@ -691,28 +1155,56 @@
 
             </p-step-panel>
 
+
+            <!-- ====================================================== -->
+            <!-- PASO 4 - ÉXITO -->
+            <!-- ====================================================== -->
+
             <p-step-panel [value]="4">
+
                 <ng-template #content let-activateCallback="activateCallback">
+
                     <div
                         class="mx-auto flex min-h-[50vh] max-w-[40rem] flex-col items-center justify-center gap-4 text-center">
+
                         <div
-                            class="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                            class="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 dark:!bg-emerald-950/60 dark:!text-emerald-300">
+
                             <i class="pi pi-check text-3xl"></i>
+
                         </div>
 
                         <div>
-                            <h2 class="text-xl font-semibold text-slate-800">Cuenta creada correctamente</h2>
-                            <p class="mt-1 text-sm text-slate-400">La persona y las credenciales fueron registradas
-                                correctamente.</p>
+
+                            <h2 class="text-xl font-semibold text-slate-800 dark:!text-zinc-100">
+                                Cuenta creada correctamente
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-400 dark:!text-zinc-400">
+                                La persona y las credenciales fueron registradas correctamente.
+                            </p>
+
                         </div>
+
                     </div>
 
+
                     <div class="flex justify-start pt-6">
-                        <p-button (onClick)="activateCallback(1); usuarioGuardado=false" label="Crear nuevo usuario"
-                            severity="secondary" icon="pi pi-plus" />
+
+                        <p-button
+                            (onClick)="activateCallback(1); usuarioGuardado=false"
+                            label="Crear nuevo usuario"
+                            severity="secondary"
+                            icon="pi pi-plus" />
+
                     </div>
+
                 </ng-template>
+
             </p-step-panel>
+
         </p-step-panels>
+
     </p-stepper>
+
 </div>
