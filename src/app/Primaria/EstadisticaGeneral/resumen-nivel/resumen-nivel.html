@@ -11,7 +11,7 @@
     <div class="inline-flex flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 shadow-sm">
       @for (nivel of niveles; track nivel.id) {
       <button type="button" (click)="getEstadistica(nivel.id)"
-        class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 sm:px-4"
+        class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 sm:px-4 rounded"
         [ngClass]="nivelSeleccionado === nivel.id ? 'bg-slate-800 text-white shadow-md' : 'text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm'">
         <i [class]="getIconNivel(nivel.descripcion)"
           [ngClass]="nivelSeleccionado === nivel.id ? 'text-white' : 'text-slate-400'"></i>
