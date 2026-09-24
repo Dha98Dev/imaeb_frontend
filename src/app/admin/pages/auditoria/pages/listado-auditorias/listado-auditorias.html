@@ -1,5 +1,9 @@
 <div class="mx-auto w-full max-w-7xl px-3 pb-8 sm:px-5 lg:px-6">
 
+    <!-- ====================================================== -->
+    <!-- ENCABEZADO -->
+    <!-- ====================================================== -->
+
     <section class="mb-5 pt-4">
 
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -9,7 +13,7 @@
                 <div class="flex items-center gap-2">
 
                     <div
-                        class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                        class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600 dark:!bg-zinc-700 dark:!text-zinc-300">
 
                         <i class="pi pi-shield"></i>
 
@@ -17,11 +21,12 @@
 
                     <div>
 
-                        <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                        <p
+                            class="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:!text-zinc-400">
                             Seguridad
                         </p>
 
-                        <h1 class="text-xl font-bold text-slate-900">
+                        <h1 class="text-xl font-bold text-slate-900 dark:!text-zinc-100">
                             Auditoría
                         </h1>
 
@@ -29,17 +34,18 @@
 
                 </div>
 
-                <p class="mt-2 text-sm text-slate-500">
+                <p class="mt-2 text-sm text-slate-500 dark:!text-zinc-400">
                     Consulta de eventos de seguridad y operaciones registradas en el sistema.
                 </p>
 
             </div>
 
+
             <div
-                class="inline-flex w-fit items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+                class="inline-flex w-fit items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <div
-                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 dark:!bg-zinc-700 dark:!text-zinc-300">
 
                     <i class="pi pi-history text-sm"></i>
 
@@ -47,11 +53,12 @@
 
                 <div>
 
-                    <p class="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+                    <p
+                        class="text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:!text-zinc-400">
                         Eventos encontrados
                     </p>
 
-                    <p class="text-sm font-bold text-slate-800">
+                    <p class="text-sm font-bold text-slate-800 dark:!text-zinc-100">
                         {{ totalElementos }}
                     </p>
 
@@ -64,20 +71,29 @@
     </section>
 
 
-    <section class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <!-- ====================================================== -->
+    <!-- FILTROS -->
+    <!-- ====================================================== -->
+
+    <section
+        class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
         <form
             [formGroup]="filtrosForm"
             (ngSubmit)="buscar()"
             class="space-y-4">
 
+
             <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+
+
+                <!-- DESDE -->
 
                 <div>
 
                     <label
                         for="auditoria-desde"
-                        class="mb-1.5 block text-xs font-semibold text-slate-600">
+                        class="mb-1.5 block text-xs font-semibold text-slate-600 dark:!text-zinc-300">
 
                         Desde
 
@@ -88,15 +104,18 @@
                         type="date"
                         pInputText
                         formControlName="desde"
-                        class="w-full" />
+                        class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
                 </div>
+
+
+                <!-- HASTA -->
 
                 <div>
 
                     <label
                         for="auditoria-hasta"
-                        class="mb-1.5 block text-xs font-semibold text-slate-600">
+                        class="mb-1.5 block text-xs font-semibold text-slate-600 dark:!text-zinc-300">
 
                         Hasta
 
@@ -107,41 +126,50 @@
                         type="date"
                         pInputText
                         formControlName="hasta"
-                        class="w-full" />
+                        class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
                 </div>
+
             </div>
+
+
+            <!-- ERROR RANGO -->
 
             @if (filtrosForm.hasError('rangoFechas')) {
 
-                <div
-                    role="alert"
-                    class="flex items-center gap-2 rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 text-xs text-rose-700">
+            <div
+                role="alert"
+                class="flex items-center gap-2 rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 text-xs text-rose-700 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300">
 
-                    <i class="pi pi-exclamation-circle"></i>
+                <i class="pi pi-exclamation-circle"></i>
 
-                    La fecha inicial no puede ser posterior a la fecha final.
+                La fecha inicial no puede ser posterior a la fecha final.
 
-                </div>
+            </div>
 
             }
 
+
             <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[1fr_240px_auto]">
+
+
+                <!-- ACCIÓN -->
 
                 <div>
 
                     <label
                         for="auditoria-accion"
-                        class="mb-1.5 block text-xs font-semibold text-slate-600">
+                        class="mb-1.5 block text-xs font-semibold text-slate-600 dark:!text-zinc-300">
 
                         Acción
 
                     </label>
 
+
                     <div class="relative">
 
                         <i
-                            class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+                            class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 dark:!text-zinc-400">
                         </i>
 
                         <input
@@ -151,15 +179,18 @@
                             autocomplete="off"
                             formControlName="accion"
                             placeholder="Ej. PERFIL_EDITADO"
-                            class="w-full !pl-9" />
+                            class="w-full !pl-9 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100 dark:placeholder:!text-zinc-400" />
 
                     </div>
 
                 </div>
 
+
+                <!-- RESULTADO -->
+
                 <div>
 
-                    <label class="mb-1.5 block text-xs font-semibold text-slate-600">
+                    <label class="mb-1.5 block text-xs font-semibold text-slate-600 dark:!text-zinc-300">
                         Resultado
                     </label>
 
@@ -176,28 +207,36 @@
 
                 </div>
 
+
+                <!-- BOTONES -->
+
                 <div class="flex items-end gap-2">
 
                     <button
                         type="submit"
                         [disabled]="cargando"
-                        class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50">
+                        class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 dark:!bg-zinc-700 dark:hover:!bg-zinc-600">
 
                         @if (cargando) {
-                            <i class="pi pi-spin pi-spinner text-xs"></i>
+
+                        <i class="pi pi-spin pi-spinner text-xs"></i>
+
                         } @else {
-                            <i class="pi pi-search text-xs"></i>
+
+                        <i class="pi pi-search text-xs"></i>
+
                         }
 
                         Buscar
 
                     </button>
 
+
                     <button
                         type="button"
                         [disabled]="cargando"
                         (click)="limpiarFiltros()"
-                        class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">
+                        class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-200 dark:hover:!bg-zinc-600 dark:hover:!text-white">
 
                         <i class="pi pi-filter-slash text-xs"></i>
 
@@ -214,365 +253,425 @@
     </section>
 
 
-    <section class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <!-- ====================================================== -->
+    <!-- RESULTADOS -->
+    <!-- ====================================================== -->
+
+    <section
+        class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
+
+
+        <!-- CARGANDO SOBRE TABLA -->
 
         @if (cargando && auditorias.length > 0) {
 
+        <div
+            class="absolute inset-0 z-20 flex items-center justify-center bg-white/75 backdrop-blur-[1px] dark:!bg-zinc-950/75"
+            aria-live="polite">
+
             <div
-                class="absolute inset-0 z-20 flex items-center justify-center bg-white/75 backdrop-blur-[1px]"
-                aria-live="polite">
+                class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
-                <div
-                    class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg">
+                <i class="pi pi-spin pi-spinner text-lg text-slate-500 dark:!text-zinc-300"></i>
 
-                    <i class="pi pi-spin pi-spinner text-lg text-slate-500"></i>
-
-                    <span class="text-sm font-semibold text-slate-600">
-                        Consultando auditoría...
-                    </span>
-
-                </div>
+                <span class="text-sm font-semibold text-slate-600 dark:!text-zinc-200">
+                    Consultando auditoría...
+                </span>
 
             </div>
+
+        </div>
 
         }
 
 
+        <!-- CARGA INICIAL -->
+
         @if (cargando && auditorias.length === 0) {
 
-            <div
-                class="px-6 py-14 text-center"
-                aria-live="polite">
+        <div
+            class="px-6 py-14 text-center"
+            aria-live="polite">
 
-                <i class="pi pi-spin pi-spinner text-2xl text-slate-400"></i>
+            <i class="pi pi-spin pi-spinner text-2xl text-slate-400 dark:!text-zinc-400"></i>
 
-                <p class="mt-3 text-sm font-medium text-slate-500">
-                    Consultando eventos de auditoría...
-                </p>
+            <p class="mt-3 text-sm font-medium text-slate-500 dark:!text-zinc-400">
+                Consultando eventos de auditoría...
+            </p>
 
-            </div>
+        </div>
+
+
+        <!-- SIN PERMISO -->
 
         } @else if (sinPermiso) {
 
+        <div
+            role="alert"
+            class="px-6 py-14 text-center">
+
             <div
-                role="alert"
-                class="px-6 py-14 text-center">
+                class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:!bg-amber-950/60 dark:!text-amber-300">
 
-                <div
-                    class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
-
-                    <i class="pi pi-lock text-xl"></i>
-
-                </div>
-
-                <h3 class="mt-4 text-base font-bold text-slate-800">
-                    Acceso restringido
-                </h3>
-
-                <p class="mx-auto mt-1 max-w-lg text-sm leading-6 text-slate-500">
-                    {{ errorListado }}
-                </p>
+                <i class="pi pi-lock text-xl"></i>
 
             </div>
+
+            <h3 class="mt-4 text-base font-bold text-slate-800 dark:!text-zinc-100">
+                Acceso restringido
+            </h3>
+
+            <p class="mx-auto mt-1 max-w-lg text-sm leading-6 text-slate-500 dark:!text-zinc-400">
+                {{ errorListado }}
+            </p>
+
+        </div>
+
+
+        <!-- ERROR -->
 
         } @else if (errorListado && auditorias.length === 0) {
 
+        <div
+            role="alert"
+            class="px-6 py-14 text-center">
+
             <div
-                role="alert"
-                class="px-6 py-14 text-center">
+                class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 text-rose-500 dark:!bg-rose-950/60 dark:!text-rose-300">
 
-                <div
-                    class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 text-rose-500">
-
-                    <i class="pi pi-exclamation-circle text-xl"></i>
-
-                </div>
-
-                <h3 class="mt-4 text-base font-bold text-slate-800">
-                    No fue posible cargar la auditoría
-                </h3>
-
-                <p class="mx-auto mt-1 max-w-lg text-sm leading-6 text-slate-500">
-                    {{ errorListado }}
-                </p>
-
-                <button
-                    type="button"
-                    (click)="reintentar()"
-                    class="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
-
-                    <i class="pi pi-refresh text-xs"></i>
-
-                    Reintentar
-
-                </button>
+                <i class="pi pi-exclamation-circle text-xl"></i>
 
             </div>
+
+            <h3 class="mt-4 text-base font-bold text-slate-800 dark:!text-zinc-100">
+                No fue posible cargar la auditoría
+            </h3>
+
+            <p class="mx-auto mt-1 max-w-lg text-sm leading-6 text-slate-500 dark:!text-zinc-400">
+                {{ errorListado }}
+            </p>
+
+            <button
+                type="button"
+                (click)="reintentar()"
+                class="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-200 dark:hover:!bg-zinc-600 dark:hover:!text-white">
+
+                <i class="pi pi-refresh text-xs"></i>
+
+                Reintentar
+
+            </button>
+
+        </div>
+
+
+        <!-- TABLA -->
 
         } @else if (auditorias.length > 0) {
 
-            @if (errorListado) {
 
-                <div
-                    role="alert"
-                    class="m-3 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-700">
+        <!-- ERROR NO BLOQUEANTE -->
 
-                    <i class="pi pi-exclamation-triangle"></i>
+        @if (errorListado) {
 
-                    {{ errorListado }}
+        <div
+            role="alert"
+            class="m-3 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-700 dark:!border-amber-900/60 dark:!bg-amber-950/50 dark:!text-amber-300">
 
-                </div>
+            <i class="pi pi-exclamation-triangle"></i>
 
-            }
+            {{ errorListado }}
 
-            <div class="overflow-x-auto">
+        </div>
 
-                <table class="w-full min-w-[1050px] text-left text-sm">
+        }
 
-                    <thead>
 
-                        <tr
-                            class="border-b border-slate-200 bg-slate-50/70 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+        <div class="overflow-x-auto">
 
-                            <th class="p-3">
-                                Fecha y hora
-                            </th>
+            <table class="w-full min-w-[1050px] text-left text-sm">
 
-                            <th class="p-3">
-                                Acción
-                            </th>
+                <thead>
 
-                            <th class="p-3">
-                                Actor
-                            </th>
+                    <tr
+                        class="border-b border-slate-200 bg-slate-50/70 text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:!border-zinc-700 dark:!bg-zinc-700 dark:!text-zinc-300">
 
-                            <th class="p-3">
-                                Recurso
-                            </th>
+                        <th class="p-3">
+                            Fecha y hora
+                        </th>
 
-                            <th class="p-3">
-                                Usuario afectado
-                            </th>
+                        <th class="p-3">
+                            Acción
+                        </th>
 
-                            <th class="p-3 text-center">
-                                Resultado
-                            </th>
+                        <th class="p-3">
+                            Actor
+                        </th>
 
-                            <th class="w-[70px] p-3">
-                                <span class="sr-only">
-                                    Acciones
+                        <th class="p-3">
+                            Recurso
+                        </th>
+
+                        <th class="p-3">
+                            Usuario afectado
+                        </th>
+
+                        <th class="p-3 text-center">
+                            Resultado
+                        </th>
+
+                        <th class="w-[70px] p-3">
+
+                            <span class="sr-only">
+                                Acciones
+                            </span>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @for (
+                    auditoria of auditorias;
+                    track auditoria.id
+                    ) {
+
+                    <tr
+                        class="audit-row border-b border-slate-100 text-xs transition-colors last:border-b-0 hover:bg-slate-50/80 dark:!border-zinc-700 dark:hover:!bg-zinc-700/60">
+
+
+                        <!-- FECHA -->
+
+                        <td class="p-3">
+
+                            <div class="flex items-center gap-2 text-slate-600 dark:!text-zinc-300">
+
+                                <i class="pi pi-clock text-[10px] text-slate-400 dark:!text-zinc-500"></i>
+
+                                <span>
+                                    {{ auditoria.fechaHora | date:'dd/MM/yyyy HH:mm:ss' }}
                                 </span>
-                            </th>
 
-                        </tr>
+                            </div>
 
-                    </thead>
+                        </td>
 
-                    <tbody>
 
-                        @for (
-                            auditoria of auditorias;
-                            track auditoria.id
-                        ) {
+                        <!-- ACCIÓN -->
 
-                            <tr
-                                class="audit-row border-b border-slate-100 text-xs transition-colors last:border-b-0 hover:bg-slate-50/80">
+                        <td class="p-3">
 
-                                <td class="p-3">
+                            <span
+                                class="inline-flex rounded-lg bg-indigo-50 px-2.5 py-1 font-semibold text-indigo-700 dark:!bg-indigo-950/60 dark:!text-indigo-300">
 
-                                    <div class="flex items-center gap-2 text-slate-600">
+                                {{ auditoria.accion }}
 
-                                        <i class="pi pi-clock text-[10px] text-slate-400"></i>
+                            </span>
 
-                                        <span>
-                                            {{ auditoria.fechaHora | date:'dd/MM/yyyy HH:mm:ss' }}
-                                        </span>
+                        </td>
 
-                                    </div>
 
-                                </td>
+                        <!-- ACTOR -->
 
-                                <td class="p-3">
+                        <td class="p-3">
 
-                                    <span
-                                        class="inline-flex rounded-lg bg-indigo-50 px-2.5 py-1 font-semibold text-indigo-700">
+                            <div>
 
-                                        {{ auditoria.accion }}
+                                <p class="font-semibold text-slate-700 dark:!text-zinc-200">
 
-                                    </span>
+                                    {{
+                                    auditoria.actorUsername
+                                    || auditoria.actorSistema
+                                    || 'No disponible'
+                                    }}
 
-                                </td>
+                                </p>
 
-                                <td class="p-3">
+                                <p
+                                    class="mt-0.5 text-[10px] uppercase tracking-wide text-slate-400 dark:!text-zinc-400">
 
-                                    <div>
+                                    {{ auditoria.actorTipo }}
 
-                                        <p class="font-semibold text-slate-700">
-                                            {{
-                                                auditoria.actorUsername
-                                                || auditoria.actorSistema
-                                                || 'No disponible'
-                                            }}
-                                        </p>
+                                </p>
 
-                                        <p class="mt-0.5 text-[10px] uppercase tracking-wide text-slate-400">
-                                            {{ auditoria.actorTipo }}
-                                        </p>
+                            </div>
 
-                                    </div>
+                        </td>
 
-                                </td>
 
-                                <td class="p-3">
+                        <!-- RECURSO -->
 
-                                    <div>
+                        <td class="p-3">
 
-                                        <p class="font-medium text-slate-700">
-                                            {{ auditoria.recursoTipo }}
-                                        </p>
+                            <div>
 
-                                        @if (auditoria.recursoId) {
+                                <p class="font-medium text-slate-700 dark:!text-zinc-200">
+                                    {{ auditoria.recursoTipo }}
+                                </p>
 
-                                            <p class="mt-0.5 text-[11px] text-slate-400">
-                                                ID: {{ auditoria.recursoId }}
-                                            </p>
+                                @if (auditoria.recursoId) {
 
-                                        }
+                                <p class="mt-0.5 text-[11px] text-slate-400 dark:!text-zinc-400">
+                                    ID: {{ auditoria.recursoId }}
+                                </p>
 
-                                    </div>
+                                }
 
-                                </td>
+                            </div>
 
-                                <td class="p-3">
+                        </td>
 
-                                    @if (auditoria.usuarioDestinoUsername) {
 
-                                        <div>
+                        <!-- USUARIO AFECTADO -->
 
-                                            <p class="font-medium text-slate-700">
-                                                {{ auditoria.usuarioDestinoUsername }}
-                                            </p>
+                        <td class="p-3">
 
-                                            @if (auditoria.usuarioDestinoId !== null) {
+                            @if (auditoria.usuarioDestinoUsername) {
 
-                                                <p class="mt-0.5 text-[11px] text-slate-400">
-                                                    ID: {{ auditoria.usuarioDestinoId }}
-                                                </p>
+                            <div>
 
-                                            }
+                                <p class="font-medium text-slate-700 dark:!text-zinc-200">
+                                    {{ auditoria.usuarioDestinoUsername }}
+                                </p>
 
-                                        </div>
+                                @if (auditoria.usuarioDestinoId !== null) {
 
-                                    } @else {
+                                <p class="mt-0.5 text-[11px] text-slate-400 dark:!text-zinc-400">
+                                    ID: {{ auditoria.usuarioDestinoId }}
+                                </p>
 
-                                        <span class="text-slate-400">
-                                            No aplica
-                                        </span>
+                                }
 
-                                    }
+                            </div>
 
-                                </td>
+                            } @else {
 
-                                <td class="p-3 text-center">
+                            <span class="text-slate-400 dark:!text-zinc-500">
+                                No aplica
+                            </span>
 
-                                    <span
-                                        class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold"
-                                        [ngClass]="getResultadoClass(auditoria.resultado)">
+                            }
 
-                                        <i
-                                            [class]="getResultadoIcon(auditoria.resultado)"
-                                            class="text-[10px]">
-                                        </i>
+                        </td>
 
-                                        {{ auditoria.resultado }}
 
-                                    </span>
+                        <!-- RESULTADO -->
 
-                                </td>
+                        <td class="p-3 text-center">
 
-                                <td class="p-3 text-right">
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold"
+                                [ngClass]="getResultadoClass(auditoria.resultado)">
 
-                                    <button
-                                        type="button"
-                                        (click)="abrirDetalle(auditoria)"
-                                        [attr.aria-label]="'Consultar detalle del evento ' + auditoria.accion"
-                                        pTooltip="Ver detalle"
-                                        tooltipPosition="left"
-                                        class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+                                <i
+                                    [class]="getResultadoIcon(auditoria.resultado)"
+                                    class="text-[10px]">
+                                </i>
 
-                                        <i class="pi pi-eye text-xs"></i>
+                                {{ auditoria.resultado }}
 
-                                    </button>
+                            </span>
 
-                                </td>
+                        </td>
 
-                            </tr>
 
-                        }
+                        <!-- ACCIÓN -->
 
-                    </tbody>
+                        <td class="p-3 text-right">
 
-                </table>
+                            <button
+                                type="button"
+                                (click)="abrirDetalle(auditoria)"
+                                [attr.aria-label]="'Consultar detalle del evento ' + auditoria.accion"
+                                pTooltip="Ver detalle"
+                                tooltipPosition="left"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:!text-zinc-400 dark:hover:!bg-zinc-700 dark:hover:!text-white dark:focus-visible:!ring-zinc-500">
+
+                                <i class="pi pi-eye text-xs"></i>
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PAGINACIÓN -->
+
+        <div
+            class="flex flex-col gap-2 border-t border-slate-100 px-3 py-2 sm:flex-row sm:items-center sm:justify-between dark:!border-zinc-700">
+
+            <div class="hidden px-2 text-xs text-slate-400 sm:block dark:!text-zinc-400">
+
+                Página
+
+                <span class="font-semibold text-slate-600 dark:!text-zinc-200">
+                    {{ paginaActual + 1 }}
+                </span>
+
+                de
+
+                <span class="font-semibold text-slate-600 dark:!text-zinc-200">
+                    {{ totalPaginas }}
+                </span>
 
             </div>
 
-            <div
-                class="flex flex-col gap-2 border-t border-slate-100 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
 
-                <div class="hidden px-2 text-xs text-slate-400 sm:block">
+            <p-paginator
+                [first]="paginaActual * tamanoPagina"
+                [rows]="tamanoPagina"
+                [totalRecords]="totalElementos"
+                [rowsPerPageOptions]="[10, 20, 50, 100]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="{first} - {last} de {totalRecords}"
+                (onPageChange)="cambiarPagina($event)">
+            </p-paginator>
 
-                    Página
+        </div>
 
-                    <span class="font-semibold text-slate-600">
-                        {{ paginaActual + 1 }}
-                    </span>
 
-                    de
-
-                    <span class="font-semibold text-slate-600">
-                        {{ totalPaginas }}
-                    </span>
-
-                </div>
-
-                <p-paginator
-                    [first]="paginaActual * tamanoPagina"
-                    [rows]="tamanoPagina"
-                    [totalRecords]="totalElementos"
-                    [rowsPerPageOptions]="[10, 20, 50, 100]"
-                    [showCurrentPageReport]="true"
-                    currentPageReportTemplate="{first} - {last} de {totalRecords}"
-                    (onPageChange)="cambiarPagina($event)">
-                </p-paginator>
-
-            </div>
+        <!-- SIN RESULTADOS -->
 
         } @else {
 
-            <div class="px-6 py-14 text-center">
+        <div class="px-6 py-14 text-center">
 
-                <div
-                    class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+            <div
+                class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 dark:!bg-zinc-700 dark:!text-zinc-300">
 
-                    <i class="pi pi-search text-lg"></i>
-
-                </div>
-
-                <h3 class="mt-4 text-base font-bold text-slate-800">
-                    No se encontraron eventos
-                </h3>
-
-                <p class="mx-auto mt-1 max-w-md text-sm leading-6 text-slate-500">
-                    No existen eventos de auditoría que coincidan con los filtros seleccionados.
-                </p>
+                <i class="pi pi-search text-lg"></i>
 
             </div>
+
+            <h3 class="mt-4 text-base font-bold text-slate-800 dark:!text-zinc-100">
+                No se encontraron eventos
+            </h3>
+
+            <p class="mx-auto mt-1 max-w-md text-sm leading-6 text-slate-500 dark:!text-zinc-400">
+                No existen eventos de auditoría que coincidan con los filtros seleccionados.
+            </p>
+
+        </div>
 
         }
 
     </section>
 
 </div>
+
 
 <app-detalle-auditoria
     [visible]="detalleVisible"

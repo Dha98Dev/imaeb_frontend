@@ -17,7 +17,7 @@
 
             </div>
 
-            <p class="text-sm text-slate-500">
+            <p class="text-sm text-slate-500 dark:!text-zinc-400">
                 Resultados de
                 {{ getNivelDescription() }}
                 correspondientes al sector
@@ -29,13 +29,13 @@
 
         @if (examenActual) {
 
-        <section class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+        <section class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:!bg-indigo-950/60 dark:!text-indigo-300">
 
                         <i class="pi pi-file-edit"></i>
 
@@ -43,11 +43,11 @@
 
                     <div>
 
-                        <p class="text-xs font-medium text-slate-400">
+                        <p class="text-xs font-medium text-slate-400 dark:!text-zinc-400">
                             Evaluación
                         </p>
 
-                        <p class="font-semibold text-slate-900">
+                        <p class="font-semibold text-slate-900 dark:!text-zinc-100">
                             {{ examenActual.descripcion }}
                         </p>
 
@@ -58,20 +58,20 @@
 
                 <div class="flex flex-wrap gap-2">
 
-                    <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+                    <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:!bg-blue-950/60 dark:!text-blue-300">
 
                         Ciclo
                         {{ examenActual.ciclo }}
 
                     </span>
 
-                    <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+                    <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700 dark:!bg-violet-950/60 dark:!text-violet-300">
 
                         {{ getNivelDescription() }}
 
                     </span>
 
-                    <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+                    <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:!bg-emerald-950/60 dark:!text-emerald-300">
 
                         Sector {{ sector }}
 
@@ -90,11 +90,11 @@
 
             <div class="mb-4">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                     Resumen general
                 </h2>
 
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                     Comparación del resultado del sector con el resultado estatal.
                 </p>
 
@@ -104,11 +104,11 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 
                 <div
-                    class="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/70 to-white p-5 shadow-sm">
+                    class="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/70 to-white p-5 shadow-sm dark:!border-blue-900/50 dark:!from-blue-950/40 dark:!to-zinc-800 dark:!shadow-none">
 
                     <div class="flex items-center gap-4">
 
-                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:!bg-blue-950/60 dark:!text-blue-300">
 
                             <i class="pi pi-building text-lg">
                             </i>
@@ -117,11 +117,11 @@
 
                         <div>
 
-                            <p class="text-xs font-medium text-slate-500">
+                            <p class="text-xs font-medium text-slate-500 dark:!text-zinc-400">
                                 Resultado del sector
                             </p>
 
-                            <p class="mt-1 text-2xl font-bold text-slate-900">
+                            <p class="mt-1 text-2xl font-bold text-slate-900 dark:!text-zinc-100">
 
                                 {{
                                 promedioSector
@@ -130,7 +130,7 @@
 
                             </p>
 
-                            <p class="mt-0.5 text-xs font-medium text-blue-600">
+                            <p class="mt-0.5 text-xs font-medium text-blue-600 dark:!text-blue-300">
 
                                 Sector {{ sector }}
 
@@ -144,12 +144,12 @@
 
 
                 <div
-                    class="rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50/70 to-white p-5 shadow-sm">
+                    class="rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50/70 to-white p-5 shadow-sm dark:!border-violet-900/50 dark:!from-violet-950/40 dark:!to-zinc-800 dark:!shadow-none">
 
                     <div class="flex items-center gap-4">
 
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-100 text-violet-600 dark:!bg-violet-950/60 dark:!text-violet-300">
 
                             <i class="pi pi-chart-line text-lg">
                             </i>
@@ -158,11 +158,11 @@
 
                         <div>
 
-                            <p class="text-xs font-medium text-slate-500">
+                            <p class="text-xs font-medium text-slate-500 dark:!text-zinc-400">
                                 Resultado estatal
                             </p>
 
-                            <p class="mt-1 text-2xl font-bold text-slate-900">
+                            <p class="mt-1 text-2xl font-bold text-slate-900 dark:!text-zinc-100">
 
                                 {{
                                 promedioEstatal
@@ -171,7 +171,7 @@
 
                             </p>
 
-                            <p class="mt-0.5 text-xs font-medium text-violet-600">
+                            <p class="mt-0.5 text-xs font-medium text-violet-600 dark:!text-violet-300">
 
                                 {{ getNivelDescription() }}
 
@@ -196,13 +196,13 @@
 
             <div class="mb-4">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
 
                     Resultados por área evaluada
 
                 </h2>
 
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
 
                     Comparación entre el resultado del sector y el resultado estatal por área.
 
@@ -218,9 +218,13 @@
                 track item.title
                 ) {
 
-                <app-item-porcentaje-area-evaluada [bgTitle]="item.bgTitle" [title]="item.title"
-                    [firstLeyendPercent]="item.firstLeyendPercent" [firstPercent]="item.firstPercent"
-                    [secondLeyendPercent]="item.secondLeyendPercent" [secondPercent]="item.secondPercent">
+                <app-item-porcentaje-area-evaluada
+                    [bgTitle]="item.bgTitle"
+                    [title]="item.title"
+                    [firstLeyendPercent]="item.firstLeyendPercent"
+                    [firstPercent]="item.firstPercent"
+                    [secondLeyendPercent]="item.secondLeyendPercent"
+                    [secondPercent]="item.secondPercent">
                 </app-item-porcentaje-area-evaluada>
 
                 }
@@ -236,13 +240,13 @@
 
             <div class="mb-4">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
 
                     Zonas del sector {{ sector }}
 
                 </h2>
 
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
 
                     Comparación de los resultados obtenidos por cada zona escolar.
 
@@ -255,32 +259,34 @@
             zonas.length > 0
             ) {
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
-                <app-char-barra-single-data-set [randomColors]="true" [dataChart]="dataGrafica">
+                <app-char-barra-single-data-set
+                    [randomColors]="true"
+                    [dataChart]="dataGrafica">
                 </app-char-barra-single-data-set>
 
             </div>
 
             } @else {
 
-            <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+            <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center dark:!border-zinc-700 dark:!bg-zinc-800">
 
                 <div
-                    class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white text-slate-400 shadow-sm">
+                    class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white text-slate-400 shadow-sm dark:!bg-zinc-700 dark:!text-zinc-300 dark:!shadow-none">
 
                     <i class="pi pi-map-marker">
                     </i>
 
                 </div>
 
-                <p class="mt-3 text-sm font-semibold text-slate-700">
+                <p class="mt-3 text-sm font-semibold text-slate-700 dark:!text-zinc-100">
 
                     No se encontraron zonas
 
                 </p>
 
-                <p class="mt-1 text-xs text-slate-500">
+                <p class="mt-1 text-xs text-slate-500 dark:!text-zinc-400">
 
                     No existen zonas asociadas al sector seleccionado.
 

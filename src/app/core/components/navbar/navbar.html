@@ -1,4 +1,4 @@
-<div class="flex items-center px-4 py-3" [ngClass]="isAutenticated ? 'justify-between' : 'justify-end'">
+<div class="flex items-center px-4 py-3  dark:!bg-none dark:!bg-zinc-700" [ngClass]="isAutenticated ? 'justify-between' : 'justify-end'">
     @if (isAutenticated) {
     <button type="button" (click)="visible = true"
         class="flex items-center gap-2 rounded-xl border border-[#886849]/30 bg-[#886849] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#765737] hover:shadow-md">

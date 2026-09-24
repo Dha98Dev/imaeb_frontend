@@ -32,31 +32,30 @@
 
     @if (examenActual) {
 
-    <section class="mt-5 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+    <section
+        class="mt-5 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
 
             <div class="flex items-center gap-3">
 
-                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                <div
+                    class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:!bg-indigo-950/60 dark:!text-indigo-300">
 
-                    <i class="pi pi-file-edit">
-                    </i>
+                    <i class="pi pi-file-edit"></i>
 
                 </div>
 
 
                 <div>
 
-                    <p class="text-xs font-medium text-slate-400">
+                    <p class="text-xs font-medium text-slate-400 dark:!text-zinc-400">
                         Evaluación
                     </p>
 
-                    <p class="font-semibold text-slate-900">
-
+                    <p class="font-semibold text-slate-900 dark:!text-zinc-100">
                         {{ examenActual.descripcion }}
-
                     </p>
 
                 </div>
@@ -66,20 +65,22 @@
 
             <div class="flex flex-wrap gap-2">
 
-                <span class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+                <span
+                    class="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:!bg-blue-950/60 dark:!text-blue-300">
 
-                    Ciclo
-                    {{ examenActual.ciclo }}
+                    Ciclo {{ examenActual.ciclo }}
 
                 </span>
 
-                <span class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+                <span
+                    class="rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700 dark:!bg-violet-950/60 dark:!text-violet-300">
 
                     {{ examenActual.nivel }}
 
                 </span>
 
-                <span class="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+                <span
+                    class="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:!bg-zinc-700 dark:!text-zinc-300">
 
                     Grupo {{ grupo }}
 
@@ -102,7 +103,8 @@
 
     <section class="mt-6 flex justify-end">
 
-        <div class="inline-flex flex-wrap gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
+        <div
+            class="inline-flex flex-wrap gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 dark:!border-zinc-700 dark:!bg-zinc-800">
 
 
             @for (
@@ -110,16 +112,17 @@
             track materia.materiaId
             ) {
 
-            <button type="button" (click)="onPick(materia.materiaId)"
+            <button
+                type="button"
+                (click)="onPick(materia.materiaId)"
                 class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200"
                 [ngClass]="
-                            materiaSelected === materia.materiaId
-                                ? 'bg-c2 text-white shadow-md'
-                                : 'text-slate-500 hover:bg-white hover:text-slate-700'
-                        ">
+                    materiaSelected === materia.materiaId
+                        ? 'bg-c2 text-white shadow-md dark:!text-white dark:!shadow-none'
+                        : 'text-slate-500 hover:bg-white hover:text-slate-700 dark:!text-zinc-300 dark:hover:!bg-zinc-700 dark:hover:!text-white'
+                ">
 
-                <i class="pi pi-book text-sm">
-                </i>
+                <i class="pi pi-book text-sm"></i>
 
                 <span>
                     {{ materia.materia }}
@@ -149,25 +152,26 @@
 
             <!-- RESULTADO -->
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:!bg-emerald-950/60 dark:!text-emerald-300">
 
-                        <i class="pi pi-chart-line">
-                        </i>
+                        <i class="pi pi-chart-line"></i>
 
                     </div>
 
 
                     <div>
 
-                        <p class="text-[11px] font-medium text-slate-400">
+                        <p class="text-[11px] font-medium text-slate-400 dark:!text-zinc-400">
                             Resultado
                         </p>
 
-                        <p class="text-lg font-bold text-slate-900">
+                        <p class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
 
                             {{
                             porcentajeMateria
@@ -185,30 +189,27 @@
 
             <!-- PARTICIPANTES -->
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:!bg-blue-950/60 dark:!text-blue-300">
 
-                        <i class="pi pi-users">
-                        </i>
+                        <i class="pi pi-users"></i>
 
                     </div>
 
 
                     <div>
 
-                        <p class="text-[11px] font-medium text-slate-400">
+                        <p class="text-[11px] font-medium text-slate-400 dark:!text-zinc-400">
                             Participantes
                         </p>
 
-                        <p class="text-lg font-bold text-slate-900">
-
-                            {{
-                            materiaActual.totalParticipantes
-                            }}
-
+                        <p class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
+                            {{ materiaActual.totalParticipantes }}
                         </p>
 
                     </div>
@@ -220,30 +221,27 @@
 
             <!-- PREGUNTAS -->
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:!bg-violet-950/60 dark:!text-violet-300">
 
-                        <i class="pi pi-list">
-                        </i>
+                        <i class="pi pi-list"></i>
 
                     </div>
 
 
                     <div>
 
-                        <p class="text-[11px] font-medium text-slate-400">
+                        <p class="text-[11px] font-medium text-slate-400 dark:!text-zinc-400">
                             Preguntas
                         </p>
 
-                        <p class="text-lg font-bold text-slate-900">
-
-                            {{
-                            materiaActual.totalPreguntas
-                            }}
-
+                        <p class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
+                            {{ materiaActual.totalPreguntas }}
                         </p>
 
                     </div>
@@ -255,28 +253,27 @@
 
             <!-- UNIDADES -->
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:!bg-amber-950/60 dark:!text-amber-300">
 
-                        <i class="pi pi-folder">
-                        </i>
+                        <i class="pi pi-folder"></i>
 
                     </div>
 
 
                     <div>
 
-                        <p class="text-[11px] font-medium text-slate-400">
+                        <p class="text-[11px] font-medium text-slate-400 dark:!text-zinc-400">
                             Unidades
                         </p>
 
-                        <p class="text-lg font-bold text-slate-900">
-
+                        <p class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                             {{ totalUnidades }}
-
                         </p>
 
                     </div>
@@ -298,7 +295,8 @@
 
     @if (materiaActual) {
 
-    <section class="mt-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <section
+        class="mt-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
 
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -306,14 +304,12 @@
 
             <div>
 
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:!text-zinc-400">
                     Materia seleccionada
                 </p>
 
-                <h2 class="mt-1 text-lg font-bold text-slate-900">
-
+                <h2 class="mt-1 text-lg font-bold text-slate-900 dark:!text-zinc-100">
                     {{ materiaActual.materia }}
-
                 </h2>
 
             </div>
@@ -324,16 +320,12 @@
 
                 <div>
 
-                    <p class="text-xs text-slate-400">
+                    <p class="text-xs text-slate-400 dark:!text-zinc-400">
                         Respuestas registradas
                     </p>
 
-                    <p class="mt-0.5 font-bold text-slate-800">
-
-                        {{
-                        materiaActual.respuestasRegistradas
-                        }}
-
+                    <p class="mt-0.5 font-bold text-slate-800 dark:!text-zinc-100">
+                        {{ materiaActual.respuestasRegistradas }}
                     </p>
 
                 </div>
@@ -341,7 +333,7 @@
 
                 <div>
 
-                    <p class="text-xs text-slate-400">
+                    <p class="text-xs text-slate-400 dark:!text-zinc-400">
 
                         @if (esRespuestaCorrecta()) {
                         Aciertos
@@ -351,19 +343,15 @@
 
                     </p>
 
-                    <p class="mt-0.5 font-bold text-slate-800">
+                    <p class="mt-0.5 font-bold text-slate-800 dark:!text-zinc-100">
 
                         @if (esRespuestaCorrecta()) {
 
-                        {{
-                        materiaActual.aciertos
-                        }}
+                        {{ materiaActual.aciertos }}
 
                         } @else {
 
-                        {{
-                        materiaActual.puntajeObtenido
-                        }}
+                        {{ materiaActual.puntajeObtenido }}
 
                         }
 
@@ -374,22 +362,18 @@
 
                 <div>
 
-                    <p class="text-xs text-slate-400">
+                    <p class="text-xs text-slate-400 dark:!text-zinc-400">
                         Puntaje
                     </p>
 
-                    <p class="mt-0.5 font-bold text-slate-800">
+                    <p class="mt-0.5 font-bold text-slate-800 dark:!text-zinc-100">
 
-                        {{
-                        materiaActual.puntajeObtenido
-                        }}
+                        {{ materiaActual.puntajeObtenido }}
 
-                        <span class="font-normal text-slate-400">
+                        <span class="font-normal text-slate-400 dark:!text-zinc-400">
 
                             /
-                            {{
-                            materiaActual.puntajeMaximo
-                            }}
+                            {{ materiaActual.puntajeMaximo }}
 
                         </span>
 
@@ -409,11 +393,11 @@
 
             <div class="mb-2 flex items-center justify-between text-xs">
 
-                <span class="font-medium text-slate-500">
+                <span class="font-medium text-slate-500 dark:!text-zinc-400">
                     Desempeño de la materia
                 </span>
 
-                <span class="font-bold text-slate-700">
+                <span class="font-bold text-slate-700 dark:!text-zinc-200">
 
                     {{
                     materiaActual.porcentaje
@@ -425,9 +409,10 @@
             </div>
 
 
-            <div class="h-2.5 overflow-hidden rounded-full bg-slate-100">
+            <div class="h-2.5 overflow-hidden rounded-full bg-slate-100 dark:!bg-zinc-700">
 
-                <div class="h-full rounded-full bg-blue-500 transition-all duration-500"
+                <div
+                    class="h-full rounded-full bg-blue-500 transition-all duration-500 dark:!bg-blue-400"
                     [style.width.%]="materiaActual.porcentaje">
                 </div>
 
@@ -451,16 +436,12 @@
 
         <div class="mb-5">
 
-            <h2 class="text-lg font-bold text-slate-900">
-
+            <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                 Resultados por unidad
-
             </h2>
 
-            <p class="mt-1 text-sm text-slate-500">
-
+            <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                 Desempeño obtenido en cada pregunta agrupada por unidad de análisis.
-
             </p>
 
         </div>
@@ -474,10 +455,14 @@
             track item.unidad
             ) {
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
-                <app-item-chart-resltado-area [unidadAnalisis]="item.unidad" [alumnos]="item.totalAlumnos.toString()"
-                    [aciertos]="item.porcentajeAciertos + '%'" [desaciertos]="item.porcentajeDesaciertos + '%'"
+                <app-item-chart-resltado-area
+                    [unidadAnalisis]="item.unidad"
+                    [alumnos]="item.totalAlumnos.toString()"
+                    [aciertos]="item.porcentajeAciertos + '%'"
+                    [desaciertos]="item.porcentajeDesaciertos + '%'"
                     [dataSet]="item.dataChart">
                 </app-item-chart-resltado-area>
 
@@ -501,25 +486,24 @@
     preguntas.length === 0
     ) {
 
-    <section class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+    <section
+        class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:!border-zinc-700 dark:!bg-zinc-800">
 
 
-        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
+        <div
+            class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm dark:!bg-zinc-700 dark:!text-zinc-300 dark:!shadow-none">
 
-            <i class="pi pi-file text-xl">
-            </i>
+            <i class="pi pi-file text-xl"></i>
 
         </div>
 
 
-        <h3 class="mt-4 text-base font-semibold text-slate-800">
-
+        <h3 class="mt-4 text-base font-semibold text-slate-800 dark:!text-zinc-100">
             Sin resultados de preguntas
-
         </h3>
 
 
-        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500 dark:!text-zinc-400">
 
             No se encontraron resultados registrados para
             {{ materiaActual.materia }} en el grupo {{ grupo }}.
@@ -539,25 +523,24 @@
     materias.length === 0
     ) {
 
-    <section class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+    <section
+        class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:!border-zinc-700 dark:!bg-zinc-800">
 
 
-        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
+        <div
+            class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm dark:!bg-zinc-700 dark:!text-zinc-300 dark:!shadow-none">
 
-            <i class="pi pi-book text-xl">
-            </i>
+            <i class="pi pi-book text-xl"></i>
 
         </div>
 
 
-        <h3 class="mt-4 text-base font-semibold text-slate-800">
-
+        <h3 class="mt-4 text-base font-semibold text-slate-800 dark:!text-zinc-100">
             Sin materias disponibles
-
         </h3>
 
 
-        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500 dark:!text-zinc-400">
 
             No se encontraron materias con resultados para el grupo
             {{ grupo }} en esta evaluación.

@@ -1,28 +1,35 @@
 <div class="mx-auto w-full max-w-7xl px-3 pb-8 sm:px-5 lg:px-6">
 
+  <!-- ====================================================== -->
+  <!-- ENCABEZADO -->
+  <!-- ====================================================== -->
+
   <section class="mb-5 pt-4">
 
     <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
 
       <div>
 
-        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:!text-zinc-400">
           Administración
         </p>
 
-        <h1 class="mt-1 text-xl font-bold text-slate-900">
+        <h1 class="mt-1 text-xl font-bold text-slate-900 dark:!text-zinc-100">
           Usuarios
         </h1>
 
-        <p class="mt-1 text-sm text-slate-500">
+        <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
           Consulta y administra las cuentas con acceso al sistema.
         </p>
 
       </div>
 
-      <div class="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
 
-        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+      <div
+        class="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
+
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 dark:!bg-zinc-700 dark:!text-zinc-300">
 
           <i class="pi pi-users"></i>
 
@@ -30,11 +37,12 @@
 
         <div>
 
-          <p class="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+          <p
+            class="text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:!text-zinc-400">
             Usuarios encontrados
           </p>
 
-          <p class="text-sm font-bold text-slate-800">
+          <p class="text-sm font-bold text-slate-800 dark:!text-zinc-100">
             {{ totalElementos }}
           </p>
 
@@ -46,13 +54,27 @@
 
   </section>
 
-  <section class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
 
-    <form [formGroup]="filtrosForm" (ngSubmit)="buscar()" class="flex flex-col gap-3 lg:flex-row lg:items-end">
+  <!-- ====================================================== -->
+  <!-- FILTROS -->
+  <!-- ====================================================== -->
+
+  <section
+    class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
+
+    <form
+      [formGroup]="filtrosForm"
+      (ngSubmit)="buscar()"
+      class="flex flex-col gap-3 lg:flex-row lg:items-end">
+
+
+      <!-- USUARIO -->
 
       <div class="min-w-0 flex-1">
 
-        <label for="filtro-username" class="mb-1.5 block text-xs font-semibold text-slate-600">
+        <label
+          for="filtro-username"
+          class="mb-1.5 block text-xs font-semibold text-slate-600 dark:!text-zinc-300">
 
           Usuario
 
@@ -60,57 +82,97 @@
 
         <div class="relative">
 
-          <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+          <i
+            class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 dark:!text-zinc-400">
           </i>
 
-          <input id="filtro-username" pInputText type="search" autocomplete="off" formControlName="username"
-            placeholder="Buscar por usuario" class="w-full !pl-9" />
+          <input
+            id="filtro-username"
+            pInputText
+            type="search"
+            autocomplete="off"
+            formControlName="username"
+            placeholder="Buscar por usuario"
+            class="w-full !pl-9 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100 dark:placeholder:!text-zinc-400" />
 
         </div>
 
       </div>
 
+
+      <!-- SCOPE -->
+
       <div class="w-full lg:w-[220px]">
 
-        <label class="mb-1.5 block text-xs font-semibold text-slate-600">
+        <label class="mb-1.5 block text-xs font-semibold text-slate-600 dark:!text-zinc-300">
           Scope
         </label>
 
-        <p-select formControlName="scope" [options]="scopes" optionLabel="label" optionValue="value" placeholder="Todos"
-          [showClear]="true" appendTo="body" styleClass="w-full">
+        <p-select
+          formControlName="scope"
+          [options]="scopes"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Todos"
+          [showClear]="true"
+          appendTo="body"
+          styleClass="w-full">
         </p-select>
 
       </div>
+
+
+      <!-- ESTADO -->
 
       <div class="w-full lg:w-[190px]">
 
-        <label class="mb-1.5 block text-xs font-semibold text-slate-600">
+        <label class="mb-1.5 block text-xs font-semibold text-slate-600 dark:!text-zinc-300">
           Estado
         </label>
 
-        <p-select formControlName="activo" [options]="estados" optionLabel="label" optionValue="value"
-          placeholder="Todos" [showClear]="true" appendTo="body" styleClass="w-full">
+        <p-select
+          formControlName="activo"
+          [options]="estados"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Todos"
+          [showClear]="true"
+          appendTo="body"
+          styleClass="w-full">
         </p-select>
 
       </div>
 
+
+      <!-- BOTONES -->
+
       <div class="flex gap-2">
 
-        <button type="submit" [disabled]="cargando"
-          class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50">
+        <button
+          type="submit"
+          [disabled]="cargando"
+          class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 dark:!bg-zinc-700 dark:hover:!bg-zinc-600">
 
           @if (cargando) {
+
           <i class="pi pi-spin pi-spinner text-xs"></i>
+
           } @else {
+
           <i class="pi pi-search text-xs"></i>
+
           }
 
           Buscar
 
         </button>
 
-        <button type="button" [disabled]="cargando" (click)="limpiarFiltros()"
-          class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">
+
+        <button
+          type="button"
+          [disabled]="cargando"
+          (click)="limpiarFiltros()"
+          class="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-200 dark:hover:!bg-zinc-600 dark:hover:!text-white">
 
           <i class="pi pi-filter-slash text-xs"></i>
 
@@ -124,18 +186,29 @@
 
   </section>
 
-  <section class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+  <!-- ====================================================== -->
+  <!-- LISTADO -->
+  <!-- ====================================================== -->
+
+  <section
+    class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
+
+
+    <!-- CARGANDO SOBRE TABLA -->
 
     @if (cargando && listadoUsuarios.length > 0) {
 
-    <div class="absolute inset-0 z-20 flex items-center justify-center bg-white/75 backdrop-blur-[1px]"
+    <div
+      class="absolute inset-0 z-20 flex items-center justify-center bg-white/75 backdrop-blur-[1px] dark:!bg-zinc-950/75"
       aria-live="polite">
 
-      <div class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg">
+      <div
+        class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
-        <i class="pi pi-spin pi-spinner text-lg text-slate-500"></i>
+        <i class="pi pi-spin pi-spinner text-lg text-slate-500 dark:!text-zinc-300"></i>
 
-        <span class="text-sm font-semibold text-slate-600">
+        <span class="text-sm font-semibold text-slate-600 dark:!text-zinc-200">
           Consultando usuarios...
         </span>
 
@@ -145,38 +218,51 @@
 
     }
 
+
+    <!-- CARGA INICIAL -->
+
     @if (cargando && listadoUsuarios.length === 0) {
 
-    <div class="px-6 py-14 text-center" aria-live="polite">
+    <div
+      class="px-6 py-14 text-center"
+      aria-live="polite">
 
-      <i class="pi pi-spin pi-spinner text-2xl text-slate-400"></i>
+      <i class="pi pi-spin pi-spinner text-2xl text-slate-400 dark:!text-zinc-400"></i>
 
-      <p class="mt-3 text-sm font-medium text-slate-500">
+      <p class="mt-3 text-sm font-medium text-slate-500 dark:!text-zinc-400">
         Consultando usuarios...
       </p>
 
     </div>
 
+
+    <!-- ERROR -->
+
     } @else if (errorListado && listadoUsuarios.length === 0) {
 
-    <div role="alert" class="px-6 py-12 text-center">
+    <div
+      role="alert"
+      class="px-6 py-12 text-center">
 
-      <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-rose-500">
+      <div
+        class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-rose-500 dark:!bg-rose-950/60 dark:!text-rose-300">
 
         <i class="pi pi-exclamation-circle"></i>
 
       </div>
 
-      <h3 class="mt-3 text-sm font-bold text-slate-800">
+      <h3 class="mt-3 text-sm font-bold text-slate-800 dark:!text-zinc-100">
         No fue posible cargar los usuarios
       </h3>
 
-      <p class="mx-auto mt-1 max-w-lg text-xs leading-5 text-slate-500">
+      <p class="mx-auto mt-1 max-w-lg text-xs leading-5 text-slate-500 dark:!text-zinc-400">
         {{ errorListado }}
       </p>
 
-      <button type="button" (click)="reintentar()"
-        class="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
+      <button
+        type="button"
+        (click)="reintentar()"
+        class="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-200 dark:hover:!bg-zinc-600 dark:hover:!text-white">
 
         <i class="pi pi-refresh text-xs"></i>
 
@@ -186,12 +272,19 @@
 
     </div>
 
+
+    <!-- LISTADO -->
+
     } @else if (listadoUsuarios.length > 0) {
+
+
+    <!-- ALERTA NO BLOQUEANTE -->
 
     @if (errorListado) {
 
-    <div role="alert"
-      class="m-3 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-700">
+    <div
+      role="alert"
+      class="m-3 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-700 dark:!border-amber-900/60 dark:!bg-amber-950/50 dark:!text-amber-300">
 
       <i class="pi pi-exclamation-triangle"></i>
 
@@ -201,6 +294,11 @@
 
     }
 
+
+    <!-- ====================================================== -->
+    <!-- TABLA -->
+    <!-- ====================================================== -->
+
     <div class="overflow-x-auto">
 
       <table class="w-full min-w-[950px] text-left text-sm">
@@ -208,7 +306,7 @@
         <thead>
 
           <tr
-            class="border-b border-slate-200 bg-slate-50/70 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+            class="border-b border-slate-200 bg-slate-50/70 text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:!border-zinc-700 dark:!bg-zinc-700 dark:!text-zinc-300">
 
             <th class="p-3">
               Usuario
@@ -235,14 +333,17 @@
             </th>
 
             <th class="w-[70px] p-3">
+
               <span class="sr-only">
                 Acciones
               </span>
+
             </th>
 
           </tr>
 
         </thead>
+
 
         <tbody>
 
@@ -251,36 +352,52 @@
           track usuario.id
           ) {
 
-          <tr class="border-b border-slate-100 text-xs transition-colors last:border-b-0 hover:bg-slate-50/80">
+          <tr
+            class="border-b border-slate-100 text-xs transition-colors last:border-b-0 hover:bg-slate-50/80 dark:!border-zinc-700 dark:hover:!bg-zinc-700/60">
+
+
+            <!-- USUARIO -->
 
             <td class="p-3">
 
-              <span class="font-semibold text-slate-800">
+              <span class="font-semibold text-slate-800 dark:!text-zinc-100">
                 {{ usuario.username }}
               </span>
 
             </td>
 
+
+            <!-- NOMBRE -->
+
             <td class="p-3">
 
-              <p class="max-w-[280px] whitespace-normal font-medium leading-5 text-slate-700">
+              <p
+                class="max-w-[280px] whitespace-normal font-medium leading-5 text-slate-700 dark:!text-zinc-200">
+
                 {{ usuario.nombreCompleto || 'No disponible' }}
+
               </p>
 
             </td>
 
+
+            <!-- TIPO PERSONA -->
+
             <td class="p-3">
 
-              <span class="text-xs text-slate-600">
+              <span class="text-xs text-slate-600 dark:!text-zinc-300">
                 {{ usuario.tipoPersona || 'No definido' }}
               </span>
 
             </td>
 
+
+            <!-- SCOPE -->
+
             <td class="p-3">
 
               <span
-                class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
+                class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600 dark:!bg-zinc-700 dark:!text-zinc-300">
 
                 <i class="pi pi-shield text-[9px]"></i>
 
@@ -290,14 +407,18 @@
 
             </td>
 
+
+            <!-- ESTADO -->
+
             <td class="p-3 text-center">
 
               @if (usuario.activo) {
 
               <span
-                class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:!bg-emerald-950/60 dark:!text-emerald-300">
 
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:!bg-emerald-400">
+                </span>
 
                 Activo
 
@@ -306,9 +427,10 @@
               } @else {
 
               <span
-                class="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-1 text-[11px] font-semibold text-rose-700">
+                class="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-1 text-[11px] font-semibold text-rose-700 dark:!bg-rose-950/60 dark:!text-rose-300">
 
-                <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+                <span class="h-1.5 w-1.5 rounded-full bg-rose-500 dark:!bg-rose-400">
+                </span>
 
                 Inactivo
 
@@ -318,11 +440,14 @@
 
             </td>
 
+
+            <!-- FECHA -->
+
             <td class="p-3">
 
-              <div class="flex items-center gap-2 text-xs text-slate-500">
+              <div class="flex items-center gap-2 text-xs text-slate-500 dark:!text-zinc-400">
 
-                <i class="pi pi-calendar text-[10px] text-slate-400"></i>
+                <i class="pi pi-calendar text-[10px] text-slate-400 dark:!text-zinc-500"></i>
 
                 {{ usuario.fechaCreacionTexto }}
 
@@ -330,12 +455,18 @@
 
             </td>
 
+
+            <!-- ACCIONES -->
+
             <td class="p-3 text-right">
 
-              <button type="button" (click)="abrirEditor(usuario)"
-                [attr.aria-label]="'Administrar usuario ' + usuario.username" pTooltip="Administrar usuario"
+              <button
+                type="button"
+                (click)="abrirEditor(usuario)"
+                [attr.aria-label]="'Administrar usuario ' + usuario.username"
+                pTooltip="Administrar usuario"
                 tooltipPosition="left"
-                class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+                class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:!text-zinc-400 dark:hover:!bg-zinc-700 dark:hover:!text-white dark:focus-visible:!ring-zinc-500">
 
                 <i class="pi pi-ellipsis-v text-xs"></i>
 
@@ -353,46 +484,63 @@
 
     </div>
 
-    <div class="flex flex-col gap-2 border-t border-slate-100 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
 
-      <div class="hidden px-2 text-xs text-slate-400 sm:block">
+    <!-- ====================================================== -->
+    <!-- PAGINACIÓN -->
+    <!-- ====================================================== -->
+
+    <div
+      class="flex flex-col gap-2 border-t border-slate-100 px-3 py-2 sm:flex-row sm:items-center sm:justify-between dark:!border-zinc-700">
+
+      <div class="hidden px-2 text-xs text-slate-400 sm:block dark:!text-zinc-400">
 
         Página
 
-        <span class="font-semibold text-slate-600">
+        <span class="font-semibold text-slate-600 dark:!text-zinc-200">
           {{ paginaActual + 1 }}
         </span>
 
         de
 
-        <span class="font-semibold text-slate-600">
+        <span class="font-semibold text-slate-600 dark:!text-zinc-200">
           {{ totalPaginas }}
         </span>
 
       </div>
 
-      <p-paginator [first]="paginaActual * tamanoPagina" [rows]="tamanoPagina" [totalRecords]="totalElementos"
-        [rowsPerPageOptions]="[10, 20, 50, 100]" [showCurrentPageReport]="true"
-        currentPageReportTemplate="{first} - {last} de {totalRecords}" (onPageChange)="cambiarPagina($event)">
+      <p-paginator
+        [first]="paginaActual * tamanoPagina"
+        [rows]="tamanoPagina"
+        [totalRecords]="totalElementos"
+        [rowsPerPageOptions]="[10, 20, 50, 100]"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="{first} - {last} de {totalRecords}"
+        (onPageChange)="cambiarPagina($event)">
       </p-paginator>
 
     </div>
+
+
+    <!-- ====================================================== -->
+    <!-- SIN RESULTADOS -->
+    <!-- ====================================================== -->
 
     } @else {
 
     <div class="px-6 py-12 text-center">
 
-      <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400">
+      <div
+        class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:!bg-zinc-700 dark:!text-zinc-300">
 
         <i class="pi pi-users"></i>
 
       </div>
 
-      <h3 class="mt-3 text-sm font-bold text-slate-800">
+      <h3 class="mt-3 text-sm font-bold text-slate-800 dark:!text-zinc-100">
         No se encontraron usuarios
       </h3>
 
-      <p class="mt-1 text-xs text-slate-500">
+      <p class="mt-1 text-xs text-slate-500 dark:!text-zinc-400">
         Intenta cambiar los filtros de búsqueda.
       </p>
 
@@ -404,6 +552,10 @@
 
 </div>
 
-<app-usuario-editor [visible]="editorVisible" [usuario]="usuarioSeleccionado"
-  (visibleChange)="onEditorVisibleChange($event)" (actualizado)="onUsuarioActualizado()">
+
+<app-usuario-editor
+  [visible]="editorVisible"
+  [usuario]="usuarioSeleccionado"
+  (visibleChange)="onEditorVisibleChange($event)"
+  (actualizado)="onUsuarioActualizado()">
 </app-usuario-editor>

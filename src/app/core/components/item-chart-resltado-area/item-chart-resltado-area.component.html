@@ -1,4 +1,4 @@
-<div class="contenido flex bg-white rounded-lg px-2">
+<div class="contenido flex rounded-lg px-2">
   <!-- Unidad de análisis -->
   <!-- <div class="item-1  p-2 w-3/12 flex flex-col">
     <p class="flex-3 flex items-center justify-center font-semibold">Unidad de análisis</p>
@@ -8,12 +8,22 @@
   </div> -->
 
   <!-- Reactivos -->
-  <div class="contenedor-chart item-2 p-2 w-full flex flex-col">
-    <p class="flex-1 flex items-center justify-center font-semibold">Unidad de análisis:  {{unidadAnalisis}}  </p>
-    <div class="flex-3 w-full h-full">
-      <app-chart-barra [dataChart]="dataSet" class="w-full h-full block"></app-chart-barra>
+<div class="contenedor-chart item-2 flex w-full flex-col  dark:!bg-zinc-800">
+
+    <p class="flex flex-1 items-center justify-center font-semibold text-slate-700 dark:!text-zinc-100">
+        Unidad de análisis: {{ unidadAnalisis }}
+    </p>
+
+    <div class="flex-3 h-full w-full">
+
+        <app-chart-barra
+            [dataChart]="dataSet"
+            class="block h-full w-full">
+        </app-chart-barra>
+
     </div>
-  </div>
+
+</div>
 
 <!-- <div class="w-3/12 flex item-3">
 

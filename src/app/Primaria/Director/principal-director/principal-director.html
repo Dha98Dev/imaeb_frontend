@@ -14,16 +14,20 @@
 
     <div class="mb-6 mt-5 flex justify-end">
 
-        <div class="inline-flex flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
+        <div
+            class="inline-flex flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 dark:!border-zinc-700 dark:!bg-zinc-800">
 
             @for (item of gruposCct; track item) {
 
-            <button type="button" (click)="redireccioarResultadosGrupo(item)"
-                [pTooltip]="'Resultados del grupo ' + item" tooltipPosition="bottom"
+            <button
+                type="button"
+                (click)="redireccioarResultadosGrupo(item)"
+                [pTooltip]="'Resultados del grupo ' + item"
+                tooltipPosition="bottom"
                 class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200"
                 [ngClass]="grupoSelected === item
-                            ? 'bg-c1 text-white shadow-sm'
-                            : 'text-slate-500 hover:bg-white hover:text-slate-800'">
+                    ? 'bg-c1 text-white shadow-sm dark:!text-white dark:!shadow-none'
+                    : 'text-slate-500 hover:bg-white hover:text-slate-800 dark:!text-zinc-300 dark:hover:!bg-zinc-700 dark:hover:!text-white'">
 
                 <i class="pi pi-users text-xs"></i>
 
@@ -51,14 +55,15 @@
 
         @if (examenActual) {
 
-        <section class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+        <section
+            class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div class="flex items-center gap-4">
 
                     <div
-                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:!bg-indigo-950/60 dark:!text-indigo-300">
 
                         <i class="pi pi-file-edit text-xl"></i>
 
@@ -66,14 +71,13 @@
 
                     <div>
 
-                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                        <p
+                            class="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:!text-zinc-400">
                             Evaluación seleccionada
                         </p>
 
-                        <h1 class="mt-0.5 text-lg font-bold text-slate-900">
-
+                        <h1 class="mt-0.5 text-lg font-bold text-slate-900 dark:!text-zinc-100">
                             {{ examenActual.descripcion }}
-
                         </h1>
 
                     </div>
@@ -84,7 +88,7 @@
                 <div class="flex flex-wrap items-center gap-2">
 
                     <span
-                        class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+                        class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:!bg-blue-950/60 dark:!text-blue-300">
 
                         <i class="pi pi-calendar text-[10px]"></i>
 
@@ -94,7 +98,7 @@
 
 
                     <span
-                        class="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700">
+                        class="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-3 py-1.5 text-xs font-semibold text-violet-700 dark:!bg-violet-950/60 dark:!text-violet-300">
 
                         <i class="pi pi-building text-[10px]"></i>
 
@@ -104,7 +108,7 @@
 
 
                     <span
-                        class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+                        class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:!bg-zinc-700 dark:!text-zinc-300">
 
                         <i class="pi pi-list-check text-[10px]"></i>
 
@@ -124,29 +128,31 @@
         <!-- ====================================================== -->
         <!-- RESUMEN GENERAL -->
         <!-- ====================================================== -->
+
         @if (sinParticipacion) {
 
         <section
-            class="overflow-hidden rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 shadow-sm">
+            class="overflow-hidden rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 shadow-sm dark:!border-amber-900/60 dark:!from-amber-950/40 dark:!via-zinc-800 dark:!to-orange-950/30 dark:!shadow-none">
 
             <div class="flex flex-col items-center px-6 py-10 text-center sm:py-12">
 
-                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
+                <div
+                    class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:!bg-amber-950/60 dark:!text-amber-300">
 
                     <i class="pi pi-info-circle text-xl"></i>
 
                 </div>
 
-                <h2 class="mt-4 text-lg font-bold text-slate-900">
+                <h2 class="mt-4 text-lg font-bold text-slate-900 dark:!text-zinc-100">
                     Sin participación registrada
                 </h2>
 
-                <p class="mt-2 max-w-xl text-sm leading-6 text-slate-500">
+                <p class="mt-2 max-w-xl text-sm leading-6 text-slate-500 dark:!text-zinc-400">
                     No se registraron participantes para esta evaluación en el centro de trabajo seleccionado.
                 </p>
 
                 <div
-                    class="mt-5 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-4 py-2 text-xs font-semibold text-amber-700">
+                    class="mt-5 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-4 py-2 text-xs font-semibold text-amber-700 dark:!border-amber-900/60 dark:!bg-amber-950/40 dark:!text-amber-300">
 
                     <i class="pi pi-users"></i>
 
@@ -158,16 +164,17 @@
 
         </section>
 
-        }@else {
+        } @else {
+
         <section>
 
             <div class="mb-4">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                     Resumen general
                 </h2>
 
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                     Información general de los alumnos participantes y resultados de la evaluación.
                 </p>
 
@@ -179,12 +186,13 @@
 
                 <!-- PARTICIPANTES -->
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div
+                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                     <div class="flex items-center gap-4">
 
                         <div
-                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:!bg-blue-950/60 dark:!text-blue-300">
 
                             <i class="pi pi-users text-lg"></i>
 
@@ -192,14 +200,12 @@
 
                         <div>
 
-                            <p class="text-xs font-medium text-slate-500">
+                            <p class="text-xs font-medium text-slate-500 dark:!text-zinc-400">
                                 Participantes
                             </p>
 
-                            <p class="mt-1 text-2xl font-bold text-slate-900">
-
+                            <p class="mt-1 text-2xl font-bold text-slate-900 dark:!text-zinc-100">
                                 {{ totalAlumnos }}
-
                             </p>
 
                         </div>
@@ -211,12 +217,13 @@
 
                 <!-- MUJERES -->
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div
+                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                     <div class="flex items-center gap-4">
 
                         <div
-                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-fuchsia-50 text-fuchsia-600">
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-fuchsia-50 text-fuchsia-600 dark:!bg-fuchsia-950/60 dark:!text-fuchsia-300">
 
                             <i class="pi pi-user text-lg"></i>
 
@@ -224,22 +231,18 @@
 
                         <div>
 
-                            <p class="text-xs font-medium text-slate-500">
+                            <p class="text-xs font-medium text-slate-500 dark:!text-zinc-400">
                                 Mujeres
                             </p>
 
                             <div class="mt-1 flex items-end gap-2">
 
-                                <p class="text-2xl font-bold text-slate-900">
-
+                                <p class="text-2xl font-bold text-slate-900 dark:!text-zinc-100">
                                     {{ totalMujeres }}
-
                                 </p>
 
-                                <span class="mb-1 text-xs font-semibold text-slate-400">
-
+                                <span class="mb-1 text-xs font-semibold text-slate-400 dark:!text-zinc-400">
                                     {{ getPorcentajeMujeres() | number:'1.0-1' }}%
-
                                 </span>
 
                             </div>
@@ -253,12 +256,13 @@
 
                 <!-- HOMBRES -->
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div
+                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                     <div class="flex items-center gap-4">
 
                         <div
-                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:!bg-sky-950/60 dark:!text-sky-300">
 
                             <i class="pi pi-user text-lg"></i>
 
@@ -266,22 +270,18 @@
 
                         <div>
 
-                            <p class="text-xs font-medium text-slate-500">
+                            <p class="text-xs font-medium text-slate-500 dark:!text-zinc-400">
                                 Hombres
                             </p>
 
                             <div class="mt-1 flex items-end gap-2">
 
-                                <p class="text-2xl font-bold text-slate-900">
-
+                                <p class="text-2xl font-bold text-slate-900 dark:!text-zinc-100">
                                     {{ totalHombres }}
-
                                 </p>
 
-                                <span class="mb-1 text-xs font-semibold text-slate-400">
-
+                                <span class="mb-1 text-xs font-semibold text-slate-400 dark:!text-zinc-400">
                                     {{ getPorcentajeHombres() | number:'1.0-1' }}%
-
                                 </span>
 
                             </div>
@@ -295,12 +295,13 @@
 
                 <!-- RESULTADO GENERAL -->
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div
+                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                     <div class="flex items-center gap-4">
 
                         <div
-                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:!bg-emerald-950/60 dark:!text-emerald-300">
 
                             <i class="pi pi-chart-bar text-lg"></i>
 
@@ -308,14 +309,12 @@
 
                         <div>
 
-                            <p class="text-xs font-medium text-slate-500">
+                            <p class="text-xs font-medium text-slate-500 dark:!text-zinc-400">
                                 Resultado general
                             </p>
 
-                            <p class="mt-1 text-2xl font-bold text-slate-900">
-
+                            <p class="mt-1 text-2xl font-bold text-slate-900 dark:!text-zinc-100">
                                 {{ promedioGeneralCct | number:'1.0-2' }}%
-
                             </p>
 
                         </div>
@@ -327,6 +326,7 @@
             </div>
 
         </section>
+
         }
 
 
@@ -341,15 +341,16 @@
 
             <!-- GRÁFICAS -->
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <div class="mb-5">
 
-                    <h2 class="text-lg font-bold text-slate-900">
+                    <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                         Distribución por género
                     </h2>
 
-                    <p class="mt-1 text-sm text-slate-500">
+                    <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                         Distribución de participantes registrados en la evaluación.
                     </p>
 
@@ -374,7 +375,9 @@
 
                     <div class="w-[180px] sm:w-[200px]">
 
-                        <app-chart-figure-gir-boy [relleno]="getPorcentajeHombres()" [isBoy]="true">
+                        <app-chart-figure-gir-boy
+                            [relleno]="getPorcentajeHombres()"
+                            [isBoy]="true">
                         </app-chart-figure-gir-boy>
 
                     </div>
@@ -387,13 +390,14 @@
                 @if (totalSinEspecificar > 0) {
 
                 <div
-                    class="mt-5 flex items-center justify-center gap-2 border-t border-slate-100 pt-4 text-sm text-slate-500">
+                    class="mt-5 flex items-center justify-center gap-2 border-t border-slate-100 pt-4 text-sm text-slate-500 dark:!border-zinc-700 dark:!text-zinc-400">
 
                     <i class="pi pi-info-circle"></i>
 
                     <span>
                         Sin especificar:
-                        <strong class="text-slate-700">
+
+                        <strong class="text-slate-700 dark:!text-zinc-200">
                             {{ totalSinEspecificar }}
                         </strong>
 
@@ -411,15 +415,16 @@
 
             @if (conteoSexo.length > 0) {
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <div class="mb-5">
 
-                    <h2 class="text-lg font-bold text-slate-900">
+                    <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                         Participantes por grupo
                     </h2>
 
-                    <p class="mt-1 text-sm text-slate-500">
+                    <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                         Distribución de alumnos participantes en cada grupo.
                     </p>
 
@@ -430,33 +435,30 @@
 
                     @for (item of conteoSexo; track item.grupoId) {
 
-                    <div class="rounded-xl border border-slate-100 bg-slate-50/70 p-4">
+                    <div
+                        class="rounded-xl border border-slate-100 bg-slate-50/70 p-4 dark:!border-zinc-700 dark:!bg-zinc-700/50">
 
                         <div class="mb-3 flex items-center justify-between">
 
                             <div class="flex items-center gap-2">
 
                                 <span
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-xs font-bold text-slate-700 shadow-sm">
+                                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-xs font-bold text-slate-700 shadow-sm dark:!bg-zinc-800 dark:!text-zinc-100 dark:!shadow-none">
 
                                     {{ item.grupo }}
 
                                 </span>
 
-                                <span class="text-sm font-semibold text-slate-800">
-
+                                <span class="text-sm font-semibold text-slate-800 dark:!text-zinc-100">
                                     Grupo {{ item.grupo }}
-
                                 </span>
 
                             </div>
 
 
-                            <span class="text-xs font-semibold text-slate-500">
-
+                            <span class="text-xs font-semibold text-slate-500 dark:!text-zinc-400">
                                 {{ item.totalParticipantes }}
                                 participantes
-
                             </span>
 
                         </div>
@@ -464,39 +466,39 @@
 
                         <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
 
-                            <div class="rounded-lg bg-white px-3 py-2 text-center">
+                            <div class="rounded-lg bg-white px-3 py-2 text-center dark:!bg-zinc-800">
 
-                                <p class="text-[11px] text-slate-400">
+                                <p class="text-[11px] text-slate-400 dark:!text-zinc-400">
                                     Mujeres
                                 </p>
 
-                                <p class="text-sm font-bold text-fuchsia-600">
+                                <p class="text-sm font-bold text-fuchsia-600 dark:!text-fuchsia-300">
                                     {{ item.mujeres }}
                                 </p>
 
                             </div>
 
 
-                            <div class="rounded-lg bg-white px-3 py-2 text-center">
+                            <div class="rounded-lg bg-white px-3 py-2 text-center dark:!bg-zinc-800">
 
-                                <p class="text-[11px] text-slate-400">
+                                <p class="text-[11px] text-slate-400 dark:!text-zinc-400">
                                     Hombres
                                 </p>
 
-                                <p class="text-sm font-bold text-sky-600">
+                                <p class="text-sm font-bold text-sky-600 dark:!text-sky-300">
                                     {{ item.hombres }}
                                 </p>
 
                             </div>
 
 
-                            <div class="rounded-lg bg-white px-3 py-2 text-center">
+                            <div class="rounded-lg bg-white px-3 py-2 text-center dark:!bg-zinc-800">
 
-                                <p class="text-[11px] text-slate-400">
+                                <p class="text-[11px] text-slate-400 dark:!text-zinc-400">
                                     Sin especificar
                                 </p>
 
-                                <p class="text-sm font-bold text-slate-600">
+                                <p class="text-sm font-bold text-slate-600 dark:!text-zinc-300">
                                     {{ item.sinEspecificar }}
                                 </p>
 
@@ -525,17 +527,18 @@
 
         @if (promediosGrupos.length > 0) {
 
-        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <section
+            class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
             <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
 
-                    <h2 class="text-lg font-bold text-slate-900">
+                    <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                         Resultados por grupo
                     </h2>
 
-                    <p class="mt-1 text-sm text-slate-500">
+                    <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                         Resumen del desempeño obtenido por cada grupo evaluado.
                     </p>
 
@@ -543,7 +546,7 @@
 
 
                 <div
-                    class="inline-flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-xs font-medium text-slate-500">
+                    class="inline-flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-xs font-medium text-slate-500 dark:!bg-zinc-700 dark:!text-zinc-300">
 
                     <i class="pi pi-chart-line"></i>
 
@@ -562,7 +565,7 @@
                     <thead>
 
                         <tr
-                            class="border-b border-slate-200 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            class="border-b border-slate-200 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:!border-zinc-700 dark:!text-zinc-400">
 
                             <th class="px-3 py-3">
                                 Grupo
@@ -599,14 +602,15 @@
 
                         @for (item of promediosGrupos; track item.grupoId) {
 
-                        <tr class="border-b border-slate-100 transition-colors hover:bg-slate-50/80">
+                        <tr
+                            class="border-b border-slate-100 transition-colors hover:bg-slate-50/80 dark:!border-zinc-700 dark:hover:!bg-zinc-700/60">
 
                             <td class="px-3 py-4">
 
                                 <div class="flex items-center gap-3">
 
                                     <span
-                                        class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 font-bold text-slate-700">
+                                        class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 font-bold text-slate-700 dark:!bg-zinc-700 dark:!text-zinc-100">
 
                                         {{ item.grupo }}
 
@@ -614,16 +618,12 @@
 
                                     <div>
 
-                                        <p class="font-semibold text-slate-800">
-
+                                        <p class="font-semibold text-slate-800 dark:!text-zinc-100">
                                             Grupo {{ item.grupo }}
-
                                         </p>
 
-                                        <p class="text-xs text-slate-400">
-
+                                        <p class="text-xs text-slate-400 dark:!text-zinc-400">
                                             {{ item.examen }}
-
                                         </p>
 
                                     </div>
@@ -633,14 +633,12 @@
                             </td>
 
 
-                            <td class="px-3 py-4 text-center font-medium text-slate-600">
-
+                            <td class="px-3 py-4 text-center font-medium text-slate-600 dark:!text-zinc-300">
                                 {{ item.totalParticipantes }}
-
                             </td>
 
 
-                            <td class="px-3 py-4 text-center text-slate-600">
+                            <td class="px-3 py-4 text-center text-slate-600 dark:!text-zinc-300">
 
                                 @if (item.totalParticipantes > 0) {
 
@@ -648,7 +646,7 @@
 
                                 } @else {
 
-                                <span class="text-slate-300">
+                                <span class="text-slate-300 dark:!text-zinc-600">
                                     —
                                 </span>
 
@@ -657,7 +655,7 @@
                             </td>
 
 
-                            <td class="px-3 py-4 text-center text-slate-600">
+                            <td class="px-3 py-4 text-center text-slate-600 dark:!text-zinc-300">
 
                                 @if (item.totalParticipantes > 0) {
 
@@ -665,7 +663,7 @@
 
                                 } @else {
 
-                                <span class="text-slate-300">
+                                <span class="text-slate-300 dark:!text-zinc-600">
                                     —
                                 </span>
 
@@ -674,22 +672,22 @@
                             </td>
 
 
-                            <td class="px-3 py-4 text-center text-slate-600">
+                            <td class="px-3 py-4 text-center text-slate-600 dark:!text-zinc-300">
 
                                 @if (item.totalParticipantes > 0) {
 
-                                <span class="font-semibold">
+                                <span class="font-semibold dark:!text-zinc-200">
                                     {{ item.puntajeObtenido }}
                                 </span>
 
-                                <span class="text-slate-400">
+                                <span class="text-slate-400 dark:!text-zinc-500">
                                     /
                                     {{ item.puntajeMaximo }}
                                 </span>
 
                                 } @else {
 
-                                <span class="text-slate-300">
+                                <span class="text-slate-300 dark:!text-zinc-600">
                                     —
                                 </span>
 
@@ -708,20 +706,20 @@
                                 <span
                                     class="inline-flex min-w-[65px] justify-center rounded-full px-3 py-1.5 text-xs font-bold"
                                     [ngClass]="{
-                'bg-emerald-50 text-emerald-700':
-                    item.porcentaje >= 80,
+                                        'bg-emerald-50 text-emerald-700 dark:!bg-emerald-950/60 dark:!text-emerald-300':
+                                            item.porcentaje >= 80,
 
-                'bg-blue-50 text-blue-700':
-                    item.porcentaje >= 60 &&
-                    item.porcentaje < 80,
+                                        'bg-blue-50 text-blue-700 dark:!bg-blue-950/60 dark:!text-blue-300':
+                                            item.porcentaje >= 60 &&
+                                            item.porcentaje < 80,
 
-                'bg-amber-50 text-amber-700':
-                    item.porcentaje >= 40 &&
-                    item.porcentaje < 60,
+                                        'bg-amber-50 text-amber-700 dark:!bg-amber-950/60 dark:!text-amber-300':
+                                            item.porcentaje >= 40 &&
+                                            item.porcentaje < 60,
 
-                'bg-rose-50 text-rose-700':
-                    item.porcentaje < 40
-            }">
+                                        'bg-rose-50 text-rose-700 dark:!bg-rose-950/60 dark:!text-rose-300':
+                                            item.porcentaje < 40
+                                    }">
 
                                     {{ item.porcentaje | number:'1.0-2' }}%
 
@@ -730,7 +728,7 @@
                                 } @else {
 
                                 <span
-                                    class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-500">
+                                    class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-500 dark:!bg-zinc-700 dark:!text-zinc-300">
 
                                     <i class="pi pi-minus-circle text-[10px]"></i>
 
@@ -742,6 +740,7 @@
 
                             </td>
 
+
                             <td class="px-3 py-4 text-right">
 
                                 @if (
@@ -749,9 +748,12 @@
                                 item.puntajeMaximo > 0
                                 ) {
 
-                                <button type="button" (click)="redireccioarResultadosGrupo(item.grupo)"
-                                    pTooltip="Ver resultados del grupo" tooltipPosition="bottom"
-                                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-800">
+                                <button
+                                    type="button"
+                                    (click)="redireccioarResultadosGrupo(item.grupo)"
+                                    pTooltip="Ver resultados del grupo"
+                                    tooltipPosition="bottom"
+                                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-800 dark:!text-zinc-400 dark:hover:!bg-zinc-700 dark:hover:!text-white">
 
                                     <i class="pi pi-arrow-right"></i>
 
@@ -759,8 +761,10 @@
 
                                 } @else {
 
-                                <span pTooltip="Este grupo no tiene participación registrada" tooltipPosition="bottom"
-                                    class="inline-flex h-9 w-9 items-center justify-center text-slate-300">
+                                <span
+                                    pTooltip="Este grupo no tiene participación registrada"
+                                    tooltipPosition="bottom"
+                                    class="inline-flex h-9 w-9 items-center justify-center text-slate-300 dark:!text-zinc-600">
 
                                     <i class="pi pi-minus"></i>
 
@@ -798,21 +802,23 @@
 
             <div class="mb-4">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                     Comparación entre grupos
                 </h2>
 
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                     Comparación visual del porcentaje obtenido por cada grupo.
                 </p>
 
             </div>
 
 
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
                 <app-chart-barra [dataChart]="dataChartPromedioGrupos">
                 </app-chart-barra>
+
             </div>
 
         </section>
@@ -824,17 +830,19 @@
         <!-- PARTICIPACIÓN -->
         <!-- ====================================================== -->
 
-        <!-- @if (participacionCct.length > 0) {
+        <!--
+        @if (participacionCct.length > 0) {
 
-        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <section
+            class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
             <div class="mb-5">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-slate-900 dark:!text-zinc-100">
                     Participación por grupo
                 </h2>
 
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">
                     Número de participantes registrados en la evaluación por grupo.
                 </p>
 
@@ -845,13 +853,15 @@
 
                 @for (item of participacionCct; track item.grupoId) {
 
-                <button type="button" (click)="redireccioarResultadosGrupo(item.grupo)"
-                    class="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
+                <button
+                    type="button"
+                    (click)="redireccioarResultadosGrupo(item.grupo)"
+                    class="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md dark:!border-zinc-700 dark:!bg-zinc-800 dark:hover:!border-zinc-600 dark:hover:!bg-zinc-700 dark:hover:!shadow-none">
 
                     <div class="flex items-center gap-3">
 
                         <div
-                            class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-700 transition-colors group-hover:bg-blue-100">
+                            class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-700 transition-colors group-hover:bg-blue-100 dark:!bg-blue-950/60 dark:!text-blue-300 dark:group-hover:!bg-blue-900/60">
 
                             {{ item.grupo }}
 
@@ -860,11 +870,11 @@
 
                         <div>
 
-                            <p class="text-xs text-slate-400">
+                            <p class="text-xs text-slate-400 dark:!text-zinc-400">
                                 Grupo
                             </p>
 
-                            <p class="text-sm font-semibold text-slate-800">
+                            <p class="text-sm font-semibold text-slate-800 dark:!text-zinc-100">
                                 {{ item.grupo }}
                             </p>
 
@@ -875,13 +885,11 @@
 
                     <div class="text-right">
 
-                        <p class="text-xl font-bold text-slate-900">
-
+                        <p class="text-xl font-bold text-slate-900 dark:!text-zinc-100">
                             {{ item.totalParticipantes }}
-
                         </p>
 
-                        <p class="text-[11px] text-slate-400">
+                        <p class="text-[11px] text-slate-400 dark:!text-zinc-400">
                             participantes
                         </p>
 
@@ -895,7 +903,8 @@
 
         </section>
 
-        } -->
+        }
+        -->
 
 
         <!-- ====================================================== -->
@@ -908,25 +917,24 @@
         participacionCct.length === 0
         ) {
 
-        <section class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+        <section
+            class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:!border-zinc-700 dark:!bg-zinc-800">
 
             <div
-                class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
+                class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm dark:!bg-zinc-700 dark:!text-zinc-300 dark:!shadow-none">
 
                 <i class="pi pi-chart-bar text-xl"></i>
 
             </div>
 
 
-            <h3 class="mt-4 text-base font-semibold text-slate-800">
+            <h3 class="mt-4 text-base font-semibold text-slate-800 dark:!text-zinc-100">
                 Sin resultados disponibles
             </h3>
 
-            <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
-
+            <p class="mx-auto mt-1 max-w-md text-sm text-slate-500 dark:!text-zinc-400">
                 No se encontraron resultados registrados para la evaluación,
                 nivel y ciclo seleccionados.
-
             </p>
 
         </section>

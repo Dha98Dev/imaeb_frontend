@@ -1,60 +1,118 @@
-<div class="mx-2 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+<div class="mx-2 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
     <!-- Encabezado -->
-    <div class="mb-5 flex flex-col gap-3 border-b border-gray-100 pb-4 md:flex-row md:items-center md:justify-between">
+    <div class="mb-5 flex flex-col gap-3 border-b border-gray-100 pb-4 md:flex-row md:items-center md:justify-between dark:!border-zinc-700">
+
         <div>
-            <p class="text-xs font-bold uppercase tracking-[0.14em] text-c1">Centro de trabajo</p>
-            <h2 class="mt-1 text-xl font-bold text-gray-800 md:text-2xl">{{ datosCct.nombre }}</h2>
-            <p class="mt-1 text-base font-medium text-gray-500">{{ datosCct.municipio }} · {{ datosCct.localidad }}</p>
+
+            <p class="text-xs font-bold uppercase tracking-[0.14em] text-c1 dark:!text-orange-300">
+                Centro de trabajo
+            </p>
+
+            <h2 class="mt-1 text-xl font-bold text-gray-800 md:text-2xl dark:!text-zinc-100">
+                {{ datosCct.nombre }}
+            </h2>
+
+            <p class="mt-1 text-base font-medium text-gray-500 dark:!text-zinc-400">
+                {{ datosCct.municipio }} · {{ datosCct.localidad }}
+            </p>
+
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-            <span class="rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700">
+
+            <span class="rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 dark:!bg-zinc-700 dark:!text-zinc-200">
                 {{ datosCct.nivel }}
             </span>
 
             <span class="rounded-lg bg-c1 px-4 py-2 text-sm font-bold text-white">
                 {{ datosCct.cct }}
             </span>
+
         </div>
+
     </div>
+
 
     <!-- Datos -->
     <div class="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3 lg:grid-cols-5">
 
         <div>
-            <p class="text-sm font-medium text-gray-500">Ciclo escolar</p>
-            <p class="mt-1 text-base font-bold text-gray-800">2024-2025</p>
+
+            <p class="text-sm font-medium text-gray-500 dark:!text-zinc-400">
+                Ciclo escolar
+            </p>
+
+            <p class="mt-1 text-base font-bold text-gray-800 dark:!text-zinc-100">
+                2024-2025
+            </p>
+
         </div>
+
 
         @if (datosCct.sector) {
-            <div>
-                <p class="text-sm font-medium text-gray-500">Sector</p>
-                <p class="mt-1 text-base font-bold text-gray-800">{{ datosCct.sector }}</p>
-            </div>
+
+        <div>
+
+            <p class="text-sm font-medium text-gray-500 dark:!text-zinc-400">
+                Sector
+            </p>
+
+            <p class="mt-1 text-base font-bold text-gray-800 dark:!text-zinc-100">
+                {{ datosCct.sector }}
+            </p>
+
+        </div>
+
         }
 
-        <div>
-            <p class="text-sm font-medium text-gray-500">Zona escolar</p>
-            <p class="mt-1 text-base font-bold text-gray-800">{{ datosCct.zonaEscolar }}</p>
-        </div>
 
         <div>
-            <p class="text-sm font-medium text-gray-500">Grado evaluado</p>
-            <p class="mt-1 text-base font-bold text-gray-800">
+
+            <p class="text-sm font-medium text-gray-500 dark:!text-zinc-400">
+                Zona escolar
+            </p>
+
+            <p class="mt-1 text-base font-bold text-gray-800 dark:!text-zinc-100">
+                {{ datosCct.zonaEscolar }}
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <p class="text-sm font-medium text-gray-500 dark:!text-zinc-400">
+                Grado evaluado
+            </p>
+
+            <p class="mt-1 text-base font-bold text-gray-800 dark:!text-zinc-100">
                 {{ datosCct.nivel == 'Primaria' ? '6°' : '3°' }}
             </p>
+
         </div>
-  
+
+
         <div>
-            <p class="text-sm font-medium text-gray-500">Turno</p>
-            <p class="mt-1 text-base font-bold text-gray-800">
-                @for (item of datosCct.turnos; let i = $index; track $index) {
-                    @if (i > 0) {, }
-                    {{ item.nombre }}
-                } 
+
+            <p class="text-sm font-medium text-gray-500 dark:!text-zinc-400">
+                Turno
             </p>
+
+            <p class="mt-1 text-base font-bold text-gray-800 dark:!text-zinc-100">
+
+                @for (item of datosCct.turnos; let i = $index; track $index) {
+
+                    @if (i > 0) {, }
+
+                    {{ item.nombre }}
+
+                }
+
+            </p>
+
         </div>
 
     </div>
+
 </div>

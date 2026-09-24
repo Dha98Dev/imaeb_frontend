@@ -1,102 +1,170 @@
 <div
-    class="relative flex min-h-[calc(100vh-150px)] items-center justify-center overflow-hidden bg-gradient-to-br from-[#fffdf9] via-white to-[#f5ede6] px-4 py-10">
+    class="relative flex min-h-[calc(100vh-150px)] items-center justify-center overflow-hidden bg-gradient-to-br from-[#fffdf9] via-white to-[#f5ede6] px-4 py-10 dark:!from-zinc-950 dark:!via-zinc-900 dark:!to-zinc-950">
 
-    <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-c2/5 blur-3xl"></div>
-    <div class="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-c3/20 blur-3xl"></div>
+    <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-c2/5 blur-3xl dark:!bg-c2/10"></div>
+
+    <div class="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-c3/20 blur-3xl dark:!bg-c3/10"></div>
+
 
     <div class="relative z-10 w-full max-w-md">
 
         <!-- Volver -->
-        <a routerLink="/inicio"
-            class="mb-1 inline-flex items-center gap-2 rounded-xl  bg-[#F8F4EF] px-3.5 py-2 text-sm font-semibold text-[#765737] no-underline shadow-sm transition-all hover:border-[#886849]/40 hover:bg-[#F1E8DE] hover:shadow-md mb-4">
+        <a
+            routerLink="/inicio"
+            class="mb-4 inline-flex items-center gap-2 rounded-xl bg-[#F8F4EF] px-3.5 py-2 text-sm font-semibold text-[#765737] no-underline shadow-sm transition-all hover:border-[#886849]/40 hover:bg-[#F1E8DE] hover:shadow-md dark:!bg-zinc-800 dark:!text-zinc-200 dark:!shadow-none dark:hover:!bg-zinc-700 dark:hover:!text-white">
+
             <i class="pi pi-arrow-left text-xs"></i>
-            <span>Volver al inicio</span>
+
+            <span>
+                Volver al inicio
+            </span>
+
         </a>
 
+
         <!-- Login -->
-        <form [formGroup]="loginForm"
-            class="rounded-3xl border border-gray-200 bg-white p-7 shadow-xl shadow-gray-200/40 sm:p-9">
+        <form
+            [formGroup]="loginForm"
+            class="rounded-3xl border border-gray-200 bg-white p-7 shadow-xl shadow-gray-200/40 sm:p-9 dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
 
             <!-- Logo -->
             <div class="mb-7 flex justify-center">
-                <app-imaeb-logo></app-imaeb-logo>
+
+                <app-imaeb-logo>
+                </app-imaeb-logo>
+
             </div>
+
 
             <!-- Título -->
             <div class="mb-7">
-                <p class="text-xs font-bold uppercase tracking-[0.18em] text-c2">
+
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-c2 dark:!text-orange-300">
                     Acceso al sistema
                 </p>
+
             </div>
+
 
             <!-- Campos -->
             <div class="space-y-5">
 
+
                 <!-- Usuario -->
                 <div>
-                    <label for="username" class="mb-2 block text-sm font-semibold text-gray-700">
+
+                    <label
+                        for="username"
+                        class="mb-2 block text-sm font-semibold text-gray-700 dark:!text-zinc-200">
+
                         Usuario
+
                     </label>
 
+
                     <div
-                        class="flex overflow-hidden rounded-xl border border-gray-200 bg-white transition focus-within:border-c2 focus-within:ring-2 focus-within:ring-c2/10">
+                        class="flex overflow-hidden rounded-xl border border-gray-200 bg-white transition focus-within:border-c2 focus-within:ring-2 focus-within:ring-c2/10 dark:!border-zinc-600 dark:!bg-zinc-700 dark:focus-within:!border-orange-600 dark:focus-within:!ring-orange-600/20">
 
                         <div
-                            class="flex w-12 shrink-0 items-center justify-center border-r border-gray-100 bg-gray-50 text-gray-400">
+                            class="flex w-12 shrink-0 items-center justify-center border-r border-gray-100 bg-gray-50 text-gray-400 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-400">
+
                             <i class="pi pi-user"></i>
+
                         </div>
 
-                        <input id="username" type="text" autocomplete="username" formControlName="username"
+
+                        <input
+                            id="username"
+                            type="text"
+                            autocomplete="username"
+                            formControlName="username"
                             placeholder="Ingresa tu usuario"
-                            class="min-w-0 flex-1 border-0 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-0" />
+                            class="min-w-0 flex-1 border-0 bg-white px-4 py-3 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:ring-0 dark:!bg-zinc-700 dark:!text-zinc-100 dark:placeholder:!text-zinc-400" />
+
                     </div>
+
                 </div>
+
 
                 <!-- Contraseña -->
                 <div>
-                    <label for="password" class="mb-2 block text-sm font-semibold text-gray-700">
+
+                    <label
+                        for="password"
+                        class="mb-2 block text-sm font-semibold text-gray-700 dark:!text-zinc-200">
+
                         Contraseña
+
                     </label>
 
+
                     <div
-                        class="flex overflow-hidden rounded-xl border border-gray-200 bg-white transition focus-within:border-c2 focus-within:ring-2 focus-within:ring-c2/10">
+                        class="flex overflow-hidden rounded-xl border border-gray-200 bg-white transition focus-within:border-c2 focus-within:ring-2 focus-within:ring-c2/10 dark:!border-zinc-600 dark:!bg-zinc-700 dark:focus-within:!border-orange-600 dark:focus-within:!ring-orange-600/20">
 
                         <div
-                            class="flex w-12 shrink-0 items-center justify-center border-r border-gray-100 bg-gray-50 text-gray-400">
+                            class="flex w-12 shrink-0 items-center justify-center border-r border-gray-100 bg-gray-50 text-gray-400 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-400">
+
                             <i class="pi pi-lock"></i>
+
                         </div>
 
-                        <input id="password" [type]="showPassword ? 'text' : 'password'" autocomplete="current-password"
-                            formControlName="password" placeholder="Ingresa tu contraseña"
-                            (keydown.enter)="iniciarSesion()"
-                            class="min-w-0 flex-1 border-0 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-0" />
 
-                        <button type="button" (click)="showPassword = !showPassword"
-                            class="flex w-12 shrink-0 items-center justify-center text-gray-400 transition hover:text-c2">
+                        <input
+                            id="password"
+                            [type]="showPassword ? 'text' : 'password'"
+                            autocomplete="current-password"
+                            formControlName="password"
+                            placeholder="Ingresa tu contraseña"
+                            (keydown.enter)="iniciarSesion()"
+                            class="min-w-0 flex-1 border-0 bg-white px-4 py-3 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:ring-0 dark:!bg-zinc-700 dark:!text-zinc-100 dark:placeholder:!text-zinc-400" />
+
+
+                        <button
+                            type="button"
+                            (click)="showPassword = !showPassword"
+                            class="flex w-12 shrink-0 items-center justify-center text-gray-400 transition hover:text-c2 dark:!text-zinc-400 dark:hover:!text-orange-300">
+
                             <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+
                         </button>
+
                     </div>
+
                 </div>
 
             </div>
 
+
             <!-- Botón -->
-            <button type="button" (click)="iniciarSesion()"
-                class="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-c2 px-5 py-3.5 text-sm font-semibold text-white shadow-md shadow-c2/20 transition hover:opacity-90">
+            <button
+                type="button"
+                (click)="iniciarSesion()"
+                class="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-c2 px-5 py-3.5 text-sm font-semibold text-white shadow-md shadow-c2/20 transition hover:opacity-90 dark:!shadow-none">
+
                 <i class="pi pi-sign-in"></i>
+
                 Iniciar sesión
+
             </button>
 
-            <div class="mt-5 flex items-center justify-center gap-2 text-xs text-gray-400">
+
+            <div class="mt-5 flex items-center justify-center gap-2 text-xs text-gray-400 dark:!text-zinc-400">
+
                 <i class="pi pi-lock text-[10px]"></i>
+
                 Acceso restringido a usuarios autorizados
+
             </div>
 
         </form>
+
     </div>
+
 </div>
 
+
 <p-toast />
+
 
 @if (loader) {
 <app-loader-page></app-loader-page>
