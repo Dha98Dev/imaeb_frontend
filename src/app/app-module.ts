@@ -33,7 +33,7 @@ import { PrimeNgModule } from './core/shared/PrimeNg.module';
       theme: {
         preset: Aura,
          options: {
-       darkModeSelector: false || 'none'
+      //  darkModeSelector:  '.dark'
     }
       }
     }),

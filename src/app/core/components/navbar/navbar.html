@@ -2,53 +2,45 @@
     @if (isAutenticated) {
     <button type="button" (click)="visible = true"
         class="flex items-center gap-2 rounded-xl border border-[#886849]/30 bg-[#886849] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#765737] hover:shadow-md">
-
         <i class="pi pi-bars text-sm"></i>
-
         <span>Menú</span>
-
     </button>
     }
-
-
 </div>
 
-<p-drawer [(visible)]="visible" [modal]="true" header="" styleClass="!w-[340px]" >
+<p-drawer [(visible)]="visible" [modal]="true" header="" styleClass="!w-[340px]">
 
     <div class="flex h-full flex-col">
 
-        <div class="relative mb-5 overflow-hidden rounded-2xl bg-slate-900 p-4 text-white">
-
-            <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/5">
-            </div>
-
+        <div class="relative mb-5 overflow-hidden rounded-2xl bg-slate-900 p-4 text-white dark:bg-zinc-900">
+            <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/5"></div>
             <div class="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-[#886849] via-[#b08a63] to-[#886849]">
             </div>
 
             <div class="relative">
-
-                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">
-                    Sesión activa
-                </p>
-
-                <p class="mt-1 truncate text-base font-bold text-white">
-                    {{ user }}
-                </p>
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Sesión activa</p>
+                <p class="mt-1 truncate text-base font-bold text-white">{{ user }}</p>
 
                 @if (scope) {
                 <span
                     class="mt-2 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-200">
-
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400">
-                    </span>
-
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
                     {{ scope }}
-
                 </span>
                 }
-
             </div>
+        </div>
 
+        <div class="mb-3">
+            <button type="button" (click)="cambiarTema()" [pTooltip]="darkMode ? 'Modo claro' : 'Modo oscuro'"
+                tooltipPosition="bottom"
+                class="inline-flex h-10 w-10 items-center justify-center !rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:bg-slate-50 hover:text-slate-800 dark:!border-zinc-800 dark:!bg-zinc-600 dark:!text-zinc-100 dark:shadow-none dark:hover:!bg-zinc-700 dark:hover:!text-white ">
+                @if (darkMode) {
+                <i class="pi pi-sun text-sm"></i>
+                } @else {
+                <i class="pi pi-moon text-sm"></i>
+                }
+            </button>
         </div>
 
         @if (isAutenticated) {
@@ -58,190 +50,120 @@
             <div class="space-y-2">
 
                 <!-- ROJO -->
-
                 <a routerLink="/Auth/main-filter" (click)="visible = false"
-                    routerLinkActive="!border-rose-200 !bg-rose-50/60"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-200 hover:shadow-md">
-
+                    routerLinkActive="!border-rose-200 !bg-rose-50/60 dark:!border-rose-900/70 dark:!bg-rose-950/30"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-200 hover:bg-rose-50/40 hover:shadow-md dark:!border-zinc-800 dark:!bg-zinc-600 dark:shadow-none dark:hover:border-rose-900/70 dark:hover:!bg-zinc-700">
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600 transition-colors group-hover:bg-rose-100">
-
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600 transition-colors group-hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-400 dark:group-hover:bg-rose-950/60 dark:group-hover:text-rose-300">
                         <i class="pi pi-filter"></i>
-
                     </div>
-
                     <div class="flex-1">
-
-                        <p class="text-sm font-bold text-slate-800">
-                            Nuevo filtro
-                        </p>
-
+                        <p class="text-sm font-bold text-slate-800 dark:text-zinc-100">Nuevo filtro</p>
                     </div>
-
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-rose-400">
-                    </i>
-
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-rose-400 dark:text-zinc-300 dark:group-hover:text-rose-400"></i>
                 </a>
 
-
                 <!-- NARANJA -->
-
                 @if (scope == 'NIVEL' || scope == 'EJECUTIVO' || scope == 'ADMIN') {
 
                 <a routerLink="/e/resumen-nivel" (click)="visible = false"
-                    routerLinkActive="!border-orange-200 !bg-orange-50/60"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-md">
-
+                    routerLinkActive="!border-orange-200 !bg-orange-50/60 dark:!border-orange-900/70 dark:!bg-orange-950/30"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:bg-orange-50/40 hover:shadow-md dark:!border-zinc-800 dark:!bg-zinc-600 dark:shadow-none dark:hover:border-orange-900/70 dark:hover:!bg-zinc-700">
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-100">
-
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-100 dark:bg-orange-950/40 dark:text-orange-400 dark:group-hover:bg-orange-950/60 dark:group-hover:text-orange-300">
                         <i class="pi pi-chart-bar"></i>
-
                     </div>
-
                     <div class="flex-1">
-
-                        <p class="text-sm font-bold text-slate-800">
-                            Estadística general
-                        </p>
-
+                        <p class="text-sm font-bold text-slate-800 dark:text-zinc-100">Estadística general</p>
                     </div>
-
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-orange-400">
-                    </i>
-
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-orange-400 dark:text-zinc-300 dark:group-hover:text-orange-400"></i>
                 </a>
 
                 }
 
-
                 <!-- ÁMBAR / AMARILLO -->
-
                 @if (scope == 'EJECUTIVO' || scope == 'ADMIN') {
 
                 <a routerLink="/admin/register" (click)="visible = false"
-                    routerLinkActive="!border-amber-200 !bg-amber-50/60"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-200 hover:shadow-md">
-
+                    routerLinkActive="!border-amber-200 !bg-amber-50/60 dark:!border-amber-900/70 dark:!bg-amber-950/30"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-200 hover:bg-amber-50/40 hover:shadow-md dark:!border-zinc-800 dark:!bg-zinc-600 dark:shadow-none dark:hover:border-amber-900/70 dark:hover:!bg-zinc-700">
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-100">
-
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-400 dark:group-hover:bg-amber-950/60 dark:group-hover:text-amber-300">
                         <i class="pi pi-user-plus"></i>
-
                     </div>
-
                     <div class="flex-1">
-
-                        <p class="text-sm font-bold text-slate-800">
-                            Nuevo usuario
-                        </p>
-
+                        <p class="text-sm font-bold text-slate-800 dark:text-zinc-100">Nuevo usuario</p>
                     </div>
-
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-amber-400">
-                    </i>
-
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-amber-400 dark:text-zinc-300 dark:group-hover:text-amber-400"></i>
                 </a>
 
                 }
 
-
                 <!-- VERDE -->
-
                 @if (scope == 'ADMIN') {
 
                 <a routerLink="/admin/listado-usuarios" (click)="visible = false"
-                    routerLinkActive="!border-emerald-200 !bg-emerald-50/60"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md">
-
+                    routerLinkActive="!border-emerald-200 !bg-emerald-50/60 dark:!border-emerald-900/70 dark:!bg-emerald-950/30"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/40 hover:shadow-md dark:!border-zinc-800 dark:!bg-zinc-600 dark:shadow-none dark:hover:border-emerald-900/70 dark:hover:!bg-zinc-700">
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-100">
-
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:group-hover:bg-emerald-950/60 dark:group-hover:text-emerald-300">
                         <i class="pi pi-users"></i>
-
                     </div>
-
                     <div class="flex-1">
-
-                        <p class="text-sm font-bold text-slate-800">
-                            Usuarios
-                        </p>
-
+                        <p class="text-sm font-bold text-slate-800 dark:text-zinc-100">Usuarios</p>
                     </div>
-
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-emerald-400">
-                    </i>
-
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-emerald-400 dark:text-zinc-300 dark:group-hover:text-emerald-400"></i>
                 </a>
 
-
                 <!-- AZUL -->
-
                 <a routerLink="/admin/auditoria" (click)="visible = false"
-                    routerLinkActive="!border-sky-200 !bg-sky-50/60"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md">
-
+                    routerLinkActive="!border-sky-200 !bg-sky-50/60 dark:!border-sky-900/70 dark:!bg-sky-950/30"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-200 hover:bg-sky-50/40 hover:shadow-md dark:!border-zinc-800 dark:!bg-zinc-600 dark:shadow-none dark:hover:border-sky-900/70 dark:hover:!bg-zinc-700">
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600 transition-colors group-hover:bg-sky-100">
-
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600 transition-colors group-hover:bg-sky-100 dark:bg-sky-950/40 dark:text-sky-400 dark:group-hover:bg-sky-950/60 dark:group-hover:text-sky-300">
                         <i class="pi pi-history"></i>
-
                     </div>
-
                     <div class="flex-1">
-
-                        <p class="text-sm font-bold text-slate-800">
-                            Auditoría
-                        </p>
-
+                        <p class="text-sm font-bold text-slate-800 dark:text-zinc-100">Auditoría</p>
                     </div>
-
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-sky-400">
-                    </i>
-
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-sky-400 dark:text-zinc-300 dark:group-hover:text-sky-400"></i>
                 </a>
 
                 }
 
             </div>
 
-
             <!-- CERRAR SESIÓN -->
-
             <div class="mt-auto pt-6">
 
-                <div class="mb-4 border-t border-slate-100"></div>
+                <div class="mb-4 border-t border-slate-100 dark:border-zinc-800"></div>
 
                 <button type="button" (click)="visible = false; confirmCloseSesion($event)"
-                    class="group flex w-full items-center gap-3 rounded-2xl bg-slate-900 p-3.5 text-left text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg active:translate-y-0">
+                    class="group flex w-full items-center gap-3 !rounded-2xl border border-red-700 bg-red-600 p-3.5 text-left text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-lg active:translate-y-0 dark:!border-red-950 dark:!bg-red-900 dark:shadow-none dark:hover:!bg-red-950">
 
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white transition group-hover:bg-white/15">
-
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white transition group-hover:bg-white/20 dark:!bg-red-950/70 dark:group-hover:!bg-red-950">
                         <i class="pi pi-sign-out text-base"></i>
-
                     </div>
 
                     <div class="flex-1">
-
-                        <p class="text-sm font-bold">
-                            Cerrar sesión
-                        </p>
+                        <p class="text-sm font-bold text-white">Cerrar sesión</p>
                     </div>
 
-                    <i class="pi pi-angle-right text-xs text-slate-400 transition-transform group-hover:translate-x-1">
-                    </i>
+                    <i
+                        class="pi pi-angle-right text-xs text-red-100 transition-transform group-hover:translate-x-1 dark:!text-red-200"></i>
 
                 </button>
 
             </div>
 
         </nav>
+
         }
 
     </div>
