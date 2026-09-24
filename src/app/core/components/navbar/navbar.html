@@ -13,7 +13,7 @@
 
 </div>
 
-<p-drawer [(visible)]="visible" [modal]="false" header="" styleClass="!w-[340px]">
+<p-drawer [(visible)]="visible" [modal]="true" header="" styleClass="!w-[340px]" >
 
     <div class="flex h-full flex-col">
 
@@ -57,13 +57,17 @@
 
             <div class="space-y-2">
 
+                <!-- ROJO -->
+
                 <a routerLink="/Auth/main-filter" (click)="visible = false"
-                    routerLinkActive="!border-[#886849]/30 !bg-[#F6F0EA]"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-stone-200 hover:shadow-md">
+                    routerLinkActive="!border-rose-200 !bg-rose-50/60"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-200 hover:shadow-md">
 
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-[#886849]">
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600 transition-colors group-hover:bg-rose-100">
+
                         <i class="pi pi-filter"></i>
+
                     </div>
 
                     <div class="flex-1">
@@ -72,26 +76,28 @@
                             Nuevo filtro
                         </p>
 
-                        <p class="text-[11px] text-slate-400">
-                            Realizar una nueva consulta
-                        </p>
-
                     </div>
 
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5">
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-rose-400">
                     </i>
 
                 </a>
 
+
+                <!-- NARANJA -->
+
                 @if (scope == 'NIVEL' || scope == 'EJECUTIVO' || scope == 'ADMIN') {
 
                 <a routerLink="/e/resumen-nivel" (click)="visible = false"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-100 hover:shadow-md">
+                    routerLinkActive="!border-orange-200 !bg-orange-50/60"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-md">
 
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-100">
+
                         <i class="pi pi-chart-bar"></i>
+
                     </div>
 
                     <div class="flex-1">
@@ -100,28 +106,30 @@
                             Estadística general
                         </p>
 
-                        <p class="text-[11px] text-slate-400">
-                            Indicadores del nivel
-                        </p>
-
                     </div>
 
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5">
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-orange-400">
                     </i>
 
                 </a>
 
                 }
 
+
+                <!-- ÁMBAR / AMARILLO -->
+
                 @if (scope == 'EJECUTIVO' || scope == 'ADMIN') {
 
                 <a routerLink="/admin/register" (click)="visible = false"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-100 hover:shadow-md">
+                    routerLinkActive="!border-amber-200 !bg-amber-50/60"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-200 hover:shadow-md">
 
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-100">
+
                         <i class="pi pi-user-plus"></i>
+
                     </div>
 
                     <div class="flex-1">
@@ -130,27 +138,30 @@
                             Nuevo usuario
                         </p>
 
-                        <p class="text-[11px] text-slate-400">
-                            Crear una cuenta
-                        </p>
-
                     </div>
 
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5">
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-amber-400">
                     </i>
 
                 </a>
 
                 }
 
+
+                <!-- VERDE -->
+
                 @if (scope == 'ADMIN') {
 
                 <a routerLink="/admin/listado-usuarios" (click)="visible = false"
-                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
+                    routerLinkActive="!border-emerald-200 !bg-emerald-50/60"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md">
 
-                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+                    <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-100">
+
                         <i class="pi pi-users"></i>
+
                     </div>
 
                     <div class="flex-1">
@@ -159,14 +170,38 @@
                             Usuarios
                         </p>
 
-                        <p class="text-[11px] text-slate-400">
-                            Administrar cuentas
+                    </div>
+
+                    <i
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-emerald-400">
+                    </i>
+
+                </a>
+
+
+                <!-- AZUL -->
+
+                <a routerLink="/admin/auditoria" (click)="visible = false"
+                    routerLinkActive="!border-sky-200 !bg-sky-50/60"
+                    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md">
+
+                    <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600 transition-colors group-hover:bg-sky-100">
+
+                        <i class="pi pi-history"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <p class="text-sm font-bold text-slate-800">
+                            Auditoría
                         </p>
 
                     </div>
 
                     <i
-                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5">
+                        class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-sky-400">
                     </i>
 
                 </a>
@@ -175,15 +210,18 @@
 
             </div>
 
+
+            <!-- CERRAR SESIÓN -->
+
             <div class="mt-auto pt-6">
 
                 <div class="mb-4 border-t border-slate-100"></div>
 
                 <button type="button" (click)="visible = false; confirmCloseSesion($event)"
-                    class="group flex w-full items-center gap-3 rounded-2xl bg-rose-600 p-3.5 text-left text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-rose-700 hover:shadow-lg active:translate-y-0">
+                    class="group flex w-full items-center gap-3 rounded-2xl bg-slate-900 p-3.5 text-left text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg active:translate-y-0">
 
                     <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white transition group-hover:bg-white/20">
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white transition group-hover:bg-white/15">
 
                         <i class="pi pi-sign-out text-base"></i>
 
@@ -194,14 +232,9 @@
                         <p class="text-sm font-bold">
                             Cerrar sesión
                         </p>
-
-                        <p class="mt-0.5 text-[11px] font-normal text-rose-100">
-                            Finalizar la sesión actual
-                        </p>
-
                     </div>
 
-                    <i class="pi pi-angle-right text-xs text-rose-200 transition-transform group-hover:translate-x-1">
+                    <i class="pi pi-angle-right text-xs text-slate-400 transition-transform group-hover:translate-x-1">
                     </i>
 
                 </button>
@@ -209,7 +242,6 @@
             </div>
 
         </nav>
-
         }
 
     </div>

@@ -12,8 +12,16 @@ const routes: Routes = [
     path: '',
     component: LayoutAdminPage,
     children: [
-      { path: 'register', component: Register, canActivate:[authGuard,EjecutivoGuard ] },
-      { path: 'listado-usuarios', component: ListadoUsuarios, canActivate:[authGuard,AdminGuard] },
+      { path: 'register', component: Register, canActivate: [authGuard, EjecutivoGuard] },
+      {
+        path: 'listado-usuarios',
+        component: ListadoUsuarios,
+        canActivate: [authGuard, AdminGuard],
+      },
+      {
+        path: 'auditoria',
+        loadChildren: () => import('./pages/auditoria/auditoria-module').then((m) => m.AuditoriaModule),
+      },
       { path: '', redirectTo: 'register', pathMatch: 'full' },
       { path: '**', redirectTo: 'register' },
     ],

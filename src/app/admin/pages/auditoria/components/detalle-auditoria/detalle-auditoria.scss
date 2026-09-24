@@ -1,0 +1,26 @@
+.audit-detail {
+  animation: detalleEntrada 180ms ease-out both;
+}
+
+@keyframes detalleEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audit-detail {
+    animation: none;
+  }
+
+  :host * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
