@@ -30,7 +30,14 @@ export class Navbar {
   public isNivel: boolean = false;
   public scope: string | undefined = '';
   protected user: string = '';
+  protected name: string = '';
   public darkMode: boolean = false;
+
+  public miCuentaVisible = false;
+
+  abrirMiCuenta(): void {
+    this.miCuentaVisible = true;
+  }
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe((state) => {
@@ -98,5 +105,14 @@ export class Navbar {
         });
       },
     });
+  }
+
+  onMiCuentaActualizada(perfil: any): void {
+    this.user = perfil.username;
+    this.miCuentaVisible=false
+    this.authService.getMe().subscribe({
+      
+    })
+    this.cd.markForCheck();
   }
 }

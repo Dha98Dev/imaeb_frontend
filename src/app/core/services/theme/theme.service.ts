@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ThemeService {
 
-  private readonly storageKey = 'theme';
+  private readonly storageKey = 'theme-imaeb';
 
   private readonly darkModeSubject =
     new BehaviorSubject<boolean>(false);

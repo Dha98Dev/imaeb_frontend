@@ -1,71 +1,90 @@
 <div
-  class="loader-pantalla"
-  [attr.data-variante]="variante"
-  role="status"
-  aria-live="polite"
-  aria-atomic="true">
+    class="loader-pantalla dark:!bg-zinc-950 dark:!text-zinc-100"
+    [attr.data-variante]="variante"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true">
 
-  <span class="loader-sr-only">
-    Cargando información. Los resultados se mostrarán al finalizar.
-  </span>
+    <span class="loader-sr-only">
+        Cargando información. Los resultados se mostrarán al finalizar.
+    </span>
 
-  <div
-    class="loader-decoracion"
-    aria-hidden="true">
-  </div>
 
-  <div
-    class="loader-contenido"
-    aria-hidden="true">
-
-    <div class="loader-identidad">
-
-      <div class="loader-marca">
-        IMAEB
-      </div>
-
-      <p class="loader-submarca">
-        Alumnos y Alumnas
-      </p>
-
-    </div>
-
-    <div class="loader-divisor"></div>
-
-    <div class="loader-estado">
-
-      <div
-        class="loader-puntos"
+    <!-- DECORACIÓN -->
+    <div
+        class="loader-decoracion dark:!opacity-20"
         aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      <div class="loader-mensajes">
-
-        @for (mensaje of mensajes; track $index) {
-
-          <span
-            class="loader-mensaje"
-            [class.loader-mensaje-final]="$last"
-            [style.animationDelay]="($index * duracionMensaje) + 's'"
-            [style.animationDuration]="duracionMensaje + 's'">
-
-            {{ mensaje }}
-
-          </span>
-
-        }
-
-      </div>
-
     </div>
 
-    <div class="loader-progreso">
-      <span class="loader-avance"></span>
-    </div>
 
-  </div>
+    <!-- CONTENIDO -->
+    <div
+        class="loader-contenido dark:!text-zinc-100"
+        aria-hidden="true">
+
+
+        <!-- IDENTIDAD -->
+        <div class="loader-identidad">
+
+            <div class="loader-marca dark:!text-zinc-100">
+                IMAEB
+            </div>
+
+            <p class="loader-submarca dark:!text-zinc-400">
+                Alumnos y Alumnas
+            </p>
+
+        </div>
+
+
+        <!-- DIVISOR -->
+        <div class="loader-divisor dark:!bg-zinc-700"></div>
+
+
+        <!-- ESTADO -->
+        <div class="loader-estado">
+
+            <div
+                class="loader-puntos"
+                aria-hidden="true">
+
+                <span class="dark:!bg-zinc-300"></span>
+                <span class="dark:!bg-zinc-300"></span>
+                <span class="dark:!bg-zinc-300"></span>
+
+            </div>
+
+
+            <div class="loader-mensajes">
+
+                @for (mensaje of mensajes; track $index) {
+
+                <span
+                    class="loader-mensaje dark:!text-zinc-300"
+                    [class.loader-mensaje-final]="$last"
+                    [style.animationDelay]="($index * duracionMensaje) + 's'"
+                    [style.animationDuration]="duracionMensaje + 's'">
+
+                    {{ mensaje }}
+
+                </span>
+
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESO -->
+        <div class="loader-progreso dark:!bg-zinc-800">
+
+            <span
+                class="loader-avance dark:!bg-zinc-300">
+            </span>
+
+        </div>
+
+    </div>
 
 </div>

@@ -5,6 +5,7 @@ import {
   Observable,
   catchError,
   finalize,
+  map,
   of,
   shareReplay,
   switchMap,
@@ -23,6 +24,7 @@ import {
 } from '../../core/Interfaces/auth.interface';
 
 import { paramsFilters } from '../../core/Interfaces/paramsFilters.interface';
+import { ThemeService } from '../../core/services/theme/theme.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,9 +44,12 @@ export class AuthService {
 
   public usuario$ = this.usuarioSubject.asObservable();
 
+  
+
   constructor(
     private http: HttpClient,
     private router: Router,
+    private themeService: ThemeService,
   ) {}
 
   login(data: any): Observable<AuthMeResponse> {
@@ -102,7 +107,6 @@ export class AuthService {
 
     this.meRequest$ = this.getMe().pipe(
       catchError((error) => {
-
         this.clearTokens();
 
         return of(null);
@@ -135,6 +139,7 @@ export class AuthService {
 
   clearTokens(): void {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    this.themeService.setDarkMode(false);
 
     this.usuarioSubject.next(null);
 
@@ -341,4 +346,11 @@ export class AuthService {
         return '/Auth/main-filter';
     }
   }
+
+actualizarMe(body: any): Observable<any> {
+  return this.http.patch<any>(
+    this.url + 'auth/me',
+    body,
+  );
+}
 }

@@ -25,6 +25,6 @@ import { UsuarioEditor } from './pages/listado-usuarios/components/usuario-edito
     ComponetsModule,
     ReactiveFormsModule,
     FormsModule
-  ]
+  ],
 })
 export class AdminModule { }

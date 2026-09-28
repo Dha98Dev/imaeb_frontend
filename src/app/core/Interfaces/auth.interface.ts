@@ -14,6 +14,11 @@ export interface AuthMeResponse {
   autoridades: string[];
   alcances: AuthAlcance[];
   centros: AuthCentro[];
+  personaId:number,
+  sexo:string,
+  apellidoPaterno:string,
+  apellidoMaterno:string,
+  nombre:string
 }
 
 export interface AuthAlcance {

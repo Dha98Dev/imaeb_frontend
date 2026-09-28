@@ -25,7 +25,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { ConfirmDialog } from './confirm-dialog/confirm-dialog';
 import { Title } from './title/title';
 import { DatosAlumno } from './datos-alumno/datos-alumno';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TablaResultadosGrupoCT } from './tabla-resultados-grupo-ct/tabla-resultados-grupo-ct';
 import { Subtitle } from './subtitle/subtitle';
 import { subtitle } from '@primeuix/themes/aura/card';
@@ -34,8 +34,10 @@ import { TablaDinamica } from './tabla-dinamica/tabla-dinamica';
 import { Navbar } from './navbar/navbar';
 import { CommonModule } from '@angular/common';
 import { ToastMessageComponent } from './shared/toast-message/toast-message';
+import { AdminModule } from '../../admin/admin-module';
+import { MiCuentaEditor } from './mi-cuenta-editor/mi-cuenta-editor';
 @NgModule({
-  imports: [PrimeNgModule, HighchartsChartModule, FormsModule, RouterModule, CommonModule],
+  imports: [PrimeNgModule, HighchartsChartModule, FormsModule,ReactiveFormsModule, RouterModule, CommonModule],
   exports: [
     HeaderComponent,
     DatosCtComponent,
@@ -96,6 +98,7 @@ import { ToastMessageComponent } from './shared/toast-message/toast-message';
     TablaDinamica,
     Navbar,
     ToastMessageComponent,
+    MiCuentaEditor,
   ],
   providers: [],
 })
