@@ -62,7 +62,8 @@
 
                 <!-- ACCESO A PERFIL -->
                 <button type="button"
-                    class="group flex w-full items-center justify-between rounded-xl px-2 py-2 text-left transition-all duration-200 hover:bg-white/10" (click)="abrirMiCuenta(); visible=false">
+                    class="group flex w-full items-center justify-between rounded-xl px-2 py-2 text-left transition-all duration-200 hover:bg-white/10"
+                    (click)="abrirMiCuenta(); visible=false">
 
                     <div class="flex items-center gap-2.5">
 
@@ -185,12 +186,6 @@
                     <i
                         class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-amber-400 dark:text-zinc-300 dark:group-hover:text-amber-400"></i>
                 </a>
-
-                }
-
-                <!-- VERDE -->
-                @if (scope == 'ADMIN') {
-
                 <a routerLink="/admin/listado-usuarios" (click)="visible = false"
                     routerLinkActive="!border-emerald-200 !bg-emerald-50/60 dark:!border-emerald-900/70 dark:!bg-emerald-950/30"
                     class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/40 hover:shadow-md dark:!border-zinc-800 dark:!bg-zinc-600 dark:shadow-none dark:hover:border-emerald-900/70 dark:hover:!bg-zinc-700">
@@ -205,6 +200,10 @@
                         class="pi pi-angle-right text-xs text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-emerald-400 dark:text-zinc-300 dark:group-hover:text-emerald-400"></i>
                 </a>
 
+                }
+
+                <!-- VERDE -->
+                @if (scope == 'ADMIN') {
                 <!-- AZUL -->
                 <a routerLink="/admin/auditoria" (click)="visible = false"
                     routerLinkActive="!border-sky-200 !bg-sky-50/60 dark:!border-sky-900/70 dark:!bg-sky-950/30"
@@ -259,8 +258,6 @@
 <p-confirmdialog />
 <p-toast />
 
-<app-mi-cuenta-editor
-    [visible]="miCuentaVisible"
-    (visibleChange)="miCuentaVisible = $event"
+<app-mi-cuenta-editor [visible]="miCuentaVisible" (visibleChange)="miCuentaVisible = $event"
     (actualizado)="onMiCuentaActualizada($event)">
 </app-mi-cuenta-editor>

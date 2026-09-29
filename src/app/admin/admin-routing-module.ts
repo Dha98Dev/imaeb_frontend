@@ -16,7 +16,7 @@ const routes: Routes = [
       {
         path: 'listado-usuarios',
         component: ListadoUsuarios,
-        canActivate: [authGuard, AdminGuard],
+        canActivate: [authGuard, EjecutivoGuard],
       },
       {
         path: 'auditoria',
