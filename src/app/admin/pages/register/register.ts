@@ -9,6 +9,7 @@ import {
   CentrosTrabajo,
   catalogo,
   responseCatalogo,
+  Dependencia,
 } from '../../../core/Interfaces/catalogo.interface';
 import { finalize, firstValueFrom, Observable, of, switchMap, throwError } from 'rxjs';
 import { CatalogoService } from '../../../core/services/Catalogos/catalogo.service';
@@ -57,6 +58,8 @@ export class Register {
   public modalidadesPersonalizado: modalidadesNivel[] = [];
   public modalidadesSelectedByNivel: modalidadesSelectedByNivel[] = [];
   public personaSeleccionada: Persona | null = null;
+  public dependencias: Dependencia[] = [];
+  public dependenciaSeleccionada: Dependencia | null = null;
 
   public sexoOptions = [
     { label: 'Hombre', value: 'H' },
@@ -262,6 +265,20 @@ export class Register {
     }
   }
 
+  get tipoPersonaIdSeleccionado(): number {
+    return Number(this.datosPersonales.get('tipoPersonaId')?.value ?? 0);
+  }
+
+  get esDirectorDependencia(): boolean {
+    return [8, 9].includes(this.tipoPersonaIdSeleccionado);
+  }
+
+  get nombreDependenciaDirector(): string {
+    if (this.tipoPersonaIdSeleccionado === 8) return 'SEPEN';
+    if (this.tipoPersonaIdSeleccionado === 9) return 'SE';
+    return '';
+  }
+
   limpiarCampos(campos: string[]): void {
     const patch: Record<string, null> = {};
     campos.forEach((campo) => (patch[campo] = null));
@@ -311,7 +328,7 @@ export class Register {
     });
   }
 
-  onSelectTipoPersona(): void {
+  async onSelectTipoPersona(): Promise<void> {
     const tipoPersonaId = this.datosPersonales.get('tipoPersonaId')?.value;
     const tipoPersona = this.listadoTipoPersonas.find((tp) => tp.id == tipoPersonaId);
     const scope = tipoPersona?.scope ?? '';
@@ -322,10 +339,16 @@ export class Register {
     this.reiniciarAlcance();
     this.limpiarValidacionesAlcance();
 
+    if (this.esDirectorDependencia) {
+      await this.cargarDependenciaDirector();
+    } else {
+      this.dependencias = [];
+      this.dependenciaSeleccionada = null;
+    }
+
     if (scope) this.addOrRemoveValidations(scope);
     this.cd.markForCheck();
   }
-
   private reiniciarAlcance(): void {
     this.alcancePermisoConsulta.patchValue({
       nivelId: null,
@@ -343,8 +366,27 @@ export class Register {
     this.centrosTrabajo = [];
     this.modalidadesPersonalizado = [];
     this.modalidadesSelectedByNivel = [];
+    this.dependencias = [];
+    this.dependenciaSeleccionada = null;
   }
 
+  private async cargarDependenciaDirector(): Promise<void> {
+    try {
+      const resp = await firstValueFrom(this.cataloService.getDependencias({}));
+      this.dependencias = resp ?? [];
+
+      const dependencia = this.dependencias.find(
+        (item) => item.descripcion?.trim().toUpperCase() === this.nombreDependenciaDirector,
+      );
+
+      this.dependenciaSeleccionada = dependencia ?? null;
+      this.cd.markForCheck();
+    } catch (error) {
+      this.dependencias = [];
+      this.dependenciaSeleccionada = null;
+      this.cd.markForCheck();
+    }
+  }
   addOrRemoveValidations(scope: string): void {
     this.limpiarValidacionesAlcance();
 
@@ -494,12 +536,18 @@ export class Register {
 
     this.modalidadesSelectedByNivel.forEach((registro) => {
       registro.modalidadesSelected.forEach((modalidadId) => {
-        alcances.push({
+        const alcance: any = {
           scope: 'PERSONALIZADO',
           accesoGlobal: false,
           nivelId: registro.idNivel,
           modalidadId,
-        });
+        };
+
+        if (this.esDirectorDependencia && this.dependenciaSeleccionada) {
+          alcance.dependenciaId = this.dependenciaSeleccionada.id;
+        }
+
+        alcances.push(alcance);
       });
     });
 
@@ -636,6 +684,8 @@ export class Register {
     this.modalidadesSelectedByNivel = [];
     this.showPass = false;
     this.showConfirm = false;
+    this.dependencias = [];
+    this.dependenciaSeleccionada = null;
 
     this.datosPersonales.markAsPristine();
     this.datosPersonales.markAsUntouched();
@@ -655,7 +705,10 @@ export class Register {
       );
 
       if (this.modalidadesPersonalizado[nivelId]) {
-        this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: [] };
+        this.modalidadesPersonalizado[nivelId] = {
+          idNivel: nivelId,
+          modalidades: [],
+        };
       }
 
       this.obtenerNivelesYModalidadesUnicos();
@@ -664,14 +717,26 @@ export class Register {
     }
 
     try {
-      const resp = await this.realizarPeticionCatalogoService({ nivelId });
+      const params: catalogo = { nivelId };
+
+      if (this.esDirectorDependencia && this.dependenciaSeleccionada) {
+        params.dependenciaId = this.dependenciaSeleccionada.id;
+      }
+
+      const resp = await this.realizarPeticionCatalogoService(params);
+
       this.modalidadesPersonalizado[nivelId] = {
         idNivel: nivelId,
         modalidades: resp.modalidades ?? [],
       };
+
       this.cd.markForCheck();
     } catch (error) {
-      this.modalidadesPersonalizado[nivelId] = { idNivel: nivelId, modalidades: [] };
+      this.modalidadesPersonalizado[nivelId] = {
+        idNivel: nivelId,
+        modalidades: [],
+      };
+
       this.cd.markForCheck();
     }
   }

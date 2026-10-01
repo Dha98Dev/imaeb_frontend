@@ -8,14 +8,10 @@
 
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
 
-                    <button
-                        type="button"
-                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback(); usuarioGuardado=false">
 
-                        <span
-                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
-                            [ngClass]="{
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
                                 'bg-[var(--principal-cafe)] text-white border-[var(--principal-cafe)]': value <= activeStep,
                                 'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
                             }">
@@ -37,14 +33,10 @@
 
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
 
-                    <button
-                        type="button"
-                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback(); usuarioGuardado=false">
 
-                        <span
-                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
-                            [ngClass]="{
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
                                 'bg-[var(--principal-cafe)] text-white border-[var(--principal-cafe)]': value <= activeStep,
                                 'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
                             }">
@@ -66,14 +58,10 @@
 
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
 
-                    <button
-                        type="button"
-                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback(); usuarioGuardado=false">
 
-                        <span
-                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
-                            [ngClass]="{
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
                                 'bg-[var(--principal-cafe)] text-white border-[var(--principal-cafe)]': value <= activeStep,
                                 'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
                             }">
@@ -95,14 +83,10 @@
 
                 <ng-template #content let-activateCallback="activateCallback" let-value="value">
 
-                    <button
-                        type="button"
-                        class="inline-flex flex-col gap-2 border-0 bg-transparent"
+                    <button type="button" class="inline-flex flex-col gap-2 border-0 bg-transparent"
                         (click)="activateCallback()">
 
-                        <span
-                            class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2"
-                            [ngClass]="{
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2" [ngClass]="{
                                 'bg-emerald-500 text-white border-emerald-500 dark:!bg-emerald-500': value <= activeStep,
                                 'border-surface text-slate-400 dark:!border-zinc-600 dark:!text-zinc-400': value > activeStep
                             }">
@@ -153,13 +137,9 @@
 
                             <p-floatlabel>
 
-                                <input
-                                    pInputText
-                                    id="nombre"
-                                    #nombre
+                                <input pInputText id="nombre" #nombre
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                    autocomplete="off"
-                                    formControlName="nombre"
+                                    autocomplete="off" formControlName="nombre"
                                     [invalid]="isInvalid(datosPersonales,'nombre')"
                                     (input)="nombre.value=nombre.value.toUpperCase()" />
 
@@ -176,13 +156,9 @@
 
                                     <p-floatlabel>
 
-                                        <input
-                                            pInputText
-                                            id="apellidoPaterno"
-                                            #ap1
+                                        <input pInputText id="apellidoPaterno" #ap1
                                             class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                            autocomplete="off"
-                                            formControlName="apellidoPaterno"
+                                            autocomplete="off" formControlName="apellidoPaterno"
                                             [invalid]="isInvalid(datosPersonales,'apellidoPaterno')"
                                             (input)="ap1.value=ap1.value.toUpperCase()" />
 
@@ -199,13 +175,9 @@
 
                                     <p-floatlabel>
 
-                                        <input
-                                            pInputText
-                                            id="apellidoMaterno"
-                                            #ap2
+                                        <input pInputText id="apellidoMaterno" #ap2
                                             class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                            autocomplete="off"
-                                            formControlName="apellidoMaterno"
+                                            autocomplete="off" formControlName="apellidoMaterno"
                                             [invalid]="isInvalid(datosPersonales,'apellidoMaterno')"
                                             (input)="ap2.value=ap2.value.toUpperCase()" />
 
@@ -222,13 +194,9 @@
 
                             <p-floatlabel>
 
-                                <input
-                                    pInputText
-                                    id="curp"
-                                    #curp
+                                <input pInputText id="curp" #curp
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                    autocomplete="off"
-                                    formControlName="curp"
+                                    autocomplete="off" formControlName="curp"
                                     [invalid]="isInvalid(datosPersonales,'curp')"
                                     (input)="datosPersonales.patchValue({curp: curp.value.toUpperCase()})" />
 
@@ -245,14 +213,10 @@
 
                                     <p-floatlabel>
 
-                                        <p-select
-                                            inputId="sexo"
-                                            [options]="sexoOptions"
-                                            optionLabel="label"
+                                        <p-select inputId="sexo" [options]="sexoOptions" optionLabel="label"
                                             optionValue="value"
                                             class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                            formControlName="sexo"
-                                            [invalid]="isInvalid(datosPersonales,'sexo')" />
+                                            formControlName="sexo" [invalid]="isInvalid(datosPersonales,'sexo')" />
 
                                         <label for="sexo" class="dark:!text-zinc-400">
                                             Sexo
@@ -267,11 +231,8 @@
 
                                     <p-floatlabel>
 
-                                        <p-select
-                                            inputId="tipoPersona"
-                                            [options]="listadoTipoPersonas"
-                                            optionLabel="descripcion"
-                                            optionValue="id"
+                                        <p-select inputId="tipoPersona" [options]="listadoTipoPersonas"
+                                            optionLabel="descripcion" optionValue="id"
                                             class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
                                             formControlName="tipoPersonaId"
                                             [invalid]="isInvalid(datosPersonales,'tipoPersonaId')"
@@ -296,8 +257,7 @@
 
                         <p-button
                             (onClick)="['ESCUELA','ZONA','SECTOR','MODALIDAD','NIVEL','PERSONALIZADO'].includes(scope) ? activateCallback(2) : activateCallback(3); usuarioGuardado=false"
-                            icon="pi pi-arrow-right"
-                            iconPos="right" />
+                            icon="pi pi-arrow-right" iconPos="right" />
 
                     </div>
 
@@ -361,14 +321,9 @@
 
                             <p-floatlabel class="w-full">
 
-                                <p-select
-                                    inputId="nivel"
-                                    [options]="niveles"
-                                    optionValue="id"
-                                    optionLabel="descripcion"
+                                <p-select inputId="nivel" [options]="niveles" optionValue="id" optionLabel="descripcion"
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                    formControlName="nivelId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'nivelId')"
+                                    formControlName="nivelId" [invalid]="isInvalid(alcancePermisoConsulta,'nivelId')"
                                     (onChange)="getModalidades()" />
 
                                 <label for="nivel" class="dark:!text-zinc-400">
@@ -385,17 +340,12 @@
 
                             <p-floatlabel class="w-full">
 
-                                <p-select
-                                    inputId="modalidad"
-                                    [options]="modalidades"
-                                    optionValue="id"
+                                <p-select inputId="modalidad" [options]="modalidades" optionValue="id"
                                     optionLabel="descripcion"
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
                                     formControlName="modalidadId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'modalidadId')"
-                                    [filter]="true"
-                                    filterBy="descripcion"
-                                    (onChange)="getSectores()" />
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'modalidadId')" [filter]="true"
+                                    filterBy="descripcion" (onChange)="getSectores()" />
 
                                 <label for="modalidad" class="dark:!text-zinc-400">
                                     Seleccione la modalidad
@@ -414,17 +364,10 @@
 
                             <p-floatlabel class="w-full">
 
-                                <p-select
-                                    inputId="sector"
-                                    [options]="sectores"
-                                    optionValue="id"
-                                    optionLabel="sector"
+                                <p-select inputId="sector" [options]="sectores" optionValue="id" optionLabel="sector"
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                    formControlName="sectorId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'sectorId')"
-                                    [filter]="true"
-                                    filterBy="sector"
-                                    (onChange)="getZonas()" />
+                                    formControlName="sectorId" [invalid]="isInvalid(alcancePermisoConsulta,'sectorId')"
+                                    [filter]="true" filterBy="sector" (onChange)="getZonas()" />
 
                                 <label for="sector" class="dark:!text-zinc-400">
                                     Seleccione el sector
@@ -444,17 +387,10 @@
 
                             <p-floatlabel class="w-full">
 
-                                <p-select
-                                    inputId="zona"
-                                    [options]="zonas"
-                                    optionValue="id"
-                                    optionLabel="numero"
+                                <p-select inputId="zona" [options]="zonas" optionValue="id" optionLabel="numero"
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
-                                    formControlName="zonaId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'zonaId')"
-                                    [filter]="true"
-                                    filterBy="numero"
-                                    (onChange)="getCentrosTrabajo()" />
+                                    formControlName="zonaId" [invalid]="isInvalid(alcancePermisoConsulta,'zonaId')"
+                                    [filter]="true" filterBy="numero" (onChange)="getCentrosTrabajo()" />
 
                                 <label for="zona" class="dark:!text-zinc-400">
                                     Seleccione la zona
@@ -473,15 +409,10 @@
 
                             <p-floatlabel class="w-full">
 
-                                <p-select
-                                    inputId="cct"
-                                    [options]="centrosTrabajo"
-                                    optionValue="id"
-                                    optionLabel="cct"
+                                <p-select inputId="cct" [options]="centrosTrabajo" optionValue="id" optionLabel="cct"
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
                                     formControlName="escuelaId"
-                                    [invalid]="isInvalid(alcancePermisoConsulta,'escuelaId')"
-                                    [filter]="true"
+                                    [invalid]="isInvalid(alcancePermisoConsulta,'escuelaId')" [filter]="true"
                                     filterBy="cct,nombre" />
 
                                 <label for="cct" class="dark:!text-zinc-400">
@@ -499,15 +430,9 @@
 
                     <div class="flex justify-between pt-6">
 
-                        <p-button
-                            (onClick)="activateCallback(1)"
-                            severity="secondary"
-                            icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(1)" severity="secondary" icon="pi pi-arrow-left" />
 
-                        <p-button
-                            (onClick)="activateCallback(3)"
-                            icon="pi pi-arrow-right"
-                            iconPos="right" />
+                        <p-button (onClick)="activateCallback(3)" icon="pi pi-arrow-right" iconPos="right" />
 
                     </div>
 
@@ -566,9 +491,7 @@
                         </p-message>
 
 
-                        <form
-                            class="mt-4 w-full"
-                            [formGroup]="alcancePermisoConsulta">
+                        <form class="mt-4 w-full" [formGroup]="alcancePermisoConsulta">
 
                             <div
                                 class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
@@ -587,14 +510,10 @@
 
                                         <div class="flex items-center">
 
-                                            <p-checkbox
-                                                [inputId]="'nivel'+nivel.id"
-                                                formControlName="nivelIds"
-                                                [value]="nivel.id"
-                                                (onChange)="getListadoModCompletas(nivel.id)" />
+                                            <p-checkbox [inputId]="'nivel'+nivel.id" formControlName="nivelIds"
+                                                [value]="nivel.id" (onChange)="getListadoModCompletas(nivel.id)" />
 
-                                            <label
-                                                [for]="'nivel'+nivel.id"
+                                            <label [for]="'nivel'+nivel.id"
                                                 class="ml-2 text-sm font-medium text-slate-700 dark:!text-zinc-200">
 
                                                 {{ nivel.descripcion }}
@@ -623,15 +542,12 @@
 
                                                 <div class="flex items-center">
 
-                                                    <p-checkbox
-                                                        [inputId]="'mod'+nivel.id+'-'+mod.id"
-                                                        [binary]="true"
+                                                    <p-checkbox [inputId]="'mod'+nivel.id+'-'+mod.id" [binary]="true"
                                                         [ngModel]="estaSeleccionada(nivel.id,mod.id)"
                                                         (ngModelChange)="onChangeModalidad(nivel.id,mod.id,$event)"
                                                         [ngModelOptions]="{standalone:true}" />
 
-                                                    <label
-                                                        [for]="'mod'+nivel.id+'-'+mod.id"
+                                                    <label [for]="'mod'+nivel.id+'-'+mod.id"
                                                         class="ml-2 text-sm text-slate-600 dark:!text-zinc-300">
 
                                                         {{ mod.descripcion }}
@@ -663,15 +579,9 @@
 
                     <div class="flex justify-between pt-6">
 
-                        <p-button
-                            (onClick)="activateCallback(1)"
-                            severity="secondary"
-                            icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(1)" severity="secondary" icon="pi pi-arrow-left" />
 
-                        <p-button
-                            (onClick)="activateCallback(3)"
-                            icon="pi pi-arrow-right"
-                            iconPos="right" />
+                        <p-button (onClick)="activateCallback(3)" icon="pi pi-arrow-right" iconPos="right" />
 
                     </div>
 
@@ -679,6 +589,20 @@
 
             </p-step-panel>
 
+            }
+            @if (esDirectorDependencia && dependenciaSeleccionada) {
+            <div
+                class="mt-3 flex items-center gap-3 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 dark:!border-blue-900/50 dark:!bg-blue-950/40">
+                <div
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:!bg-blue-900/50 dark:!text-blue-300">
+                    <i class="pi pi-building"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-blue-500 dark:!text-blue-400">Dependencia asignada</p>
+                    <p class="text-sm font-bold text-blue-800 dark:!text-blue-200">{{
+                        dependenciaSeleccionada.descripcion }}</p>
+                </div>
+            </div>
             }
 
 
@@ -710,30 +634,22 @@
 
                         <!-- FORMULARIO -->
 
-                        <form
-                            class="w-full px-2"
-                            [formGroup]="auth">
+                        <form class="w-full px-2" [formGroup]="auth">
 
 
                             <!-- USUARIO -->
 
                             <div class="mb-5">
 
-                                <label
-                                    for="username"
+                                <label for="username"
                                     class="mb-1.5 block text-sm font-medium text-slate-600 dark:!text-zinc-300">
 
                                     Usuario
 
                                 </label>
 
-                                <input
-                                    id="username"
-                                    type="text"
-                                    autocomplete="off"
-                                    pInputText
-                                    formControlName="username"
-                                    [invalid]="isInvalid(auth,'username')"
+                                <input id="username" type="text" autocomplete="off" pInputText
+                                    formControlName="username" [invalid]="isInvalid(auth,'username')"
                                     class="w-full rounded-lg px-4 py-2 text-slate-900 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
                             </div>
@@ -748,8 +664,7 @@
 
                                 <div class="flex-1">
 
-                                    <label
-                                        for="password"
+                                    <label for="password"
                                         class="mb-1.5 block text-sm font-medium text-slate-600 dark:!text-zinc-300">
 
                                         Contraseña
@@ -758,18 +673,12 @@
 
                                     <div class="relative">
 
-                                        <input
-                                            [type]="showPass ? 'text' : 'password'"
-                                            id="password"
-                                            pInputText
-                                            formControlName="password"
-                                            [invalid]="isInvalid(auth,'password')"
+                                        <input [type]="showPass ? 'text' : 'password'" id="password" pInputText
+                                            formControlName="password" [invalid]="isInvalid(auth,'password')"
                                             class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
 
-                                        <button
-                                            type="button"
-                                            (click)="showPass = !showPass"
+                                        <button type="button" (click)="showPass = !showPass"
                                             class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:!text-zinc-400 dark:hover:!bg-zinc-600 dark:hover:!text-zinc-100">
 
                                             @if (!showPass) {
@@ -793,8 +702,7 @@
 
                                 <div class="flex-1">
 
-                                    <label
-                                        for="confirmPassword"
+                                    <label for="confirmPassword"
                                         class="mb-1.5 block text-sm font-medium text-slate-600 dark:!text-zinc-300">
 
                                         Confirmar contraseña
@@ -803,18 +711,13 @@
 
                                     <div class="relative">
 
-                                        <input
-                                            [type]="showConfirm ? 'text' : 'password'"
-                                            id="confirmPassword"
-                                            pInputText
-                                            formControlName="confirmPassword"
+                                        <input [type]="showConfirm ? 'text' : 'password'" id="confirmPassword"
+                                            pInputText formControlName="confirmPassword"
                                             [invalid]="isInvalid(auth,'confirmPassword')"
                                             class="w-full rounded-lg px-4 py-2 pr-10 text-slate-900 dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100" />
 
 
-                                        <button
-                                            type="button"
-                                            (click)="showConfirm = !showConfirm"
+                                        <button type="button" (click)="showConfirm = !showConfirm"
                                             class="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:!text-zinc-400 dark:hover:!bg-zinc-600 dark:hover:!text-zinc-100">
 
                                             @if (!showConfirm) {
@@ -848,16 +751,13 @@
 
                                     <!-- ICONO -->
 
-                                    <div
-                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm transition-colors dark:!bg-zinc-700 dark:!shadow-none"
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm transition-colors dark:!bg-zinc-700 dark:!shadow-none"
                                         [ngClass]="{
                                             'text-emerald-600 dark:!text-emerald-300': passwordValido,
                                             'text-slate-500 dark:!text-zinc-400': !passwordValido
                                         }">
 
-                                        <i
-                                            class="pi text-base"
-                                            [ngClass]="passwordValido
+                                        <i class="pi text-base" [ngClass]="passwordValido
                                                 ? 'pi-shield text-emerald-600 dark:!text-emerald-300'
                                                 : 'pi-shield text-slate-500 dark:!text-zinc-400'">
                                         </i>
@@ -913,21 +813,17 @@
 
                                             <!-- 8 CARACTERES -->
 
-                                            <div
-                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.longitud
                                                     ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
                                                     : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div
-                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.longitud
                                                         ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
                                                         : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i
-                                                        class="pi text-[9px]"
-                                                        [ngClass]="requisitosPassword.longitud
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.longitud
                                                             ? 'pi-check'
                                                             : 'pi-times'">
                                                     </i>
@@ -938,9 +834,7 @@
 
                                                     Mínimo
 
-                                                    <strong
-                                                        class="font-semibold"
-                                                        [ngClass]="requisitosPassword.longitud
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.longitud
                                                             ? 'text-emerald-700 dark:!text-emerald-300'
                                                             : 'text-rose-600 dark:!text-rose-300'">
 
@@ -955,21 +849,17 @@
 
                                             <!-- MAYÚSCULA -->
 
-                                            <div
-                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.mayuscula
                                                     ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
                                                     : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div
-                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.mayuscula
                                                         ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
                                                         : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i
-                                                        class="pi text-[9px]"
-                                                        [ngClass]="requisitosPassword.mayuscula
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.mayuscula
                                                             ? 'pi-check'
                                                             : 'pi-times'">
                                                     </i>
@@ -980,9 +870,7 @@
 
                                                     Una
 
-                                                    <strong
-                                                        class="font-semibold"
-                                                        [ngClass]="requisitosPassword.mayuscula
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.mayuscula
                                                             ? 'text-emerald-700 dark:!text-emerald-300'
                                                             : 'text-rose-600 dark:!text-rose-300'">
 
@@ -997,21 +885,17 @@
 
                                             <!-- NÚMERO -->
 
-                                            <div
-                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.numero
                                                     ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
                                                     : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div
-                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.numero
                                                         ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
                                                         : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i
-                                                        class="pi text-[9px]"
-                                                        [ngClass]="requisitosPassword.numero
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.numero
                                                             ? 'pi-check'
                                                             : 'pi-times'">
                                                     </i>
@@ -1022,9 +906,7 @@
 
                                                     Al menos
 
-                                                    <strong
-                                                        class="font-semibold"
-                                                        [ngClass]="requisitosPassword.numero
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.numero
                                                             ? 'text-emerald-700 dark:!text-emerald-300'
                                                             : 'text-rose-600 dark:!text-rose-300'">
 
@@ -1039,21 +921,17 @@
 
                                             <!-- CARÁCTER ESPECIAL -->
 
-                                            <div
-                                                class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
+                                            <div class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-all duration-200"
                                                 [ngClass]="requisitosPassword.especial
                                                     ? 'border-emerald-100 bg-emerald-50/70 text-emerald-700 dark:!border-emerald-900/60 dark:!bg-emerald-950/50 dark:!text-emerald-300'
                                                     : 'border-rose-100 bg-rose-50/70 text-rose-600 dark:!border-rose-900/60 dark:!bg-rose-950/50 dark:!text-rose-300'">
 
-                                                <div
-                                                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                                <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                                     [ngClass]="requisitosPassword.especial
                                                         ? 'bg-emerald-100 text-emerald-600 dark:!bg-emerald-950 dark:!text-emerald-300'
                                                         : 'bg-rose-100 text-rose-500 dark:!bg-rose-950 dark:!text-rose-300'">
 
-                                                    <i
-                                                        class="pi text-[9px]"
-                                                        [ngClass]="requisitosPassword.especial
+                                                    <i class="pi text-[9px]" [ngClass]="requisitosPassword.especial
                                                             ? 'pi-check'
                                                             : 'pi-times'">
                                                     </i>
@@ -1064,9 +942,7 @@
 
                                                     Un
 
-                                                    <strong
-                                                        class="font-semibold"
-                                                        [ngClass]="requisitosPassword.especial
+                                                    <strong class="font-semibold" [ngClass]="requisitosPassword.especial
                                                             ? 'text-emerald-700 dark:!text-emerald-300'
                                                             : 'text-rose-600 dark:!text-rose-300'">
 
@@ -1110,13 +986,8 @@
 
                             <div class="mt-8 flex justify-center">
 
-                                <p-button
-                                    label="Crear usuario"
-                                    icon="pi pi-save"
-                                    severity="contrast"
-                                    size="small"
-                                    [loading]="guardandoUsuario"
-                                    [disabled]="guardandoUsuario"
+                                <p-button label="Crear usuario" icon="pi pi-save" severity="contrast" size="small"
+                                    [loading]="guardandoUsuario" [disabled]="guardandoUsuario"
                                     (onClick)="guardarUsuario()" />
 
                             </div>
@@ -1135,16 +1006,12 @@
                         .includes(scope)
                         ) {
 
-                        <p-button
-                            (onClick)="activateCallback(2); usuarioGuardado = false"
-                            severity="secondary"
+                        <p-button (onClick)="activateCallback(2); usuarioGuardado = false" severity="secondary"
                             icon="pi pi-arrow-left" />
 
                         } @else {
 
-                        <p-button
-                            (onClick)="activateCallback(1); usuarioGuardado = false"
-                            severity="secondary"
+                        <p-button (onClick)="activateCallback(1); usuarioGuardado = false" severity="secondary"
                             icon="pi pi-arrow-left" />
 
                         }
@@ -1191,11 +1058,8 @@
 
                     <div class="flex justify-start pt-6">
 
-                        <p-button
-                            (onClick)="activateCallback(1); usuarioGuardado=false"
-                            label="Crear nuevo usuario"
-                            severity="secondary"
-                            icon="pi pi-plus" />
+                        <p-button (onClick)="activateCallback(1); usuarioGuardado=false" label="Crear nuevo usuario"
+                            severity="secondary" icon="pi pi-plus" />
 
                     </div>
 
