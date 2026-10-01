@@ -3,6 +3,7 @@ import { CatalogoService } from '../../../core/services/Catalogos/catalogo.servi
 import {
   catalogo,
   CentrosTrabajo,
+  Dependencia,
   Nivele,
   responseCatalogo,
   Sectores,
@@ -40,6 +41,7 @@ export class FiltroPage {
   public sectores: Sectores[] = [];
   public zonas: Zona[] = [];
   public centrosTrabajo: CentrosTrabajo[] = [];
+  public dependencias: Dependencia[] = [];
   public datosAlumno: any;
   public nivelSelected: string = '';
   public filtros: FormGroup = {} as FormGroup;
@@ -51,6 +53,7 @@ export class FiltroPage {
     this.filtros = this.fb.group({
       nivelSelected: [''],
       modalidad: [''],
+      dependencia: [''],
       sector: [''],
       zona: [''],
       cct: [''],
@@ -104,182 +107,162 @@ export class FiltroPage {
       this.cd.markForCheck();
     }
   }
-  async getModalidades(): Promise<void> {
+  async getDependencias(): Promise<void> {
     this.limpiarPropiedades(1);
+    this.limpiarCampos(['dependencia', 'modalidad', 'sector', 'zona', 'cct']);
 
+    const nivelId = this.valorNumero('nivelSelected');
+    if (!nivelId) return;
+
+    try {
+      this.dependencias = await firstValueFrom(this.cataloService.getDependencias({ nivelId }));
+
+      if (this.dependencias.length === 1) {
+        this.filtros.patchValue({ dependencia: this.dependencias[0].id });
+        await this.getModalidades();
+      }
+
+      this.cd.markForCheck();
+    } catch (error) {
+      this.dependencias = [];
+      this.cd.markForCheck();
+    }
+  }
+  async getModalidades(): Promise<void> {
+    this.limpiarPropiedades(2);
     this.limpiarCampos(['modalidad', 'sector', 'zona', 'cct']);
 
     const nivelId = this.valorNumero('nivelSelected');
+    const dependenciaId = this.valorNumero('dependencia');
 
-    if (!nivelId) {
-      return;
-    }
+    if (!nivelId || !dependenciaId) return;
 
     try {
-      const resp = await this.realizarPeticionCatalogoService({
-        nivelId,
-      });
-
+      const resp = await this.realizarPeticionCatalogoService({ nivelId, dependenciaId });
       const modalidades = resp.modalidades ?? [];
 
       this.modalidades = modalidades.filter((modalidad) =>
-        this.esPermitidoPorAlcance({
-          nivelId,
-          modalidadId: modalidad.id,
-        }),
+        this.esPermitidoPorAlcance({ nivelId, modalidadId: modalidad.id }),
       );
 
       if (this.modalidades.length === 1) {
-        this.filtros.patchValue({
-          modalidad: this.modalidades[0].id,
-        });
-
+        this.filtros.patchValue({ modalidad: this.modalidades[0].id });
         await this.getSectores();
       }
 
       this.cd.markForCheck();
     } catch (error) {
       this.modalidades = [];
-
       this.cd.markForCheck();
     }
   }
 
   async getSectores(): Promise<void> {
-    this.limpiarPropiedades(2);
-
+    this.limpiarPropiedades(3);
     this.limpiarCampos(['sector', 'zona', 'cct']);
 
     const nivelId = this.valorNumero('nivelSelected');
-
+    const dependenciaId = this.valorNumero('dependencia');
     const modalidadId = this.valorNumero('modalidad');
 
-    if (!nivelId || !modalidadId) {
-      return;
-    }
+    if (!nivelId || !dependenciaId || !modalidadId) return;
 
     try {
       const resp = await this.realizarPeticionCatalogoService({
         nivelId,
+        dependenciaId,
         modalidadId,
       });
-
       const sectores = resp.sectores ?? [];
 
       this.sectores = sectores
         .filter((sector) =>
-          this.esPermitidoPorAlcance({
-            nivelId,
-            modalidadId,
-            sectorId: sector.numero,
-          }),
+          this.esPermitidoPorAlcance({ nivelId, modalidadId, sectorId: sector.numero }),
         )
         .sort((a, b) => (a.numero || 0) - (b.numero || 0));
 
       if (this.sectores.length === 1) {
-        this.filtros.patchValue({
-          sector: this.sectores[0].numero,
-        });
-
+        this.filtros.patchValue({ sector: this.sectores[0].numero });
         await this.getZonas();
       }
 
       this.cd.markForCheck();
     } catch (error) {
       this.sectores = [];
-
       this.cd.markForCheck();
     }
   }
 
   async getZonas(): Promise<void> {
-    this.limpiarPropiedades(3);
-
+    this.limpiarPropiedades(4);
     this.limpiarCampos(['zona', 'cct']);
 
     const nivelId = this.valorNumero('nivelSelected');
-
+    const dependenciaId = this.valorNumero('dependencia');
     const modalidadId = this.valorNumero('modalidad');
-
     const sectorId = this.valorNumero('sector');
 
-    if (nivelId === undefined || modalidadId === undefined || sectorId === undefined) {
+    if (
+      nivelId === undefined ||
+      dependenciaId === undefined ||
+      modalidadId === undefined ||
+      sectorId === undefined
+    )
       return;
-    }
 
     try {
       const resp = await this.realizarPeticionCatalogoService({
         nivelId,
+        dependenciaId,
         modalidadId,
         sector: sectorId,
       });
 
       const zonas = resp.zonas ?? [];
 
-
-
       this.zonas = zonas
         .filter((zona) =>
-          this.esPermitidoPorAlcance({
-            nivelId,
-            modalidadId,
-            sectorId,
-            zonaId: zona.id,
-          }),
+          this.esPermitidoPorAlcance({ nivelId, modalidadId, sectorId, zonaId: zona.id }),
         )
         .sort((a, b) => (a.numero || 0) - (b.numero || 0));
 
-
       if (this.zonas.length === 1) {
-        this.filtros.patchValue({
-          zona: this.zonas[0].id,
-        });
-
+        this.filtros.patchValue({ zona: this.zonas[0].id });
         await this.getCentrosTrabajo();
       }
 
       this.cd.markForCheck();
     } catch (error) {
-
       this.zonas = [];
-
       this.cd.markForCheck();
     }
   }
   async getCentrosTrabajo(): Promise<void> {
     this.centrosTrabajo = [];
-
-    this.filtros.patchValue({
-      cct: '',
-    });
+    this.filtros.patchValue({ cct: '' });
 
     const nivelId = this.valorNumero('nivelSelected');
-
+    const dependenciaId = this.valorNumero('dependencia');
     const modalidadId = this.valorNumero('modalidad');
-
     const sectorId = this.valorNumero('sector');
-
     const zonaId = this.valorNumero('zona');
 
     if (
       nivelId === undefined ||
+      dependenciaId === undefined ||
       modalidadId === undefined ||
       sectorId === undefined ||
       zonaId === undefined
-    ) {
+    )
       return;
-    }
 
     const zonaSeleccionada = this.zonas.find((zona) => zona.id === zonaId);
-
-    if (!zonaSeleccionada) {
-
-      return;
-    }
+    if (!zonaSeleccionada) return;
 
     try {
       const resp = await this.realizarPeticionCatalogoService({
         nivelId,
+        dependenciaId,
         modalidadId,
         sector: sectorId,
         zonaEscolar: zonaSeleccionada.numero,
@@ -296,16 +279,12 @@ export class FiltroPage {
       );
 
       if (this.centrosTrabajo.length === 1) {
-        this.filtros.patchValue({
-          cct: this.centrosTrabajo[0].id,
-        });
+        this.filtros.patchValue({ cct: this.centrosTrabajo[0].id });
       }
 
       this.cd.markForCheck();
     } catch (error) {
-
       this.centrosTrabajo = [];
-
       this.cd.markForCheck();
     }
   }
@@ -318,34 +297,36 @@ export class FiltroPage {
     this.cd.markForCheck();
   }
 
-  limpiarPropiedades(nivelLimpieza: number) {
+  limpiarPropiedades(nivelLimpieza: number): void {
     switch (nivelLimpieza) {
       case 1:
+        this.dependencias = [];
         this.modalidades = [];
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
         break;
       case 2:
+        this.modalidades = [];
         this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
         break;
       case 3:
+        this.sectores = [];
         this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
         break;
       case 4:
+        this.zonas = [];
         this.centrosTrabajo = [];
-        this.cd.markForCheck();
         break;
-
-      default:
+      case 5:
+        this.centrosTrabajo = [];
         break;
     }
+
+    this.cd.markForCheck();
   }
 
   async generarUrl(): Promise<void> {
@@ -617,11 +598,8 @@ export class FiltroPage {
     await this.getNiveles();
 
     if (this.niveles.length === 1) {
-      this.filtros.patchValue({
-        nivelSelected: this.niveles[0].id,
-      });
-
-      await this.getModalidades();
+      this.filtros.patchValue({ nivelSelected: this.niveles[0].id });
+      await this.getDependencias();
     }
 
     this.cd.markForCheck();

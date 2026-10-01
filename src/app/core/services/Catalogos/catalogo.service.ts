@@ -5,8 +5,10 @@ import {
   catalogo,
   CatalogoCiclos,
   CatalogoExamen,
+  Dependencia,
   EstructuraExamen,
   MunicipiosOrLocalidades,
+  ParamsDependencias,
   responseCatalogo,
 } from '../../Interfaces/catalogo.interface';
 import { Observable } from 'rxjs';
@@ -18,21 +20,12 @@ export class CatalogoService {
   getCatalogo(data: catalogo): Observable<any> {
     let params = new HttpParams();
 
-    if (data.nivelId != null) {
-      params = params.set('nivelId', data.nivelId.toString());
-    }
-    if (data.modalidadId != null) {
-      params = params.set('modalidadId', data.modalidadId.toString());
-    }
-
-    if (data.sector != null) {
-      // 👈 así no se salta el 0
-      params = params.set('sector', data.sector.toString());
-    }
-
-    if (data.zonaEscolar != null) {
-      params = params.set('zonaEscolar', data.zonaEscolar.toString());
-    }
+    if (data.nivelId != null) params = params.set('nivelId', data.nivelId.toString());
+    if (data.dependenciaId != null)
+      params = params.set('dependenciaId', data.dependenciaId.toString());
+    if (data.modalidadId != null) params = params.set('modalidadId', data.modalidadId.toString());
+    if (data.sector != null) params = params.set('sector', data.sector.toString());
+    if (data.zonaEscolar != null) params = params.set('zonaEscolar', data.zonaEscolar.toString());
 
     return this.http.get<any>(this.url + 'api/catalogos/flujo-completo', { params });
   }
@@ -84,5 +77,16 @@ export class CatalogoService {
       default:
         return '';
     }
+  }
+
+  getDependencias(data: ParamsDependencias): Observable<Dependencia[]> {
+    let params = new HttpParams();
+
+    if (data.nivelId != null) params = params.set('nivelId', data.nivelId.toString());
+    if (data.modalidadId != null) params = params.set('modalidadId', data.modalidadId.toString());
+    if (data.sector != null) params = params.set('sector', data.sector.toString());
+    if (data.zonaEscolar != null) params = params.set('zonaEscolar', data.zonaEscolar.toString());
+
+    return this.http.get<Dependencia[]>(this.url + 'api/catalogos/dependencias', { params });
   }
 }

@@ -32,3 +32,22 @@
         transform: translateX(0);
     }
 }
+
+.progress-fill {
+  width: 0;
+  animation: fillProgress 1s ease-out forwards;
+}
+
+.progress-delay {
+  animation-delay: 0.15s;
+}
+
+@keyframes fillProgress {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: calc(var(--progress) * 1%);
+  }
+}

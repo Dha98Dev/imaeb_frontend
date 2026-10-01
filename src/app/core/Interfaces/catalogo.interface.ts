@@ -1,5 +1,6 @@
 export interface catalogo {
   nivelId?: number;
+  dependenciaId?: number;
   modalidadId?: number;
   sector?: number;
   zonaEscolar?: number;
@@ -95,4 +96,16 @@ export interface PreguntaEstructuraExamen {
   contenido: string;
   pda: string | null;
   especificacion: string | null;
+}
+
+export interface Dependencia {
+  id: number;
+  descripcion: string;
+}
+
+export interface ParamsDependencias {
+  nivelId?: number;
+  modalidadId?: number;
+  sector?: number;
+  zonaEscolar?: number;
 }

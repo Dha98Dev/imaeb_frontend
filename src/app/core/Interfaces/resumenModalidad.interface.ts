@@ -196,10 +196,9 @@ export interface SectorEscuelaModalidad {
 
 export interface PromedioMateriaModalidad {
   materiaId: number;
-
   materia: string;
-
   porcentaje: number;
+  porcentajeModalidad?: number;
 }
 
 export interface ResultadoModalidadTabla {

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, finalize, forkJoin, of } from 'rxjs';
+import { catchError, finalize, forkJoin, map, of } from 'rxjs';
 
 import { CatalogoService } from '../../../core/services/Catalogos/catalogo.service';
 import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
@@ -85,8 +85,7 @@ export class ResumenModalidad implements OnInit {
         });
 
         this.inicializar();
-      } catch (error) {
-      }
+      } catch (error) {}
     });
   }
 
@@ -108,7 +107,6 @@ export class ResumenModalidad implements OnInit {
           this.seleccionarExamen();
 
           if (!this.examenSelected) {
-
             this.loader = false;
             this.cd.markForCheck();
             return;
@@ -209,7 +207,6 @@ export class ResumenModalidad implements OnInit {
 
     this.modalidadActual =
       respuesta.modalidades?.find((item) => item.id === this.modalidadId) ?? null;
-
     this.promedioModalidad = Number(this.modalidadActual?.porcentaje ?? 0);
 
     if (this.modalidadActual) {
@@ -222,6 +219,7 @@ export class ResumenModalidad implements OnInit {
       porcentaje: Number(materia.porcentaje ?? 0),
     }));
 
+    this.cargarPromediosMateriaModalidad();
     this.seleccionarPrimeraMateriaUnidades();
   }
 
@@ -320,6 +318,52 @@ export class ResumenModalidad implements OnInit {
     this.tamanoPagina = event.rows ?? this.tamanoPagina;
     this.cargarEscuelasModalidad();
   }
+  cargarPromediosMateriaModalidad(): void {
+    if (
+      !this.promediosMaterias.length ||
+      !this.examenSelected ||
+      !this.nivelId ||
+      !this.modalidadId
+    )
+      return;
+
+    const requests = this.promediosMaterias.map((materia) =>
+      this.estadisticaService
+        .getPromedioNivelMateria({
+          examenId: this.examenSelected,
+          nivelId: this.nivelId,
+          modalidadId: this.modalidadId,
+          materiaId: materia.materiaId,
+        })
+        .pipe(
+          map((resp) => ({
+            materiaId: materia.materiaId,
+            porcentajeModalidad: Number(resp?.[0]?.porcentaje ?? 0),
+          })),
+          catchError(() =>
+            of({
+              materiaId: materia.materiaId,
+              porcentajeModalidad: 0,
+            }),
+          ),
+        ),
+    );
+
+    forkJoin(requests).subscribe({
+      next: (resultados) => {
+        this.promediosMaterias = this.promediosMaterias.map((materia) => {
+          const resultado = resultados.find((item) => item.materiaId === materia.materiaId);
+
+          return {
+            ...materia,
+            porcentajeModalidad: resultado?.porcentajeModalidad ?? 0,
+          };
+        });
+
+        this.cd.markForCheck();
+      },
+    });
+  }
 
   cargarEscuelasModalidad(): void {
     if (!this.examenSelected || !this.modalidadId) {
@@ -355,7 +399,6 @@ export class ResumenModalidad implements OnInit {
         },
 
         error: (error) => {
-
           this.escuelas = [];
           this.resultados = [];
 
