@@ -34,6 +34,8 @@ export class GetEstadisticaService {
     if (data.nivelId) params = params.set('nivelId', data.nivelId.toString());
     if (data.examenId) params = params.set('examenId', data.examenId.toString());
     if (data.modalidadId) params = params.set('modalidadId', data.modalidadId.toString());
+    if (data.dependenciaId != null)
+      params = params.set('dependenciaId', data.dependenciaId.toString());
     return this.http.get<any>(this.url + 'estadisticas/resumen-nivel', { params });
   }
   getEscuelasModalidad(data: ParamsEscuelasModalidad) {

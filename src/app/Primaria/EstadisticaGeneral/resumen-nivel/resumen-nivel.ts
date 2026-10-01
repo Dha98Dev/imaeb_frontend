@@ -4,6 +4,7 @@ import { CatalogoService } from '../../../core/services/Catalogos/catalogo.servi
 import {
   CatalogoCiclos,
   CatalogoExamen,
+  Dependencia,
   Nivele,
 } from '../../../core/Interfaces/catalogo.interface';
 import { GetEstadisticaService } from '../../../core/services/EstadisticaPromedios/getEstadistica.service';
@@ -42,6 +43,8 @@ export class ResumenNivel implements OnInit {
   public scope: string = '';
   public nivelesPermitidosIds: number[] = [];
   public accesoTodosLosNiveles: boolean = false;
+  public dependencias: Dependencia[] = [];
+  public dependenciaSeleccionada: number = 0;
 
   constructor(
     private catalogoService: CatalogoService,
@@ -116,7 +119,6 @@ export class ResumenNivel implements OnInit {
       },
 
       error: (error) => {
-
         this.loader = false;
 
         this.resumenNivel = null;
@@ -127,6 +129,24 @@ export class ResumenNivel implements OnInit {
       },
     });
   }
+
+  cargarDependencias(nivelId: number): void {
+    this.dependencias = [];
+    this.dependenciaSeleccionada = 0;
+
+    this.catalogoService.getDependencias({ nivelId }).subscribe({
+      next: (resp) => {
+        this.dependencias = resp ?? [];
+        this.cd.markForCheck();
+      },
+      error: () => {
+        this.dependencias = [];
+        this.dependenciaSeleccionada = 0;
+        this.cd.markForCheck();
+      },
+    });
+  }
+
   private puedeVerTodosLosNiveles(): boolean {
     const scope = this.authService.getScope();
 
@@ -171,12 +191,14 @@ export class ResumenNivel implements OnInit {
   }
   getEstadistica(nivelId: number): void {
     this.nivelSeleccionado = nivelId;
+    this.dependenciaSeleccionada = 0;
     this.resumenNivel = null;
     this.materiaUnidadSeleccionada = null;
     this.unidadesFiltradas = [];
     this.municipioSeleccionado = 0;
     this.municipiosOpciones = [];
     this.municipiosFiltrados = [];
+    this.cargarDependencias(nivelId);
 
     const examenesNivel = this.examenes.filter((examen) => examen.nivelId === nivelId);
 
@@ -190,59 +212,62 @@ export class ResumenNivel implements OnInit {
     }
 
     const ultimoExamen = examenesNivel[examenesNivel.length - 1];
-
     this.examenSeleccionado = ultimoExamen.id;
     this.cicloSeleccionado = ultimoExamen.cicloId ?? this.obtenerUltimoCicloId();
     this.obtenerResumenNivel();
   }
 
-  obtenerResumenNivel(): void {
-    if (
-      this.examenSeleccionado === null ||
-      this.cicloSeleccionado === null ||
-      this.nivelSeleccionado === 0
-    ) {
-      this.loader = false;
-      return;
-    }
-
-    this.loader = true;
-
-    const params = {
-      examenId: this.examenSeleccionado,
-      cicloId: this.cicloSeleccionado,
-      nivelId: this.nivelSeleccionado,
-    };
-
-    this.estadisticaService
-      .getResumenNivel(params)
-      .pipe(
-        finalize(() => {
-          this.loader = false;
-          this.cd.markForCheck();
-        }),
-      )
-      .subscribe({
-        next: (resp) => {
-          this.resumenNivel = resp ?? null;
-
-          if (!this.resumenNivel) {
-            this.limpiarGraficas();
-            return;
-          }
-
-          this.prepararGraficaModalidades();
-          this.prepararMunicipios();
-          this.seleccionarPrimeraMateriaUnidades();
-          this.cd.markForCheck();
-        },
-        error: (error) => {
-          this.resumenNivel = null;
-          this.limpiarGraficas();
-          this.cd.markForCheck();
-        },
-      });
+  seleccionarDependencia(dependenciaId: number): void {
+    if (this.dependenciaSeleccionada === dependenciaId) return;
+    this.dependenciaSeleccionada = dependenciaId;
+    this.resumenNivel = null;
+    this.materiaUnidadSeleccionada = null;
+    this.unidadesFiltradas = [];
+    this.municipioSeleccionado = 0;
+    this.municipiosOpciones = [];
+    this.municipiosFiltrados = [];
+    this.obtenerResumenNivel();
   }
+
+obtenerResumenNivel(): void {
+  if (this.examenSeleccionado === null || this.cicloSeleccionado === null || this.nivelSeleccionado === 0) {
+    this.loader = false;
+    return;
+  }
+
+  this.loader = true;
+
+  const params: any = {
+    examenId: this.examenSeleccionado,
+    cicloId: this.cicloSeleccionado,
+    nivelId: this.nivelSeleccionado,
+  };
+
+  if (this.dependenciaSeleccionada > 0) params.dependenciaId = this.dependenciaSeleccionada;
+
+  this.estadisticaService.getResumenNivel(params).pipe(finalize(() => {
+    this.loader = false;
+    this.cd.markForCheck();
+  })).subscribe({
+    next: (resp) => {
+      this.resumenNivel = resp ?? null;
+      if (!this.resumenNivel) {
+        this.limpiarGraficas();
+        return;
+      }
+      this.prepararGraficaModalidades();
+      this.prepararMunicipios();
+      this.seleccionarPrimeraMateriaUnidades();
+      this.cd.markForCheck();
+    },
+    error: () => {
+      this.resumenNivel = null;
+      this.limpiarGraficas();
+      this.cd.markForCheck();
+    },
+  });
+}
+
 
   prepararGraficaModalidades(): void {
     const modalidades = this.resumenNivel?.modalidades ?? [];

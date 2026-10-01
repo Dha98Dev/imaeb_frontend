@@ -27,6 +27,42 @@
     </small>
   </div>
 
+  <!-- FILTRO DEPENDENCIA -->
+@if (dependencias.length > 0) {
+<section class="mt-5">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 dark:!text-zinc-400">Dependencia</p>
+      <p class="mt-1 text-sm text-slate-500 dark:!text-zinc-400">Seleccione una dependencia para filtrar los resultados.</p>
+    </div>
+
+    <div class="overflow-x-auto">
+      <div class="inline-flex min-w-max items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
+        <button type="button" (click)="seleccionarDependencia(0)"
+          class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200"
+          [ngClass]="dependenciaSeleccionada === 0
+            ? 'bg-slate-800 text-white shadow-md dark:!bg-zinc-600 dark:!text-white dark:!shadow-none'
+            : 'text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm dark:!text-zinc-300 dark:hover:!bg-zinc-700 dark:hover:!text-white'">
+          <i class="pi pi-building" [ngClass]="dependenciaSeleccionada === 0 ? 'text-white' : 'text-slate-400 dark:!text-zinc-400'"></i>
+          Todas
+        </button>
+
+        @for (dependencia of dependencias; track dependencia.id) {
+        <button type="button" (click)="seleccionarDependencia(dependencia.id)"
+          class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200"
+          [ngClass]="dependenciaSeleccionada === dependencia.id
+            ? 'bg-c2 text-white shadow-md dark:!bg-orange-700 dark:!text-white dark:!shadow-none'
+            : 'text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm dark:!text-zinc-300 dark:hover:!bg-zinc-700 dark:hover:!text-white'">
+          <i class="pi pi-building-columns" [ngClass]="dependenciaSeleccionada === dependencia.id ? 'text-white' : 'text-slate-400 dark:!text-zinc-400'"></i>
+          {{ dependencia.descripcion }}
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+}
+
   <!-- INFORMACIÓN EXAMEN -->
   <section
     class="mt-5 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm dark:!border-zinc-700 dark:!bg-zinc-800 dark:!shadow-none">
