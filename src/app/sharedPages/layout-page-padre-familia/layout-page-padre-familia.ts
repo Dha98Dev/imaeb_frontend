@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
 
 import { Router } from '@angular/router';
 
@@ -51,6 +51,8 @@ export class LayoutPagePadreFamilia {
   private alumnoSeleccionadoCript: string = '';
 
   private destroyRef = inject(DestroyRef);
+  private cct: string = '';
+  private grupo: string = '';
 
   constructor(
     private router: Router,
@@ -58,6 +60,7 @@ export class LayoutPagePadreFamilia {
     private cctService: GetCctInfoSErvice,
     private cripto: CryptoJsService,
     private listadoAlumnosService: listadoAlumnosService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -84,22 +87,16 @@ export class LayoutPagePadreFamilia {
 
   private obtenerAlumnoSeleccionado(): void {
     const alumnoCript = this.storage.getCriptAlSeleccionado();
-
     const alumno = this.storage.getAlSeleccionado();
-
     const examen = this.storage.getExamenSeleccionado();
+    const cct = this.storage.getCctSeleccionado();
+    const grupo = this.storage.getGrupoSeleccionado();
 
-    if (alumnoCript) {
-      this.alumnoSeleccionadoCript = alumnoCript;
-    }
-
-    if (alumno) {
-      this.alumnoId = Number(alumno);
-    }
-
-    if (examen) {
-      this.examenId = Number(examen);
-    }
+    if (alumnoCript) this.alumnoSeleccionadoCript = alumnoCript;
+    if (alumno) this.alumnoId = Number(alumno);
+    if (examen) this.examenId = Number(examen);
+    if (cct) this.cct = cct;
+    if (grupo) this.grupo = grupo;
   }
 
   private escucharCentroTrabajo(): void {
@@ -165,31 +162,32 @@ export class LayoutPagePadreFamilia {
   private construirMenuMaterias(materias: ResultadoMateriaAlumnoV2[]): void {
     const inicio: MenuItem = {
       label: 'Inicio',
-
       icon: 'pi pi-home',
-
-      command: () => {
-        this.router.navigate(['/s/principal_alumno', this.alumnoSeleccionadoCript]);
-      },
+      command: () => this.irInicioAlumno(),
     };
 
     const materiasMenu: MenuItem[] = materias.map((materia) => ({
       label: materia.materia,
-
       icon: this.getIconMateria(materia.materia),
-
-      command: () => {
-        this.irResultadoMateria(materia);
-      },
+      command: () => this.irResultadoMateria(materia),
     }));
 
-    /*
-     * Reemplazamos siempre el arreglo.
-     *
-     * No utilizamos push() sobre this.items,
-     * así evitamos tabs duplicados.
-     */
-    this.items = [inicio, ...materiasMenu];
+    queueMicrotask(() => {
+      this.items = [inicio, ...materiasMenu];
+      this.tabActivo = 'Inicio';
+      this.cd.detectChanges();
+    });
+  }
+  private irInicioAlumno(): void {
+    if (!this.cct || !this.grupo || !this.alumnoSeleccionadoCript || !this.examenId) return;
+
+    this.router.navigate([
+      '/s/principal_alumno',
+      this.cripto.Encriptar(this.cct),
+      this.grupo,
+      this.alumnoSeleccionadoCript,
+      this.cripto.Encriptar(this.examenId.toString()),
+    ]);
   }
 
   seleccionarTab(item: MenuItem, event: Event): void {

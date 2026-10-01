@@ -19,6 +19,7 @@ import {
   ResultadoAlumnoV2,
   ResultadoMateriaAlumnoV2,
 } from '../../core/Interfaces/listadoAlumnoV2.interface';
+import { StorageService } from '../../core/services/storage/sesionStorage.service';
 
 @Component({
   selector: 'app-principal-padre-familia',
@@ -35,6 +36,7 @@ export class PrincipalPadreFamilia {
     private estadisticaService: GetEstadisticaService,
     private breadCrumbService: BreadCrumService,
     private listadoAlumnosService: listadoAlumnosService,
+    private storage: StorageService,
   ) {}
 
   /*
@@ -54,6 +56,8 @@ export class PrincipalPadreFamilia {
   public cct: string = '';
 
   public grupo: string = '';
+
+  
 
   /*
    * ============================================================
@@ -118,29 +122,16 @@ export class PrincipalPadreFamilia {
          * Desencriptamos
          */
 
-        this.cct = this.crypto.Desencriptar(cctParam) || '';
+   this.cct = this.crypto.Desencriptar(cctParam) || '';
+this.alumnoID = Number(this.crypto.Desencriptar(this.alumnoParam));
+this.examenId = Number(this.crypto.Desencriptar(this.examenParam));
 
-        this.alumnoID = Number(this.crypto.Desencriptar(this.alumnoParam));
-
-        this.examenId = Number(this.crypto.Desencriptar(this.examenParam));
-
-        if (!this.cct || !this.alumnoID || !this.examenId) {
-          return;
-        }
-
-        /*
-         * Datos compartidos
-         */
-
-        this.cctInfo.setCct(this.cct);
-
-        this.cctInfo.setGrupo(this.grupo);
-
-        /*
-         * Cargar datos
-         */
-
-        this.loadData();
+if (!this.cct || !this.alumnoID || !this.examenId) return;
+this.storage.saveCctSeleccionado(this.cct);
+this.storage.saveGrupoSeleccionado(this.grupo);
+this.cctInfo.setCct(this.cct);
+this.cctInfo.setGrupo(this.grupo);
+this.loadData();
       } catch (error) {
       }
     });

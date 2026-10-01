@@ -72,4 +72,24 @@ export class StorageService {
     sessionStorage.removeItem('AES');
     sessionStorage.removeItem('AEXS');
   }
+  saveCctSeleccionado(cct: string): void {
+    sessionStorage.setItem('CCT', cct);
+  }
+
+  getCctSeleccionado(): string | null {
+    return sessionStorage.getItem('CCT');
+  }
+
+  saveGrupoSeleccionado(grupo: string): void {
+    sessionStorage.setItem('GRUPO', grupo);
+  }
+
+  getGrupoSeleccionado(): string | null {
+    return sessionStorage.getItem('GRUPO');
+  }
+
+  deleteContextoAlumno(): void {
+    sessionStorage.removeItem('CCT');
+    sessionStorage.removeItem('GRUPO');
+  }
 }
