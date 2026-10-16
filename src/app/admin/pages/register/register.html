@@ -364,10 +364,10 @@
 
                             <p-floatlabel class="w-full">
 
-                                <p-select inputId="sector" [options]="sectores" optionValue="id" optionLabel="sector"
+                                <p-select inputId="sector" [options]="sectores" optionValue="id" optionLabel="numero"
                                     class="w-full dark:!border-zinc-600 dark:!bg-zinc-700 dark:!text-zinc-100"
                                     formControlName="sectorId" [invalid]="isInvalid(alcancePermisoConsulta,'sectorId')"
-                                    [filter]="true" filterBy="sector" (onChange)="getZonas()" />
+                                    [filter]="true" filterBy="numero" (onChange)="getZonas()" />
 
                                 <label for="sector" class="dark:!text-zinc-400">
                                     Seleccione el sector

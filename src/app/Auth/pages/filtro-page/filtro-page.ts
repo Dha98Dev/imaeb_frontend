@@ -177,7 +177,7 @@ export class FiltroPage {
 
       this.sectores = sectores
         .filter((sector) =>
-          this.esPermitidoPorAlcance({ nivelId, modalidadId, sectorId: sector.numero }),
+          this.esPermitidoPorAlcance({ nivelId, modalidadId, sectorId: sector.id }),
         )
         .sort((a, b) => (a.numero || 0) - (b.numero || 0));
 
